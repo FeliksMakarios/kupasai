@@ -268,15 +268,26 @@
 
 /* ==================== ANALOGY EXPLORER ==================== */
 
-.analogy-builder h3 {
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
+.analogy-controls-sidebar {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-.analogy-intro {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  margin-bottom: 1.25rem;
+.analogy-controls-sidebar .analogy-op {
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.analogy-controls-sidebar .analogy-slot select {
+  width: 100%;
+}
+
+.analogy-controls-sidebar .result-word {
+  min-width: unset;
+  padding: 0.5rem;
+  font-size: 1.2rem;
 }
 
 .analogy-controls {
@@ -409,6 +420,15 @@
 }
 
 /* ==================== SIMILARITY EXPLORER ==================== */
+
+.sim-controls-sidebar {
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sim-controls-sidebar .sim-slot select {
+  width: 100%;
+}
 
 .sim-controls {
   display: flex;
