@@ -70,13 +70,13 @@
       var n = words.length;
 
       svg.selectAll('*').remove();
-      var W = 600, H = 450;
+      var W = 600, H = 400;
       var labelW = 80;
-      var labelH = 60;
+      var labelH = 50;
       var cellSize = Math.min((W - labelW - 20) / n, (H - labelH - 20) / n, 65);
       var gridW = cellSize * n;
       var gridH = cellSize * n;
-      var offsetX = labelW;
+      var offsetX = (W - gridW) / 2 + 10;
       var offsetY = labelH;
 
       var g = svg.append('g');
@@ -179,8 +179,8 @@
         .text('QUERY (kata yang melihat)');
 
       // Legend bar
-      var legendW = 150;
-      var legendX = offsetX + gridW + 15;
+      var legendW = 120;
+      var legendX = offsetX + gridW + 20;
       var legendY = offsetY;
       for (var k = 0; k <= 20; k++) {
         var frac = k / 20;
@@ -253,7 +253,7 @@
       var n = words.length;
 
       svg.selectAll('*').remove();
-      var W = 700, H = 480;
+      var W = 700, H = 380;
       var g = svg.append('g');
 
       var colSpacing = Math.min(120, (W - 40) / Math.max(n, 3));
@@ -393,9 +393,9 @@
     function drawAttentionWeights(g, head, words, startX, startY, spacing) {
       var n = words.length;
       var weights = head.weights;
-      var cellSize = Math.min(spacing - 10, 45);
+      var cellSize = Math.min(spacing + 5, 55);
       var matStartX = (700 - cellSize * n) / 2;
-      var matStartY = 120;
+      var matStartY = 80;
 
       var colorScale = d3.scaleSequential(d3.interpolateRgb('#f6f8fa', '#0969da')).domain([0, 1]);
 
