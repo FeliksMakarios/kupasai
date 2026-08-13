@@ -395,16 +395,16 @@
       var weights = head.weights;
       var cellSize = Math.min(spacing + 5, 55);
       var matStartX = (700 - cellSize * n) / 2;
-      var matStartY = 80;
+      var matStartY = 100;
 
       var colorScale = d3.scaleSequential(d3.interpolateRgb('#f6f8fa', '#0969da')).domain([0, 1]);
 
       // Title
       g.append('text')
-        .attr('x', 350).attr('y', 80)
+        .attr('x', 350).attr('y', 35)
         .attr('text-anchor', 'middle').attr('font-size', '14px')
         .attr('font-weight', '700').attr('fill', COLORS.text_primary)
-        .text(' softmax(Q \u00B7 K\u1D40 / \u221Ad) ');
+        .text('softmax(Q \u00B7 K\u1D40 / \u221Ad)');
 
       // Column labels
       words.forEach(function (word, j) {
