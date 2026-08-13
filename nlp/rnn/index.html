@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RNN &amp; Backpropagation - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/" class="active">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF20161 &middot; Week 2-4</span>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke NLP</a>
+    <h1>RNN &amp; Backpropagation</h1>
+    <p class="page-subtitle">
+      Bagaimana neural network memproses urutan kata? Recurrent Neural Network
+      membaca kata demi kata, menyimpan informasi di hidden state, dan melupakan
+      atau mengingat sesuai kebutuhan.
+    </p>
+    <div class="learning-objectives">
+      <strong>Sub-CPMK 2.1:</strong>
+      Mahasiswa mampu mengidentifikasi tantangan data panjang variabel,
+      membandingkan metode representasi kalimat, dan mengimplementasikan
+      forward propagation RNN.
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB NAVIGATION ====== -->
+<div class="tab-nav">
+  <button class="tab-btn active" data-tab="forward">Forward Pass</button>
+  <button class="tab-btn" data-tab="gradient">Vanishing Gradient</button>
+  <button class="tab-btn" data-tab="representation">Representasi Kalimat</button>
+</div>
+
+<!-- ====== TAB 1: FORWARD PASS ====== -->
+<div class="tab-content active" id="tab-forward">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="rnn-controls">
+        <label>Kalimat:</label>
+        <select id="forward-sentence"></select>
+      </div>
+      <svg id="forward-plot" viewBox="0 0 700 420"></svg>
+      <div class="step-controls">
+        <button id="step-prev" class="step-btn">&larr; Sebelumnya</button>
+        <span id="step-indicator">Timestep 0 / 3</span>
+        <button id="step-next" class="step-btn">Selanjutnya &rarr;</button>
+      </div>
+      <div class="step-detail" id="step-detail"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Cara Kerja RNN</h3>
+      <p>
+        RNN memproses kalimat satu kata pada satu waktu. Pada setiap
+        <strong>timestep</strong>, jaringan menerima input kata baru dan
+        menggabungkannya dengan <strong>hidden state</strong> dari timestep
+        sebelumnya.
+      </p>
+      <p>
+        Hidden state berfungsi sebagai "memori" jaringan. Semua informasi
+        dari kata-kata sebelumnya terkompresi dalam vektor berukuran
+        terbatas (di sini <code>4 dimensi</code>).
+      </p>
+      <p>
+        Setelah membaca seluruh kalimat, hidden state akhir digunakan
+        untuk menghasilkan output. Dalam contoh ini, output adalah
+        klasifikasi sentimen: <strong>positif</strong> atau
+        <strong>negatif</strong>.
+      </p>
+      <p>
+        Klik "Selanjutnya" untuk melihat bagaimana setiap kata mengubah
+        hidden state. Perhatikan bagaimana kata "suka" menggeser representasi
+        ke arah positif, sedangkan "benci" ke arah negatif.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: VANISHING GRADIENT ====== -->
+<div class="tab-content" id="tab-gradient">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <svg id="gradient-plot" viewBox="0 0 700 400"></svg>
+      <div class="gradient-controls">
+        <label>Panjang Sequence:</label>
+        <input type="range" id="seq-slider" min="5" max="20" value="10" step="5" class="slider">
+        <span id="seq-value">10</span>
+      </div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Masalah Vanishing Gradient</h3>
+      <p>
+        Saat melatih RNN dengan <strong>Backpropagation Through Time
+        (BPTT)</strong>, gradien error harus dipropagasikan mundur dari
+        timestep terakhir ke awal.
+      </p>
+      <p>
+        Pada setiap langkah mundur, gradien dikalikan dengan matriks
+        bobot recurrent. Jika bobot ini kecil, gradien mengecil
+        secara <strong>eksponensial</strong>. Akibatnya, jaringan tidak
+        bisa belajar dependensi jangka panjang.
+      </p>
+      <p>
+        Grafik menunjukkan bagaimana magnitudo gradien RNN standar
+        (biru) cepat menurun ke nol. Sebagai pembanding, LSTM (hijau)
+        menggunakan <strong>gate</strong> untuk mengontrol aliran
+        gradien, menjaganya tetap stabil bahkan untuk sequence panjang.
+      </p>
+      <p>
+        Inilah mengapa untuk hampir semua aplikasi praktis, LSTM atau
+        GRU digunakan sebagai pengganti RNN standar.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 3: SENTENCE REPRESENTATION ====== -->
+<div class="tab-content" id="tab-representation">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="rep-method-buttons">
+        <button class="rep-btn active" data-method="bow">Bag-of-Words</button>
+        <button class="rep-btn" data-method="avg">Average Vectors</button>
+        <button class="rep-btn" data-method="rnn">RNN Hidden State</button>
+      </div>
+      <svg id="rep-plot" viewBox="0 0 600 400"></svg>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Tiga Cara Merepresentasikan Kalimat</h3>
+      <p>
+        <strong>Bag-of-Words:</strong> hanya mencatat kata apa saja yang
+        muncul, mengabaikan urutan. "saya suka belajar" dan "belajar suka
+        saya" menghasilkan vektor yang identik.
+      </p>
+      <p>
+        <strong>Average Vectors:</strong> rata-rata embedding semua kata.
+        Lebih bermakna dari BoW karena menangkap semantik, tapi tetap
+        mengabaikan urutan kata.
+      </p>
+      <p>
+        <strong>RNN Hidden State:</strong> memproses kata secara berurutan,
+        jadi urutan memengaruhi representasi akhir. "saya suka belajar"
+        berbeda dengan "belajar suka saya".
+      </p>
+      <p>
+        Bandingkan ketiga metode dengan mengklik tombol di atas. Perhatikan
+        pasangan kalimat yang dibalik urutannya: apakah metode ini bisa
+        membedakannya?
+      </p>
+      <p>
+        Kemampuan menangkap urutan adalah fondasi untuk model modern.
+        Transformer melakukannya dengan mekanisme <strong>attention</strong>,
+        tapi RNN melakukannya dengan hidden state rekuren.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+</body>
+</html>
