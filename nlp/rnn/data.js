@@ -10,6 +10,20 @@ const RNN_DATA = {
       0.3,
       0.1
     ],
+    "dia": [
+      0.0,
+      0.0,
+      0.0,
+      0.2,
+      0.1
+    ],
+    "aku": [
+      0.0,
+      0.0,
+      0.0,
+      0.2,
+      0.1
+    ],
     "kamu": [
       0.0,
       0.1,
@@ -19,17 +33,45 @@ const RNN_DATA = {
     ],
     "suka": [
       0.0,
-      0.7,
+      0.8,
       0.4,
       0.0,
       0.5
     ],
+    "cinta": [
+      0.0,
+      0.9,
+      0.0,
+      0.0,
+      0.8
+    ],
     "benci": [
       0.0,
-      -0.7,
+      -0.8,
       0.0,
       0.0,
       0.6
+    ],
+    "ketidakadilan": [
+      0.0,
+      -0.7,
+      0.0,
+      0.3,
+      0.5
+    ],
+    "belajar": [
+      0.0,
+      0.3,
+      0.7,
+      0.3,
+      0.3
+    ],
+    "indonesia": [
+      0.0,
+      0.1,
+      0.0,
+      0.4,
+      0.2
     ],
     "makan": [
       0.1,
@@ -37,13 +79,6 @@ const RNN_DATA = {
       0.9,
       -0.2,
       0.3
-    ],
-    "belajar": [
-      0.0,
-      0.4,
-      0.7,
-      0.3,
-      0.4
     ],
     "tidur": [
       0.0,
@@ -135,78 +170,78 @@ const RNN_DATA = {
   "weights": {
     "W_xh": [
       [
-        0.248,
-        -0.069,
-        0.324,
-        0.762
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ],
       [
-        -0.117,
-        -0.117,
-        0.79,
-        0.384
+        1.5,
+        0.2,
+        0.1,
+        0.0
       ],
       [
-        -0.235,
-        0.271,
-        -0.232,
-        -0.233
+        0.1,
+        0.0,
+        0.8,
+        0.1
       ],
       [
-        0.121,
-        -0.957,
-        -0.862,
-        -0.281
+        0.0,
+        0.1,
+        0.0,
+        0.5
       ],
       [
-        -0.506,
-        0.157,
-        -0.454,
-        -0.706
+        0.0,
+        0.0,
+        0.0,
+        0.3
       ]
     ],
     "W_hh": [
       [
-        0.733,
-        -0.113,
-        0.034,
-        -0.712
+        0.85,
+        0.0,
+        0.0,
+        0.0
       ],
       [
-        -0.272,
-        0.055,
-        -0.575,
-        0.188
+        0.0,
+        0.7,
+        0.0,
+        0.0
       ],
       [
-        -0.3,
-        -0.146,
-        -0.301,
-        0.926
+        0.0,
+        0.0,
+        0.7,
+        0.0
       ],
       [
-        -0.007,
-        -0.529,
-        0.411,
-        -0.61
+        0.0,
+        0.0,
+        0.0,
+        0.7
       ]
     ],
     "W_hy": [
       [
-        0.369,
-        0.086
+        2.5,
+        -2.5
       ],
       [
-        -0.058,
-        -0.151
+        0.2,
+        0.1
       ],
       [
-        -0.739,
-        -0.36
+        0.1,
+        0.1
       ],
       [
-        -0.23,
-        0.529
+        0.1,
+        0.2
       ]
     ]
   },
@@ -228,137 +263,111 @@ const RNN_DATA = {
             0.1
           ],
           "hidden_pre": [
-            0.007,
-            -0.467,
-            -0.437,
-            -0.135
+            0.0,
+            0.03,
+            0.0,
+            0.18
           ],
           "hidden": [
-            0.007,
-            -0.436,
-            -0.411,
-            -0.134
+            0.0,
+            0.03,
+            0.0,
+            0.178
           ],
           "output": [
-            0.606,
-            0.394
+            0.496,
+            0.504
           ]
         },
         {
           "word": "suka",
           "input": [
             0.0,
-            0.7,
+            0.8,
             0.4,
             0.0,
             0.5
           ],
           "hidden_pre": [
-            -0.16,
-            0.015,
-            0.42,
-            -0.543
+            1.24,
+            0.181,
+            0.4,
+            0.315
           ],
           "hidden": [
-            -0.159,
-            0.015,
-            0.397,
-            -0.495
+            0.845,
+            0.179,
+            0.38,
+            0.305
           ],
           "output": [
-            0.597,
-            0.403
+            0.985,
+            0.015
           ]
         },
         {
           "word": "belajar",
           "input": [
             0.0,
-            0.4,
+            0.3,
             0.7,
             0.3,
-            0.4
+            0.3
           ],
           "hidden_pre": [
-            -0.593,
-            -0.054,
-            -0.757,
-            0.429
+            1.239,
+            0.215,
+            0.856,
+            0.523
           ],
           "hidden": [
-            -0.532,
-            -0.054,
-            -0.639,
-            0.405
+            0.845,
+            0.212,
+            0.694,
+            0.48
           ],
           "output": [
-            0.498,
-            0.502
+            0.985,
+            0.015
           ]
         }
       ]
     },
     {
       "words": [
-        "kamu",
+        "dia",
         "benci",
-        "jelek"
+        "ketidakadilan"
       ],
       "states": [
         {
-          "word": "kamu",
+          "word": "dia",
           "input": [
             0.0,
-            0.1,
             0.0,
-            0.1,
+            0.0,
+            0.2,
             0.1
           ],
           "hidden_pre": [
-            -0.029,
-            -0.288,
-            -0.186,
-            -0.041
+            0.0,
+            0.02,
+            0.0,
+            0.13
           ],
           "hidden": [
-            -0.029,
-            -0.28,
-            -0.183,
-            -0.041
+            0.0,
+            0.02,
+            0.0,
+            0.129
           ],
           "output": [
-            0.569,
-            0.431
+            0.497,
+            0.503
           ]
         },
         {
           "word": "benci",
-          "input": [
-            0.0,
-            -0.7,
-            0.0,
-            0.0,
-            0.6
-          ],
-          "hidden_pre": [
-            -0.091,
-            0.016,
-            -0.759,
-            -0.849
-          ],
-          "hidden": [
-            -0.091,
-            0.016,
-            -0.641,
-            -0.691
-          ],
-          "output": [
-            0.722,
-            0.278
-          ]
-        },
-        {
-          "word": "jelek",
           "input": [
             0.0,
             -0.8,
@@ -367,107 +376,133 @@ const RNN_DATA = {
             0.6
           ],
           "hidden_pre": [
-            -0.063,
-            0.462,
-            -1.141,
-            -0.815
+            -1.2,
+            -0.146,
+            -0.08,
+            0.27
           ],
           "hidden": [
-            -0.063,
-            0.432,
-            -0.815,
-            -0.672
+            -0.834,
+            -0.145,
+            -0.08,
+            0.264
           ],
           "output": [
-            0.741,
-            0.259
+            0.015,
+            0.985
+          ]
+        },
+        {
+          "word": "ketidakadilan",
+          "input": [
+            0.0,
+            -0.7,
+            0.0,
+            0.3,
+            0.5
+          ],
+          "hidden_pre": [
+            -1.759,
+            -0.211,
+            -0.126,
+            0.485
+          ],
+          "hidden": [
+            -0.942,
+            -0.208,
+            -0.125,
+            0.45
+          ],
+          "output": [
+            0.008,
+            0.992
           ]
         }
       ]
     },
     {
       "words": [
-        "guru",
-        "bagus",
-        "belajar"
+        "aku",
+        "cinta",
+        "indonesia"
       ],
       "states": [
         {
-          "word": "guru",
+          "word": "aku",
           "input": [
-            0.3,
-            0.3,
-            0.5,
-            0.6,
-            0.2
+            0.0,
+            0.0,
+            0.0,
+            0.2,
+            0.1
           ],
           "hidden_pre": [
-            -0.086,
-            -0.659,
-            -0.523,
-            -0.063
+            0.0,
+            0.02,
+            0.0,
+            0.13
           ],
           "hidden": [
-            -0.086,
-            -0.578,
-            -0.48,
-            -0.063
+            0.0,
+            0.02,
+            0.0,
+            0.129
           ],
           "output": [
-            0.59,
-            0.41
+            0.497,
+            0.503
           ]
         },
         {
-          "word": "bagus",
+          "word": "cinta",
           "input": [
             0.0,
             0.9,
-            0.1,
-            0.2,
-            0.7
+            0.0,
+            0.0,
+            0.8
           ],
           "hidden_pre": [
-            -0.199,
-            -0.275,
-            0.512,
-            -0.662
+            1.35,
+            0.194,
+            0.09,
+            0.33
           ],
           "hidden": [
-            -0.197,
-            -0.268,
-            0.472,
-            -0.58
+            0.874,
+            0.192,
+            0.09,
+            0.319
           ],
           "output": [
-            0.597,
-            0.403
+            0.987,
+            0.013
           ]
         },
         {
-          "word": "belajar",
+          "word": "indonesia",
           "input": [
             0.0,
+            0.1,
+            0.0,
             0.4,
-            0.7,
-            0.3,
-            0.4
+            0.2
           ],
           "hidden_pre": [
-            -0.565,
-            -0.032,
-            -0.652,
-            0.524
+            0.893,
+            0.194,
+            0.073,
+            0.483
           ],
           "hidden": [
-            -0.512,
-            -0.032,
-            -0.573,
-            0.481
+            0.713,
+            0.192,
+            0.073,
+            0.449
           ],
           "output": [
-            0.479,
-            0.521
+            0.972,
+            0.028
           ]
         }
       ]
@@ -476,126 +511,126 @@ const RNN_DATA = {
   "gradient_data": {
     "5": {
       "rnn": [
-        0.9013,
-        0.8496,
-        0.8275,
-        0.4427,
-        0.191
+        0.9688,
+        1.1594,
+        0.4797,
+        0.2358,
+        0.215
       ],
       "lstm": [
-        2.2763,
-        2.9313,
-        6.2026,
-        10.101,
-        11.6583
+        2.2306,
+        3.1025,
+        4.4304,
+        7.8716,
+        12.4096
       ]
     },
     "10": {
       "rnn": [
-        1.2661,
-        0.7759,
-        0.297,
-        0.1539,
-        0.1203,
-        0.096,
-        0.0535,
-        0.0213,
-        0.0143,
-        0.0113
+        1.699,
+        1.8022,
+        1.6422,
+        1.2668,
+        0.8378,
+        0.4937,
+        0.3839,
+        0.435,
+        0.4448,
+        0.3978
       ],
       "lstm": [
-        2.3109,
-        5.7665,
-        11.8149,
-        22.2639,
-        47.0304,
-        106.1146,
-        229.9634,
-        489.9197,
-        1056.9968,
-        2294.4131
+        1.9642,
+        1.9753,
+        1.5548,
+        2.1766,
+        2.2122,
+        2.7362,
+        3.4585,
+        3.7093,
+        5.5411,
+        7.4554
       ]
     },
     "15": {
       "rnn": [
-        0.999,
-        0.7096,
-        0.5469,
-        0.304,
-        0.2115,
-        0.094,
-        0.0697,
-        0.0481,
-        0.0343,
-        0.024,
-        0.0175,
-        0.0121,
-        0.0088,
-        0.0062,
-        0.0044
+        1.5791,
+        1.5682,
+        2.2197,
+        2.8023,
+        3.6827,
+        4.7647,
+        6.1782,
+        7.9843,
+        10.3111,
+        13.3022,
+        17.1533,
+        22.1115,
+        28.4974,
+        36.7228,
+        47.319
       ],
       "lstm": [
-        3.4218,
-        3.0423,
-        2.2021,
-        4.4319,
-        5.5722,
-        4.4575,
-        7.8124,
-        11.0928,
-        13.8655,
-        25.3544,
-        34.6951,
-        59.2998,
-        103.1664,
-        157.2754,
-        273.3544
+        2.5589,
+        3.3495,
+        5.0794,
+        6.5499,
+        9.8229,
+        15.1745,
+        22.3897,
+        33.0845,
+        50.4867,
+        76.5129,
+        114.3529,
+        172.6203,
+        261.5482,
+        394.0016,
+        593.545
       ]
     },
     "20": {
       "rnn": [
-        1.301,
-        0.6115,
-        0.4198,
-        0.4753,
-        0.4607,
-        0.3993,
-        0.3351,
-        0.2657,
-        0.2039,
-        0.1518,
-        0.1098,
-        0.0773,
-        0.053,
-        0.0353,
-        0.0227,
-        0.0141,
-        0.0083,
-        0.0046,
-        0.0023,
-        0.001
+        0.6368,
+        0.2546,
+        0.1797,
+        0.0882,
+        0.0722,
+        0.0582,
+        0.0436,
+        0.0334,
+        0.0259,
+        0.0199,
+        0.0153,
+        0.0118,
+        0.009,
+        0.007,
+        0.0054,
+        0.0041,
+        0.0032,
+        0.0024,
+        0.0019,
+        0.0014
       ],
       "lstm": [
-        1.9159,
-        2.3879,
-        2.9293,
-        3.4876,
-        4.1917,
-        5.2876,
-        6.902,
-        9.2554,
-        13.175,
-        19.1625,
-        25.5634,
-        29.1064,
-        30.5633,
-        43.2285,
-        70.2884,
-        94.7825,
-        120.5864,
-        210.5652,
-        376.3692,
-        526.4033
+        2.7225,
+        4.1075,
+        6.377,
+        9.648,
+        13.9063,
+        20.1769,
+        29.4982,
+        44.3806,
+        67.0586,
+        103.4279,
+        158.7091,
+        245.9944,
+        379.2821,
+        587.3836,
+        907.1528,
+        1403.4159,
+        2169.0113,
+        3353.8996,
+        5185.0886,
+        8016.269
       ]
     }
   },
@@ -610,55 +645,23 @@ const RNN_DATA = {
         ]
       },
       {
-        "label": "saya benci belajar",
+        "label": "dia benci ketidakadilan",
         "words": [
-          "saya",
+          "dia",
           "benci",
-          "belajar"
+          "ketidakadilan"
         ]
       },
       {
-        "label": "saya suka main",
+        "label": "aku cinta indonesia",
         "words": [
-          "saya",
-          "suka",
-          "main"
+          "aku",
+          "cinta",
+          "indonesia"
         ]
       },
       {
-        "label": "saya benci main",
-        "words": [
-          "saya",
-          "benci",
-          "main"
-        ]
-      },
-      {
-        "label": "kamu suka belajar",
-        "words": [
-          "kamu",
-          "suka",
-          "belajar"
-        ]
-      },
-      {
-        "label": "kamu benci belajar",
-        "words": [
-          "kamu",
-          "benci",
-          "belajar"
-        ]
-      },
-      {
-        "label": "guru bagus belajar",
-        "words": [
-          "guru",
-          "bagus",
-          "belajar"
-        ]
-      },
-      {
-        "label": "belajar suka saya (dibalik)",
+        "label": "belajar suka saya",
         "words": [
           "belajar",
           "suka",
@@ -666,35 +669,59 @@ const RNN_DATA = {
         ]
       },
       {
-        "label": "suka saya belajar (acak)",
+        "label": "ketidakadilan benci dia",
         "words": [
+          "ketidakadilan",
+          "benci",
+          "dia"
+        ]
+      },
+      {
+        "label": "indonesia cinta aku",
+        "words": [
+          "indonesia",
+          "cinta",
+          "aku"
+        ]
+      },
+      {
+        "label": "aku suka belajar",
+        "words": [
+          "aku",
           "suka",
-          "saya",
           "belajar"
         ]
       },
       {
-        "label": "kamu senang kopi",
-        "words": [
-          "kamu",
-          "senang",
-          "kopi"
-        ]
-      },
-      {
-        "label": "saya makan bagus",
+        "label": "saya benci ketidakadilan",
         "words": [
           "saya",
-          "makan",
-          "bagus"
+          "benci",
+          "ketidakadilan"
         ]
       },
       {
-        "label": "film bagus senang",
+        "label": "dia cinta indonesia",
         "words": [
-          "film",
-          "bagus",
-          "senang"
+          "dia",
+          "cinta",
+          "indonesia"
+        ]
+      },
+      {
+        "label": "aku benci belajar",
+        "words": [
+          "aku",
+          "benci",
+          "belajar"
+        ]
+      },
+      {
+        "label": "saya cinta belajar",
+        "words": [
+          "saya",
+          "cinta",
+          "belajar"
         ]
       }
     ],
@@ -705,62 +732,57 @@ const RNN_DATA = {
           {
             "label": "saya suka belajar",
             "x": -1.0,
-            "y": -0.1135
+            "y": 0.9339
           },
           {
-            "label": "saya benci belajar",
-            "x": -0.8601,
-            "y": -0.1292
+            "label": "dia benci ketidakadilan",
+            "x": 1.0,
+            "y": 0.7228
           },
           {
-            "label": "saya suka main",
-            "x": -0.9839,
-            "y": 0.1445
-          },
-          {
-            "label": "saya benci main",
-            "x": -0.8441,
-            "y": 0.1288
-          },
-          {
-            "label": "kamu suka belajar",
-            "x": -0.5335,
-            "y": -0.7154
-          },
-          {
-            "label": "kamu benci belajar",
-            "x": -0.3936,
-            "y": -0.7312
-          },
-          {
-            "label": "guru bagus belajar",
-            "x": -0.0298,
-            "y": 0.3764
-          },
-          {
-            "label": "belajar suka saya (dibalik)",
-            "x": -1.0,
-            "y": -0.1135
-          },
-          {
-            "label": "suka saya belajar (acak)",
-            "x": -1.0,
-            "y": -0.1135
-          },
-          {
-            "label": "kamu senang kopi",
-            "x": 0.8207,
+            "label": "aku cinta indonesia",
+            "x": -0.2235,
             "y": -1.0
           },
           {
-            "label": "saya makan bagus",
-            "x": -0.1983,
+            "label": "belajar suka saya",
+            "x": -1.0,
+            "y": 0.9339
+          },
+          {
+            "label": "ketidakadilan benci dia",
+            "x": 1.0,
+            "y": 0.7228
+          },
+          {
+            "label": "indonesia cinta aku",
+            "x": -0.2235,
+            "y": -1.0
+          },
+          {
+            "label": "aku suka belajar",
+            "x": -0.9227,
+            "y": 0.3757
+          },
+          {
+            "label": "saya benci ketidakadilan",
+            "x": 0.4213,
             "y": 1.0
           },
           {
-            "label": "film bagus senang",
-            "x": 1.0,
-            "y": 0.4865
+            "label": "dia cinta indonesia",
+            "x": 0.278,
+            "y": -0.7189
+          },
+          {
+            "label": "aku benci belajar",
+            "x": -0.2477,
+            "y": 0.388
+          },
+          {
+            "label": "saya cinta belajar",
+            "x": -0.6865,
+            "y": 0.2729
           }
         ]
       },
@@ -769,63 +791,58 @@ const RNN_DATA = {
         "points": [
           {
             "label": "saya suka belajar",
-            "x": -0.5512,
-            "y": -0.5859
+            "x": -1.0,
+            "y": -0.139
           },
           {
-            "label": "saya benci belajar",
-            "x": -0.3595,
-            "y": -0.985
+            "label": "dia benci ketidakadilan",
+            "x": 1.0,
+            "y": 0.5092
           },
           {
-            "label": "saya suka main",
-            "x": -0.2949,
-            "y": -0.1999
-          },
-          {
-            "label": "saya benci main",
-            "x": -0.1032,
-            "y": -0.5989
-          },
-          {
-            "label": "kamu suka belajar",
-            "x": -0.4357,
-            "y": -0.6009
-          },
-          {
-            "label": "kamu benci belajar",
-            "x": -0.244,
+            "label": "aku cinta indonesia",
+            "x": 0.0342,
             "y": -1.0
           },
           {
-            "label": "guru bagus belajar",
+            "label": "belajar suka saya",
             "x": -1.0,
+            "y": -0.139
+          },
+          {
+            "label": "ketidakadilan benci dia",
+            "x": 1.0,
+            "y": 0.5092
+          },
+          {
+            "label": "indonesia cinta aku",
+            "x": 0.0342,
+            "y": -1.0
+          },
+          {
+            "label": "aku suka belajar",
+            "x": -0.7955,
             "y": 1.0
           },
           {
-            "label": "belajar suka saya (dibalik)",
-            "x": -0.5512,
-            "y": -0.5859
+            "label": "saya benci ketidakadilan",
+            "x": 0.7955,
+            "y": -0.6298
           },
           {
-            "label": "suka saya belajar (acak)",
-            "x": -0.5512,
-            "y": -0.5859
+            "label": "dia cinta indonesia",
+            "x": 0.0342,
+            "y": -1.0
           },
           {
-            "label": "kamu senang kopi",
-            "x": 0.365,
-            "y": -0.576
+            "label": "aku benci belajar",
+            "x": -0.0204,
+            "y": 0.977
           },
           {
-            "label": "saya makan bagus",
-            "x": -0.3629,
-            "y": -0.2087
-          },
-          {
-            "label": "film bagus senang",
-            "x": 1.0,
-            "y": 0.3604
+            "label": "saya cinta belajar",
+            "x": -0.1568,
+            "y": -0.8589
           }
         ]
       },
@@ -834,63 +851,58 @@ const RNN_DATA = {
         "points": [
           {
             "label": "saya suka belajar",
-            "x": 0.731,
-            "y": 0.6473
+            "x": -0.9832,
+            "y": -0.5107
           },
           {
-            "label": "saya benci belajar",
-            "x": -1.0,
-            "y": 0.4259
+            "label": "dia benci ketidakadilan",
+            "x": 0.9313,
+            "y": -0.7489
           },
           {
-            "label": "saya suka main",
-            "x": 0.9893,
-            "y": -0.7873
+            "label": "aku cinta indonesia",
+            "x": -0.352,
+            "y": 0.1474
           },
           {
-            "label": "saya benci main",
-            "x": -0.5506,
-            "y": -1.0
+            "label": "belajar suka saya",
+            "x": -0.4694,
+            "y": 0.3859
           },
           {
-            "label": "kamu suka belajar",
-            "x": 0.7424,
-            "y": 0.5811
+            "label": "ketidakadilan benci dia",
+            "x": 1.0,
+            "y": 0.5618
           },
           {
-            "label": "kamu benci belajar",
-            "x": -0.8756,
-            "y": 0.3259
-          },
-          {
-            "label": "guru bagus belajar",
-            "x": 0.7414,
-            "y": 0.5515
-          },
-          {
-            "label": "belajar suka saya (dibalik)",
-            "x": 0.546,
+            "label": "indonesia cinta aku",
+            "x": -0.0776,
             "y": 1.0
           },
           {
-            "label": "suka saya belajar (acak)",
-            "x": -0.652,
-            "y": 0.2021
+            "label": "aku suka belajar",
+            "x": -0.9189,
+            "y": -0.2738
           },
           {
-            "label": "kamu senang kopi",
-            "x": 0.8164,
-            "y": -0.1925
+            "label": "saya benci ketidakadilan",
+            "x": 0.8635,
+            "y": -1.0
           },
           {
-            "label": "saya makan bagus",
-            "x": 1.0,
-            "y": 0.3438
+            "label": "dia cinta indonesia",
+            "x": -0.352,
+            "y": 0.1474
           },
           {
-            "label": "film bagus senang",
-            "x": 0.8653,
-            "y": -0.663
+            "label": "aku benci belajar",
+            "x": -0.0844,
+            "y": -0.6783
+          },
+          {
+            "label": "saya cinta belajar",
+            "x": -1.0,
+            "y": -0.78
           }
         ]
       }
@@ -898,9 +910,9 @@ const RNN_DATA = {
     "swap_pairs": [
       {
         "a_idx": 0,
-        "b_idx": 7,
+        "b_idx": 3,
         "label_a": "saya suka belajar",
-        "label_b": "belajar suka saya (dibalik)"
+        "label_b": "belajar suka saya"
       }
     ]
   }

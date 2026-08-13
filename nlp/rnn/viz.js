@@ -74,25 +74,26 @@
       currentStep = Math.min(currentStep, totalSteps);
 
       svg.selectAll('*').remove();
-      var W = 700, H = 420;
+      var W = 700, H = 480;
       var g = svg.append('g');
 
       // Layout: unrolled RNN horizontally
-      var nodeSpacing = 150;
-      var startX = 80;
-      var inputY = 100;
-      var hiddenY = 210;
-      var outputY = 320;
+      var nodeSpacing = 160;
+      var startX = 90;
+      var inputY = 80;
+      var hiddenY = 200;
+      var outputY = 310;
+      var predTextY = 360;
 
-      // Title labels
-      g.append('text').attr('x', 15).attr('y', inputY + 5)
-        .attr('fill', COLORS.text_muted).attr('font-size', '11px').attr('font-weight', '600')
+      // Title labels (positioned above each row to avoid overlap with arrows)
+      g.append('text').attr('x', 15).attr('y', inputY - 25)
+        .attr('fill', COLORS.text_muted).attr('font-size', '10px').attr('font-weight', '600')
         .text('INPUT');
-      g.append('text').attr('x', 15).attr('y', hiddenY + 5)
-        .attr('fill', COLORS.text_muted).attr('font-size', '11px').attr('font-weight', '600')
+      g.append('text').attr('x', 15).attr('y', hiddenY - 25)
+        .attr('fill', COLORS.text_muted).attr('font-size', '10px').attr('font-weight', '600')
         .text('HIDDEN');
-      g.append('text').attr('x', 15).attr('y', outputY + 5)
-        .attr('fill', COLORS.text_muted).attr('font-size', '11px').attr('font-weight', '600')
+      g.append('text').attr('x', 15).attr('y', outputY - 25)
+        .attr('fill', COLORS.text_muted).attr('font-size', '10px').attr('font-weight', '600')
         .text('OUTPUT');
 
       // Draw initial hidden state (h0)
@@ -129,7 +130,7 @@
           .attr('text-anchor', 'middle').attr('font-size', '10px')
           .attr('fill', 'white').attr('opacity', opacity)
           .attr('font-weight', '600').text('x' + subscript(t + 1));
-        g.append('text').attr('x', x).attr('y', inputY - 26)
+        g.append('text').attr('x', x).attr('y', inputY + 38)
           .attr('text-anchor', 'middle').attr('font-size', '12px')
           .attr('fill', COLORS.text_primary).attr('opacity', opacity)
           .attr('font-weight', isActive ? '700' : '400')
@@ -162,18 +163,34 @@
           var state = sent.states[t];
           var outColor = state.output[0] > state.output[1] ? COLORS.output_pos : COLORS.output_neg;
           var outRadius = 14;
+          var pred = state.output[0] > state.output[1] ? '+' : '-';
+          var conf = Math.round(Math.max(state.output[0], state.output[1]) * 100);
 
           g.append('circle')
             .attr('cx', x).attr('cy', outputY).attr('r', outRadius)
             .attr('fill', outColor).attr('opacity', opacity * 0.9)
             .attr('stroke', 'white').attr('stroke-width', 1.5);
           g.append('text').attr('x', x).attr('y', outputY + 4)
-            .attr('text-anchor', 'middle').attr('font-size', '9px')
+            .attr('text-anchor', 'middle').attr('font-size', '10px')
             .attr('fill', 'white').attr('font-weight', '700')
-            .text(state.output[0] > state.output[1] ? '+' : '-');
+            .text(pred);
 
           // Arrow: hidden -> output
           drawArrow(g, x, hiddenY + hiddenRadius, x, outputY - outRadius, COLORS.text_muted, true);
+
+          // Running prediction text below each output
+          var wordsSoFar = sent.words.slice(0, t + 1).join(' ');
+          var predLabel = state.output[0] > state.output[1] ? 'positif' : 'negatif';
+
+          g.append('text').attr('x', x).attr('y', predTextY)
+            .attr('text-anchor', 'middle').attr('font-size', '10px')
+            .attr('fill', COLORS.text_secondary)
+            .text('\u201c' + wordsSoFar + '\u201d');
+
+          g.append('text').attr('x', x).attr('y', predTextY + 16)
+            .attr('text-anchor', 'middle').attr('font-size', '11px')
+            .attr('fill', outColor).attr('font-weight', '700')
+            .text(predLabel + ' ' + conf + '%');
         }
       }
 
@@ -476,25 +493,73 @@
         .attr('stroke', COLORS.output_neg).attr('stroke-width', 2)
         .attr('stroke-dasharray', '5 4').attr('opacity', 0.5);
 
-      // Data points
+      // Data points with anti-collision labels
       var color = methodColors[currentMethod];
-      points.forEach(function (p, i) {
-        var isSwap = (i === swapPair.a_idx || i === swapPair.b_idx);
-        var radius = isSwap ? 9 : 6;
+
+      // Compute label positions with collision avoidance
+      var labelData = points.map(function (p, i) {
+        return {
+          idx: i,
+          px: x(p.x),
+          py: y(p.y),
+          label: p.label,
+          isSwap: (i === swapPair.a_idx || i === swapPair.b_idx),
+        };
+      });
+
+      // Place labels alternating above/below, then nudge if overlapping
+      var placed = [];
+      labelData.forEach(function (ld) {
+        var offset = ld.py < innerH / 2 ? -12 : 14;
+        var lx = ld.px;
+        var ly = ld.py + offset;
+
+        // Check collision with already-placed labels
+        for (var attempt = 0; attempt < 8; attempt++) {
+          var collides = false;
+          for (var j = 0; j < placed.length; j++) {
+            var dx = lx - placed[j].lx;
+            var dy = ly - placed[j].ly;
+            if (Math.abs(dx) < 70 && Math.abs(dy) < 14) {
+              collides = true;
+              break;
+            }
+          }
+          if (!collides) break;
+          // Nudge further away
+          offset += (offset > 0 ? 6 : -6);
+          ly = ld.py + offset;
+        }
+
+        placed.push({ lx: lx, ly: ly });
+        ld.lx = lx;
+        ld.ly = ly;
+      });
+
+      // Draw circles and labels
+      labelData.forEach(function (ld) {
+        var radius = ld.isSwap ? 9 : 6;
+        var ptColor = ld.isSwap ? COLORS.output_neg : color;
 
         g.append('circle')
-          .attr('cx', x(p.x)).attr('cy', y(p.y)).attr('r', radius)
-          .attr('fill', isSwap ? COLORS.output_neg : color)
-          .attr('opacity', 0.85).attr('stroke', 'white').attr('stroke-width', 1.5);
+          .attr('cx', ld.px).attr('cy', ld.py).attr('r', radius)
+          .attr('fill', ptColor).attr('opacity', 0.85)
+          .attr('stroke', 'white').attr('stroke-width', 1.5);
 
-        // Label
-        var labelOffset = p.y < 0 ? 16 : -10;
+        // Connector line if label is far from point
+        if (Math.abs(ld.ly - ld.py) > 16) {
+          g.append('line')
+            .attr('x1', ld.px).attr('y1', ld.py + (ld.py < ld.ly ? radius : -radius))
+            .attr('x2', ld.px).attr('y2', ld.ly + (ld.py < ld.ly ? -4 : 4))
+            .attr('stroke', ptColor).attr('opacity', 0.3).attr('stroke-width', 0.8);
+        }
+
         g.append('text')
-          .attr('x', x(p.x)).attr('y', y(p.y) + labelOffset)
-          .attr('text-anchor', 'middle').attr('font-size', '10px')
-          .attr('fill', isSwap ? COLORS.output_neg : COLORS.text_muted)
-          .attr('font-weight', isSwap ? '700' : '400')
-          .text(p.label.length > 22 ? p.label.substring(0, 20) + '..' : p.label);
+          .attr('x', ld.lx).attr('y', ld.ly + 3)
+          .attr('text-anchor', 'middle').attr('font-size', '9.5px')
+          .attr('fill', ld.isSwap ? COLORS.output_neg : COLORS.text_secondary)
+          .attr('font-weight', ld.isSwap ? '700' : '400')
+          .text(ld.label.length > 24 ? ld.label.substring(0, 22) + '..' : ld.label);
       });
 
       // Axis labels
