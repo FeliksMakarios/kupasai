@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Embeddings &amp; Vector Space - KupasAI</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/nlp/" class="active">NLP</a></li>
+    <li><a href="/ml/">ML</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF20161 &middot; Week 1</span>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/" class="back-link">&larr; Kembali ke Beranda</a>
+    <h1>Word Embeddings &amp; Vector Space</h1>
+    <p class="page-subtitle">
+      Bagaimana komputer memahami makna kata? Setiap kata direpresentasikan sebagai
+      vektor di ruang multidimensi. Kata yang mirimp maknanya berdekatan.
+    </p>
+    <div class="learning-objectives">
+      <strong>Sub-CPMK 2.1:</strong>
+      Mahasiswa mampu menganalisis cara neural networks memodelkan bahasa
+      menggunakan word embeddings, termasuk fenomena word analogies.
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB NAVIGATION ====== -->
+<div class="tab-nav">
+  <button class="tab-btn active" data-tab="scatter">Ruang Vektor</button>
+  <button class="tab-btn" data-tab="analogy">Analogi Kata</button>
+  <button class="tab-btn" data-tab="similarity">Cosine Similarity</button>
+</div>
+
+<!-- ====== TAB 1: SCATTER PLOT ====== -->
+<div class="tab-content active" id="tab-scatter">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <svg id="scatter-plot" viewBox="0 0 700 500"></svg>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Tentang Visualisasi Ini</h3>
+      <p>
+        Setiap titik adalah satu kata Bahasa Indonesia. Posisi dihitung dengan
+        <strong>PCA</strong> dari 10 dimensi semantik (gender, kerajaan, usia,
+        keluarga, otoritas, dll).
+      </p>
+      <p>
+        Warna menunjukkan kategori semantik. Kata-kata dari kategori yang sama
+        cenderung berdekatan.
+      </p>
+
+      <h4>Kategori</h4>
+      <div class="legend" id="scatter-legend"></div>
+
+      <h4>Cara Pakai</h4>
+      <ul class="help-list">
+        <li><strong>Hover</strong> ke titik untuk melihat detail kata</li>
+        <li><strong>Klik</strong> titik untuk melihat vektor lengkapnya</li>
+        <li><strong>Filter</strong> kategori dengan checkbox di bawah</li>
+      </ul>
+
+      <div class="filter-controls" id="category-filters"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: WORD ANALOGY EXPLORER ====== -->
+<div class="tab-content" id="tab-analogy">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="analogy-builder">
+        <h3>Word Analogy Explorer</h3>
+        <p class="analogy-intro">
+          Analsogi kata: <strong>A - B + C = ?</strong><br>
+          Contoh klasik: <code>raja - pria + wanita &asymp; ratu</code>
+        </p>
+
+        <div class="analogy-controls">
+          <div class="analogy-slot">
+            <label>A</label>
+            <select id="analogy-a"></select>
+          </div>
+          <div class="analogy-op">-</div>
+          <div class="analogy-slot">
+            <label>B</label>
+            <select id="analogy-b"></select>
+          </div>
+          <div class="analogy-op">+</div>
+          <div class="analogy-slot">
+            <label>C</label>
+            <select id="analogy-c"></select>
+          </div>
+          <div class="analogy-op">=</div>
+          <div class="analogy-result">
+            <label>Hasil</label>
+            <div class="result-word" id="analogy-result-word">?</div>
+          </div>
+        </div>
+
+        <div class="analogy-presets">
+          <h4>Contoh Preset</h4>
+          <div class="preset-buttons" id="analogy-presets"></div>
+        </div>
+      </div>
+
+      <svg id="analogy-plot" viewBox="0 0 700 400"></svg>
+
+      <div class="analogy-explanation" id="analogy-explanation"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Mengapa Ini Penting?</h3>
+      <p>
+        Word analogies membuktikan bahwa embeddings menangkap
+        <strong>relasi semantik</strong>, bukan sekadar kemiripan.
+      </p>
+      <p>
+        Vektor <code>raja - ratu</code> menangkap arah "gender" di ruang vektor.
+        Menambahkan arah ini ke kata lain mengubah gendernya.
+      </p>
+      <p>
+        Ini adalah fondasi untuk memahami bagaimana Transformer dan LLM
+        bekerja di pertemuan berikutnya.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 3: COSINE SIMILARITY ====== -->
+<div class="tab-content" id="tab-similarity">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <h3>Cosine Similarity Explorer</h3>
+      <p>
+        Pilih dua kata. Cosine similarity mengukur sudut antara dua vektor.
+        Nilai 1 = arah sama, 0 = tegak lurus, -1 = arah berlawanan.
+      </p>
+
+      <div class="sim-controls">
+        <div class="sim-slot">
+          <label>Kata 1</label>
+          <select id="sim-a"></select>
+        </div>
+        <div class="sim-slot">
+          <label>Kata 2</label>
+          <select id="sim-b"></select>
+        </div>
+      </div>
+
+      <svg id="sim-plot" viewBox="0 0 600 300"></svg>
+
+      <div class="sim-result" id="sim-result"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Rumus</h3>
+      <div class="formula">
+        cos(&theta;) = (A &middot; B) / (|A| &times; |B|)
+      </div>
+      <p>
+        Tidak seperti Euclidean distance, cosine similarity tidak terpengaruh
+        oleh magnitudo vektor, hanya arahnya.
+      </p>
+      <p>
+        Inilah mengapa cosine similarity adalah metrik standar untuk
+        mengukur kemiripan kata dalam NLP.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node (future use)
+node_modules/
+package-lock.json
+
+# Build output
+dist/
+build/
+
+# Environment
+.env
+.env.local

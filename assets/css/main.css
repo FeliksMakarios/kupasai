@@ -1,0 +1,276 @@
+/*
+ * KupasAI - Shared Styles
+ * Dark theme untuk platform visualisasi edukasi
+ */
+
+:root {
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary: #21262d;
+  --border: #30363d;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted: #6e7681;
+  --accent: #58a6ff;
+  --accent-hover: #79c0ff;
+  --success: #3fb950;
+  --warning: #d29922;
+  --danger: #f85149;
+
+  /* Category colors untuk visualisasi */
+  --cat-kerajaan: #ffd700;
+  --cat-keluarga: #2ee5c8;
+  --cat-gender: #c77dff;
+  --cat-profesi: #ff9f43;
+  --cat-negara: #4cd964;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+code {
+  font-family: var(--font-mono);
+  background: var(--bg-tertiary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* ==================== NAVBAR ==================== */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(13, 17, 23, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navbar-brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.navbar-brand .brand-accent {
+  color: var(--accent);
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.navbar-links a {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+  color: var(--text-primary);
+}
+
+.navbar-spacer {
+  flex: 1;
+}
+
+.navbar-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ==================== LANDING PAGE ==================== */
+
+.hero {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 4rem 2rem 2rem;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 1rem;
+}
+
+.hero h1 .brand-accent {
+  color: var(--accent);
+}
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.hero-tagline {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.content-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Course card */
+
+.course-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.15s;
+}
+
+.course-card:hover {
+  border-color: var(--accent);
+}
+
+.course-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.course-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.course-code {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background: var(--bg-tertiary);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.course-card p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+/* Visualization list */
+
+.viz-list {
+  list-style: none;
+}
+
+.viz-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+
+.viz-item:last-child {
+  border-bottom: none;
+}
+
+.viz-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.viz-status.available {
+  background: rgba(63, 185, 80, 0.15);
+  color: var(--success);
+}
+
+.viz-status.development {
+  background: rgba(210, 153, 34, 0.15);
+  color: var(--warning);
+}
+
+.viz-status.planned {
+  background: rgba(139, 148, 158, 0.15);
+  color: var(--text-muted);
+}
+
+.viz-item a {
+  flex: 1;
+}
+
+.viz-week {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Footer */
+
+.footer {
+  max-width: 900px;
+  margin: 3rem auto 2rem;
+  padding: 2rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.footer a {
+  color: var(--text-secondary);
+}
