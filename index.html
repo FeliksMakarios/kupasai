@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KupasAI - Visualisasi Interaktif untuk Mata Kuliah CS/AI</title>
-  <meta name="description" content="Platform visualisasi interaktif untuk mata kuliah CS/AI dalam Bahasa Indonesia. D3.js + p5.js.">
+  <meta name="description" content="Platform visualisasi interaktif untuk pembelajaran mata kuliah Computer Science dan AI dalam Bahasa Indonesia. D3.js + p5.js.">
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
@@ -12,8 +12,8 @@
 <nav class="navbar">
   <a href="/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
   <ul class="navbar-links">
-    <li><a href="/nlp/">NLP</a></li>
-    <li><a href="/ml/">ML</a></li>
+    <li><a href="/kupasai/nlp/">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
   </ul>
   <div class="navbar-spacer"></div>
   <span class="navbar-meta">Bahasa Indonesia</span>
@@ -22,54 +22,90 @@
 <section class="hero">
   <h1>Kupas<span class="brand-accent">AI</span></h1>
   <p class="hero-subtitle">Visualisasi interaktif untuk mata kuliah CS &amp; AI</p>
-  <p class="hero-tagline">Dibongkar dan dijelaskan tuntas, dalam Bahasa Indonesia</p>
+  <p class="hero-tagline">Konsep AI dibongkar dan dijelaskan tuntas, dalam Bahasa Indonesia</p>
 </section>
 
 <div class="content-wrapper">
 
-  <h2 class="section-title">Mata Kuliah</h2>
-
-  <div class="course-card">
-    <div class="course-card-header">
-      <h3>Pemrosesan Bahasa Alami (NLP)</h3>
-      <span class="course-code">INF20161 &middot; 3 SKS</span>
-    </div>
-    <p>Word embeddings, RNN, LSTM, Transformer, text classification, NER, summarization, QA &amp; RAG.</p>
-    <ul class="viz-list">
-      <li class="viz-item">
-        <a href="nlp/word-embeddings/">Word Embeddings &amp; Vector Space</a>
-        <span class="viz-week">Week 1</span>
-        <span class="viz-status development">Dalam Pengembangan</span>
-      </li>
-      <li class="viz-item">
-        <a href="#">Recurrent Neural Networks</a>
-        <span class="viz-week">Week 2</span>
-        <span class="viz-status planned">Belum Mulai</span>
-      </li>
-      <li class="viz-item">
-        <a href="#">LSTM &amp; Vanishing Gradient</a>
-        <span class="viz-week">Week 4</span>
-        <span class="viz-status planned">Belum Mulai</span>
-      </li>
-      <li class="viz-item">
-        <a href="#">Transformer Self-Attention</a>
-        <span class="viz-week">Week 5-6</span>
-        <span class="viz-status planned">Belum Mulai</span>
-      </li>
-      <li class="viz-item">
-        <a href="#">Text Classification</a>
-        <span class="viz-week">Week 7</span>
-        <span class="viz-status planned">Belum Mulai</span>
-      </li>
-    </ul>
+  <div class="platform-description">
+    <p>
+      KupasAI adalah platform pembelajaran yang membongkar konsep
+      <em>Artificial Intelligence</em> dan <em>Data Science</em> menjadi
+      visualisasi yang benar-benar interaktif. Bukan sekadar menampilkan
+      gambar diam atau video, melainkan visualisasi yang bisa digeser,
+      diatur, dan dieksplorasi secara langsung.
+    </p>
+    <p>
+      Setiap visualisasi dirancang untuk mata kuliah spesifik, mengikuti
+      Rencana Pembelajaran Semester (RPS), dan sepenuhnya dalam
+      Bahasa Indonesia.
+    </p>
   </div>
 
-  <div class="course-card">
-    <div class="course-card-header">
-      <h3>Pengantar Machine Learning</h3>
-      <span class="course-code">Akan datang</span>
+  <h2 class="section-title">Mata Kuliah</h2>
+
+  <!-- NLP Card -->
+  <a href="nlp/" class="course-card-link-wrapper" style="text-decoration:none;color:inherit;display:block">
+    <div class="course-card">
+      <img src="assets/img/thumbnail-nlp.svg" alt="Ilustrasi Pemrosesan Bahasa Alami" class="course-card-thumbnail">
+      <div class="course-card-body">
+        <div class="course-card-header">
+          <h3>Pemrosesan Bahasa Alami (NLP)</h3>
+          <span class="course-code">INF20161 &middot; 3 SKS</span>
+        </div>
+        <p>
+          Word embeddings, recurrent neural networks, LSTM, Transformer,
+          text classification, named entity recognition, summarization,
+          question answering.
+        </p>
+        <span class="course-card-link">Lihat visualisasi &rarr;</span>
+      </div>
     </div>
-    <p>Visualisasi linear regression, gradient descent, decision trees, dan lainnya.</p>
+  </a>
+
+  <!-- ML Intro Card (coming soon) -->
+  <div class="course-card coming-soon">
+    <img src="assets/img/thumbnail-ml.svg" alt="Ilustrasi Machine Learning" class="course-card-thumbnail">
+    <div class="course-card-body">
+      <div class="course-card-header">
+        <h3>Pengantar Machine Learning</h3>
+        <span class="coming-soon-badge">Segera hadir</span>
+      </div>
+      <p>
+        Visualisasi linear regression, gradient descent, decision trees,
+        dan konsep dasar machine learning.
+      </p>
+    </div>
+  </div>
+
+  <!-- ML Lanjut Card (coming soon) -->
+  <div class="course-card coming-soon">
+    <img src="assets/img/thumbnail-ml-lanjut.svg" alt="Ilustrasi Machine Learning Lanjut" class="course-card-thumbnail">
+    <div class="course-card-body">
+      <div class="course-card-header">
+        <h3>Machine Learning Lanjut</h3>
+        <span class="coming-soon-badge">Segera hadir</span>
+      </div>
+      <p>
+        Deep learning, CNN, RNN, optimasi, dan arsitektur neural network
+        lanjutan.
+      </p>
+    </div>
+  </div>
+
+  <!-- Komputasional Card (coming soon) -->
+  <div class="course-card coming-soon">
+    <img src="assets/img/thumbnail-komp.svg" alt="Ilustrasi Kecerdasan Komputasional" class="course-card-thumbnail">
+    <div class="course-card-body">
+      <div class="course-card-header">
+        <h3>Kecerdasan Komputasional</h3>
+        <span class="coming-soon-badge">Segera hadir</span>
+      </div>
+      <p>
+        Fuzzy logic, genetic algorithms, swarm intelligence, dan
+        sistem cerdas.
+      </p>
+    </div>
   </div>
 
 </div>

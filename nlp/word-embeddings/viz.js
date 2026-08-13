@@ -150,7 +150,7 @@
       .attr('x2', function (d) { return x(d); })
       .attr('y1', 0)
       .attr('y2', innerH)
-      .attr('stroke', '#21262d')
+      .attr('stroke', '#eaeef2')
       .attr('stroke-width', 1);
 
     g.append('g')
@@ -161,7 +161,7 @@
       .attr('y2', function (d) { return y(d); })
       .attr('x1', 0)
       .attr('x2', innerW)
-      .attr('stroke', '#21262d')
+      .attr('stroke', '#eaeef2')
       .attr('stroke-width', 1);
 
     // Axes
@@ -169,19 +169,19 @@
       .attr('transform', 'translate(0,' + innerH + ')')
       .call(d3.axisBottom(x).tickValues([-1, -0.5, 0, 0.5, 1]).tickFormat(function (d) { return d; }))
       .selectAll('text')
-      .style('fill', '#8b949e');
+      .style('fill', '#656d76');
 
     g.append('g')
       .call(d3.axisLeft(y).tickValues([-1, -0.5, 0, 0.5, 1]).tickFormat(function (d) { return d; }))
       .selectAll('text')
-      .style('fill', '#8b949e');
+      .style('fill', '#656d76');
 
     // Axis labels
     g.append('text')
       .attr('x', innerW / 2)
       .attr('y', innerH + 35)
       .attr('text-anchor', 'middle')
-      .style('fill', '#8b949e')
+      .style('fill', '#656d76')
       .style('font-size', '11px')
       .text('PC1 (' + DATA.pca_info.pc1_explained + '% varians)');
 
@@ -190,7 +190,7 @@
       .attr('y', -38)
       .attr('text-anchor', 'middle')
       .attr('transform', 'rotate(-90)')
-      .style('fill', '#8b949e')
+      .style('fill', '#656d76')
       .style('font-size', '11px')
       .text('PC2 (' + DATA.pca_info.pc2_explained + '% varians)');
 
@@ -198,13 +198,13 @@
     g.append('line')
       .attr('x1', x(0)).attr('x2', x(0))
       .attr('y1', 0).attr('y2', innerH)
-      .attr('stroke', '#30363d')
+      .attr('stroke', '#d0d7de')
       .attr('stroke-width', 1.5);
 
     g.append('line')
       .attr('x1', 0).attr('x2', innerW)
       .attr('y1', y(0)).attr('y2', y(0))
-      .attr('stroke', '#30363d')
+      .attr('stroke', '#d0d7de')
       .attr('stroke-width', 1.5);
 
     // Active categories for filtering
@@ -223,7 +223,7 @@
       .attr('r', 6)
       .attr('fill', function (d) { return CATEGORY_COLORS[d.category] || CATEGORY_COLORS.lainnya; })
       .attr('opacity', 0.85)
-      .attr('stroke', '#0d1117')
+      .attr('stroke', '#ffffff')
       .attr('stroke-width', 1.5)
       .on('mouseover', function (event, d) {
         d3.select(this).attr('r', 9).attr('opacity', 1);
@@ -388,8 +388,8 @@
         .attr('cx', function (d) { return x(d.x); })
         .attr('cy', function (d) { return y(d.y); })
         .attr('r', 3)
-        .attr('fill', '#30363d')
-        .attr('opacity', 0.4);
+        .attr('fill', '#d0d7de')
+        .attr('opacity', 0.5);
 
       // The 4 key words
       var keyData = [aData, cData, bData, resultData];
@@ -432,7 +432,7 @@
           .attr('r', 8)
           .attr('fill', colors[role])
           .attr('opacity', 0.9)
-          .attr('stroke', '#0d1117')
+          .attr('stroke', '#ffffff')
           .attr('stroke-width', 2);
 
         g.append('text')
@@ -448,12 +448,12 @@
       g.append('line')
         .attr('x1', x(0)).attr('x2', x(0))
         .attr('y1', 0).attr('y2', innerH)
-        .attr('stroke', '#30363d');
+        .attr('stroke', '#d0d7de');
 
       g.append('line')
         .attr('x1', 0).attr('x2', innerW)
         .attr('y1', y(0)).attr('y2', y(0))
-        .attr('stroke', '#30363d');
+        .attr('stroke', '#d0d7de');
     }
 
     [selectA, selectB, selectC].forEach(function (sel) {
@@ -495,7 +495,7 @@
       var angle = Math.acos(Math.max(-1, Math.min(1, sim))) * 180 / Math.PI;
 
       // Result display
-      var barColor = sim > 0.7 ? '#3fb950' : sim > 0.3 ? '#d29922' : sim > -0.3 ? '#8b949e' : '#f85149';
+      var barColor = sim > 0.7 ? '#1a7f37' : sim > 0.3 ? '#9a6700' : sim > -0.3 ? '#656d76' : '#cf222e';
       resultEl.innerHTML =
         '<div class="sim-value" style="color:' + barColor + '">' + sim.toFixed(3) + '</div>' +
         '<div class="sim-label">Cosine similarity &middot; Sudut: ' + angle.toFixed(1) + '&deg;</div>' +
@@ -522,7 +522,7 @@
           .attr('cy', cy)
           .attr('r', maxLen * r)
           .attr('fill', 'none')
-          .attr('stroke', '#21262d')
+          .attr('stroke', '#eaeef2')
           .attr('stroke-width', 1);
       });
 
@@ -556,7 +556,7 @@
         .attr('y', cy + Math.sin(midAngle) * labelR)
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'middle')
-        .attr('fill', '#8b949e')
+        .attr('fill', '#656d76')
         .attr('font-size', '12px')
         .text(angle.toFixed(0) + '\u00B0');
     }

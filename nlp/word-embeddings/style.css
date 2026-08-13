@@ -1,11 +1,12 @@
 /*
  * KupasAI - Word Embeddings Visualization Styles
+ * Light theme
  */
 
 /* ==================== PAGE HEADER ==================== */
 
 .page-header {
-  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  background: var(--bg-secondary);
   border-bottom: 1px solid var(--border);
   padding: 2rem 2rem 1.5rem;
 }
@@ -20,6 +21,12 @@
   color: var(--text-muted);
   display: inline-block;
   margin-bottom: 0.75rem;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: var(--accent);
+  text-decoration: none;
 }
 
 .page-header h1 {
@@ -35,8 +42,8 @@
 }
 
 .learning-objectives {
-  background: rgba(88, 166, 255, 0.08);
-  border: 1px solid rgba(88, 166, 255, 0.2);
+  background: var(--accent-light);
+  border: 1px solid #54aeff;
   border-radius: 8px;
   padding: 0.75rem 1rem;
   font-size: 0.85rem;
@@ -103,10 +110,11 @@
 }
 
 .viz-main {
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
 }
 
 .viz-main svg {
@@ -229,17 +237,18 @@
 /* Tooltip */
 .tooltip {
   position: absolute;
-  background: var(--bg-tertiary);
+  background: var(--text-primary);
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 0.5rem 0.75rem;
   font-size: 0.8rem;
-  color: var(--text-primary);
+  color: #ffffff;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.15s;
   z-index: 10;
   max-width: 250px;
+  box-shadow: var(--shadow-md);
 }
 
 .tooltip.visible {
@@ -254,7 +263,7 @@
 
 .tooltip .tt-cat {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: #8b949e;
 }
 
 /* ==================== ANALOGY EXPLORER ==================== */
@@ -308,6 +317,7 @@
 .sim-slot select:focus {
   outline: none;
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
 }
 
 .analogy-op {
@@ -330,8 +340,8 @@
   color: var(--success);
   min-height: 1.5rem;
   padding: 0.25rem 0.75rem;
-  background: rgba(63, 185, 80, 0.1);
-  border: 1px solid rgba(63, 185, 80, 0.3);
+  background: var(--success-light);
+  border: 1px solid #4ac26b;
   border-radius: 6px;
   min-width: 120px;
   text-align: center;
@@ -372,6 +382,7 @@
 .preset-btn:hover {
   border-color: var(--accent);
   color: var(--text-primary);
+  background: var(--accent-light);
 }
 
 /* Analogy explanation */
@@ -379,7 +390,7 @@
 .analogy-explanation {
   margin-top: 1rem;
   padding: 1rem;
-  background: var(--bg-tertiary);
+  background: var(--bg-secondary);
   border-radius: 8px;
   font-size: 0.85rem;
   color: var(--text-secondary);
@@ -394,6 +405,7 @@
   font-family: var(--font-mono);
   color: var(--accent);
   margin: 0.5rem 0;
+  font-weight: 600;
 }
 
 /* ==================== SIMILARITY EXPLORER ==================== */
@@ -419,7 +431,7 @@
 .sim-result {
   margin-top: 1rem;
   padding: 1rem;
-  background: var(--bg-tertiary);
+  background: var(--bg-secondary);
   border-radius: 8px;
 }
 
@@ -437,7 +449,7 @@
 
 .sim-result .sim-bar-container {
   height: 8px;
-  background: var(--bg-primary);
+  background: var(--bg-tertiary);
   border-radius: 4px;
   margin-top: 0.5rem;
   overflow: hidden;
