@@ -79,51 +79,76 @@
 <div class="tab-content" id="tab-analogy">
   <div class="viz-layout">
     <div class="viz-main">
+      <div class="analogy-builder">
+        <h3>Word Analogy Explorer</h3>
+        <p class="analogy-intro">
+          Analogi kata: <strong>A - B + C = ?</strong><br>
+          Contoh klasik: <code>raja - pria + wanita &asymp; ratu</code>
+        </p>
+
+        <div class="analogy-controls">
+          <div class="analogy-slot">
+            <label>A</label>
+            <select id="analogy-a"></select>
+          </div>
+          <div class="analogy-op">-</div>
+          <div class="analogy-slot">
+            <label>B</label>
+            <select id="analogy-b"></select>
+          </div>
+          <div class="analogy-op">+</div>
+          <div class="analogy-slot">
+            <label>C</label>
+            <select id="analogy-c"></select>
+          </div>
+          <div class="analogy-op">=</div>
+          <div class="analogy-result">
+            <label>Hasil</label>
+            <div class="result-word" id="analogy-result-word">?</div>
+          </div>
+        </div>
+
+        <div class="analogy-presets">
+          <h4>Contoh Preset</h4>
+          <div class="preset-buttons" id="analogy-presets"></div>
+        </div>
+      </div>
+
       <svg id="analogy-plot" viewBox="0 0 700 400"></svg>
+
       <div class="analogy-explanation" id="analogy-explanation"></div>
     </div>
     <div class="viz-sidebar">
       <h3>Mengapa Ini Penting?</h3>
       <p>
         Word analogies membuktikan bahwa embeddings menangkap
-        <strong>relasi semantik</strong>, bukan sekadar kemiripan.
+        <strong>relasi semantik</strong>, bukan sekadar kemiripan
+        permukaan. Dua kata tidak harus sering muncul bersama untuk
+        memiliki hubungan yang bisa dipelajari model.
       </p>
       <p>
-        Vektor <code>raja - ratu</code> menangkap arah "gender" di ruang vektor.
-        Menambahkan arah ini ke kata lain mengubah gendernya.
+        Vektor <code>raja - ratu</code> menangkap arah "gender" di
+        ruang vektor. Menambahkan arah ini ke kata lain mengubah
+        gendernya tanpa mengubah makna inti kata tersebut.
       </p>
       <p>
-        Ini adalah fondasi untuk memahami bagaimana Transformer dan LLM
-        bekerja di pertemuan berikutnya.
+        Demikian juga <code>raja - pria</code> menghasilkan arah
+        "kekuasaan kerajaan". Arah ini ditambahkan ke <code>wanita</code>
+        untuk mendapatkan <code>ratu</code>. Aritmatika vektor menjadi
+        operasi semantik.
       </p>
-
-      <h4>Coba Sendiri</h4>
-      <div class="analogy-controls analogy-controls-sidebar">
-        <div class="analogy-slot">
-          <label>A</label>
-          <select id="analogy-a"></select>
-        </div>
-        <div class="analogy-op">-</div>
-        <div class="analogy-slot">
-          <label>B</label>
-          <select id="analogy-b"></select>
-        </div>
-        <div class="analogy-op">+</div>
-        <div class="analogy-slot">
-          <label>C</label>
-          <select id="analogy-c"></select>
-        </div>
-        <div class="analogy-op">=</div>
-        <div class="analogy-result">
-          <label>Hasil</label>
-          <div class="result-word" id="analogy-result-word">?</div>
-        </div>
-      </div>
-
-      <div class="analogy-presets">
-        <h4>Contoh Preset</h4>
-        <div class="preset-buttons" id="analogy-presets"></div>
-      </div>
+      <p>
+        Sifat ini dimanfaatkan oleh algoritma Word2Vec, GloVe, dan
+        FastText. Model dilatih agar kata yang muncul dalam konteks
+        serupa memiliki vektor yang berdekatan, dan struktur analogi
+        muncul secara alami dari proses pelatihan tersebut.
+      </p>
+      <p>
+        Pemahaman tentang ruang vektor kata adalah fondasi untuk
+        pertemuan berikutnya: RNN, Transformer, dan LLM. Semua model
+        modern memulai pemrosesan bahasa dengan mengubah kata menjadi
+        vektor terlebih dahulu.
+      </p>
     </div>
   </div>
 </div>
@@ -141,12 +166,27 @@
         cos(&theta;) = (A &middot; B) / (|A| &times; |B|)
       </div>
       <p>
-        Tidak seperti Euclidean distance, cosine similarity tidak terpengaruh
-        oleh magnitudo vektor, hanya arahnya.
+        Cosine similarity mengukur sudut antara dua vektor, bukan jarak
+        lurus antaranya. Nilai 1 berarti kedua vektor menunjuk ke arah
+        yang sama, 0 berarti tegak lurus, dan -1 berarti berlawanan.
+      </p>
+      <p>
+        Tidak seperti Euclidean distance, cosine similarity tidak
+        terpengaruh oleh magnitudo vektor, hanya arahnya. Dua kata
+        dengan frekuensi sangat berbeda tetap bisa memiliki similarity
+        tinggi selama pola semantiknya mirip.
       </p>
       <p>
         Inilah mengapa cosine similarity adalah metrik standar untuk
-        mengukur kemiripan kata dalam NLP.
+        mengukur kemiripan kata dan dokumen dalam NLP. Algoritma
+        information retrieval, semantic search, dan clustering teks
+        semuanya mengandalkan metrik ini.
+      </p>
+      <p>
+        Dalam praktik, kata-kata dengan cosine similarity di atas 0.7
+        biasanya dianggap mirip, sedangkan di bawah 0.3 dianggap tidak
+        terkait. Coba bandingkan kata yang menurut Anda mirip dan
+        lihat apakah model setuju dengan intuisi Anda.
       </p>
 
       <h4>Coba Sendiri</h4>
