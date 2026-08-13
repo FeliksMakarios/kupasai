@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Self-Attention Mechanism - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/" class="active">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF20161 &middot; Week 5-6</span>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke NLP</a>
+    <h1>Self-Attention Mechanism</h1>
+    <p class="page-subtitle">
+      Inti dari Transformer: setiap kata "melihat" semua kata lain dalam kalimat
+      dan memutuskan mana yang paling relevan. Tidak lagi memproses kata satu per
+      satu seperti RNN.
+    </p>
+    <div class="learning-objectives">
+      <strong>Sub-CPMK 2.2:</strong>
+      Mahasiswa mampu menggambarkan arsitektur Transformer dan aplikasinya,
+      termasuk mekanisme self-attention.
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB NAVIGATION ====== -->
+<div class="tab-nav">
+  <button class="tab-btn active" data-tab="matrix">Attention Matrix</button>
+  <button class="tab-btn" data-tab="qkv">Query-Key-Value</button>
+  <button class="tab-btn" data-tab="multihead">Multi-Head</button>
+</div>
+
+<!-- ====== TAB 1: ATTENTION MATRIX HEATMAP ====== -->
+<div class="tab-content active" id="tab-matrix">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="att-controls">
+        <label>Kalimat:</label>
+        <select id="matrix-sentence"></select>
+      </div>
+      <svg id="matrix-plot" viewBox="0 0 600 450"></svg>
+      <div class="matrix-hint" id="matrix-hint">Klik sel untuk melihat detail attention</div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Attention Matrix</h3>
+      <p>
+        Setiap sel menunjukkan seberapa banyak sebuah kata
+        <strong>"memperhatikan"</strong> kata lain. Baris = kata yang
+        sedang diproses (Query). Kolom = kata yang dilihat (Key).
+      </p>
+      <p>
+        Warna gelap = attention tinggi. Perhatikan bagaimana
+        <code>kucing</code> memperhatikan <code>karpet</code> (subjek
+        memperhatikan lokasi), dan <code>duduk</code> memperhatikan
+        <code>kucing</code> (kata kerja memperhatikan subjek).
+      </p>
+      <p>
+        Matriks inilah yang membuat Transformer lebih kuat dari RNN:
+        setiap kata bisa langsung mengakses kata lain mana pun, tanpa
+        harus melewati hidden state berurutan.
+      </p>
+      <p>
+        Kelemahannya: komputasi tumbuh <strong>kuadratik</strong>
+        (O(n^2)) terhadap panjang kalimat. Ini sebabnya LLM memiliki
+        batas panjang konteks.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: QKV STEP BY STEP ====== -->
+<div class="tab-content" id="tab-qkv">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="att-controls">
+        <label>Kalimat:</label>
+        <select id="qkv-sentence"></select>
+      </div>
+      <svg id="qkv-plot" viewBox="0 0 700 480"></svg>
+      <div class="step-controls">
+        <button id="qkv-prev" class="step-btn">&larr; Sebelumnya</button>
+        <span id="qkv-indicator">Langkah 1 / 5</span>
+        <button id="qkv-next" class="step-btn">Selanjutnya &rarr;</button>
+      </div>
+      <div class="step-detail" id="qkv-detail"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Query, Key, Value</h3>
+      <p>
+        Attention bekerja seperti sistem <strong>pencarian</strong>.
+        Setiap kata menghasilkan tiga vektor:
+      </p>
+      <p>
+        <strong>Query (Q):</strong> "Apa yang sedang saya cari?" Diproyeksikan
+        dari embedding kata melalui matriks bobot <code>W_Q</code>.
+      </p>
+      <p>
+        <strong>Key (K):</strong> "Ini yang saya tawarkan." Diproyeksikan
+        melalui <code>W_K</code>. Q dan K menentukan seberapa cocok
+        dua kata.
+      </p>
+      <p>
+        <strong>Value (V):</strong> "Ini konten yang saya bagikan."
+        Diproyeksikan melalui <code>W_V</code>. V adalah informasi
+        yang sebenarnya ditransfer antar kata.
+      </p>
+      <p>
+        Output attention = rata-rata tertimbang dari semua Value,
+        dengan bobot dari <code>softmax(Q &middot; K^T / &radic;d)</code>.
+      </p>
+      <p>
+        Klik "Selanjutnya" untuk melihat pipeline lengkap langkah demi
+        langkah.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 3: MULTI-HEAD ATTENTION ====== -->
+<div class="tab-content" id="tab-multihead">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="att-controls">
+        <label>Kalimat:</label>
+        <select id="mh-sentence"></select>
+      </div>
+      <div class="mh-head-buttons" id="mh-head-buttons"></div>
+      <svg id="mh-plot" viewBox="0 0 600 450"></svg>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Multi-Head Attention</h3>
+      <p>
+        Satu matriks attention hanya menangkap satu jenis relasi.
+        Transformer menggunakan <strong>banyak head</strong>
+        secara paralel, masing-masing belajar pola yang berbeda.
+      </p>
+      <p>
+        <strong>Head 1 (Sintaktik):</strong> menangkap hubungan
+        subjek-predikat. <code>kucing</code> memperhatikan
+        <code>duduk</code> karena keduanya terhubung secara sintaksis.
+      </p>
+      <p>
+        <strong>Head 2 (Lokasi):</strong> menangkap hubungan spasial.
+        <code>kucing</code> dan <code>karpet</code> saling memperhatikan
+        karena ada hubungan lokasi ("di atas").
+      </p>
+      <p>
+        <strong>Head 3 (Semantik):</strong> menangkap kemiripan makna.
+        Kata-kata dengan embedding serupa cenderung saling
+        memperhatikan.
+      </p>
+      <p>
+        Output dari semua head digabungkan dan diproyeksikan kembali.
+        Inilah yang memberi Transformer kemampuan untuk memahami
+        bahasa pada banyak level secara bersamaan.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+</body>
+</html>
