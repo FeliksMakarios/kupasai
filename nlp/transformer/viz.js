@@ -97,7 +97,7 @@
         .attr('x', stack.x + stack.w / 2)
         .attr('y', stack.y - 8)
         .attr('text-anchor', 'middle')
-        .attr('font-size', '12px')
+        .attr('font-size', '14px')
         .attr('font-weight', '700')
         .attr('fill', color)
         .text(label);
@@ -107,7 +107,7 @@
         .attr('x', stack.x + stack.w / 2)
         .attr('y', stack.y + stack.h + 15)
         .attr('text-anchor', 'middle')
-        .attr('font-size', '9px')
+        .attr('font-size', '10px')
         .attr('fill', C.text_muted)
         .text(stack.stack_note);
 
@@ -141,7 +141,7 @@
           .attr('x', stack.x + stack.w / 2)
           .attr('y', ly + layer.h / 2 + 4)
           .attr('text-anchor', 'middle')
-          .attr('font-size', '10px')
+          .attr('font-size', '12px')
           .attr('font-weight', '600')
           .attr('fill', layer.color)
           .text(layer.label);
@@ -153,7 +153,7 @@
           .attr('x', stack.x + stack.w / 2)
           .attr('y', stack.y + stack.input.y)
           .attr('text-anchor', 'middle')
-          .attr('font-size', '9px')
+          .attr('font-size', '10px')
           .attr('fill', C.text_muted)
           .text(stack.input.label);
       }
@@ -164,7 +164,7 @@
           .attr('x', stack.x + stack.w / 2)
           .attr('y', stack.y + stack.output.y)
           .attr('text-anchor', 'middle')
-          .attr('font-size', '9px')
+          .attr('font-size', '10px')
           .attr('fill', C.text_muted)
           .text(stack.output.label);
       }
@@ -181,23 +181,27 @@
     var stepNext = document.getElementById('enc-next');
     var indicator = document.getElementById('enc-indicator');
     var detailEl = document.getElementById('enc-detail');
+    var textDemoEl = document.getElementById('enc-text-demo');
     var currentStep = 1;
     var TOTAL = D.encoder_detail.steps.length;
+
+    // Sample input text for demo
+    var INPUT_TOKENS = ['kucing', 'duduk', 'diatas', 'karpet'];
 
     function draw() {
       var step = D.encoder_detail.steps[currentStep - 1];
       svg.selectAll('*').remove();
-      var W = 700, H = 400;
+      var W = 700, H = 320;
       var g = svg.append('g');
 
       // Draw encoder pipeline vertically
       var components = [
-        { label: 'Input Embedding', y: 40, color: C.enc_color, h: 30 },
-        { label: 'Positional Encoding', y: 80, color: C.enc_color, h: 30 },
-        { label: 'Multi-Head Self-Attention', y: 130, color: C.accent, h: 45 },
-        { label: 'Add & Norm', y: 185, color: C.res_color, h: 25 },
-        { label: 'Feed-Forward Network', y: 220, color: C.ffn_color, h: 45 },
-        { label: 'Add & Norm', y: 275, color: C.res_color, h: 25 },
+        { label: 'Input Embedding', y: 30, color: C.enc_color, h: 28 },
+        { label: 'Positional Encoding', y: 68, color: C.enc_color, h: 28 },
+        { label: 'Multi-Head Self-Attention', y: 110, color: C.accent, h: 40 },
+        { label: 'Add & Norm', y: 160, color: C.res_color, h: 22 },
+        { label: 'Feed-Forward Network', y: 192, color: C.ffn_color, h: 40 },
+        { label: 'Add & Norm', y: 242, color: C.res_color, h: 22 },
       ];
 
       // Map steps to component indices (some steps span 1 component)
@@ -277,9 +281,29 @@
         '<p>' + step.desc + '</p>' +
         '<div class="detail-formula">' + step.formula + '</div>';
 
+      // Text demo update
+      updateEncDemo();
+
       stepPrev.disabled = currentStep === 1;
       stepNext.disabled = currentStep === TOTAL;
       indicator.textContent = 'Langkah ' + currentStep + ' / ' + TOTAL;
+    }
+
+    function updateEncDemo() {
+      var stages = [
+        { title: 'Input Mentah', html: INPUT_TOKENS.map(function(t,i){ return '<span class="token">'+t+'</span>'; }).join(' '), note: 'Teks dipecah menjadi token' },
+        { title: 'Embedding', html: INPUT_TOKENS.map(function(t,i){ return '<span class="token active">[0.3, 0.1, ...]</span>'; }).join(' '), note: 'Tiap token jadi vektor' },
+        { title: 'Attention', html: '<span class="token active">kucing</span> <span class="token">duduk</span> <span class="token muted">diatas</span> <span class="token muted">karpet</span>', note: '"kucing" melihat semua kata lain' },
+        { title: 'Add & Norm', html: '<span class="token active">kucing</span> <span class="token">duduk</span> <span class="token muted">diatas</span> <span class="token muted">karpet</span>', note: 'Residual + normalisasi' },
+        { title: 'Feed-Forward', html: '<span class="token active">kucing</span> <span class="token">duduk</span> <span class="token muted">diatas</span> <span class="token muted">karpet</span>', note: 'Transformasi non-linear per posisi' },
+        { title: 'Output Layer', html: '<span class="token active">kucing</span> <span class="token active">duduk</span> <span class="token">diatas</span> <span class="token">karpet</span>', note: 'Semua token kaya konteks, siap untuk layer berikutnya' },
+      ];
+      var s = stages[currentStep - 1] || stages[0];
+      textDemoEl.innerHTML =
+        '<h5>Input</h5>' +
+        '<div class="demo-title">' + s.title + '</div>' +
+        '<div class="demo-stage">' + s.html + '</div>' +
+        '<div class="demo-note">' + s.note + '</div>';
     }
 
     stepNext.addEventListener('click', function () {
@@ -302,24 +326,28 @@
     var stepNext = document.getElementById('dec-next');
     var indicator = document.getElementById('dec-indicator');
     var detailEl = document.getElementById('dec-detail');
+    var textDemoEl = document.getElementById('dec-text-demo');
     var currentStep = 1;
     var TOTAL = D.decoder_detail.steps.length;
+
+    // Output tokens being generated
+    var OUT_TOKENS = ['satu', 'kucing', 'hitam'];
 
     function draw() {
       var step = D.decoder_detail.steps[currentStep - 1];
       svg.selectAll('*').remove();
-      var W = 700, H = 400;
+      var W = 700, H = 320;
       var g = svg.append('g');
 
       var components = [
-        { label: 'Output Embedding', y: 30, color: C.dec_color, h: 28 },
-        { label: 'Positional Encoding', y: 68, color: C.dec_color, h: 28 },
-        { label: 'Masked Self-Attention', y: 115, color: C.accent, h: 40 },
-        { label: 'Add & Norm', y: 165, color: C.res_color, h: 22 },
-        { label: 'Cross-Attention', y: 200, color: C.cross_color, h: 40 },
-        { label: 'Add & Norm', y: 250, color: C.res_color, h: 22 },
-        { label: 'Feed-Forward Network', y: 285, color: C.ffn_color, h: 40 },
-        { label: 'Add & Norm', y: 335, color: C.res_color, h: 22 },
+        { label: 'Output Embedding', y: 20, color: C.dec_color, h: 25 },
+        { label: 'Positional Encoding', y: 55, color: C.dec_color, h: 25 },
+        { label: 'Masked Self-Attention', y: 95, color: C.accent, h: 35 },
+        { label: 'Add & Norm', y: 140, color: C.res_color, h: 20 },
+        { label: 'Cross-Attention', y: 170, color: C.cross_color, h: 35 },
+        { label: 'Add & Norm', y: 215, color: C.res_color, h: 20 },
+        { label: 'Feed-Forward Network', y: 245, color: C.ffn_color, h: 35 },
+        { label: 'Add & Norm', y: 290, color: C.res_color, h: 20 },
       ];
 
       // Step -> component mapping
@@ -330,7 +358,7 @@
 
       // Encoder side label (for cross-attention step)
       g.append('text')
-        .attr('x', 60).attr('y', 220)
+        .attr('x', 60).attr('y', 190)
         .attr('text-anchor', 'middle')
         .attr('font-size', '10px')
         .attr('font-weight', '700')
@@ -339,7 +367,7 @@
         .text('Encoder');
 
       g.append('rect')
-        .attr('x', 30).attr('y', 200).attr('width', 60).attr('height', 40)
+        .attr('x', 30).attr('y', 170).attr('width', 60).attr('height', 35)
         .attr('rx', 4)
         .attr('fill', C.enc_color)
         .attr('fill-opacity', currentStep === 3 ? 0.15 : 0.05)
@@ -350,15 +378,15 @@
       // Arrow from encoder to cross-attention (step 3)
       if (currentStep === 3) {
         g.append('line')
-          .attr('x1', 90).attr('y1', 220)
-          .attr('x2', cx - boxW / 2).attr('y2', 220)
+          .attr('x1', 90).attr('y1', 187)
+          .attr('x2', cx - boxW / 2).attr('y2', 187)
           .attr('stroke', C.cross_color)
           .attr('stroke-width', 2)
           .attr('stroke-dasharray', '5 3');
 
         g.append('text')
           .attr('x', (90 + cx - boxW / 2) / 2)
-          .attr('y', 212)
+          .attr('y', 180)
           .attr('text-anchor', 'middle')
           .attr('font-size', '9px')
           .attr('fill', C.cross_color)
@@ -417,7 +445,7 @@
       if (currentStep === 5) {
         g.append('text')
           .attr('x', cx)
-          .attr('y', 375)
+          .attr('y', 330)
           .attr('text-anchor', 'middle')
           .attr('font-size', '11px')
           .attr('font-weight', '700')
@@ -431,9 +459,28 @@
         '<p>' + step.desc + '</p>' +
         '<div class="detail-formula">' + step.formula + '</div>';
 
+      // Text demo update
+      updateDecDemo();
+
       stepPrev.disabled = currentStep === 1;
       stepNext.disabled = currentStep === TOTAL;
       indicator.textContent = 'Langkah ' + currentStep + ' / ' + TOTAL;
+    }
+
+    function updateDecDemo() {
+      var stages = [
+        { title: 'Output Awal', html: '<span class="token active">&lt;start&gt;</span>', note: 'Decoder mulai dari token khusus' },
+        { title: 'Masked Attention', html: '<span class="token active">&lt;start&gt;</span> <span class="token muted">kucing</span> <span class="token muted">hitam</span>', note: 'Hanya lihat token sebelumnya (masked)' },
+        { title: 'Cross-Attention', html: '<span class="token active">&lt;start&gt;</span> <span class="token">kucing</span> <span class="token">hitam</span>', note: 'Q dari decoder, K & V dari encoder input' },
+        { title: 'Feed-Forward', html: '<span class="token active">&lt;start&gt;</span> <span class="token">kucing</span> <span class="token">hitam</span>', note: 'Transformasi non-linear per posisi' },
+        { title: 'Output Token', html: '<span class="token active">&lt;start&gt;</span> <span class="token active">satu</span> <span class="token active">kucing</span> <span class="token active">hitam</span>', note: 'Softmax menghasilkan token baru secara autoregressive' },
+      ];
+      var s = stages[currentStep - 1] || stages[0];
+      textDemoEl.innerHTML =
+        '<h5>Output</h5>' +
+        '<div class="demo-title">' + s.title + '</div>' +
+        '<div class="demo-stage">' + s.html + '</div>' +
+        '<div class="demo-note">' + s.note + '</div>';
     }
 
     stepNext.addEventListener('click', function () {

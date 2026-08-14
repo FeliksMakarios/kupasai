@@ -46,8 +46,8 @@
 <div class="tab-content active" id="tab-full">
   <div class="viz-layout">
     <div class="viz-main">
-      <svg id="full-plot" viewBox="0 0 700 460"></svg>
       <div class="arch-hint" id="full-hint">Klik komponen untuk melihat detail</div>
+      <svg id="full-plot" viewBox="0 0 700 460"></svg>
     </div>
     <div class="viz-sidebar">
       <h3>Arsitektur Transformer</h3>
@@ -78,13 +78,18 @@
 <div class="tab-content" id="tab-encoder">
   <div class="viz-layout">
     <div class="viz-main">
-      <svg id="encoder-plot" viewBox="0 0 700 400"></svg>
-      <div class="step-controls">
-        <button id="enc-prev" class="step-btn">&larr; Sebelumnya</button>
-        <span id="enc-indicator">Langkah 1 / 5</span>
-        <button id="enc-next" class="step-btn">Selanjutnya &rarr;</button>
+      <div class="enc-dec-wrapper">
+        <div class="text-demo" id="enc-text-demo"></div>
+        <div class="diagram-area">
+          <svg id="encoder-plot" viewBox="0 0 700 320"></svg>
+          <div class="step-controls">
+            <button id="enc-prev" class="step-btn">&larr; Sebelumnya</button>
+            <span id="enc-indicator">Langkah 1 / 5</span>
+            <button id="enc-next" class="step-btn">Selanjutnya &rarr;</button>
+          </div>
+          <div class="step-detail" id="enc-detail"></div>
+        </div>
       </div>
-      <div class="step-detail" id="enc-detail"></div>
     </div>
     <div class="viz-sidebar">
       <h3>Encoder Layer</h3>
@@ -117,13 +122,18 @@
 <div class="tab-content" id="tab-decoder">
   <div class="viz-layout">
     <div class="viz-main">
-      <svg id="decoder-plot" viewBox="0 0 700 400"></svg>
-      <div class="step-controls">
-        <button id="dec-prev" class="step-btn">&larr; Sebelumnya</button>
-        <span id="dec-indicator">Langkah 1 / 5</span>
-        <button id="dec-next" class="step-btn">Selanjutnya &rarr;</button>
+      <div class="enc-dec-wrapper">
+        <div class="text-demo" id="dec-text-demo"></div>
+        <div class="diagram-area">
+          <svg id="decoder-plot" viewBox="0 0 700 320"></svg>
+          <div class="step-controls">
+            <button id="dec-prev" class="step-btn">&larr; Sebelumnya</button>
+            <span id="dec-indicator">Langkah 1 / 5</span>
+            <button id="dec-next" class="step-btn">Selanjutnya &rarr;</button>
+          </div>
+          <div class="step-detail" id="dec-detail"></div>
+        </div>
       </div>
-      <div class="step-detail" id="dec-detail"></div>
     </div>
     <div class="viz-sidebar">
       <h3>Decoder Layer</h3>
