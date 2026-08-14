@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transformer Architecture - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/" class="active">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF20161 &middot; Week 6</span>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke NLP</a>
+    <h1>Transformer Architecture</h1>
+    <p class="page-subtitle">
+      Arsitektur lengkap Transformer: encoder memproses input, decoder menghasilkan
+      output token demi token, dan cross-attention menjembatani keduanya.
+    </p>
+    <div class="learning-objectives">
+      <strong>Sub-CPMK 2.2:</strong>
+      Mahasiswa mampu menggambarkan arsitektur Transformer dan aplikasinya
+      dalam pemrosesan bahasa alami.
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB NAVIGATION ====== -->
+<div class="tab-nav">
+  <button class="tab-btn active" data-tab="full">Arsitektur Lengkap</button>
+  <button class="tab-btn" data-tab="encoder">Encoder Detail</button>
+  <button class="tab-btn" data-tab="decoder">Decoder Detail</button>
+</div>
+
+<!-- ====== TAB 1: FULL ARCHITECTURE ====== -->
+<div class="tab-content active" id="tab-full">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <svg id="full-plot" viewBox="0 0 700 460"></svg>
+      <div class="arch-hint" id="full-hint">Klik komponen untuk melihat detail</div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Arsitektur Transformer</h3>
+      <p>
+        Transformer terdiri dari dua bagian: <strong>encoder</strong>
+        yang membaca dan memahami input, serta <strong>decoder</strong>
+        yang menghasilkan output secara autoregressive (token demi token).
+      </p>
+      <p>
+        Keduanya dibangun dari blok yang berulang (Nx, biasanya 6 kali):
+        self-attention, feed-forward network, dan residual connection.
+      </p>
+      <p>
+        Inilah arsitektur dasar dari <strong>GPT, BERT, T5</strong>, dan
+        semua Large Language Model modern. BERT hanya menggunakan encoder,
+        GPT hanya decoder, T5 menggunakan keduanya.
+      </p>
+      <p>
+        Kunci inovasi Transformer: memproses semua token secara
+        <strong>paralel</strong> (bukan berurutan seperti RNN), sehingga
+        training jauh lebih cepat di GPU.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: ENCODER DETAIL ====== -->
+<div class="tab-content" id="tab-encoder">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <svg id="encoder-plot" viewBox="0 0 700 400"></svg>
+      <div class="step-controls">
+        <button id="enc-prev" class="step-btn">&larr; Sebelumnya</button>
+        <span id="enc-indicator">Langkah 1 / 5</span>
+        <button id="enc-next" class="step-btn">Selanjutnya &rarr;</button>
+      </div>
+      <div class="step-detail" id="enc-detail"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Encoder Layer</h3>
+      <p>
+        Satu encoder layer terdiri dari dua sub-layer: multi-head
+        self-attention dan feed-forward network. Keduanya dibungkus
+        dengan <strong>residual connection</strong> dan
+        <strong>layer normalization</strong>.
+      </p>
+      <p>
+        Residual connection menambahkan input kembali ke output sub-layer.
+        Ini membantu gradient mengalir selama training dan mencegah
+        degradasi pada jaringan yang dalam.
+      </p>
+      <p>
+        Feed-forward network memproses setiap posisi secara independen.
+        Walaupun tidak ada interaksi antar kata di sini (itu tugas
+        attention), FFN memberikan kapasitas komputasi untuk
+        transformasi non-linear.
+      </p>
+      <p>
+        Encoder BERT-base memiliki <strong>12 layer</strong> dengan
+        dimensi model 768 dan 12 attention heads.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 3: DECODER DETAIL ====== -->
+<div class="tab-content" id="tab-decoder">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <svg id="decoder-plot" viewBox="0 0 700 400"></svg>
+      <div class="step-controls">
+        <button id="dec-prev" class="step-btn">&larr; Sebelumnya</button>
+        <span id="dec-indicator">Langkah 1 / 5</span>
+        <button id="dec-next" class="step-btn">Selanjutnya &rarr;</button>
+      </div>
+      <div class="step-detail" id="dec-detail"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Decoder Layer</h3>
+      <p>
+        Decoder memiliki <strong>tiga sub-layer</strong>, satu lebih
+        banyak dari encoder. Yang membedakan adalah
+        <strong>cross-attention</strong>: jembatan antara encoder
+        dan decoder.
+      </p>
+      <p>
+        <strong>Masked self-attention:</strong> saat memproses token
+        ke-t, decoder hanya boleh melihat token 1 sampai t. Token
+        di masa depan di-mask agar decoder tidak "curang".
+      </p>
+      <p>
+        <strong>Cross-attention:</strong> Query dari decoder,
+        Key dan Value dari output encoder. Decoder secara aktif
+        "mencari" informasi di input yang relevan dengan token
+        yang sedang diproduksi.
+      </p>
+      <p>
+        GPT menggunakan <strong>hanya decoder</strong> (decoder-only),
+        sedangkan model terjemahan seperti T5 dan NLLB menggunakan
+        encoder-decoder lengkap.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+</body>
+</html>
