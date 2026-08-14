@@ -153,6 +153,7 @@
     });
     selectEl.addEventListener('change', function () {
       currentSent = parseInt(this.value);
+      currentStep = 1;
       draw();
     });
 
