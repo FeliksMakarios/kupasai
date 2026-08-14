@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Classification Pipeline - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/" class="active">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF20161 &middot; Week 7</span>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke NLP</a>
+    <h1>Text Classification Pipeline</h1>
+    <p class="page-subtitle">
+      Dari teks mentah menjadi prediksi kelas. Pipeline lengkap text classification,
+      dari preprocessing hingga deep learning dengan BERT.
+    </p>
+    <div class="learning-objectives">
+      <strong>Sub-CPMK 3.1:</strong>
+      Mahasiswa mampu mengimplementasikan model NLP menggunakan pustaka modern
+      untuk klasifikasi teks.
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB NAVIGATION ====== -->
+<div class="tab-nav">
+  <button class="tab-btn active" data-tab="pipeline">Pipeline</button>
+  <button class="tab-btn" data-tab="boundary">Decision Boundary</button>
+  <button class="tab-btn" data-tab="bert">BERT Fine-tuning</button>
+</div>
+
+<!-- ====== TAB 1: PIPELINE ====== -->
+<div class="tab-content active" id="tab-pipeline">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="pipe-controls">
+        <label>Teks contoh:</label>
+        <select id="pipe-sentence"></select>
+      </div>
+      <svg id="pipeline-plot" viewBox="0 0 700 360"></svg>
+      <div class="step-controls">
+        <button id="pipe-prev" class="step-btn">&larr; Sebelumnya</button>
+        <span id="pipe-indicator">Langkah 1 / 5</span>
+        <button id="pipe-next" class="step-btn">Selanjutnya &rarr;</button>
+      </div>
+      <div class="step-detail" id="pipe-detail"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Pipeline Klasifikasi Teks</h3>
+      <p>
+        Klasifikasi teks adalah tugas menentukan kategori (label) untuk
+        sebuah dokumen. Contoh: analisis sentimen (positif/negatif),
+        deteksi spam, kategorisasi berita.
+      </p>
+      <p>
+        Pipeline dimulai dari <strong>preprocessing</strong> (pembersihan
+        teks), lalu <strong>vektorisasi</strong> (konversi ke angka),
+        dan akhirnya <strong>klasifikasi</strong> oleh model machine
+        learning.
+      </p>
+      <p>
+        Setiap tahap memengaruhi kualitas akhir. Preprocessing yang buruk
+        merusak vektorisasi. Vektorisasi yang buruk merusak klasifikasi.
+        Inilah mengapa setiap langkah penting untuk dipahami.
+      </p>
+      <p>
+        Di dunia nyata, pipeline ini dibungkus dalam library seperti
+        <strong>scikit-learn</strong> (pipeline klasik) atau
+        <strong>Hugging Face Transformers</strong> (pipeline deep learning).
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: DECISION BOUNDARIES ====== -->
+<div class="tab-content" id="tab-boundary">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="cls-buttons" id="cls-buttons"></div>
+      <svg id="boundary-plot" viewBox="0 0 600 400"></svg>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Decision Boundary</h3>
+      <p>
+        Setelah teks diubah menjadi vektor (2 dimensi di sini untuk
+        visualisasi), classifier mempelajari garis pemisah antar kelas.
+        Garis ini disebut <strong>decision boundary</strong>.
+      </p>
+      <p>
+        <strong>Logistic Regression:</strong> hanya bisa garis lurus.
+        Sederhana tapi sering cukup baik untuk teks karena vektor teks
+        cenderung terpisah secara linear.
+      </p>
+      <p>
+        <strong>Naive Bayes:</strong> probabilistik, mengasumsikan
+        fitur independen. Boundary cenderung linear, posisinya sedikit
+        berbeda dari logistic regression.
+      </p>
+      <p>
+        <strong>SVM (RBF):</strong> dengan kernel non-linear, SVM
+        bisa membuat boundary melengkung yang mengikuti data lebih
+        dekat, tapi berisiko overfitting.
+      </p>
+      <p>
+        Bandingkan ketiga classifier dengan mengklik tombol di atas.
+        Perhatikan bagaimana boundary berubah bentuk.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 3: BERT FINE-TUNING ====== -->
+<div class="tab-content" id="tab-bert">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <svg id="bert-plot" viewBox="0 0 700 360"></svg>
+      <div class="step-controls">
+        <button id="bert-prev" class="step-btn">&larr; Sebelumnya</button>
+        <span id="bert-indicator">Langkah 1 / 4</span>
+        <button id="bert-next" class="step-btn">Selanjutnya &rarr;</button>
+      </div>
+      <div class="step-detail" id="bert-detail"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Fine-tuning BERT</h3>
+      <p>
+        Alih-alih melatih model dari nol, pendekatan modern menggunakan
+        <strong>transfer learning</strong>: ambil model yang sudah
+        dilatih pada korpus besar, lalu sesuaikan (fine-tune) untuk
+        tugas spesifik.
+      </p>
+      <p>
+        <strong>IndoBERT</strong> sudah memahami struktur Bahasa Indonesia.
+        Dengan menambahkan satu lapis klasifikasi dan fine-tuning singkat
+        (3-5 epoch), model mencapai akurasi tinggi bahkan dengan dataset
+        kecil.
+      </p>
+      <p>
+        Ini jauh lebih efisien daripada melatih dari awal, dan inilah
+        pendekatan standar dalam NLP modern setelah munculnya Transformer.
+      </p>
+      <p>
+        Confusion matrix di langkah terakhir menunjukkan distribusi
+        prediksi: diagonal = benar, off-diagonal = salah.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+</body>
+</html>
