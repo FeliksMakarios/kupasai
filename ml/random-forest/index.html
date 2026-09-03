@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Forest - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/">NLP</a></li>
+    <li><a href="/kupasai/ml/" class="active">ML</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF24042 &middot; Week 6</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/ml/" class="back-link">&larr; Kembali ke ML</a>
+    <h1>Random Forest</h1>
+    <p class="page-subtitle">
+      Daripada bertanya pada satu ahli, tanyakan pada banyak ahli lalu
+      ambil suara mayoritas &mdash; itulah inti ensemble learning.
+    </p>
+    <div class="learning-objectives">
+      <strong>Sub-CPMK 2.2:</strong> Mahasiswa dapat mengimplementasikan
+      random forest dengan Scikit-learn dan menerapkannya pada dataset
+      yang lebih besar dan kompleks.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="voting" role="tab" id="tabbtn-voting" aria-controls="tab-voting" aria-selected="true" tabindex="0">Ensemble Voting</button>
+  <button class="tab-btn" data-tab="adult" role="tab" id="tabbtn-adult" aria-controls="tab-adult" aria-selected="false" tabindex="-1">Dataset Besar: Adult Census</button>
+</div>
+
+<!-- ====== TAB 1: VOTING ====== -->
+<div class="tab-content active" id="tab-voting" role="tabpanel" aria-labelledby="tabbtn-voting" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="att-controls">
+        <label>Data test:</label>
+        <select id="vote-row-select"></select>
+      </div>
+      <div class="vote-row" id="vote-cards"></div>
+      <p id="vote-single" style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.5rem"></p>
+      <div class="final-verdict" id="vote-verdict"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>7 Pohon, 7 Sudut Pandang</h3>
+      <p>
+        Tiap kartu adalah <strong>Decision Tree</strong> yang dilatih pada
+        <em>bootstrap sample</em> berbeda (baris diundi ulang dengan
+        pengembalian) dan hanya melihat 2 dari 3 fitur secara acak
+        &mdash; persis prinsip <strong>bagging</strong> dan
+        <strong>random feature selection</strong> di Random Forest.
+      </p>
+      <p>
+        Akurasi test set: <strong id="rf-vs-single">-</strong>. Dataset
+        kendaraan ini kecil dan sangat mudah dipisahkan, jadi ketujuh pohon
+        sering sepakat &mdash; manfaat ensembling baru terasa jelas pada
+        data yang lebih besar dan berisik, seperti di tab sebelah.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: ADULT ====== -->
+<div class="tab-content" id="tab-adult" role="tabpanel" aria-labelledby="tabbtn-adult" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1rem">
+        <strong style="color:var(--accent)" id="adult-nrows">-</strong> baris data sensus AS &middot;
+        akurasi Random Forest: <strong style="color:var(--accent)" id="adult-accuracy">-</strong>
+      </p>
+      <h3 style="font-size:0.95rem;margin-bottom:0.75rem">Feature Importance</h3>
+      <div id="fi-chart"></div>
+      <h3 style="font-size:0.95rem;margin:1.5rem 0 0.5rem">Classification Report</h3>
+      <div id="metrics-table"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Data Nyata: UCI Adult Census</h3>
+      <p>
+        &sim;32.000 baris data sensus penduduk AS 1994, memprediksi apakah
+        penghasilan seseorang &gt;$50K atau &le;$50K per tahun.
+      </p>
+      <p>
+        <strong>Feature importance</strong> menunjukkan fitur mana yang
+        paling sering dipakai model untuk memisahkan kelas &mdash; di sini
+        usia dan capital gain paling dominan.
+      </p>
+      <p>
+        Precision/recall kelas <code>&gt;50K</code> (minoritas) lebih rendah
+        dari kelas mayoritas <code>&le;50K</code> &mdash; contoh nyata
+        tantangan <strong>class imbalance</strong> yang sudah dibahas di
+        rubrik penilaian aktivitas mandiri.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

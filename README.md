@@ -35,7 +35,17 @@ kupasai/
 │       ├── data.js              # Data pre-computed (dari generate_*.py)
 │       ├── generate_*.py        # Skrip Python yang menghasilkan data.js
 │       └── viz.js              # Logika visualisasi D3.js
-└── ml/                          # (future) Pengantar Machine Learning
+└── ml/                          # Mata kuliah Pengantar Machine Learning
+    ├── index.html                # Daftar topik ML
+    ├── pandas/
+    ├── linear-regression/
+    ├── logistic-regression/
+    ├── decision-tree/
+    ├── random-forest/
+    ├── naive-bayes/
+    ├── churn-prediction/         # Studi kasus: ABC Telekom (Logistic Regression vs Random Forest)
+    ├── clustering/                # Studi kasus: jadwal penerbangan (K-Means, Elbow Method)
+    └── market-basket/             # Studi kasus: transaksi kedai kopi (Apriori, mlxtend)
 ```
 
 ## Visualisasi yang Tersedia
@@ -52,13 +62,23 @@ kupasai/
 
 ### ML
 
-Belum dimulai — lihat halaman `/ml/` untuk status placeholder saat ini.
+| Minggu RPS | Visualisasi | Status |
+|---|---|---|
+| Week 2 | Pengenalan Pandas | Tersedia |
+| Week 3 | Linear Regression | Tersedia |
+| Week 4 | Logistic Regression | Tersedia |
+| Week 5 | Decision Tree | Tersedia |
+| Week 6 | Random Forest | Tersedia |
+| Week 7 | Na&iuml;ve Bayes | Tersedia |
+| Week 9 | Studi Kasus: Churn Prediction | Tersedia |
+| Week 10 | Clustering (K-Means) | Tersedia |
+| Week 11 | Market Basket Analysis | Tersedia |
 
 ## Pengembangan
 
-Kelima visualisasi NLP sudah lengkap. Tech stack final: D3.js saja. Tidak ganti framework.
+Kelima visualisasi NLP dan sembilan visualisasi ML sudah lengkap. Tech stack final: D3.js saja. Tidak ganti framework.
 
-Data untuk visualisasi yang memakai model matematis (mis. `self-attention`) di-generate dari skrip Python (`generate_*.py`) di masing-masing folder, bukan ditulis manual — jalankan skripnya lagi kalau perlu mengubah bobot atau contoh kalimat, jangan edit `data.js` langsung.
+Data untuk visualisasi yang memakai model matematis (mis. `self-attention`, atau seluruh topik ML) di-generate dari skrip Python (`generate_*.py`) di masing-masing folder, bukan ditulis manual — jalankan skripnya lagi kalau perlu mengubah bobot, dataset, atau contoh kalimat, jangan edit `data.js` langsung. Skrip ML membaca dataset asli dari [repo mata kuliah `dasar-machine-learning`](https://github.com/FeliksMakarios/dasar-machine-learning) di GitHub (bisa dioverride ke path lokal lewat env var `DASAR_ML_DIR`).
 
 ## Lisensi
 

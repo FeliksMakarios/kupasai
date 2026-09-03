@@ -1,0 +1,86 @@
+/*
+ * KupasAI - Churn Prediction Styles
+ */
+
+.page-header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 2rem 2rem 1.5rem; }
+.page-header-content { max-width: 900px; margin: 0 auto; }
+.back-link { font-size: 0.85rem; color: var(--text-muted); display: inline-block; margin-bottom: 0.75rem; text-decoration: none; }
+.back-link:hover { color: var(--accent); }
+.page-header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+.page-subtitle { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
+.learning-objectives { background: var(--accent-light); border: 1px solid #54aeff; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+.learning-objectives strong { color: var(--accent); }
+
+.tab-nav { max-width: 900px; margin: 0 auto; padding: 1rem 2rem 0; display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border); }
+.tab-btn { background: none; border: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; padding: 0.6rem 1.2rem; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; font-family: var(--font-sans); }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-content { display: none; max-width: 1100px; margin: 0 auto; padding: 1.5rem 2rem; }
+.tab-content.active { display: block; }
+
+.viz-layout { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start; }
+.viz-main { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; box-shadow: var(--shadow-sm); }
+.viz-sidebar h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.viz-sidebar p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem; }
+.viz-sidebar strong { color: var(--text-primary); }
+.viz-sidebar code { font-family: var(--font-mono); background: var(--bg-tertiary); padding: 1px 4px; border-radius: 3px; font-size: 0.85em; }
+
+/* ==================== CHURN SPLIT BAR ==================== */
+
+.split-bar { display: flex; height: 28px; border-radius: 6px; overflow: hidden; margin-bottom: 0.5rem; }
+.split-bar .seg-active { background: var(--success); }
+.split-bar .seg-churn { background: var(--danger); }
+.split-legend { display: flex; gap: 1.5rem; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1.5rem; }
+.split-legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 0.35rem; }
+.split-legend .dot.active { background: var(--success); }
+.split-legend .dot.churn { background: var(--danger); }
+
+/* ==================== METRIC CARDS ==================== */
+
+.model-row { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+.model-card { flex: 1; border: 2px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; background: var(--bg-secondary); }
+.model-card.winner { border-color: var(--accent); background: var(--accent-light); }
+.model-card .mc-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem; }
+.model-card .mc-line { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-secondary); font-family: var(--font-mono); margin-bottom: 0.25rem; }
+.model-card .mc-line strong { color: var(--text-primary); }
+
+h3.section-title { font-size: 0.95rem; margin: 0 0 0.75rem; }
+
+/* ==================== FEATURE IMPORTANCE ==================== */
+
+.fi-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
+.fi-label { width: 90px; font-size: 0.78rem; color: var(--text-secondary); text-align: right; flex-shrink: 0; font-family: var(--font-mono); }
+.fi-track { flex: 1; height: 14px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+.fi-fill { height: 100%; background: var(--accent); }
+.fi-val { width: 3.5rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
+
+/* ==================== CUSTOMER PICKER ==================== */
+
+.att-controls { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+.att-controls label { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+.att-controls select {
+  background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border);
+  border-radius: 6px; padding: 0.4rem 0.6rem; font-size: 0.85rem; font-family: var(--font-sans);
+  cursor: pointer; flex: 1; max-width: 320px;
+}
+
+.customer-card { background: var(--bg-secondary); border-radius: 8px; padding: 1rem 1.25rem; }
+.customer-card .cc-id { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.6rem; font-family: var(--font-mono); }
+.customer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.6rem; margin-bottom: 0.9rem; }
+.customer-grid .cg-item { background: var(--bg-primary); border-radius: 6px; padding: 0.5rem 0.7rem; font-size: 0.78rem; }
+.customer-grid .cg-item .cg-label { color: var(--text-muted); display: block; font-size: 0.7rem; text-transform: uppercase; }
+.customer-grid .cg-item .cg-value { color: var(--text-primary); font-weight: 700; font-family: var(--font-mono); }
+
+.pred-row { display: flex; gap: 0.75rem; }
+.pred-card { flex: 1; border-radius: 8px; padding: 0.7rem 0.9rem; background: var(--bg-primary); font-size: 0.8rem; text-align: center; }
+.pred-card .pc-model { color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; margin-bottom: 0.3rem; }
+.pred-card .pc-verdict { font-weight: 700; font-size: 0.9rem; }
+.pred-card.correct .pc-verdict { color: var(--success); }
+.pred-card.wrong .pc-verdict { color: var(--danger); }
+
+@media (max-width: 768px) {
+  .viz-layout { grid-template-columns: 1fr; }
+  .tab-nav { overflow-x: auto; }
+  .model-row { flex-direction: column; }
+  .pred-row { flex-direction: column; }
+}

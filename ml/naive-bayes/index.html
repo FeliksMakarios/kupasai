@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Na&iuml;ve Bayes - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/">NLP</a></li>
+    <li><a href="/kupasai/ml/" class="active">ML</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF24042 &middot; Week 7</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/ml/" class="back-link">&larr; Kembali ke ML</a>
+    <h1>Na&iuml;ve Bayes</h1>
+    <p class="page-subtitle">
+      Menghitung probabilitas suatu kelas dengan Teorema Bayes, dengan
+      asumsi &ldquo;naif&rdquo; bahwa semua fitur saling independen.
+    </p>
+    <div class="learning-objectives">
+      <strong>Sub-CPMK 2.2:</strong> Mahasiswa dapat mengimplementasikan
+      Na&iuml;ve Bayes dengan Scikit-learn dan meningkatkan performa model.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="calc" role="tab" id="tabbtn-calc" aria-controls="tab-calc" aria-selected="true" tabindex="0">Kalkulator Bayes</button>
+  <button class="tab-btn" data-tab="titanic" role="tab" id="tabbtn-titanic" aria-controls="tab-titanic" aria-selected="false" tabindex="-1">Studi Kasus: Titanic</button>
+</div>
+
+<!-- ====== TAB 1: CALCULATOR ====== -->
+<div class="tab-content active" id="tab-calc" role="tabpanel" aria-labelledby="tabbtn-calc" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div id="email-table"></div>
+      <div class="toggle-row">
+        <div class="toggle-group">
+          <label>Diskon:</label>
+          <button class="toggle-btn active" data-diskon="true" type="button">Ya</button>
+          <button class="toggle-btn" data-diskon="false" type="button">Tidak</button>
+        </div>
+        <div class="toggle-group">
+          <label>Hadiah:</label>
+          <button class="toggle-btn active" data-hadiah="true" type="button">Ya</button>
+          <button class="toggle-btn" data-hadiah="false" type="button">Tidak</button>
+        </div>
+        <div class="toggle-group">
+          <label>Laplace Smoothing:</label>
+          <button class="toggle-btn smoothing active" id="toggle-smoothing" type="button">Aktif</button>
+        </div>
+      </div>
+      <div class="posterior-row" id="posterior-cards"></div>
+      <div class="verdict-box" id="verdict-box"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Contoh Email Spam</h3>
+      <p>
+        Dataset mainan 4 email persis dari Modul 7.2. Ganti kombinasi Diskon/Hadiah
+        dan lihat bagaimana posterior berubah &mdash; termasuk kasus khusus saat
+        salah satu likelihood bernilai 0.
+      </p>
+      <p>
+        Coba matikan <strong>Laplace Smoothing</strong> lalu pilih Diskon=Ya,
+        Hadiah=Ya: posterior Non-Spam langsung menjadi 0 hanya karena tidak
+        ada email Non-Spam berdiskon di data training &mdash; padahal fitur
+        Hadiah sebenarnya cukup mendukung Non-Spam.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: TITANIC ====== -->
+<div class="tab-content" id="tab-titanic" role="tabpanel" aria-labelledby="tabbtn-titanic" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1rem">
+        GaussianNB pada <strong id="titanic-n" style="color:var(--accent)">-</strong> penumpang test set &middot;
+        akurasi: <strong id="titanic-accuracy" style="color:var(--accent)">-</strong>
+      </p>
+      <div class="att-controls">
+        <label>Penumpang:</label>
+        <select id="passenger-select"></select>
+      </div>
+      <div id="passenger-detail"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Data Nyata: RMS Titanic</h3>
+      <p>
+        Model <code>GaussianNB</code> memprediksi apakah penumpang selamat
+        berdasarkan kelas tiket, jenis kelamin, usia, tarif, dan pelabuhan
+        keberangkatan.
+      </p>
+      <p>
+        Perhatikan pola klasik: penumpang perempuan dan kelas 1 cenderung
+        diprediksi selamat, sedangkan laki-laki kelas 3 cenderung tidak.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

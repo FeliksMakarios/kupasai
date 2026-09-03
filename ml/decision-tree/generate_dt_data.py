@@ -1,0 +1,156 @@
+#!/usr/bin/env python3
+"""
+KupasAI - Decision Tree Data Generator
+Uses the real dataset from Modul 5 (decisiontree_ch6.csv) for the trained
+tree, and recomputes the exact 15-row worked example (entropy / information
+gain) from the notebook's own numbers to guarantee they match.
+"""
+
+import json
+import math
+import os
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+DATASET_DIR = os.environ.get(
+    "DASAR_ML_DIR",
+    "https://raw.githubusercontent.com/FeliksMakarios/dasar-machine-learning/main",
+)
+
+
+def dataset_path(*parts):
+    return "/".join([DATASET_DIR.rstrip("/")] + list(parts))
+
+
+# ============================================================
+# PART 1: 15-row worked example (entropy / information gain)
+# Exactly the toy dataset from Modul 5, section 5.1.
+# ============================================================
+
+mesin = ['bensin', 'bensin', 'bensin', 'diesel', 'bensin',
+         'diesel', 'diesel', 'bensin', 'diesel', 'bensin',
+         'bensin', 'diesel', 'diesel', 'bensin', 'diesel']
+bangku = [4, 2, 8, 6, 5, 8, 8, 4, 7, 4, 2, 6, 8, 4, 2]
+penggerak = ['depan', 'depan', 'belakang', 'depan', 'belakang',
+             'belakang', 'belakang', 'depan', 'belakang', 'depan',
+             'depan', 'belakang', 'depan', 'depan', 'depan']
+kelas = ['sedan', 'sedan', 'minibus', 'minibus', 'minibus',
+         'minibus', 'minibus', 'sedan', 'minibus', 'sedan',
+         'sedan', 'minibus', 'minibus', 'sedan', 'sedan']
+
+toy = pd.DataFrame({'mesin': mesin, 'bangku': bangku, 'penggerak': penggerak, 'kelas': kelas})
+
+
+def entropy(labels):
+    n = len(labels)
+    if n == 0:
+        return 0.0
+    counts = pd.Series(labels).value_counts()
+    e = 0.0
+    for c in counts:
+        p = c / n
+        e -= p * math.log2(p)
+    return e
+
+
+def info_gain(df, split_fn, target_col='kelas'):
+    e_before = entropy(df[target_col])
+    mask = df.apply(split_fn, axis=1)
+    yes, no = df[mask], df[~mask]
+    e_yes, e_no = entropy(yes[target_col]), entropy(no[target_col])
+    weighted = (len(yes) / len(df)) * e_yes + (len(no) / len(df)) * e_no
+    return {
+        "entropy_before": round(e_before, 3),
+        "entropy_yes": round(e_yes, 3),
+        "entropy_no": round(e_no, 3),
+        "n_yes": int(len(yes)),
+        "n_no": int(len(no)),
+        "weighted": round(weighted, 3),
+        "ig": round(e_before - weighted, 3),
+    }
+
+
+splits = {
+    "mesin": info_gain(toy, lambda r: r['mesin'] == 'bensin'),
+    "penggerak": info_gain(toy, lambda r: r['penggerak'] == 'depan'),
+    "bangku": info_gain(toy, lambda r: r['bangku'] > 5),
+}
+
+toy_out = {
+    "rows": toy.to_dict(orient='records'),
+    "class_counts": toy['kelas'].value_counts().to_dict(),
+    "entropy_total": round(entropy(toy['kelas']), 3),
+    "splits": splits,
+}
+
+# ============================================================
+# PART 2: real trained tree on decisiontree_ch6.csv (40 rows)
+# ============================================================
+
+df1 = pd.read_csv(dataset_path("buku1", "ch6", "decisiontree_ch6.csv"))
+encoding = {"mesin": {"bensin": 0, "diesel": 1}, "penggerak": {"depan": 0, "belakang": 1}}
+df1_enc = df1.replace(encoding)
+df1_enc.set_index('ID', inplace=True)
+
+X = df1_enc[['mesin', 'bangku', 'penggerak']]
+y = df1_enc['label']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+clf = DecisionTreeClassifier(criterion='entropy', max_depth=3, random_state=42)
+clf.fit(X_train, y_train)
+acc = clf.score(X_test, y_test)
+
+feat_names = ['mesin', 'bangku', 'penggerak']
+feat_display = {'mesin': 'mesin (0=bensin, 1=diesel)', 'bangku': 'bangku', 'penggerak': 'penggerak (0=depan, 1=belakang)'}
+class_names = list(clf.classes_)
+
+tree_ = clf.tree_
+
+
+def export_node(i):
+    value = tree_.value[i][0]  # class proportions for this node, not raw counts
+    n_samples = int(tree_.n_node_samples[i])
+    class_idx = int(value.argmax())
+    node = {
+        "samples": n_samples,
+        "value": [int(round(v * n_samples)) for v in value],
+        "predicted_class": class_names[class_idx],
+        "impurity": round(float(tree_.impurity[i]), 3),
+    }
+    if tree_.feature[i] != -2:  # not a leaf
+        feat = feat_names[tree_.feature[i]]
+        thresh = round(float(tree_.threshold[i]), 2)
+        node["feature"] = feat
+        node["feature_display"] = feat_display[feat]
+        node["threshold"] = thresh
+        node["left"] = export_node(tree_.children_left[i])
+        node["right"] = export_node(tree_.children_right[i])
+    return node
+
+
+tree_export = export_node(0)
+
+data = {
+    "toy": toy_out,
+    "real": {
+        "n_rows": int(len(df1)),
+        "accuracy": round(float(acc), 4),
+        "tree": tree_export,
+        "class_names": class_names,
+    },
+}
+
+outpath = os.path.join(HERE, "data.js")
+js = "// Auto-generated by generate_dt_data.py\n"
+js += "// Decision Tree data for KupasAI ML Week 5 - toy 15-row example (Modul 5.1) + real decisiontree_ch6.csv\n\n"
+js += "const DT_DATA = " + json.dumps(data, indent=2, ensure_ascii=False) + ";\n"
+with open(outpath, "w") as f:
+    f.write(js)
+
+print("Splits:", json.dumps(splits, indent=2))
+print("Real tree accuracy:", acc)
+print("Written:", outpath)

@@ -1,0 +1,70 @@
+/*
+ * KupasAI - Clustering Styles
+ */
+
+.page-header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 2rem 2rem 1.5rem; }
+.page-header-content { max-width: 900px; margin: 0 auto; }
+.back-link { font-size: 0.85rem; color: var(--text-muted); display: inline-block; margin-bottom: 0.75rem; text-decoration: none; }
+.back-link:hover { color: var(--accent); }
+.page-header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+.page-subtitle { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
+.learning-objectives { background: var(--accent-light); border: 1px solid #54aeff; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+.learning-objectives strong { color: var(--accent); }
+
+.tab-nav { max-width: 900px; margin: 0 auto; padding: 1rem 2rem 0; display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border); }
+.tab-btn { background: none; border: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; padding: 0.6rem 1.2rem; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; font-family: var(--font-sans); }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-content { display: none; max-width: 1100px; margin: 0 auto; padding: 1.5rem 2rem; }
+.tab-content.active { display: block; }
+
+.viz-layout { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start; }
+.viz-main { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; box-shadow: var(--shadow-sm); }
+.viz-main svg { width: 100%; height: auto; display: block; }
+.viz-sidebar h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.viz-sidebar p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem; }
+.viz-sidebar strong { color: var(--text-primary); }
+.viz-sidebar code { font-family: var(--font-mono); background: var(--bg-tertiary); padding: 1px 4px; border-radius: 3px; font-size: 0.85em; }
+
+/* ==================== K SELECTOR ==================== */
+
+.model-buttons { display: flex; gap: 0.5rem; margin-bottom: 1rem; align-items: center; }
+.model-buttons label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; margin-right: 0.25rem; }
+.model-btn {
+  background: var(--bg-tertiary); border: 1px solid var(--border);
+  color: var(--text-secondary); padding: 0.45rem 0.9rem;
+  border-radius: 6px; font-size: 0.82rem; font-weight: 500;
+  font-family: var(--font-sans); cursor: pointer; transition: all 0.15s;
+}
+.model-btn:hover { border-color: var(--accent); color: var(--text-primary); }
+.model-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+h3.section-title { font-size: 0.95rem; margin: 1.5rem 0 0.75rem; }
+h3.section-title:first-child { margin-top: 0; }
+
+/* ==================== CENTROID TABLE ==================== */
+
+.centroid-table { border-collapse: collapse; width: 100%; font-size: 0.82rem; margin-bottom: 1rem; }
+.centroid-table th, .centroid-table td { border: 1px solid var(--border-light); padding: 0.4rem 0.6rem; text-align: center; }
+.centroid-table th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; }
+.centroid-table td.cluster-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 0.4rem; vertical-align: middle; }
+
+.att-controls { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+.att-controls label { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+.att-controls select {
+  background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border);
+  border-radius: 6px; padding: 0.4rem 0.6rem; font-size: 0.85rem; font-family: var(--font-sans);
+  cursor: pointer; flex: 1; max-width: 320px;
+}
+
+.flight-card { background: var(--bg-secondary); border-radius: 8px; padding: 1rem 1.25rem; }
+.flight-card .fc-route { font-size: 1rem; font-weight: 700; margin-bottom: 0.6rem; }
+.flight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.6rem; }
+.flight-grid .fg-item { background: var(--bg-primary); border-radius: 6px; padding: 0.5rem 0.7rem; font-size: 0.78rem; }
+.flight-grid .fg-item .fg-label { color: var(--text-muted); display: block; font-size: 0.7rem; text-transform: uppercase; }
+.flight-grid .fg-item .fg-value { color: var(--text-primary); font-weight: 700; font-family: var(--font-mono); }
+
+@media (max-width: 768px) {
+  .viz-layout { grid-template-columns: 1fr; }
+  .tab-nav { overflow-x: auto; }
+}

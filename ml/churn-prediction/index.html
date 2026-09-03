@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Churn Prediction - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/">NLP</a></li>
+    <li><a href="/kupasai/ml/" class="active">ML</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF24042 &middot; Week 9</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/ml/" class="back-link">&larr; Kembali ke ML</a>
+    <h1>Studi Kasus: Churn Prediction</h1>
+    <p class="page-subtitle">
+      Memprediksi pelanggan mana yang berisiko berhenti berlangganan, agar
+      tim pemasaran bisa menyasar promosi retensi secara tepat.
+    </p>
+    <div class="learning-objectives">
+      <strong>Modul 9:</strong> Mahasiswa mampu membangun dan membandingkan
+      model Logistic Regression dan Random Forest untuk prediksi churn,
+      lalu menerjemahkan hasilnya menjadi insight bisnis.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="model" role="tab" id="tabbtn-model" aria-controls="tab-model" aria-selected="true" tabindex="0">Perbandingan Model</button>
+  <button class="tab-btn" data-tab="predict" role="tab" id="tabbtn-predict" aria-controls="tab-predict" aria-selected="false" tabindex="-1">Coba Prediksi</button>
+</div>
+
+<!-- ====== TAB 1: MODEL COMPARISON ====== -->
+<div class="tab-content active" id="tab-model" role="tabpanel" aria-labelledby="tabbtn-model" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="split-bar" id="split-bar"></div>
+      <div class="split-legend">
+        <span><span class="dot active"></span>Aktif</span>
+        <span><span class="dot churn"></span>Churn</span>
+        <span id="split-legend-text"></span>
+      </div>
+
+      <h3 class="section-title">Logistic Regression vs Random Forest</h3>
+      <div class="model-row" id="model-cards"></div>
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:1.5rem">
+        Parameter terbaik hasil <code>GridSearchCV</code> (5-fold): <span id="rf-params"></span>
+      </p>
+
+      <h3 class="section-title">Feature Importance (Random Forest)</h3>
+      <div id="fi-chart"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Dataset Nyata: ABC Telekom</h3>
+      <p>
+        10.000 pelanggan kartu prabayar internet nirkabel, dengan fitur
+        perilaku penggunaan (reload, internet, video, musik, chat,
+        media sosial) serta <code>tenure</code> dan <code>days_active</code>.
+      </p>
+      <p>
+        Sebelum training, tiga fitur yang berkorelasi tinggi dengan
+        pasangannya (<code>reload_2</code>, <code>socmed_2</code>,
+        <code>games</code>) dibuang lewat <strong>Pearson correlation</strong>
+        &mdash; hanya salah satu dari tiap pasangan yang disimpan.
+      </p>
+      <p>
+        <strong>Random Forest</strong> jauh mengungguli Logistic Regression
+        di semua metrik, terutama recall &mdash; menandakan model non-linear
+        lebih mampu menangkap pola perilaku churn yang kompleks.
+        <code>tenure</code>, <code>reload</code>, dan <code>days_active</code>
+        adalah tiga fitur paling menentukan, sesuai hipotesis awal modul.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: PREDICT ====== -->
+<div class="tab-content" id="tab-predict" role="tabpanel" aria-labelledby="tabbtn-predict" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1rem">
+        Dipilih dari <strong id="churn-n-test" style="color:var(--accent)">-</strong> pelanggan di test set
+      </p>
+      <div class="att-controls">
+        <label>Pelanggan:</label>
+        <select id="customer-select"></select>
+      </div>
+      <div id="customer-detail"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Bandingkan Prediksi</h3>
+      <p>
+        Pilih pelanggan dari test set dan lihat bagaimana kedua model
+        memprediksi status churn-nya, dibandingkan dengan label
+        sebenarnya.
+      </p>
+      <p>
+        Perhatikan pelanggan dengan <code>tenure</code> pendek dan
+        <code>days_active</code> rendah &mdash; ini biasanya yang paling
+        sering diprediksi churn oleh Random Forest.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>
