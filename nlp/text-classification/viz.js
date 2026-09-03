@@ -12,7 +12,20 @@
   'use strict';
 
   var D = CLASSIFICATION_DATA;
-  var C = {
+  var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
+  var C = IS_DARK ? {
+    text_muted: '#8b949e',
+    text_primary: '#e6edf3',
+    text_secondary: '#9198a1',
+    border: '#30363d',
+    grid: '#21262d',
+    accent: '#58a6ff',
+    pos: '#3fb950',
+    neg: '#f85149',
+    orange: '#d29922',
+    purple: '#a371f7',
+    bg_box: '#161b22',
+  } : {
     text_muted: '#656d76',
     text_primary: '#1f2328',
     text_secondary: '#4b5563',
@@ -33,13 +46,34 @@
   var tabBtns = document.querySelectorAll('.tab-btn');
   var tabContents = document.querySelectorAll('.tab-content');
 
-  tabBtns.forEach(function (btn) {
+  function activateTab(btn) {
+    var target = btn.getAttribute('data-tab');
+    tabBtns.forEach(function (b) {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+      b.setAttribute('tabindex', '-1');
+    });
+    tabContents.forEach(function (c) { c.classList.remove('active'); });
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    btn.setAttribute('tabindex', '0');
+    document.getElementById('tab-' + target).classList.add('active');
+  }
+
+  tabBtns.forEach(function (btn, i) {
     btn.addEventListener('click', function () {
-      var target = btn.getAttribute('data-tab');
-      tabBtns.forEach(function (b) { b.classList.remove('active'); });
-      tabContents.forEach(function (c) { c.classList.remove('active'); });
-      btn.classList.add('active');
-      document.getElementById('tab-' + target).classList.add('active');
+      activateTab(btn);
+      btn.focus();
+    });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      var next = e.key === 'ArrowRight' ? i + 1 : i - 1;
+      if (next < 0) next = tabBtns.length - 1;
+      if (next >= tabBtns.length) next = 0;
+      var nextBtn = tabBtns[next];
+      activateTab(nextBtn);
+      nextBtn.focus();
     });
   });
 
@@ -245,7 +279,7 @@
         g.append('circle')
           .attr('cx', x(p.x)).attr('cy', y(p.y)).attr('r', 5)
           .attr('fill', color).attr('opacity', 0.7)
-          .attr('stroke', 'white').attr('stroke-width', 1.5);
+          .attr('stroke', C.bg_box).attr('stroke-width', 1.5);
       });
 
       // Axis labels
@@ -368,7 +402,7 @@
       var matY = 80;
 
       var maxVal = Math.max(matrix[0][0], matrix[0][1], matrix[1][0], matrix[1][1]);
-      var colorScale = d3.scaleSequential(d3.interpolateRgb('#f6f8fa', C.accent))
+      var colorScale = d3.scaleSequential(d3.interpolateRgb(C.bg_box, C.accent))
         .domain([0, maxVal]);
 
       // Cells

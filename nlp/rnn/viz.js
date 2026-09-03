@@ -12,7 +12,23 @@
   'use strict';
 
   var DATA = RNN_DATA;
-  var COLORS = {
+  var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
+  var COLORS = IS_DARK ? {
+    input: '#58a6ff',
+    hidden: '#3fb950',
+    output_pos: '#3fb950',
+    output_neg: '#f85149',
+    rnn_grad: '#58a6ff',
+    lstm_grad: '#3fb950',
+    bg_dot: '#30363d',
+    axis: '#30363d',
+    grid: '#21262d',
+    text_muted: '#8b949e',
+    text_primary: '#e6edf3',
+    accent: '#58a6ff',
+    orange: '#d29922',
+    viz_bg: '#161b22',
+  } : {
     input: '#0969da',
     hidden: '#1a7f37',
     output_pos: '#1a7f37',
@@ -26,6 +42,7 @@
     text_primary: '#1f2328',
     accent: '#0969da',
     orange: '#9a6700',
+    viz_bg: '#f6f8fa',
   };
 
   // ============================================================
@@ -35,13 +52,34 @@
   var tabBtns = document.querySelectorAll('.tab-btn');
   var tabContents = document.querySelectorAll('.tab-content');
 
-  tabBtns.forEach(function (btn) {
+  function activateTab(btn) {
+    var target = btn.getAttribute('data-tab');
+    tabBtns.forEach(function (b) {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+      b.setAttribute('tabindex', '-1');
+    });
+    tabContents.forEach(function (c) { c.classList.remove('active'); });
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    btn.setAttribute('tabindex', '0');
+    document.getElementById('tab-' + target).classList.add('active');
+  }
+
+  tabBtns.forEach(function (btn, i) {
     btn.addEventListener('click', function () {
-      var target = btn.getAttribute('data-tab');
-      tabBtns.forEach(function (b) { b.classList.remove('active'); });
-      tabContents.forEach(function (c) { c.classList.remove('active'); });
-      btn.classList.add('active');
-      document.getElementById('tab-' + target).classList.add('active');
+      activateTab(btn);
+      btn.focus();
+    });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      var next = e.key === 'ArrowRight' ? i + 1 : i - 1;
+      if (next < 0) next = tabBtns.length - 1;
+      if (next >= tabBtns.length) next = 0;
+      var nextBtn = tabBtns[next];
+      activateTab(nextBtn);
+      nextBtn.focus();
     });
   });
 
@@ -125,7 +163,7 @@
         g.append('circle')
           .attr('cx', x).attr('cy', inputY).attr('r', 16)
           .attr('fill', inputColor).attr('opacity', opacity)
-          .attr('stroke', 'white').attr('stroke-width', 1.5);
+          .attr('stroke', COLORS.viz_bg).attr('stroke-width', 1.5);
         g.append('text').attr('x', x).attr('y', inputY + 4)
           .attr('text-anchor', 'middle').attr('font-size', '10px')
           .attr('fill', 'white').attr('opacity', opacity)
@@ -142,7 +180,7 @@
         g.append('circle')
           .attr('cx', x).attr('cy', hiddenY).attr('r', hiddenRadius)
           .attr('fill', hiddenColor).attr('opacity', opacity)
-          .attr('stroke', isCurrent ? COLORS.orange : 'white')
+          .attr('stroke', isCurrent ? COLORS.orange : COLORS.viz_bg)
           .attr('stroke-width', isCurrent ? 3 : 1.5);
         g.append('text').attr('x', x).attr('y', hiddenY + 4)
           .attr('text-anchor', 'middle').attr('font-size', '10px')
@@ -169,7 +207,7 @@
           g.append('circle')
             .attr('cx', x).attr('cy', outputY).attr('r', outRadius)
             .attr('fill', outColor).attr('opacity', opacity * 0.9)
-            .attr('stroke', 'white').attr('stroke-width', 1.5);
+            .attr('stroke', COLORS.viz_bg).attr('stroke-width', 1.5);
           g.append('text').attr('x', x).attr('y', outputY + 4)
             .attr('text-anchor', 'middle').attr('font-size', '10px')
             .attr('fill', 'white').attr('font-weight', '700')
@@ -232,9 +270,9 @@
         var barW = Math.abs(v) * 60;
         var barColor = v >= 0 ? COLORS.hidden : COLORS.output_neg;
         html += '<div style="display:flex;align-items:center;gap:6px;margin:2px 0">';
-        html += '<span style="font-size:0.7rem;color:#656d76;width:20px">h' + (i + 1) + '</span>';
+        html += '<span style="font-size:0.7rem;color:' + COLORS.text_muted + ';width:20px">h' + (i + 1) + '</span>';
         html += '<div style="height:6px;width:' + barW + 'px;background:' + barColor + ';border-radius:3px"></div>';
-        html += '<span style="font-size:0.7rem;color:#656d76">' + v.toFixed(2) + '</span>';
+        html += '<span style="font-size:0.7rem;color:' + COLORS.text_muted + '">' + v.toFixed(2) + '</span>';
         html += '</div>';
       });
       html += '</div>';
@@ -442,9 +480,9 @@
     var currentMethod = 'bow';
 
     var methodColors = {
-      bow: '#0969da',
-      avg: '#9a6700',
-      rnn: '#1a7f37',
+      bow: COLORS.accent,
+      avg: COLORS.orange,
+      rnn: COLORS.hidden,
     };
 
     // Highlight pairs (same sentence, different order)
@@ -544,7 +582,7 @@
         g.append('circle')
           .attr('cx', ld.px).attr('cy', ld.py).attr('r', radius)
           .attr('fill', ptColor).attr('opacity', 0.85)
-          .attr('stroke', 'white').attr('stroke-width', 1.5);
+          .attr('stroke', COLORS.viz_bg).attr('stroke-width', 1.5);
 
         // Connector line if label is far from point
         if (Math.abs(ld.ly - ld.py) > 16) {

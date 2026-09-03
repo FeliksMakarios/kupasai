@@ -6,6 +6,21 @@
   <title>KupasAI - Visualisasi Interaktif untuk Mata Kuliah CS/AI</title>
   <meta name="description" content="Platform visualisasi interaktif untuk pembelajaran mata kuliah Computer Science dan AI dalam Bahasa Indonesia. D3.js + p5.js.">
   <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
 </head>
 <body>
 
@@ -17,6 +32,15 @@
   </ul>
   <div class="navbar-spacer"></div>
   <span class="navbar-meta">Bahasa Indonesia</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
 </nav>
 
 <section class="hero">
@@ -116,5 +140,6 @@
 </footer>
 
 <script src="assets/js/main.js"></script>
+<script src="assets/js/theme.js"></script>
 </body>
 </html>
