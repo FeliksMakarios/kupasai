@@ -12,7 +12,24 @@
   'use strict';
 
   var DATA = ATTENTION_DATA;
-  var COLORS = {
+  var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
+  var COLORS = IS_DARK ? {
+    text_muted: '#8b949e',
+    text_primary: '#e6edf3',
+    text_secondary: '#9198a1',
+    axis: '#30363d',
+    grid: '#21262d',
+    accent: '#58a6ff',
+    pos: '#3fb950',
+    neg: '#f85149',
+    orange: '#d29922',
+    purple: '#a371f7',
+    q_color: '#58a6ff',
+    k_color: '#d29922',
+    v_color: '#3fb950',
+    out_color: '#a371f7',
+    viz_bg: '#161b22',
+  } : {
     text_muted: '#656d76',
     text_primary: '#1f2328',
     text_secondary: '#4b5563',
@@ -27,6 +44,7 @@
     k_color: '#9a6700',
     v_color: '#1a7f37',
     out_color: '#8250df',
+    viz_bg: '#f6f8fa',
   };
 
   // ============================================================
@@ -36,13 +54,34 @@
   var tabBtns = document.querySelectorAll('.tab-btn');
   var tabContents = document.querySelectorAll('.tab-content');
 
-  tabBtns.forEach(function (btn) {
+  function activateTab(btn) {
+    var target = btn.getAttribute('data-tab');
+    tabBtns.forEach(function (b) {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+      b.setAttribute('tabindex', '-1');
+    });
+    tabContents.forEach(function (c) { c.classList.remove('active'); });
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    btn.setAttribute('tabindex', '0');
+    document.getElementById('tab-' + target).classList.add('active');
+  }
+
+  tabBtns.forEach(function (btn, i) {
     btn.addEventListener('click', function () {
-      var target = btn.getAttribute('data-tab');
-      tabBtns.forEach(function (b) { b.classList.remove('active'); });
-      tabContents.forEach(function (c) { c.classList.remove('active'); });
-      btn.classList.add('active');
-      document.getElementById('tab-' + target).classList.add('active');
+      activateTab(btn);
+      btn.focus();
+    });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      var next = e.key === 'ArrowRight' ? i + 1 : i - 1;
+      if (next < 0) next = tabBtns.length - 1;
+      if (next >= tabBtns.length) next = 0;
+      var nextBtn = tabBtns[next];
+      activateTab(nextBtn);
+      nextBtn.focus();
     });
   });
 
@@ -82,7 +121,7 @@
       var g = svg.append('g');
 
       // Color scale
-      var colorScale = d3.scaleSequential(d3.interpolateRgb('#f6f8fa', '#0969da'))
+      var colorScale = d3.scaleSequential(d3.interpolateRgb(COLORS.viz_bg, COLORS.accent))
         .domain([0, 1]);
 
       // Draw cells
@@ -98,7 +137,7 @@
               .attr('width', cellSize - 2).attr('height', cellSize - 2)
               .attr('rx', 3)
               .attr('fill', colorScale(val))
-              .attr('stroke', 'white')
+              .attr('stroke', COLORS.viz_bg)
               .attr('stroke-width', 1.5)
               .style('cursor', 'pointer')
               .on('mouseover', function () {
@@ -108,7 +147,7 @@
                   '" dengan bobot ' + val.toFixed(3);
               })
               .on('mouseout', function () {
-                d3.select(this).attr('stroke', 'white').attr('stroke-width', 1.5);
+                d3.select(this).attr('stroke', COLORS.viz_bg).attr('stroke-width', 1.5);
               })
               .on('click', function () {
                 hintEl.innerHTML =
@@ -348,7 +387,7 @@
         g.append('circle')
           .attr('cx', x).attr('cy', y).attr('r', 14)
           .attr('fill', color).attr('opacity', opacity)
-          .attr('stroke', 'white').attr('stroke-width', 1.5);
+          .attr('stroke', COLORS.viz_bg).attr('stroke-width', 1.5);
         g.append('text')
           .attr('x', x).attr('y', y + 4)
           .attr('text-anchor', 'middle').attr('font-size', '9px')
@@ -397,7 +436,7 @@
       var matStartX = (700 - cellSize * n) / 2;
       var matStartY = 100;
 
-      var colorScale = d3.scaleSequential(d3.interpolateRgb('#f6f8fa', '#0969da')).domain([0, 1]);
+      var colorScale = d3.scaleSequential(d3.interpolateRgb(COLORS.viz_bg, COLORS.accent)).domain([0, 1]);
 
       // Title
       g.append('text')
@@ -433,7 +472,7 @@
             .attr('width', cellSize - 2).attr('height', cellSize - 2)
             .attr('rx', 2)
             .attr('fill', colorScale(val))
-            .attr('stroke', 'white').attr('stroke-width', 1);
+            .attr('stroke', COLORS.viz_bg).attr('stroke-width', 1);
 
           if (cellSize >= 35) {
             g.append('text')
@@ -466,7 +505,7 @@
         g.append('circle')
           .attr('cx', x).attr('cy', y).attr('r', 16)
           .attr('fill', COLORS.out_color).attr('opacity', 0.9)
-          .attr('stroke', 'white').attr('stroke-width', 1.5);
+          .attr('stroke', COLORS.viz_bg).attr('stroke-width', 1.5);
         g.append('text')
           .attr('x', x).attr('y', y + 4)
           .attr('text-anchor', 'middle').attr('font-size', '9px')
@@ -571,7 +610,7 @@
       var offsetX = labelW;
       var offsetY = labelH;
 
-      var colorScale = d3.scaleSequential(d3.interpolateRgb('#f6f8fa', '#8250df'))
+      var colorScale = d3.scaleSequential(d3.interpolateRgb(COLORS.viz_bg, COLORS.purple))
         .domain([0, d3.max(weights.map(function (row) { return d3.max(row); })) || 1]);
 
       // Cells
@@ -587,7 +626,7 @@
               .attr('width', cellSize - 2).attr('height', cellSize - 2)
               .attr('rx', 3)
               .attr('fill', colorScale(val))
-              .attr('stroke', 'white').attr('stroke-width', 1.5);
+              .attr('stroke', COLORS.viz_bg).attr('stroke-width', 1.5);
 
             if (cellSize >= 40) {
               var maxVal = d3.max(weights.map(function (row) { return d3.max(row); })) || 1;

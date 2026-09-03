@@ -34,8 +34,60 @@
   --cat-aksi: #0969da;
   --cat-lainnya: #8b949e;
 
+  --navbar-bg: rgba(255, 255, 255, 0.9);
+
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+}
+
+/* ==================== DARK MODE ==================== */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #21262d;
+    --border: #30363d;
+    --border-light: #21262d;
+    --text-primary: #e6edf3;
+    --text-secondary: #9198a1;
+    --text-muted: #6e7681;
+    --accent: #58a6ff;
+    --accent-hover: #79c0ff;
+    --accent-light: rgba(88, 166, 255, 0.15);
+    --success: #3fb950;
+    --success-light: rgba(63, 185, 80, 0.15);
+    --warning: #d29922;
+    --warning-light: rgba(210, 153, 34, 0.15);
+    --danger: #f85149;
+    --shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 3px 6px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.55);
+    --navbar-bg: rgba(13, 17, 23, 0.85);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary: #21262d;
+  --border: #30363d;
+  --border-light: #21262d;
+  --text-primary: #e6edf3;
+  --text-secondary: #9198a1;
+  --text-muted: #6e7681;
+  --accent: #58a6ff;
+  --accent-hover: #79c0ff;
+  --accent-light: rgba(88, 166, 255, 0.15);
+  --success: #3fb950;
+  --success-light: rgba(63, 185, 80, 0.15);
+  --warning: #d29922;
+  --warning-light: rgba(210, 153, 34, 0.15);
+  --danger: #f85149;
+  --shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 3px 6px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.55);
+  --navbar-bg: rgba(13, 17, 23, 0.85);
 }
 
 * {
@@ -81,7 +133,7 @@ code {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--navbar-bg);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   padding: 0.75rem 2rem;
@@ -132,6 +184,32 @@ code {
 .navbar-meta {
   font-size: 0.8rem;
   color: var(--text-muted);
+}
+
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+.theme-toggle:hover { color: var(--text-primary); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.theme-toggle .icon { display: none; }
+[data-theme="dark"] .theme-toggle .icon-sun { display: inline-block; }
+[data-theme="light"] .theme-toggle .icon-moon,
+:root:not([data-theme]) .theme-toggle .icon-moon { display: inline-block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: inline-block; }
 }
 
 /* ==================== LANDING PAGE ==================== */

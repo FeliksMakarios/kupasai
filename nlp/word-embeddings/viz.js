@@ -18,6 +18,25 @@
   var DATA = EMBEDDING_DATA;
   var WORDS = DATA.words;
 
+  var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
+  var UI = IS_DARK ? {
+    grid: '#21262d',
+    axis: '#30363d',
+    text_muted: '#8b949e',
+    viz_bg: '#161b22',
+    pos: '#3fb950',
+    warn: '#d29922',
+    neg: '#f85149',
+  } : {
+    grid: '#eaeef2',
+    axis: '#d0d7de',
+    text_muted: '#656d76',
+    viz_bg: '#ffffff',
+    pos: '#1a7f37',
+    warn: '#9a6700',
+    neg: '#cf222e',
+  };
+
   var CATEGORY_COLORS = {
     kerajaan: '#ffd700',
     keluarga: '#2ee5c8',
@@ -93,13 +112,34 @@
   var tabBtns = document.querySelectorAll('.tab-btn');
   var tabContents = document.querySelectorAll('.tab-content');
 
-  tabBtns.forEach(function (btn) {
+  function activateTab(btn) {
+    var target = btn.getAttribute('data-tab');
+    tabBtns.forEach(function (b) {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+      b.setAttribute('tabindex', '-1');
+    });
+    tabContents.forEach(function (c) { c.classList.remove('active'); });
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    btn.setAttribute('tabindex', '0');
+    document.getElementById('tab-' + target).classList.add('active');
+  }
+
+  tabBtns.forEach(function (btn, i) {
     btn.addEventListener('click', function () {
-      var target = btn.getAttribute('data-tab');
-      tabBtns.forEach(function (b) { b.classList.remove('active'); });
-      tabContents.forEach(function (c) { c.classList.remove('active'); });
-      btn.classList.add('active');
-      document.getElementById('tab-' + target).classList.add('active');
+      activateTab(btn);
+      btn.focus();
+    });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      var next = e.key === 'ArrowRight' ? i + 1 : i - 1;
+      if (next < 0) next = tabBtns.length - 1;
+      if (next >= tabBtns.length) next = 0;
+      var nextBtn = tabBtns[next];
+      activateTab(nextBtn);
+      nextBtn.focus();
     });
   });
 
@@ -150,7 +190,7 @@
       .attr('x2', function (d) { return x(d); })
       .attr('y1', 0)
       .attr('y2', innerH)
-      .attr('stroke', '#eaeef2')
+      .attr('stroke', UI.grid)
       .attr('stroke-width', 1);
 
     g.append('g')
@@ -161,7 +201,7 @@
       .attr('y2', function (d) { return y(d); })
       .attr('x1', 0)
       .attr('x2', innerW)
-      .attr('stroke', '#eaeef2')
+      .attr('stroke', UI.grid)
       .attr('stroke-width', 1);
 
     // Axes
@@ -169,19 +209,19 @@
       .attr('transform', 'translate(0,' + innerH + ')')
       .call(d3.axisBottom(x).tickValues([-1, -0.5, 0, 0.5, 1]).tickFormat(function (d) { return d; }))
       .selectAll('text')
-      .style('fill', '#656d76');
+      .style('fill', UI.text_muted);
 
     g.append('g')
       .call(d3.axisLeft(y).tickValues([-1, -0.5, 0, 0.5, 1]).tickFormat(function (d) { return d; }))
       .selectAll('text')
-      .style('fill', '#656d76');
+      .style('fill', UI.text_muted);
 
     // Axis labels
     g.append('text')
       .attr('x', innerW / 2)
       .attr('y', innerH + 35)
       .attr('text-anchor', 'middle')
-      .style('fill', '#656d76')
+      .style('fill', UI.text_muted)
       .style('font-size', '11px')
       .text('PC1 (' + DATA.pca_info.pc1_explained + '% varians)');
 
@@ -190,7 +230,7 @@
       .attr('y', -38)
       .attr('text-anchor', 'middle')
       .attr('transform', 'rotate(-90)')
-      .style('fill', '#656d76')
+      .style('fill', UI.text_muted)
       .style('font-size', '11px')
       .text('PC2 (' + DATA.pca_info.pc2_explained + '% varians)');
 
@@ -198,13 +238,13 @@
     g.append('line')
       .attr('x1', x(0)).attr('x2', x(0))
       .attr('y1', 0).attr('y2', innerH)
-      .attr('stroke', '#d0d7de')
+      .attr('stroke', UI.axis)
       .attr('stroke-width', 1.5);
 
     g.append('line')
       .attr('x1', 0).attr('x2', innerW)
       .attr('y1', y(0)).attr('y2', y(0))
-      .attr('stroke', '#d0d7de')
+      .attr('stroke', UI.axis)
       .attr('stroke-width', 1.5);
 
     // Active categories for filtering
@@ -223,7 +263,7 @@
       .attr('r', 6)
       .attr('fill', function (d) { return CATEGORY_COLORS[d.category] || CATEGORY_COLORS.lainnya; })
       .attr('opacity', 0.85)
-      .attr('stroke', '#ffffff')
+      .attr('stroke', UI.viz_bg)
       .attr('stroke-width', 1.5)
       .on('mouseover', function (event, d) {
         d3.select(this).attr('r', 9).attr('opacity', 1);
@@ -388,7 +428,7 @@
         .attr('cx', function (d) { return x(d.x); })
         .attr('cy', function (d) { return y(d.y); })
         .attr('r', 3)
-        .attr('fill', '#d0d7de')
+        .attr('fill', UI.axis)
         .attr('opacity', 0.5);
 
       // The 4 key words
@@ -432,7 +472,7 @@
           .attr('r', 8)
           .attr('fill', colors[role])
           .attr('opacity', 0.9)
-          .attr('stroke', '#ffffff')
+          .attr('stroke', UI.viz_bg)
           .attr('stroke-width', 2);
 
         g.append('text')
@@ -448,12 +488,12 @@
       g.append('line')
         .attr('x1', x(0)).attr('x2', x(0))
         .attr('y1', 0).attr('y2', innerH)
-        .attr('stroke', '#d0d7de');
+        .attr('stroke', UI.axis);
 
       g.append('line')
         .attr('x1', 0).attr('x2', innerW)
         .attr('y1', y(0)).attr('y2', y(0))
-        .attr('stroke', '#d0d7de');
+        .attr('stroke', UI.axis);
     }
 
     [selectA, selectB, selectC].forEach(function (sel) {
@@ -495,7 +535,7 @@
       var angle = Math.acos(Math.max(-1, Math.min(1, sim))) * 180 / Math.PI;
 
       // Result display
-      var barColor = sim > 0.7 ? '#1a7f37' : sim > 0.3 ? '#9a6700' : sim > -0.3 ? '#656d76' : '#cf222e';
+      var barColor = sim > 0.7 ? UI.pos : sim > 0.3 ? UI.warn : sim > -0.3 ? UI.text_muted : UI.neg;
       resultEl.innerHTML =
         '<div class="sim-value" style="color:' + barColor + '">' + sim.toFixed(3) + '</div>' +
         '<div class="sim-label">Cosine similarity &middot; Sudut: ' + angle.toFixed(1) + '&deg;</div>' +
@@ -522,7 +562,7 @@
           .attr('cy', cy)
           .attr('r', maxLen * r)
           .attr('fill', 'none')
-          .attr('stroke', '#eaeef2')
+          .attr('stroke', UI.grid)
           .attr('stroke-width', 1);
       });
 
@@ -556,7 +596,7 @@
         .attr('y', cy + Math.sin(midAngle) * labelR)
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'middle')
-        .attr('fill', '#656d76')
+        .attr('fill', UI.text_muted)
         .attr('font-size', '12px')
         .text(angle.toFixed(0) + '\u00B0');
     }

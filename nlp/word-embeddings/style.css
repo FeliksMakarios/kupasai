@@ -237,7 +237,7 @@
 /* Tooltip */
 .tooltip {
   position: absolute;
-  background: var(--text-primary);
+  background: #1f2328;
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 0.5rem 0.75rem;

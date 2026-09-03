@@ -6,6 +6,21 @@
   <title>Word Embeddings &amp; Vector Space - KupasAI</title>
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
 </head>
 <body>
 
@@ -17,6 +32,15 @@
   </ul>
   <div class="navbar-spacer"></div>
   <span class="navbar-meta">INF20161 &middot; Week 1</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
 </nav>
 
 <div class="page-header">
@@ -36,14 +60,14 @@
 </div>
 
 <!-- ====== TAB NAVIGATION ====== -->
-<div class="tab-nav">
-  <button class="tab-btn active" data-tab="scatter">Ruang Vektor</button>
-  <button class="tab-btn" data-tab="analogy">Analogi Kata</button>
-  <button class="tab-btn" data-tab="similarity">Cosine Similarity</button>
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="scatter" role="tab" id="tabbtn-scatter" aria-controls="tab-scatter" aria-selected="true" tabindex="0">Ruang Vektor</button>
+  <button class="tab-btn" data-tab="analogy" role="tab" id="tabbtn-analogy" aria-controls="tab-analogy" aria-selected="false" tabindex="-1">Analogi Kata</button>
+  <button class="tab-btn" data-tab="similarity" role="tab" id="tabbtn-similarity" aria-controls="tab-similarity" aria-selected="false" tabindex="-1">Cosine Similarity</button>
 </div>
 
 <!-- ====== TAB 1: SCATTER PLOT ====== -->
-<div class="tab-content active" id="tab-scatter">
+<div class="tab-content active" id="tab-scatter" role="tabpanel" aria-labelledby="tabbtn-scatter" tabindex="0">
   <div class="viz-layout">
     <div class="viz-main">
       <svg id="scatter-plot" viewBox="0 0 700 500"></svg>
@@ -76,7 +100,7 @@
 </div>
 
 <!-- ====== TAB 2: WORD ANALOGY EXPLORER ====== -->
-<div class="tab-content" id="tab-analogy">
+<div class="tab-content" id="tab-analogy" role="tabpanel" aria-labelledby="tabbtn-analogy" tabindex="0">
   <div class="viz-layout">
     <div class="viz-main">
       <div class="analogy-builder">
@@ -154,7 +178,7 @@
 </div>
 
 <!-- ====== TAB 3: COSINE SIMILARITY ====== -->
-<div class="tab-content" id="tab-similarity">
+<div class="tab-content" id="tab-similarity" role="tabpanel" aria-labelledby="tabbtn-similarity" tabindex="0">
   <div class="viz-layout">
     <div class="viz-main">
       <svg id="sim-plot" viewBox="0 0 600 300"></svg>
@@ -212,5 +236,6 @@
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script src="data.js"></script>
 <script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
 </body>
 </html>
