@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linear Regression - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/">NLP</a></li>
+    <li><a href="/kupasai/ml/" class="active">ML</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF24042 &middot; Week 3</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/ml/" class="back-link">&larr; Kembali ke ML</a>
+    <h1>Linear Regression</h1>
+    <p class="page-subtitle">
+      Mencari garis lurus terbaik yang mewakili hubungan antar variabel numerik,
+      lalu memakainya untuk memprediksi nilai baru.
+    </p>
+    <div class="learning-objectives">
+      <strong>Sub-CPMK 2.2:</strong> Mahasiswa dapat mengimplementasikan
+      regresi linier dengan Scikit-learn dan mengevaluasi model menggunakan
+      metrik seperti R&sup2;.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="simple" role="tab" id="tabbtn-simple" aria-controls="tab-simple" aria-selected="true" tabindex="0">Regresi Sederhana</button>
+  <button class="tab-btn" data-tab="multi" role="tab" id="tabbtn-multi" aria-controls="tab-multi" aria-selected="false" tabindex="-1">Regresi Berganda &amp; Korelasi</button>
+</div>
+
+<!-- ====== TAB 1: SIMPLE ====== -->
+<div class="tab-content active" id="tab-simple" role="tabpanel" aria-labelledby="tabbtn-simple" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="stat-row">
+        <div class="stat-chip">Slope (m)<strong id="lr-slope">-</strong></div>
+        <div class="stat-chip">Intercept (c)<strong id="lr-intercept">-</strong></div>
+        <div class="stat-chip">R&sup2; (test set)<strong id="lr-r2">-</strong></div>
+      </div>
+      <div class="predict-box">
+        <label for="predict-liter">Prediksi:</label>
+        <input type="range" id="predict-liter" min="6" max="45" value="25">
+        <span class="predict-value"><span id="predict-liter-value">25</span> liter</span>
+        <span class="predict-result" id="predict-result"></span>
+      </div>
+      <svg id="simple-plot" viewBox="0 0 700 420"></svg>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Data Nyata: Konsumsi BBM</h3>
+      <p>
+        65 titik data pengukuran nyata dari <code>bensin.csv</code> (Modul 3):
+        berapa liter bensin diisi, dan berapa kilometer yang berhasil ditempuh.
+      </p>
+      <p>
+        Garis biru adalah <strong>regression line</strong> hasil training
+        Scikit-learn (<code>LinearRegression().fit()</code>), bukan digambar
+        manual. Geser slider untuk melihat bagaimana model memprediksi jarak
+        tempuh dari jumlah bensin berapa pun.
+      </p>
+      <p>
+        R&sup2; &asymp; 0.98 berarti model ini menjelaskan hampir seluruh variasi
+        data &mdash; garis lurus ternyata representasi yang sangat baik untuk
+        hubungan bensin-jarak.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: MULTI ====== -->
+<div class="tab-content" id="tab-multi" role="tabpanel" aria-labelledby="tabbtn-multi" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <h3 style="font-size:0.95rem;margin-bottom:0.75rem">Model dengan berapa predictor?</h3>
+      <div class="model-buttons">
+        <button class="model-btn" data-model="1" type="button">1 fitur</button>
+        <button class="model-btn" data-model="2" type="button">2 fitur</button>
+        <button class="model-btn" data-model="4" type="button">4 fitur</button>
+      </div>
+      <div class="model-formula" id="model-formula"></div>
+      <p class="model-r2" id="model-r2"></p>
+
+      <h3 style="font-size:0.95rem;margin:1.5rem 0 0.75rem">Korelasi Pearson Antar-Fitur</h3>
+      <div class="corr-table-wrap" id="corr-table"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Data Nyata: MLG_data.csv</h3>
+      <p>
+        Dataset yang sama, ditambah kolom <code>Penumpang</code>,
+        <code>Bagasi</code>, <code>Kecepatan</code>, RPM, dan <code>Suhu</code>.
+        Menambah fitur biasanya menaikkan R&sup2;, tapi tidak selalu berarti
+        model lebih baik &mdash; perhatikan korelasi antar-predictor sebelum
+        menambah fitur begitu saja.
+      </p>
+      <p>
+        Perhatikan <code>Kecepatan</code> dan <code>Kec. Perputaran Mesin</code>
+        yang berkorelasi sangat kuat (&asymp;0.95) satu sama lain &mdash; gejala
+        <strong>multikolinearitas</strong> yang bisa membuat interpretasi
+        koefisien kurang stabil.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

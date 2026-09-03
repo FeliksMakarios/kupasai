@@ -1,0 +1,70 @@
+/*
+ * KupasAI - Pandas Styles
+ */
+
+/* ==================== PAGE HEADER ==================== */
+
+.page-header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 2rem 2rem 1.5rem; }
+.page-header-content { max-width: 900px; margin: 0 auto; }
+.back-link { font-size: 0.85rem; color: var(--text-muted); display: inline-block; margin-bottom: 0.75rem; text-decoration: none; }
+.back-link:hover { color: var(--accent); }
+.page-header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+.page-subtitle { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
+.learning-objectives { background: var(--accent-light); border: 1px solid #54aeff; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+.learning-objectives strong { color: var(--accent); }
+
+/* ==================== TABS ==================== */
+
+.tab-nav { max-width: 900px; margin: 0 auto; padding: 1rem 2rem 0; display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border); }
+.tab-btn { background: none; border: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; padding: 0.6rem 1.2rem; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; font-family: var(--font-sans); }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-content { display: none; max-width: 1100px; margin: 0 auto; padding: 1.5rem 2rem; }
+.tab-content.active { display: block; }
+
+/* ==================== LAYOUT ==================== */
+
+.viz-layout { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start; }
+.viz-main { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; box-shadow: var(--shadow-sm); }
+.viz-sidebar h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.viz-sidebar p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem; }
+.viz-sidebar strong { color: var(--text-primary); }
+.viz-sidebar code { font-family: var(--font-mono); background: var(--bg-tertiary); padding: 1px 4px; border-radius: 3px; font-size: 0.85em; }
+
+/* ==================== OP BUTTONS ==================== */
+
+.op-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
+.op-btn {
+  background: var(--bg-tertiary); border: 1px solid var(--border);
+  color: var(--text-secondary); padding: 0.45rem 0.9rem;
+  border-radius: 6px; font-size: 0.82rem; font-weight: 500;
+  font-family: var(--font-sans); cursor: pointer; transition: all 0.15s;
+}
+.op-btn:hover { border-color: var(--accent); color: var(--text-primary); }
+.op-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+/* ==================== DATAFRAME TABLE ==================== */
+
+.df-table-wrap { overflow-x: auto; margin-bottom: 1rem; }
+.df-table { border-collapse: collapse; font-size: 0.85rem; font-family: var(--font-mono); width: 100%; }
+.df-table th, .df-table td {
+  border: 1px solid var(--border); padding: 0.4rem 0.7rem; text-align: right;
+  transition: background 0.15s, opacity 0.15s;
+}
+.df-table th { background: var(--bg-secondary); font-family: var(--font-sans); font-weight: 600; text-align: right; color: var(--text-secondary); }
+.df-table th:first-child, .df-table td:first-child { text-align: left; color: var(--text-primary); font-weight: 600; }
+.df-table td.dim { opacity: 0.25; }
+.df-table td.hl { background: var(--accent-light); color: var(--accent); font-weight: 700; }
+.df-table td.hl-row { background: var(--bg-secondary); }
+.df-table td.na { color: var(--danger); font-style: italic; }
+.df-table td.removed { text-decoration: line-through; opacity: 0.3; }
+
+.df-caption { font-size: 0.78rem; color: var(--text-muted); margin: 0.5rem 0 1rem; }
+.df-code { font-family: var(--font-mono); font-size: 0.8rem; background: var(--bg-tertiary); padding: 0.6rem 0.8rem; border-radius: 6px; color: var(--accent); margin-bottom: 1rem; display: block; white-space: pre-wrap; }
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 768px) {
+  .viz-layout { grid-template-columns: 1fr; }
+  .tab-nav { overflow-x: auto; }
+}

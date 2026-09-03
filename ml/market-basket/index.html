@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Market Basket Analysis - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/">NLP</a></li>
+    <li><a href="/kupasai/ml/" class="active">ML</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF24042 &middot; Week 11</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/ml/" class="back-link">&larr; Kembali ke ML</a>
+    <h1>Market Basket Analysis</h1>
+    <p class="page-subtitle">
+      Menemukan produk-produk yang sering dibeli bersamaan, dengan algoritma
+      Apriori dan metrik support, confidence, dan lift.
+    </p>
+    <div class="learning-objectives">
+      <strong>Modul 11:</strong> Mahasiswa mampu menerapkan algoritma Apriori
+      dengan <code>mlxtend</code> untuk menemukan frequent itemsets dan
+      association rules, lalu menerjemahkannya menjadi insight bisnis.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="rules" role="tab" id="tabbtn-rules" aria-controls="tab-rules" aria-selected="true" tabindex="0">Frequent Itemsets &amp; Aturan</button>
+  <button class="tab-btn" data-tab="explore" role="tab" id="tabbtn-explore" aria-controls="tab-explore" aria-selected="false" tabindex="-1">Jelajahi Produk</button>
+</div>
+
+<!-- ====== TAB 1: RULES ====== -->
+<div class="tab-content active" id="tab-rules" role="tabpanel" aria-labelledby="tabbtn-rules" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <h3 class="section-title">Frequent Itemsets (min support &ge; <span id="mba-min-support">-</span>)</h3>
+      <div id="itemset-chart"></div>
+
+      <h3 class="section-title">Association Rules (min confidence &ge; <span id="mba-min-confidence">-</span>)</h3>
+      <div id="rules-table"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Data Nyata: Transaksi Kedai Kopi</h3>
+      <p>
+        <strong id="mba-n-trx">-</strong> transaksi nyata dari
+        <code>semua_transaksi_ch11b.csv</code> (Modul 11), diubah ke format
+        one-hot encoding lalu diproses dengan <code>apriori()</code> dan
+        <code>association_rules()</code> dari <code>mlxtend</code>.
+      </p>
+      <p>
+        <strong>Lift &gt; 1</strong> berarti kedua produk lebih sering
+        dibeli bersama dibanding jika independen. Aturan
+        <strong>Nasi Goreng Jawa &rarr; Mineral Water</strong> punya lift
+        2,72&times; &mdash; jauh lebih kuat dari
+        <strong>Pisang Goreng &rarr; Teh Tubruk</strong> (1,73&times;).
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: EXPLORE ====== -->
+<div class="tab-content" id="tab-explore" role="tabpanel" aria-labelledby="tabbtn-explore" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="att-controls">
+        <label>Produk:</label>
+        <select id="product-select"></select>
+      </div>
+      <p id="product-support" style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1rem"></p>
+      <h3 class="section-title">5 Produk dengan Lift Tertinggi</h3>
+      <div class="pair-card-row" id="pair-cards"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Eksplorasi Lebih Luas</h3>
+      <p>
+        Tab ini menghitung <strong>support, confidence,</strong> dan
+        <strong>lift</strong> untuk semua pasangan produk secara langsung,
+        dengan ambang minimum support yang jauh lebih longgar (1%) daripada
+        tab sebelumnya (10%) &mdash; supaya pasangan langka yang hanya
+        kebetulan tidak mendominasi urutan lift.
+      </p>
+      <p>
+        Pilih produk apa pun dan lihat 5 produk lain yang paling sering
+        dibeli bersamanya, diurutkan dari <strong>lift</strong> tertinggi
+        &mdash; makin tinggi lift, makin kuat keterkaitannya.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>
