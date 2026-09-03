@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Summarization - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/" class="active">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF20161 &middot; Week 10</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke NLP</a>
+    <h1>Text Summarization</h1>
+    <p class="page-subtitle">
+      Tugas pertama kita di ranah <em>natural language generation</em>: model
+      tidak lagi memberi label, tapi menulis <strong>teks baru</strong>.
+      Bandingkan lima model peringkasan dan hitung sendiri skor BLEU/ROUGE-nya.
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul 10:</strong> Mahasiswa mampu mengaplikasikan model
+      Transformer encoder-decoder untuk peringkasan teks, serta mengevaluasi
+      hasilnya dengan metrik BLEU dan ROUGE.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="models" role="tab" id="tabbtn-models" aria-controls="tab-models" aria-selected="true" tabindex="0">Perbandingan Model</button>
+  <button class="tab-btn" data-tab="metrics" role="tab" id="tabbtn-metrics" aria-controls="tab-metrics" aria-selected="false" tabindex="-1">BLEU &amp; ROUGE</button>
+</div>
+
+<!-- ====== TAB 1: MODEL COMPARISON ====== -->
+<div class="tab-content active" id="tab-models" role="tabpanel" aria-labelledby="tabbtn-models" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="model-select-row" id="model-select-row"></div>
+      <div id="model-card"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Artikel yang Sama untuk Semua Model</h3>
+      <p>
+        Kelima ringkasan ini dihasilkan dari artikel nyata (kecelakaan
+        jembatan Minneapolis, CNN/DailyMail dataset), dipotong ke 2.000
+        karakter yang sama persis agar perbandingan adil.
+      </p>
+      <p>
+        Perhatikan <strong>GPT-2</strong>: karena tidak pernah di-fine-tune
+        untuk peringkasan, ia hanya melanjutkan teks dengan prompt
+        <code>TL;DR:</code> dan hasilnya berhalusinasi (angka korban
+        dikarang) serta berulang-ulang.
+      </p>
+      <p>
+        <strong>T5</strong> menghasilkan parafrase yang paling koheren di
+        antara kelimanya, sementara <strong>Baseline</strong> dan
+        <strong>BART</strong> (checkpoint dasar, bukan yang di-fine-tune
+        khusus) masih sangat mirip kalimat aslinya &mdash; lebih ekstraktif
+        secara perilaku meski bukan model ekstraktif secara desain.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: BLEU & ROUGE ====== -->
+<div class="tab-content" id="tab-metrics" role="tabpanel" aria-labelledby="tabbtn-metrics" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <h3 class="section-title">BLEU (fokus precision n-gram)</h3>
+      <div class="calc-inputs">
+        <div>
+          <label for="bleu-candidate">Kalimat terjemahan/kandidat</label>
+          <input type="text" id="bleu-candidate">
+        </div>
+        <div>
+          <label for="bleu-reference">Kalimat referensi</label>
+          <input type="text" id="bleu-reference">
+        </div>
+      </div>
+      <div class="smooth-toggle">
+        <button class="toggle-btn" id="smooth-toggle-btn" type="button">Smoothing: Nonaktif</button>
+      </div>
+      <div id="bleu-table"></div>
+      <div class="metric-row" id="bleu-metrics"></div>
+
+      <h3 class="section-title">ROUGE (fokus recall n-gram)</h3>
+      <div class="calc-inputs">
+        <div>
+          <label for="rouge-candidate">Ringkasan kandidat</label>
+          <input type="text" id="rouge-candidate">
+        </div>
+        <div>
+          <label for="rouge-reference">Ringkasan referensi</label>
+          <input type="text" id="rouge-reference">
+        </div>
+      </div>
+      <div class="metric-row" id="rouge-metrics"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Precision vs Recall</h3>
+      <p>
+        <strong>BLEU</strong> menghitung berapa persen n-gram pada
+        kandidat yang juga muncul di referensi (precision), lalu
+        dikalikan <strong>brevity penalty</strong> agar terjemahan yang
+        terlalu pendek tidak diuntungkan.
+      </p>
+      <p>
+        Tanpa smoothing, satu saja n-gram tingkat tinggi (3-gram/4-gram)
+        yang tidak cocok membuat skor BLEU langsung <strong>0</strong>
+        &mdash; nilai default di atas persis mereplikasi kasus ini dari
+        Modul 10. Aktifkan smoothing untuk melihat skor yang lebih realistis.
+      </p>
+      <p>
+        <strong>ROUGE</strong> sebaliknya menekankan <strong>recall</strong>:
+        berapa persen n-gram <em>referensi</em> yang berhasil "ditangkap"
+        kandidat. Cocok untuk peringkasan karena kita ingin tahu apakah
+        informasi penting dari referensi tertangkap, bukan sekadar presisi
+        kata demi kata.
+      </p>
+      <p>
+        Coba edit teksnya sendiri &mdash; misalnya ganti satu kata dengan
+        sinonim &mdash; dan lihat bagaimana skor berubah meski makna
+        kalimat tetap sama.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

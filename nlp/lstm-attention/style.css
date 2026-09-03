@@ -1,0 +1,84 @@
+/*
+ * KupasAI - Gated Recurrent Models & Classical Attention Styles
+ */
+
+.page-header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 2rem 2rem 1.5rem; }
+.page-header-content { max-width: 900px; margin: 0 auto; }
+.back-link { font-size: 0.85rem; color: var(--text-muted); display: inline-block; margin-bottom: 0.75rem; text-decoration: none; }
+.back-link:hover { color: var(--accent); }
+.page-header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+.page-subtitle { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
+.learning-objectives { background: var(--accent-light); border: 1px solid #54aeff; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+.learning-objectives strong { color: var(--accent); }
+
+.tab-nav { max-width: 900px; margin: 0 auto; padding: 1rem 2rem 0; display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border); }
+.tab-btn { background: none; border: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; padding: 0.6rem 1.2rem; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; font-family: var(--font-sans); }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-content { display: none; max-width: 1100px; margin: 0 auto; padding: 1.5rem 2rem; }
+.tab-content.active { display: block; }
+
+.viz-layout { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start; }
+.viz-main { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; box-shadow: var(--shadow-sm); }
+.viz-main svg { width: 100%; height: auto; display: block; }
+.viz-sidebar h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.viz-sidebar p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem; }
+.viz-sidebar strong { color: var(--text-primary); }
+.viz-sidebar code { font-family: var(--font-mono); background: var(--bg-tertiary); padding: 1px 4px; border-radius: 3px; font-size: 0.85em; }
+
+/* ==================== SHARED SLIDER ==================== */
+
+.predict-box {
+  display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;
+  background: var(--bg-secondary); border-radius: 8px; padding: 0.75rem 1rem; flex-wrap: wrap;
+}
+.predict-box label { font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; }
+.predict-box input[type="range"] { flex: 1; min-width: 140px; }
+.predict-box .predict-value { font-family: var(--font-mono); font-weight: 700; color: var(--accent); min-width: 3rem; text-align: right; }
+
+/* ==================== LSTM vs GRU GATE CARDS ==================== */
+
+.gate-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.gate-col h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.6rem; text-align: center; }
+.gate-col.lstm-col h4 { color: var(--accent); }
+.gate-col.gru-col h4 { color: var(--success); }
+
+.gate-card {
+  background: var(--bg-secondary); border-radius: 8px; padding: 0.65rem 0.85rem; margin-bottom: 0.6rem;
+}
+.gate-card .gc-title { font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.35rem; display: flex; justify-content: space-between; }
+.gate-card .gc-title .gc-formula { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); }
+.gate-card .gc-track { height: 12px; background: var(--bg-tertiary); border-radius: 6px; overflow: hidden; position: relative; }
+.gate-card .gc-fill { height: 100%; background: var(--accent); }
+.gate-card.gru .gc-fill { background: var(--success); }
+.gate-card .gc-val { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem; text-align: right; }
+
+.state-card {
+  background: var(--accent-light); border-radius: 8px; padding: 0.7rem 0.9rem; margin-top: 0.75rem;
+  font-size: 0.82rem; text-align: center;
+}
+.state-card strong { font-family: var(--font-mono); color: var(--accent); }
+.gate-col.gru-col .state-card { background: rgba(63,185,80,0.12); }
+.gate-col.gru-col .state-card strong { color: var(--success); }
+
+/* ==================== ATTENTION ==================== */
+
+.qslider-row { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 1rem; }
+.qslider-row .ctrl-group { display: flex; align-items: center; gap: 0.6rem; }
+.qslider-row label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; }
+.qslider-row input[type="range"] { width: 160px; }
+.qslider-row .ctrl-val { font-family: var(--font-mono); font-weight: 700; color: var(--accent); min-width: 2.6rem; text-align: right; }
+
+.attn-weights-row { display: flex; gap: 0.5rem; margin-top: 1rem; justify-content: center; flex-wrap: wrap; }
+.attn-word-card { text-align: center; font-size: 0.78rem; }
+.attn-word-card .awc-bar-track { width: 32px; height: 90px; background: var(--bg-tertiary); border-radius: 6px; display: flex; align-items: flex-end; overflow: hidden; margin: 0 auto 0.35rem; }
+.attn-word-card .awc-bar-fill { width: 100%; background: var(--accent); }
+.attn-word-card .awc-word { font-weight: 600; color: var(--text-primary); }
+.attn-word-card .awc-pct { font-family: var(--font-mono); color: var(--text-muted); font-size: 0.72rem; }
+
+@media (max-width: 768px) {
+  .viz-layout { grid-template-columns: 1fr; }
+  .tab-nav { overflow-x: auto; }
+  .gate-columns { grid-template-columns: 1fr; }
+  .qslider-row { flex-direction: column; align-items: flex-start; }
+}
