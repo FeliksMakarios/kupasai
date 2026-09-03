@@ -27,13 +27,18 @@ kupasai/
 │   ├── index.html               # Daftar topik NLP
 │   ├── word-embeddings/
 │   ├── rnn/
+│   ├── autograd/                 # Tensor & Autograd (Week 3)
+│   ├── lstm-attention/           # LSTM, GRU & Classical Attention (Week 4)
 │   ├── self-attention/
 │   ├── transformer/
-│   └── text-classification/
+│   ├── text-classification/
+│   ├── ner/                      # Named Entity Recognition (Week 9)
+│   ├── summarization/            # Text Summarization (Week 10)
+│   └── question-answering/       # Question Answering (Week 11)
 │       ├── index.html           # Halaman visualisasi (tab-based, ARIA tablist)
 │       ├── style.css            # Styles khusus visualisasi ini
-│       ├── data.js              # Data pre-computed (dari generate_*.py)
-│       ├── generate_*.py        # Skrip Python yang menghasilkan data.js
+│       ├── data.js              # Data pre-computed (dari generate_*.py, atau ditulis langsung untuk contoh toy/ilustratif)
+│       ├── generate_*.py        # Skrip Python yang menghasilkan data.js (bila memakai dataset nyata)
 │       └── viz.js              # Logika visualisasi D3.js
 └── ml/                          # Mata kuliah Pengantar Machine Learning
     ├── index.html                # Daftar topik ML
@@ -55,10 +60,15 @@ kupasai/
 | Minggu RPS | Visualisasi | Status |
 |---|---|---|
 | Week 1 | Word Embeddings & Vector Space | Tersedia |
-| Week 2-4 | RNN Forward Pass / Backpropagation | Tersedia |
+| Week 2 | RNN Forward Pass / Backpropagation | Tersedia |
+| Week 3 | Tensor & Autograd | Tersedia |
+| Week 4 | LSTM, GRU & Classical Attention | Tersedia |
 | Week 5-6 | Self-Attention Mechanism | Tersedia |
 | Week 6 | Transformer Architecture | Tersedia |
 | Week 7 | Text Classification Pipeline | Tersedia |
+| Week 9 | Named Entity Recognition | Tersedia |
+| Week 10 | Text Summarization | Tersedia |
+| Week 11 | Question Answering | Tersedia |
 
 ### ML
 
@@ -76,7 +86,7 @@ kupasai/
 
 ## Pengembangan
 
-Kelima visualisasi NLP dan sembilan visualisasi ML sudah lengkap. Tech stack final: D3.js saja. Tidak ganti framework.
+Kesepuluh visualisasi NLP dan sembilan visualisasi ML sudah lengkap. Tech stack final: D3.js saja. Tidak ganti framework.
 
 Data untuk visualisasi yang memakai model matematis (mis. `self-attention`, atau seluruh topik ML) di-generate dari skrip Python (`generate_*.py`) di masing-masing folder, bukan ditulis manual — jalankan skripnya lagi kalau perlu mengubah bobot, dataset, atau contoh kalimat, jangan edit `data.js` langsung. Skrip ML membaca dataset asli dari [repo mata kuliah `dasar-machine-learning`](https://github.com/FeliksMakarios/dasar-machine-learning) di GitHub (bisa dioverride ke path lokal lewat env var `DASAR_ML_DIR`).
 

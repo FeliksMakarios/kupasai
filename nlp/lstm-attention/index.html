@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LSTM, GRU &amp; Classical Attention - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/" class="active">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF20161 &middot; Week 4</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke NLP</a>
+    <h1>LSTM, GRU &amp; Classical Attention</h1>
+    <p class="page-subtitle">
+      Dari "menyimpan" ke "memilih": bagaimana gerbang memori LSTM/GRU
+      mengontrol aliran informasi, dan bagaimana attention klasik membiarkan
+      decoder "melirik kembali" ke seluruh input encoder.
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul 4:</strong> Mahasiswa memahami intuisi desain LSTM
+      sebagai solusi atas vanishing gradient, peran memory cell dan gating
+      mechanism, serta ide dasar classical (encoder-decoder) attention.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="gates" role="tab" id="tabbtn-gates" aria-controls="tab-gates" aria-selected="true" tabindex="0">LSTM vs GRU</button>
+  <button class="tab-btn" data-tab="attention" role="tab" id="tabbtn-attention" aria-controls="tab-attention" aria-selected="false" tabindex="-1">Classical Attention</button>
+</div>
+
+<!-- ====== TAB 1: LSTM vs GRU ====== -->
+<div class="tab-content active" id="tab-gates" role="tabpanel" aria-labelledby="tabbtn-gates" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="predict-box">
+        <label for="x-slider">Input pada timestep ini (x<sub>t</sub>):</label>
+        <input type="range" id="x-slider" min="-3" max="3" step="0.1" value="0">
+        <span class="predict-value" id="x-value">0.0</span>
+      </div>
+      <div class="gate-columns">
+        <div class="gate-col lstm-col">
+          <h4>LSTM (4 gate/state)</h4>
+          <div id="lstm-gates"></div>
+          <div class="state-card" id="lstm-state"></div>
+        </div>
+        <div class="gate-col gru-col">
+          <h4>GRU (2 gate, tanpa cell state)</h4>
+          <div id="gru-gates"></div>
+          <div class="state-card" id="gru-state"></div>
+        </div>
+      </div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Bandingkan Langsung</h3>
+      <p>
+        Geser <code>x<sub>t</sub></code> dan lihat bagaimana gerbang di
+        kedua arsitektur bereaksi. <code>h<sub>t-1</sub>=0.3</code> dan
+        <code>c<sub>t-1</sub>=0.6</code> (khusus LSTM) tetap konstan.
+      </p>
+      <p>
+        Di <code>x<sub>t</sub></code> besar: forget gate LSTM
+        <strong>menutup</strong> (melupakan cell state lama) sementara
+        input gate <strong>terbuka lebar</strong> (menerima info baru) &mdash;
+        persis intuisi Modul 4.2.4-4.2.5.
+      </p>
+      <p>
+        GRU mencapai efek serupa dengan lebih sedikit parameter: update gate
+        <code>z</code> menggantikan peran forget+input LSTM sekaligus,
+        tanpa cell state terpisah.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: CLASSICAL ATTENTION ====== -->
+<div class="tab-content" id="tab-attention" role="tabpanel" aria-labelledby="tabbtn-attention" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="qslider-row">
+        <div class="ctrl-group">
+          <label for="qx-slider">Query x:</label>
+          <input type="range" id="qx-slider" min="-1" max="1" step="0.1" value="1">
+          <span class="ctrl-val" id="qx-value">1.0</span>
+        </div>
+        <div class="ctrl-group">
+          <label for="qy-slider">Query y:</label>
+          <input type="range" id="qy-slider" min="-1" max="1" step="0.1" value="0">
+          <span class="ctrl-val" id="qy-value">0.0</span>
+        </div>
+      </div>
+      <svg id="attn-plot" viewBox="0 0 500 380"></svg>
+      <div class="attn-weights-row" id="attn-weights"></div>
+      <p style="text-align:center;font-size:0.85rem;color:var(--text-secondary);margin-top:0.75rem">
+        Context vector = <code id="attn-context-val" style="color:var(--success)">-</code>
+      </p>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Encoder Punya 5 Hidden State</h3>
+      <p>
+        Kalimat "saya suka belajar deep learning" di-encode menjadi 5
+        hidden state 2D (titik biru). Decoder membawa <strong>query</strong>
+        (garis putus-putus dari origin) yang menentukan bagian mana yang
+        paling relevan.
+      </p>
+      <p>
+        <code>score<sub>i</sub> = h<sub>i</sub> &middot; query</code>, lalu
+        dinormalisasi dengan softmax menjadi <code>&alpha;<sub>i</sub></code>.
+        <strong>Context vector</strong> (lingkaran hijau) adalah rata-rata
+        berbobot &Sigma;&alpha;<sub>i</sub>h<sub>i</sub> &mdash; selalu jatuh
+        di antara titik-titik yang paling diperhatikan.
+      </p>
+      <p>
+        Coba geser query ke arah "suka" (qx=1, qy=0) lalu ke arah
+        "belajar/deep/learning" (qx=0, qy=1) &mdash; perhatikan context
+        vector "bergerak" mengikuti fokus perhatian.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

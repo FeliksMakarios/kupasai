@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question Answering - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/" class="active">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF20161 &middot; Week 11</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke NLP</a>
+    <h1>Question Answering</h1>
+    <p class="page-subtitle">
+      Menggabungkan pemahaman (memahami pertanyaan &amp; konteks) dengan ekstraksi
+      atau generasi jawaban. Dari span classification ekstraktif hingga
+      Retrieval-Augmented Generation (RAG).
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul 11:</strong> Mahasiswa memahami arsitektur
+      retriever-reader, tokenisasi untuk QA, span classification, dan
+      pendekatan generative QA dengan RAG.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="span" role="tab" id="tabbtn-span" aria-controls="tab-span" aria-selected="true" tabindex="0">Extractive QA</button>
+  <button class="tab-btn" data-tab="rag" role="tab" id="tabbtn-rag" aria-controls="tab-rag" aria-selected="false" tabindex="-1">Sliding Window &amp; RAG</button>
+</div>
+
+<!-- ====== TAB 1: EXTRACTIVE QA / SPAN CLASSIFICATION ====== -->
+<div class="tab-content active" id="tab-span" role="tabpanel" aria-labelledby="tabbtn-span" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <h3 class="section-title">Span Classification (Modul 11.2)</h3>
+      <p class="qa-text-block">Format input: <code>[CLS] pertanyaan [SEP] konteks [SEP]</code> &mdash; token abu-abu adalah pertanyaan (tidak bisa dipilih), token lain adalah konteks.</p>
+      <div class="token-row" id="qa-token-row"></div>
+
+      <p class="qa-text-block" style="margin-top:0.5rem">Start logit (biru) &amp; end logit (hijau) tiap token &mdash; oranye = argmax:</p>
+      <div id="qa-logit-bars" style="margin-bottom:0.5rem"></div>
+
+      <div class="pick-row">
+        <span class="pick-label">Klik token konteks untuk set:</span>
+        <button class="pick-btn mode-start active" data-mode="start" type="button">Token Awal</button>
+        <button class="pick-btn mode-end" data-mode="end" type="button">Token Akhir</button>
+      </div>
+      <div class="answer-box" id="qa-answer-box"></div>
+
+      <h3 class="section-title">Contoh Nyata: ExtractedAnswer (Haystack)</h3>
+      <div class="ref-card-row" id="ref-answers"></div>
+
+      <h3 class="section-title">F1-score Model pada SQuAD 2.0</h3>
+      <div id="f1-table"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Bagaimana Model Menemukan Jawaban</h3>
+      <p>
+        Model tidak memilih satu label, melainkan memprediksi <strong>dua
+        posisi</strong>: token awal dan token akhir jawaban. Sebuah
+        linear layer di atas hidden state menghitung skor (logit) untuk
+        setiap token menjadi awal atau akhir span.
+      </p>
+      <p>
+        Contoh nyata dari Modul 11: pertanyaan "How much music can this
+        hold?" pada konteks tentang MP3 &mdash; model cenderung memberi
+        skor tertinggi pada "1"/"6000" untuk start dan "MB/minute,"/"hours"
+        untuk end, sehingga jawaban terekstrak "6000 hours".
+      </p>
+      <p>
+        Coba klik token lain untuk melihat bagaimana span jawaban berubah
+        &mdash; ini persis cara kerja <code>torch.argmax(start_logits)</code>
+        dan <code>torch.argmax(end_logits)</code> di notebook.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: SLIDING WINDOW & RAG ====== -->
+<div class="tab-content" id="tab-rag" role="tabpanel" aria-labelledby="tabbtn-rag" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <h3 class="section-title">Sliding Window untuk Konteks Panjang</h3>
+      <p class="qa-text-block">
+        Pertanyaan: "<span id="window-question"></span>" &middot;
+        max_length=<span id="window-maxlen"></span>, stride=<span id="window-stride"></span>
+      </p>
+      <div class="window-select-row" id="window-select-row"></div>
+      <div class="window-text" id="window-text"></div>
+      <p style="font-size:0.78rem;color:var(--text-muted);margin-top:-0.5rem;margin-bottom:1.5rem">
+        Bagian yang di-highlight adalah kalimat yang <strong>tumpang tindih</strong>
+        (overlap) antar window &mdash; contoh nyata dari ulasan headphone Koss di Modul 11.2.
+      </p>
+
+      <h3 class="section-title">Contoh Nyata: Generative QA dengan RAG</h3>
+      <div class="rag-qa-card">
+        <div class="rq-question">Q: <span id="rag-question"></span></div>
+        <div class="rq-answer" id="rag-answer"></div>
+      </div>
+      <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:0.5rem">Pertanyaan lain yang dicoba pada dataset Seven Wonders:</p>
+      <ul class="example-q-list" id="other-questions"></ul>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Dua Cara Mengatasi Keterbatasan</h3>
+      <p>
+        <strong>Sliding window</strong> mengatasi konteks yang melebihi
+        batas token model: teks dipecah jadi beberapa window yang saling
+        tumpang tindih (diatur oleh <code>stride</code>) agar jawaban yang
+        berada di perbatasan window tidak hilang.
+      </p>
+      <p>
+        <strong>RAG (Retrieval-Augmented Generation)</strong> mengatasi
+        keterbatasan extractive QA yang hanya bisa mengutip teks persis:
+        retriever mengambil dokumen relevan, lalu LLM men-<em>sintesis</em>
+        jawaban baru berdasarkan konteks tersebut &mdash; bukan sekadar
+        memotong span.
+      </p>
+      <p>
+        Jawaban RAG di atas asli dari pipeline Haystack + Qwen2.5-1.5B-Instruct
+        pada dataset Wikipedia "Seven Wonders of the Ancient World".
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

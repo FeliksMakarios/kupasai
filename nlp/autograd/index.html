@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tensor &amp; Autograd - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/" class="active">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF20161 &middot; Week 3</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke NLP</a>
+    <h1>Tensor &amp; Autograd</h1>
+    <p class="page-subtitle">
+      Apa yang sebenarnya terjadi di balik <code>.backward()</code>? Membangun
+      mini deep learning framework dari nol untuk memahami computational graph
+      dan gradien otomatis.
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul 3:</strong> Mahasiswa memahami tensor, computational
+      graph, dan autograd, serta mengaitkan chain rule pada backpropagation
+      sebagai fondasi untuk memahami vanishing/exploding gradient pada RNN.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="graph" role="tab" id="tabbtn-graph" aria-controls="tab-graph" aria-selected="true" tabindex="0">Graf Komputasi &amp; Bug Gradien</button>
+  <button class="tab-btn" data-tab="chain" role="tab" id="tabbtn-chain" aria-controls="tab-chain" aria-selected="false" tabindex="-1">Rantai Perkalian</button>
+</div>
+
+<!-- ====== TAB 1: COMPUTATIONAL GRAPH ====== -->
+<div class="tab-content active" id="tab-graph" role="tabpanel" aria-labelledby="tabbtn-graph" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="mode-buttons">
+        <button class="mode-btn buggy active" data-mode="buggy" type="button">Autograd Naif (Ada Bug)</button>
+        <button class="mode-btn" data-mode="fixed" type="button">Autograd Diperbaiki</button>
+      </div>
+      <svg id="graph-plot" viewBox="0 0 500 380"></svg>
+      <div class="step-controls">
+        <button id="step-prev" class="step-btn">&larr; Sebelumnya</button>
+        <span id="ag-step-indicator">Langkah 0 / 6</span>
+        <button id="step-next" class="step-btn">Selanjutnya &rarr;</button>
+      </div>
+      <div class="trace-log" id="ag-trace-log"></div>
+      <div class="verdict-box" id="ag-verdict" style="display:none"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Bug Akumulasi Gradien (Modul 3.2)</h3>
+      <p>
+        Graf ini persis dari notebook: <code>a=[1,2,3,4,5]</code>,
+        <code>b=[2,2,2,2,2]</code>, <code>c=[5,4,3,2,1]</code>,
+        <code>d=a+b</code>, <code>e=b+c</code>, <code>f=d+e</code>, lalu
+        <code>f.backward([1,1,1,1,1])</code>.
+      </p>
+      <p>
+        Perhatikan <strong>b</strong>: ia dipakai di dua jalur (membentuk
+        <code>d</code> dan <code>e</code>), jadi gradiennya seharusnya
+        <strong>diakumulasi</strong> dari kedua jalur tersebut.
+      </p>
+      <p>
+        Coba mode <strong>Naif</strong>: implementasi awal hanya menimpa
+        <code>self.grad = grad</code> setiap backward dipanggil, sehingga
+        kontribusi jalur pertama hilang. Mode <strong>Diperbaiki</strong>
+        melacak jumlah anak (children) tiap tensor dan menjumlahkan semua
+        kontribusi sebelum diteruskan ke atas.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: CHAIN MULTIPLICATION ====== -->
+<div class="tab-content" id="tab-chain" role="tabpanel" aria-labelledby="tabbtn-chain" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="preset-buttons">
+        <button class="preset-btn" data-g="0.9" data-n="50" type="button">g=0.9, n=50</button>
+        <button class="preset-btn" data-g="1.0" data-n="50" type="button">g=1.0, n=50</button>
+        <button class="preset-btn" data-g="1.1" data-n="50" type="button">g=1.1, n=50</button>
+      </div>
+      <div class="chain-controls">
+        <div class="ctrl-group">
+          <label for="g-slider">Faktor per langkah (g):</label>
+          <input type="range" id="g-slider" min="0.8" max="1.2" step="0.01" value="0.9">
+          <span class="ctrl-val" id="g-value">0.90</span>
+        </div>
+        <div class="ctrl-group">
+          <label for="n-slider">Jumlah langkah (n):</label>
+          <input type="range" id="n-slider" min="1" max="60" step="1" value="50">
+          <span class="ctrl-val" id="n-value">50</span>
+        </div>
+      </div>
+      <svg id="chain-plot" viewBox="0 0 700 340"></svg>
+      <p class="chain-result" id="chain-result"></p>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Mengapa Gradien Bisa Hilang atau Meledak?</h3>
+      <p>
+        Backward pass pada operasi perkalian mengalikan gradien dengan nilai
+        input lain di setiap langkah (Modul 3.3.2). Jika faktor ini
+        diulang <code>n</code> kali secara berantai, hasilnya adalah
+        <code>g<sup>n</sup></code>.
+      </p>
+      <p>
+        Notebook mencontohkan <code>g<sup>50</sup></code> untuk
+        <code>g=0.9</code> (&asymp;0,005, nyaris nol), <code>g=1.0</code>
+        (tetap 1), dan <code>g=1.1</code> (&asymp;117, meledak).
+      </p>
+      <p>
+        Inilah akar matematis <strong>vanishing</strong> dan
+        <strong>exploding gradient</strong> pada RNN &mdash; bobot recurrent
+        yang sama dikalikan berulang di setiap timestep. Masalah inilah yang
+        memotivasi LSTM dan GRU di Week 4.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>
