@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studi Kasus: Streetlight Problem - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
+    <li><a href="/kupasai/ml-lanjut/" class="active">ML Lanjut</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">IN F24141 &middot; Week 5</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/ml-lanjut/" class="back-link">&larr; Kembali ke ML Lanjut</a>
+    <h1>Studi Kasus: Streetlight Problem</h1>
+    <p class="page-subtitle">
+      Kapan aman menyeberang jalan? Sebuah jaringan satu-layer belajar
+      menemukan korelasi tersembunyi dari pola tiga lampu jalan &mdash;
+      dan hasilnya mengungkap lampu mana yang benar-benar penting.
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul 5:</strong> Mahasiswa memahami hubungan
+      input-output dalam bentuk matriks, menerapkan gradient descent pada
+      dataset nyata, dan menganalisis bagaimana neural network menemukan
+      korelasi lokal maupun global.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="single" role="tab" id="tabbtn-single" aria-controls="tab-single" aria-selected="true" tabindex="0">Belajar dari Satu Contoh</button>
+  <button class="tab-btn" data-tab="whole" role="tab" id="tabbtn-whole" aria-controls="tab-whole" aria-selected="false" tabindex="-1">Belajar dari Seluruh Dataset</button>
+</div>
+
+<!-- ====== TAB 1: SINGLE EXAMPLE ====== -->
+<div class="tab-content active" id="tab-single" role="tabpanel" aria-labelledby="tabbtn-single" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <table class="dataset-table" id="dataset-table">
+        <thead><tr><th>Lampu Kiri</th><th>Lampu Tengah</th><th>Lampu Kanan</th><th>Keputusan</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <p class="dataset-caption" id="dataset-caption"></p>
+      <p class="section-note">
+        Latih hanya dengan baris pertama <code>[1,0,1]&rarr;STOP</code>, bobot awal [0.5, 0.48, &minus;0.7], alpha=0.1, 20 iterasi.
+      </p>
+      <svg id="sl-single-plot" viewBox="0 0 640 300"></svg>
+      <table class="iter-table" id="single-table">
+        <thead><tr><th>Langkah</th><th>Prediksi</th><th>Error</th><th>Bobot</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Menghafal Satu Baris</h3>
+      <p>
+        Karena hanya dilatih dengan satu baris <code>[1,0,1]</code>, bobot
+        untuk <strong>lampu tengah</strong> (indeks 1) tidak pernah
+        berubah &mdash; nilainya tetap 0.48 sepanjang 20 iterasi, karena
+        inputnya selalu 0 pada baris ini.
+      </p>
+      <p>
+        Model hanya belajar menyesuaikan bobot kiri dan kanan supaya
+        selisihnya mendekati 0 (target STOP). Ini <em>bukan</em> pola
+        umum &mdash; hanya cocok untuk baris ini saja.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: WHOLE DATASET ====== -->
+<div class="tab-content" id="tab-whole" role="tabpanel" aria-labelledby="tabbtn-whole" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Latih dengan seluruh 6 baris dataset setiap epoch, bobot awal [0.5, 0.48, &minus;0.7], alpha=0.1, 40 epoch.
+      </p>
+      <svg id="sl-whole-plot" viewBox="0 0 640 300"></svg>
+      <table class="iter-table" id="whole-table">
+        <thead><tr><th>Epoch</th><th>Total Error</th><th>Bobot</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="section-label">Bobot Akhir: Lampu Mana yang Penting?</div>
+      <svg id="sl-final-weights" viewBox="0 0 400 200" style="max-width:400px"></svg>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Korelasi Ditemukan</h3>
+      <p>
+        Setelah 40 epoch melihat <strong>seluruh</strong> dataset, bobot
+        konvergen ke <code>[0.014, 1.014, &minus;0.016]</code>. Bobot
+        <strong>lampu tengah</strong> mendekati 1, sementara kiri dan
+        kanan mendekati 0.
+      </p>
+      <p>
+        Inilah <strong>correlation summarization</strong>: jaringan secara
+        otomatis "menemukan" bahwa hanya lampu tengah yang benar-benar
+        menentukan keputusan WALK/STOP, persis seperti yang terlihat di
+        tabel dataset.
+      </p>
+      <p>
+        Error total turun dari 2.66 menjadi 0.0005 &mdash; jauh lebih
+        rendah &amp; lebih general dibanding melatih satu baris saja.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; ML Lanjut IN F24141</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

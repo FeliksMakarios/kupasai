@@ -1,0 +1,84 @@
+/*
+ * KupasAI - Forward Propagation Styles
+ */
+
+.page-header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 2rem 2rem 1.5rem; }
+.page-header-content { max-width: 900px; margin: 0 auto; }
+.back-link { font-size: 0.85rem; color: var(--text-muted); display: inline-block; margin-bottom: 0.75rem; text-decoration: none; }
+.back-link:hover { color: var(--accent); }
+.page-header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+.page-subtitle { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
+.learning-objectives { background: var(--accent-light); border: 1px solid #54aeff; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+.learning-objectives strong { color: var(--accent); }
+
+.tab-nav { max-width: 900px; margin: 0 auto; padding: 1rem 2rem 0; display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.tab-btn { background: none; border: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; padding: 0.6rem 1.2rem; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; font-family: var(--font-sans); }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-content { display: none; max-width: 1100px; margin: 0 auto; padding: 1.5rem 2rem; }
+.tab-content.active { display: block; }
+
+.viz-layout { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start; }
+.viz-main { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; box-shadow: var(--shadow-sm); }
+.viz-main svg { width: 100%; height: auto; display: block; }
+.viz-sidebar h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.viz-sidebar p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem; }
+.viz-sidebar strong { color: var(--text-primary); }
+.viz-sidebar code { font-family: var(--font-mono); background: var(--bg-tertiary); padding: 1px 4px; border-radius: 3px; font-size: 0.85em; }
+
+/* ==================== SCENARIO BUTTONS ==================== */
+
+.scenario-buttons { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.scenario-btn {
+  background: var(--bg-tertiary); border: 1px solid var(--border);
+  color: var(--text-secondary); padding: 0.5rem 0.9rem;
+  border-radius: 6px; font-size: 0.8rem; font-weight: 500;
+  font-family: var(--font-sans); cursor: pointer; transition: all 0.15s;
+}
+.scenario-btn:hover { border-color: var(--accent); color: var(--text-primary); }
+.scenario-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+.scenario-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+.scenario-story { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem; }
+
+/* ==================== NETWORK DIAGRAM ==================== */
+
+.net-node circle { stroke-width: 1.5; }
+.net-node text.node-label { font-size: 10px; fill: var(--text-muted); font-family: var(--font-sans); }
+.net-node text.node-value { font-size: 12px; font-weight: 700; font-family: var(--font-mono); }
+.net-layer-name { font-size: 11px; font-weight: 600; fill: var(--text-muted); text-anchor: middle; text-transform: uppercase; letter-spacing: 0.05em; }
+.net-edge { fill: none; }
+.net-edge-label { font-size: 9px; font-family: var(--font-mono); fill: var(--text-muted); }
+
+/* ==================== TRACE LOG ==================== */
+
+.trace-log {
+  margin-top: 1rem; padding: 0.85rem 1rem; background: var(--bg-secondary);
+  border-radius: 8px; font-family: var(--font-mono); font-size: 0.8rem;
+  color: var(--text-secondary); line-height: 1.9;
+}
+.trace-log strong { color: var(--accent); }
+
+/* ==================== NUMPY DEMO TAB ==================== */
+
+.numpy-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.numpy-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+.numpy-card.bad { border-color: var(--danger); }
+.numpy-card.good { border-color: var(--success); }
+.numpy-card h4 { font-size: 0.85rem; margin-bottom: 0.5rem; }
+.numpy-card.good h4 { color: var(--success); }
+.numpy-card.bad h4 { color: var(--danger); }
+.numpy-card pre {
+  background: var(--bg-tertiary); padding: 0.75rem; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 0.78rem; overflow-x: auto;
+  margin-bottom: 0.5rem; white-space: pre-wrap;
+}
+.numpy-card .result { font-family: var(--font-mono); font-size: 0.78rem; padding: 0.5rem 0.75rem; border-radius: 6px; margin-bottom: 0.5rem; white-space: pre-wrap; }
+.numpy-card.good .result { background: var(--success-light); color: var(--success); }
+.numpy-card.bad .result { background: rgba(207,34,46,0.12); color: var(--danger); }
+.numpy-card .note { font-size: 0.8rem; color: var(--text-secondary); }
+
+@media (max-width: 860px) {
+  .viz-layout { grid-template-columns: 1fr; }
+  .numpy-compare { grid-template-columns: 1fr; }
+}

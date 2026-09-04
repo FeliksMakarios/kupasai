@@ -40,17 +40,28 @@ kupasai/
 │       ├── data.js              # Data pre-computed (dari generate_*.py, atau ditulis langsung untuk contoh toy/ilustratif)
 │       ├── generate_*.py        # Skrip Python yang menghasilkan data.js (bila memakai dataset nyata)
 │       └── viz.js              # Logika visualisasi D3.js
-└── ml/                          # Mata kuliah Pengantar Machine Learning
-    ├── index.html                # Daftar topik ML
-    ├── pandas/
-    ├── linear-regression/
-    ├── logistic-regression/
-    ├── decision-tree/
-    ├── random-forest/
-    ├── naive-bayes/
-    ├── churn-prediction/         # Studi kasus: ABC Telekom (Logistic Regression vs Random Forest)
-    ├── clustering/                # Studi kasus: jadwal penerbangan (K-Means, Elbow Method)
-    └── market-basket/             # Studi kasus: transaksi kedai kopi (Apriori, mlxtend)
+├── ml/                          # Mata kuliah Pengantar Machine Learning
+│   ├── index.html                # Daftar topik ML
+│   ├── pandas/
+│   ├── linear-regression/
+│   ├── logistic-regression/
+│   ├── decision-tree/
+│   ├── random-forest/
+│   ├── naive-bayes/
+│   ├── churn-prediction/         # Studi kasus: ABC Telekom (Logistic Regression vs Random Forest)
+│   ├── clustering/                # Studi kasus: jadwal penerbangan (K-Means, Elbow Method)
+│   └── market-basket/             # Studi kasus: transaksi kedai kopi (Apriori, mlxtend)
+└── ml-lanjut/                   # Mata kuliah Pembelajaran Mesin Lanjut
+    ├── index.html                # Daftar topik ML Lanjut
+    ├── forward-propagation/      # Week 2
+    ├── gradient-descent/         # Week 3
+    ├── generalizing-gd/          # Week 4
+    ├── streetlight-backprop/     # Studi kasus: Streetlight Problem (Week 5)
+    ├── nonlinearity-activation/  # Non-linearitas & fungsi aktivasi (Week 6, 10)
+    ├── backprop-visualizer/      # Visualisasi backprop langkah-demi-langkah (Week 7)
+    ├── regularization/           # Regularisasi: sinyal vs noise (Week 9)
+    ├── cnn-basics/                # CNN dasar: konvolusi & pooling (Week 11)
+    └── object-detection/          # IoU, NMS & YOLO (Week 11)
 ```
 
 ## Visualisasi yang Tersedia
@@ -84,11 +95,25 @@ kupasai/
 | Week 10 | Clustering (K-Means) | Tersedia |
 | Week 11 | Market Basket Analysis | Tersedia |
 
+### ML Lanjut
+
+| Minggu RPS | Visualisasi | Status |
+|---|---|---|
+| Week 2 | Forward Propagation | Tersedia |
+| Week 3 | Gradient Descent | Tersedia |
+| Week 4 | Generalizing Gradient Descent | Tersedia |
+| Week 5 | Studi Kasus: Streetlight Problem | Tersedia |
+| Week 6, 10 | Non-Linearitas &amp; Fungsi Aktivasi | Tersedia |
+| Week 7 | Visualisasi Backpropagation Langkah-demi-Langkah | Tersedia |
+| Week 9 | Regularisasi: Sinyal vs Noise | Tersedia |
+| Week 11 | CNN Dasar: Konvolusi &amp; Pooling | Tersedia |
+| Week 11 | Deteksi Objek: IoU, NMS &amp; YOLO | Tersedia |
+
 ## Pengembangan
 
-Kesepuluh visualisasi NLP dan sembilan visualisasi ML sudah lengkap. Tech stack final: D3.js saja. Tidak ganti framework.
+Kesepuluh visualisasi NLP, sembilan visualisasi ML, dan sembilan visualisasi ML Lanjut sudah lengkap. Tech stack final: D3.js saja. Tidak ganti framework.
 
-Data untuk visualisasi yang memakai model matematis (mis. `self-attention`, atau seluruh topik ML) di-generate dari skrip Python (`generate_*.py`) di masing-masing folder, bukan ditulis manual — jalankan skripnya lagi kalau perlu mengubah bobot, dataset, atau contoh kalimat, jangan edit `data.js` langsung. Skrip ML membaca dataset asli dari [repo mata kuliah `dasar-machine-learning`](https://github.com/FeliksMakarios/dasar-machine-learning) di GitHub (bisa dioverride ke path lokal lewat env var `DASAR_ML_DIR`).
+Data untuk visualisasi yang memakai model matematis (mis. `self-attention`, atau seluruh topik ML/ML Lanjut) di-generate dari skrip Python, bukan ditulis manual — jalankan ulang kalau perlu mengubah bobot, dataset, atau contoh, jangan edit `data.js` langsung. Skrip ML membaca dataset asli dari [repo mata kuliah `dasar-machine-learning`](https://github.com/FeliksMakarios/dasar-machine-learning) di GitHub (bisa dioverride ke path lokal lewat env var `DASAR_ML_DIR`). Skrip ML Lanjut mereproduksi angka dari notebook kuliah (PML Mod1-11) secara langsung dengan NumPy/scikit-learn — beberapa visualisasi (mis. `regularization`, `nonlinearity-activation`) memakai dataset nyata setara pengganti (`sklearn.datasets.load_digits`) karena notebook asli memakai `keras.datasets.mnist` yang butuh koneksi internet saat build.
 
 ## Lisensi
 
