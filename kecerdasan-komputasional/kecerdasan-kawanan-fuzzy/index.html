@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kecerdasan Kawanan dan Sistem Fuzzy - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/tentang/">Tentang</a></li>
+    <li><a href="/kupasai/kontak/">Kontak</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF20052 &middot; Week 12-14</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/kecerdasan-komputasional/" class="back-link">&larr; Kembali ke Daftar Topik</a>
+    <h1>Kecerdasan Kawanan dan Sistem Fuzzy</h1>
+    <p class="page-subtitle">
+      Bagaimana koloni semut dan lebah menemukan solusi optimal tanpa
+      kontrol pusat, ditutup dengan sistem fuzzy lengkap dari fuzzifikasi
+      hingga defuzzifikasi Tsukamoto dan Mamdani.
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul Lab 6:</strong> Menghitung pembaruan feromon dan
+      probabilitas jalur pada Ant Colony Optimization, menerapkan tiga fase
+      Artificial Bee Colony, membangun himpunan fuzzy beserta operasi
+      dasarnya, dan membangun sistem fuzzy Tsukamoto serta Mamdani.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="aco" role="tab" id="tabbtn-aco" aria-controls="tab-aco" aria-selected="true" tabindex="0">Ant Colony Optimization</button>
+  <button class="tab-btn" data-tab="abc" role="tab" id="tabbtn-abc" aria-controls="tab-abc" aria-selected="false" tabindex="-1">Artificial Bee Colony</button>
+  <button class="tab-btn" data-tab="himpunan" role="tab" id="tabbtn-himpunan" aria-controls="tab-himpunan" aria-selected="false" tabindex="-1">Himpunan Fuzzy</button>
+  <button class="tab-btn" data-tab="sistem" role="tab" id="tabbtn-sistem" aria-controls="tab-sistem" aria-selected="false" tabindex="-1">Sistem Fuzzy</button>
+</div>
+
+<!-- ====== TAB 1: ANT COLONY OPTIMIZATION ====== -->
+<div class="tab-content active" id="tab-aco" role="tabpanel" aria-labelledby="tabbtn-aco" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Graf 4 titik: titik 1 sarang, titik 4 sumber makanan. Semut biru
+        menempuh 1-2-4-3-1 (panjang 14), semut hijau menempuh 1-4-2-3-1
+        (panjang 31). Feromon awal 1, &rho;=0.5.
+      </p>
+      <svg id="aco-graph" viewBox="0 0 420 340"></svg>
+      <div class="section-label">Feromon Setiap Ruas Setelah Kedua Semut Lewat</div>
+      <table class="iter-table" id="aco-table">
+        <thead><tr><th>Ruas</th><th>Feromon</th></tr></thead>
+        <tbody></tbody>
+      </table>
+
+      <div class="section-label" style="margin-top:2rem">Simulasi 10 Semut, 40 Iterasi</div>
+      <p class="section-note">Dua jalur dari sarang ke makanan: atas (10 satuan) dan bawah (20 satuan).</p>
+      <svg id="aco-sim-chart" viewBox="0 0 640 220"></svg>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Feromon Menuntun Jalur Terpendek</h3>
+      <p>
+        Ruas <code>13</code> dan <code>24</code> dilalui oleh kedua semut,
+        sehingga feromonnya paling tinggi (&asymp;0.60). Ruas yang hanya
+        dilalui satu semut mendapat tambahan lebih kecil.
+      </p>
+      <p>
+        Pada simulasi dengan 10 semut, proporsi yang memilih jalur terpendek
+        (atas) naik dari sekitar 60% pada iterasi awal menjadi
+        <strong>&ge;90%</strong> setelah 40 iterasi &mdash; feromon pada
+        jalur pendek terus menguat karena lebih sering dilalui dan diperbarui
+        lebih cepat (siklus lebih pendek per kunjungan).
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: ARTIFICIAL BEE COLONY ====== -->
+<div class="tab-content" id="tab-abc" role="tabpanel" aria-labelledby="tabbtn-abc" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Meminimumkan f(x1,x2)=x1&sup2;&minus;x1x2+x2&sup2;+2x1+4x2+3 pada
+        selang [&minus;5,5]. Fitness = 0.01&times;f. 5 employed bee.
+      </p>
+      <table class="iter-table" id="abc-initial-table">
+        <thead><tr><th>Sumber</th><th>x1</th><th>x2</th><th>f(x1,x2)</th><th>Fitness</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="section-label">Fase Employed Bee &mdash; Iterasi Pertama</div>
+      <table class="iter-table" id="abc-employed-table">
+        <thead><tr><th>Sumber</th><th>Pasangan</th><th>Rand</th><th>Kandidat Baru</th><th>f Baru</th><th>Keputusan</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="section-label">Konvergensi 150 Iterasi (3 Fase Berulang)</div>
+      <svg id="abc-chart" viewBox="0 0 640 220"></svg>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Tiga Fase yang Saling Melengkapi</h3>
+      <p>
+        Employed bee mengeksplorasi sekitar sumber yang sudah dimiliki.
+        Onlooker bee memilih sumber secara probabilistik berdasar fitness
+        &mdash; sumber lebih baik lebih sering dieksploitasi. Scout bee
+        mengganti sumber yang gagal membaik setelah beberapa percobaan
+        (trial melebihi batas) dengan sumber baru acak.
+      </p>
+      <p>
+        Solusi terbaik yang ditemukan mendekati minimum analitis fungsi ini
+        (x1&asymp;&minus;2.67, x2&asymp;&minus;3.33, f&asymp;&minus;6.33):
+        hasil algoritma <strong>x1=<span id="abc-result-x1"></span>,
+        x2=<span id="abc-result-x2"></span>, f=<span id="abc-result-f"></span></strong>.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 3: HIMPUNAN FUZZY ====== -->
+<div class="tab-content" id="tab-himpunan" role="tabpanel" aria-labelledby="tabbtn-himpunan" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Enam himpunan fuzzy pada domain umur. Hanya kurva <strong>balita</strong>
+        yang nilainya dipatok eksplisit oleh kriteria modul; kurva lain
+        adalah desain trapesium yang melanjutkan pola tersebut.
+      </p>
+      <svg id="fuzzy-umur-chart" viewBox="0 0 640 260"></svg>
+      <div class="section-label">Verifikasi Himpunan Balita</div>
+      <table class="iter-table" id="balita-table">
+        <thead><tr><th>Umur</th><th>&mu; Balita</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Irisan, Gabungan, Komplemen</h3>
+      <p>
+        Himpunan <strong>balita</strong> didefinisikan
+        <code>1&minus;x/7</code> untuk 0&le;x&le;7: derajat keanggotaan 1
+        penuh pada umur 0, turun linear hingga 0 pada umur 7.
+      </p>
+      <p>
+        Operasi dasar fuzzy: irisan memakai nilai minimum kedua himpunan,
+        gabungan memakai nilai maksimum, dan komplemen adalah
+        <code>1 &minus; &mu;(x)</code>. Ketiganya berlaku pada seluruh
+        pasangan himpunan, termasuk balita dan anak yang saling tumpang
+        tindih di sekitar umur 5&ndash;7.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 4: SISTEM FUZZY ====== -->
+<div class="tab-content" id="tab-sistem" role="tabpanel" aria-labelledby="tabbtn-sistem" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Contoh 12.8: pesanan 4000 plat, simpanan 300 plat. Empat aturan
+        jika-maka menentukan jumlah produksi.
+      </p>
+      <table class="iter-table" id="sistem-fuzzifikasi-table">
+        <thead><tr><th>Variabel</th><th>Derajat Keanggotaan</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="mode-buttons" id="sistem-mode-buttons">
+        <button class="mode-btn active" data-mode="tsukamoto">Metode Tsukamoto</button>
+        <button class="mode-btn" data-mode="mamdani">Metode Mamdani</button>
+      </div>
+      <table class="iter-table" id="sistem-aturan-table">
+        <thead><tr><th>Aturan</th><th>&alpha;</th><th>z</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <svg id="sistem-mamdani-chart" viewBox="0 0 640 220" style="display:none"></svg>
+      <p class="result-highlight" id="sistem-result"></p>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Stok Melebihi Kapasitas</h3>
+      <p>
+        Dengan metode Tsukamoto, jumlah produksi &asymp;4983 satuan. Stok
+        akhir = simpanan awal (300) + produksi &minus; pesanan (4000) =
+        <strong id="sistem-stok-akhir"></strong> plat &mdash; jauh melebihi
+        kapasitas simpanan maksimum 600 plat.
+      </p>
+      <p>
+        Ini menunjukkan sistem fuzzy dengan basis aturan sederhana bisa
+        menghasilkan keputusan yang secara praktis tidak layak, meskipun
+        secara matematis konsisten dengan aturan yang diberikan &mdash;
+        aturan tambahan (misalnya mempertimbangkan kapasitas simpanan
+        secara eksplisit) diperlukan agar hasilnya realistis.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; Kecerdasan Komputasional INF20052</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

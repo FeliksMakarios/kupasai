@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pemodelan Ruang Keadaan dan Algoritma Pencarian - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/tentang/">Tentang</a></li>
+    <li><a href="/kupasai/kontak/">Kontak</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF20052 &middot; Week 2-3</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/kecerdasan-komputasional/" class="back-link">&larr; Kembali ke Daftar Topik</a>
+    <h1>Pemodelan Ruang Keadaan dan Algoritma Pencarian</h1>
+    <p class="page-subtitle">
+      Dari robot penyedot debu dua ruangan sampai peta rute Arad&ndash;Bucharest:
+      bagaimana persoalan nyata diubah menjadi ruang keadaan, lalu dipecahkan
+      dengan pencarian buta, pencarian terpimpin, dan adversarial search.
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul Lab 1:</strong> Memodelkan persoalan ke dalam himpunan
+      keadaan dan sistem produksi, mengimplementasikan BFS/DFS/Generate and Test,
+      Greedy Best First Search dan Hill Climbing, serta Min-max dengan Alpha-Beta
+      Pruning.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="ruang" role="tab" id="tabbtn-ruang" aria-controls="tab-ruang" aria-selected="true" tabindex="0">Ruang Keadaan</button>
+  <button class="tab-btn" data-tab="peta" role="tab" id="tabbtn-peta" aria-controls="tab-peta" aria-selected="false" tabindex="-1">BFS, DFS &amp; Greedy</button>
+  <button class="tab-btn" data-tab="hillclimb" role="tab" id="tabbtn-hillclimb" aria-controls="tab-hillclimb" aria-selected="false" tabindex="-1">Hill Climbing</button>
+  <button class="tab-btn" data-tab="minimax" role="tab" id="tabbtn-minimax" aria-controls="tab-minimax" aria-selected="false" tabindex="-1">Min-max &amp; Alpha-Beta</button>
+</div>
+
+<!-- ====== TAB 1: RUANG KEADAAN ====== -->
+<div class="tab-content active" id="tab-ruang" role="tabpanel" aria-labelledby="tabbtn-ruang" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="section-label">Robot Penyedot Debu (Contoh 2.5)</div>
+      <p class="section-note">
+        Keadaan = (posisi, debu kiri, debu kanan). 8 keadaan mungkin, 3 sistem
+        produksi: gerak kiri, gerak kanan, sedot.
+      </p>
+      <svg id="robot-graph" viewBox="0 0 640 340"></svg>
+      <table class="iter-table" id="robot-solution-table">
+        <thead><tr><th>Langkah</th><th>Aksi</th><th>Keadaan Setelahnya</th></tr></thead>
+        <tbody></tbody>
+      </table>
+
+      <div class="section-label" style="margin-top:2rem">Dua Kendi Air (Contoh 2.6, Tabel 2.5)</div>
+      <p class="section-note">
+        Kendi 1 berkapasitas 4 galon, kendi 2 berkapasitas 3 galon. Ruang keadaan
+        berisi 20 keadaan (5 &times; 4). Cari jalur dari (0,0) ke (2,0).
+      </p>
+      <svg id="kendi-grid" viewBox="0 0 420 340"></svg>
+      <table class="iter-table" id="kendi-solution-table">
+        <thead><tr><th>Langkah</th><th>Aturan</th><th>Keadaan (kendi1, kendi2)</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Tiga Tahap Pemodelan</h3>
+      <p>
+        Setiap persoalan diformulasikan lewat tiga tahap: ubah ke himpunan
+        keadaan, definisikan sistem produksi, lalu tentukan cara solusi dicapai.
+      </p>
+      <p>
+        Robot penyedot debu punya 8 keadaan karena kombinasi 2 posisi &times;
+        2 status debu kiri &times; 2 status debu kanan. Solusi termurah dari
+        <code>(kiri, kotor, kotor)</code> ke <code>(kiri, bersih, bersih)</code>
+        berbiaya <strong>4 satuan</strong>: sedot, gerak kanan, sedot, gerak
+        kiri &mdash; persis Contoh 2.5 pada buku.
+      </p>
+      <p>
+        Kendi air memakai 6 aturan dasar (isi, kosongkan, tuang) dari Tabel 2.5.
+        Ruang keadaannya 20 kombinasi (0&ndash;4 galon &times; 0&ndash;3 galon),
+        dan BFS menemukan solusi 6 langkah menuju (2,0).
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: BFS/DFS/GREEDY PADA PETA ====== -->
+<div class="tab-content" id="tab-peta" role="tabpanel" aria-labelledby="tabbtn-peta" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Peta rute antarkota Rumania (Gambar 3.1). Cari jalur dari Arad ke
+        Bucharest dengan tiga algoritma berbeda.
+      </p>
+      <div class="mode-buttons" id="peta-mode-buttons">
+        <button class="mode-btn active" data-algo="bfs">BFS</button>
+        <button class="mode-btn" data-algo="dfs">DFS</button>
+        <button class="mode-btn" data-algo="greedy">Greedy Best First</button>
+      </div>
+      <svg id="peta-graph" viewBox="0 0 680 420"></svg>
+      <div class="section-label" id="peta-result-label"></div>
+      <table class="iter-table" id="peta-bfs-table">
+        <thead><tr><th>Kunjungan</th><th>Bucharest?</th><th>Isi Antrian</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Hasil Ketiga Algoritma</h3>
+      <p>
+        <strong>BFS</strong> menelusuri lapis demi lapis dan menemukan jalur
+        Arad&ndash;Sibiu&ndash;Fagaras&ndash;Bucharest sepanjang
+        <strong>450 km</strong>, mengunjungi 9 simpul.
+      </p>
+      <p>
+        <strong>DFS</strong> menyelam ke satu cabang sedalam mungkin. Dengan
+        urutan tetangga sesuai Gambar 3.1, DFS malah menempuh jalur lewat
+        Timisoara&ndash;Lugoj&ndash;Mehadia&ndash;Drobeta&ndash;Craiova&ndash;Pitesti
+        sejauh <strong>733 km</strong> &mdash; bukti bahwa jalur pertama yang
+        ditemukan DFS belum tentu jalur terpendek.
+      </p>
+      <p>
+        <strong>Greedy Best First Search</strong> memakai jarak garis lurus ke
+        Bucharest sebagai heuristik dan kebetulan menemukan jalur optimal yang
+        sama dengan BFS (450 km), tetapi hanya mengunjungi 4 simpul &mdash;
+        jauh lebih sedikit karena heuristiknya langsung mengarah ke tujuan.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 3: HILL CLIMBING ====== -->
+<div class="tab-content" id="tab-hillclimb" role="tabpanel" aria-labelledby="tabbtn-hillclimb" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Permainan geser 3&times;3 (Gambar 3.10). Heuristik: jumlah ubin yang
+        belum berada pada posisi benar (kotak kosong tidak dihitung).
+      </p>
+      <div class="puzzle-pair" id="puzzle-pair-1"></div>
+      <svg id="hc-chart-1" viewBox="0 0 640 220"></svg>
+
+      <div class="section-label" style="margin-top:2rem">Contoh Tambahan: Kasus yang Benar-benar Terhenti</div>
+      <p class="section-note">
+        Puzzle acak lain (bukan dari kriteria wajib modul) untuk menunjukkan
+        kapan Hill Climbing benar-benar terjebak pada puncak lokal.
+      </p>
+      <div class="puzzle-pair" id="puzzle-pair-2"></div>
+      <svg id="hc-chart-2" viewBox="0 0 640 220"></svg>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Temuan yang Mengejutkan</h3>
+      <p>
+        Untuk keadaan awal wajib pada modul, <strong>kedua varian</strong>
+        Simple Hill Climbing maupun Steepest-Ascent justru berhasil mencapai
+        solusi (h = 0) tanpa terjebak sama sekali &mdash; nilai heuristik turun
+        monoton 3 &rarr; 2 &rarr; 1 &rarr; 0 di setiap langkah.
+      </p>
+      <p>
+        Ini bukan kesalahan: untuk instance puzzle spesifik ini, setiap langkah
+        selalu punya tetangga yang memperbaiki heuristik, jadi tidak ada
+        plateau atau puncak lokal yang menjebak algoritma.
+      </p>
+      <p>
+        Hill Climbing memang <em>rentan</em> terhenti pada puncak lokal, tetapi
+        tidak selalu &mdash; itu bergantung pada bentuk lanskap pencarian dari
+        keadaan awal tertentu. Contoh tambahan di samping menunjukkan kasus
+        yang benar-benar terjebak pada h = 3.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 4: MINIMAX & ALPHA-BETA ====== -->
+<div class="tab-content" id="tab-minimax" role="tabpanel" aria-labelledby="tabbtn-minimax" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Pohon permainan pada Gambar 3.23. Lapisan akar adalah pemain maksimum.
+        Klik tombol untuk beralih antara Min-max murni dan Alpha-Beta Pruning.
+      </p>
+      <div class="mode-buttons" id="minimax-mode-buttons">
+        <button class="mode-btn active" data-mode="minimax">Min-max Murni</button>
+        <button class="mode-btn" data-mode="alphabeta">Alpha-Beta Pruning</button>
+      </div>
+      <svg id="minimax-tree" viewBox="0 0 680 380"></svg>
+      <div class="section-label">Ringkasan</div>
+      <table class="iter-table" id="minimax-summary-table">
+        <thead><tr><th>Algoritma</th><th>Nilai Akar</th><th>Daun Dievaluasi</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Pemangkasan Tanpa Mengubah Hasil</h3>
+      <p>
+        Nilai akar pohon permainan ini adalah <strong>5</strong>, identik pada
+        Min-max murni maupun Alpha-Beta Pruning.
+      </p>
+      <p>
+        Min-max murni mengevaluasi seluruh <strong>12 simpul daun</strong>.
+        Alpha-Beta Pruning hanya perlu mengevaluasi <strong>7 simpul daun</strong>
+        &mdash; 5 simpul terpangkas karena cabangnya sudah dipastikan tidak akan
+        mengubah keputusan akhir pada level manapun.
+      </p>
+      <p>
+        Ini membuktikan klaim inti Alpha-Beta Pruning: pemangkasan mengurangi
+        jumlah simpul yang perlu diperiksa tanpa pernah mengubah nilai akhir
+        pohon.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; Kecerdasan Komputasional INF20052</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

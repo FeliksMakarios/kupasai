@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jaringan Syaraf Tiruan - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/tentang/">Tentang</a></li>
+    <li><a href="/kupasai/kontak/">Kontak</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF20052 &middot; Week 9-10</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/kecerdasan-komputasional/" class="back-link">&larr; Kembali ke Daftar Topik</a>
+    <h1>Jaringan Syaraf Tiruan</h1>
+    <p class="page-subtitle">
+      Dari satu garis pemisah sederhana sampai jaringan berlapis yang belajar
+      mengenali huruf: model matematis neuron, perambatan maju, pembelajaran
+      terawasi, dan pembelajaran kompetitif.
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul Lab 4:</strong> Menghubungkan bobot koneksi dengan
+      garis batas keputusan, menghitung luaran jaringan berlapis, melatih
+      jaringan dengan aturan delta dan back propagation, serta menerapkan
+      Learning Vector Quantization dan Kohonen Network.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="garis" role="tab" id="tabbtn-garis" aria-controls="tab-garis" aria-selected="true" tabindex="0">Garis Batas Keputusan</button>
+  <button class="tab-btn" data-tab="forward" role="tab" id="tabbtn-forward" aria-controls="tab-forward" aria-selected="false" tabindex="-1">Perambatan Maju</button>
+  <button class="tab-btn" data-tab="delta" role="tab" id="tabbtn-delta" aria-controls="tab-delta" aria-selected="false" tabindex="-1">Delta &amp; Backprop</button>
+  <button class="tab-btn" data-tab="lvq" role="tab" id="tabbtn-lvq" aria-controls="tab-lvq" aria-selected="false" tabindex="-1">LVQ</button>
+  <button class="tab-btn" data-tab="som" role="tab" id="tabbtn-som" aria-controls="tab-som" aria-selected="false" tabindex="-1">Kohonen Network</button>
+</div>
+
+<!-- ====== TAB 1: GARIS BATAS KEPUTUSAN ====== -->
+<div class="tab-content active" id="tab-garis" role="tabpanel" aria-labelledby="tabbtn-garis" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Jaringan 2&times;1 dengan fungsi aktivasi ambang batas
+        &theta;=0.5 pada domain [0,1]&sup2;. Garis batas keputusan:
+        w1&middot;x1 + w2&middot;x2 = &theta;.
+      </p>
+      <div id="garis-grid" class="garis-grid"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Satu Pasang Bobot, Satu Garis</h3>
+      <p>
+        Setiap pasangan titik menentukan satu pasang bobot (w1,w2) yang
+        membuat garis <code>w1x1+w2x2=0.5</code> melewati kedua titik itu.
+      </p>
+      <p>
+        Empat konfigurasi berbeda menghasilkan (1,1), (1/3,1/3), (1,&minus;1),
+        dan (&minus;1,1) &mdash; daerah hijau menandakan luaran 1, daerah
+        merah menandakan luaran 0.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: PERAMBATAN MAJU ====== -->
+<div class="tab-content" id="tab-forward" role="tabpanel" aria-labelledby="tabbtn-forward" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Jaringan 3&times;3&times;2 (Contoh 7.3). Fungsi aktivasi biner sigmoid
+        f(x) = 1/(1+e<sup>&minus;2(x&minus;0.5)</sup>).
+      </p>
+      <div class="matrix-pair" id="forward-matrices"></div>
+      <div class="section-label">Empat Contoh Input &rarr; Luaran</div>
+      <table class="iter-table" id="forward-table">
+        <thead><tr><th>Input (x1,x2,x3)</th><th>Net Tersembunyi</th><th>Luaran Tersembunyi</th><th>Net Luaran</th><th>Luaran Akhir O</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Alur Perkalian Matriks</h3>
+      <p>
+        Input (1&times;3) dikalikan bobot tersembunyi WH (3&times;3)
+        menghasilkan net tersembunyi, dilewatkan aktivasi menjadi luaran
+        tersembunyi, lalu dikalikan bobot luaran WO (3&times;2) menghasilkan
+        net luaran, dan akhirnya dilewatkan aktivasi sekali lagi.
+      </p>
+      <p>
+        Seluruh nilai luaran akhir berada pada selang [0,1], sesuai sifat
+        fungsi sigmoid.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 3: DELTA & BACKPROP ====== -->
+<div class="tab-content" id="tab-delta" role="tabpanel" aria-labelledby="tabbtn-delta" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="mode-buttons" id="delta-mode-buttons">
+        <button class="mode-btn active" data-mode="delta">Aturan Delta: AND &amp; OR</button>
+        <button class="mode-btn" data-mode="backprop">Back Propagation: Kenali Huruf</button>
+      </div>
+      <div id="delta-view"></div>
+      <div id="backprop-view" style="display:none">
+        <p class="section-note">
+          Jaringan 25&times;6&times;4 mengenali huruf A, B, C, D dari matriks
+          piksel 5&times;5, dilatih dari 32 varian bising (&theta;=0.5,
+          &alpha;=0.7, momentum=0.4).
+        </p>
+        <div class="letter-grid" id="letter-patterns"></div>
+        <svg id="backprop-chart" viewBox="0 0 640 220"></svg>
+        <div class="section-label">Akurasi per Huruf Setelah Pelatihan</div>
+        <svg id="backprop-acc" viewBox="0 0 500 160"></svg>
+      </div>
+    </div>
+    <div class="viz-sidebar">
+      <h3 id="delta-sidebar-title">Konvergensi Sederhana</h3>
+      <p id="delta-sidebar-text"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 4: LVQ ====== -->
+<div class="tab-content" id="tab-lvq" role="tabpanel" aria-labelledby="tabbtn-lvq" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Konfigurasi 6&times;2, bobot awal dari dua data pertama, jarak
+        Hamming, &alpha;=0.05.
+      </p>
+      <table class="iter-table" id="lvq-data-table">
+        <thead><tr><th>Data</th><th>Vektor</th><th>Kelas Akhir (Epoch 30)</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="section-label">Bobot Kelas</div>
+      <div class="matrix-pair" id="lvq-weights"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Pembelajaran Kompetitif</h3>
+      <p>
+        Bobot awal W1 dan W2 diambil dari dua data pertama. Setelah data
+        ketiga diproses pada epoch pertama, <strong>W1 berubah</strong>
+        menjadi [0.95, 0, 0.05, 0, 0.95, 0.05] sedangkan W2 tetap tidak
+        berubah &mdash; karena data ketiga lebih dekat ke W1 secara Hamming
+        distance.
+      </p>
+      <p>
+        Setelah 30 epoch, kedua bobot kelas konvergen menjadi representasi
+        rata-rata dari kelompok data yang paling sering "menang" pada
+        masing-masing kelas.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 5: KOHONEN NETWORK ====== -->
+<div class="tab-content" id="tab-som" role="tabpanel" aria-labelledby="tabbtn-som" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Self Organizing Map grid 3&times;3 dilatih dengan 10 data yang sama
+        dengan LVQ. Laju pembelajaran dan radius ketetanggaan menyusut
+        seiring epoch.
+      </p>
+      <svg id="som-grid" viewBox="0 0 400 400"></svg>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Pemetaan Dimensi Tinggi ke Grid</h3>
+      <p>
+        Setiap data 6-dimensi dipetakan ke satu simpul pada grid 3&times;3
+        berdasarkan simpul dengan bobot terdekat (winner-take-all), lalu
+        simpul pemenang beserta tetangganya diperbarui agar semakin mirip
+        data tersebut.
+      </p>
+      <p>
+        Setelah pelatihan, data yang berdekatan pada ruang masukan cenderung
+        dipetakan ke simpul yang berdekatan pula pada grid &mdash; sifat
+        <em>topology-preserving</em> yang menjadi ciri khas SOM.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; Kecerdasan Komputasional INF20052</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

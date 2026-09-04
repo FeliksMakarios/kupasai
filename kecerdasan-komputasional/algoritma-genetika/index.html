@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algoritma Genetika - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/tentang/">Tentang</a></li>
+    <li><a href="/kupasai/kontak/">Kontak</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF20052 &middot; Week 11</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/kecerdasan-komputasional/" class="back-link">&larr; Kembali ke Daftar Topik</a>
+    <h1>Algoritma Genetika</h1>
+    <p class="page-subtitle">
+      Meniru evolusi biologis untuk mencari x yang memaksimumkan
+      f(x)=sin(&pi;x/256): penyandian kromosom, seleksi roulette wheel,
+      crossover, mutasi, dan pengaruh parameter kontrol.
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul Lab 5:</strong> Menyandikan solusi ke kromosom
+      biner, menerapkan seleksi roulette wheel, menerapkan crossover satu
+      titik dan mutasi bit, serta mengukur pengaruh parameter kontrol
+      terhadap kecepatan konvergensi.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="encode" role="tab" id="tabbtn-encode" aria-controls="tab-encode" aria-selected="true" tabindex="0">Penyandian Kromosom</button>
+  <button class="tab-btn" data-tab="populasi" role="tab" id="tabbtn-populasi" aria-controls="tab-populasi" aria-selected="false" tabindex="-1">Populasi &amp; Fitness</button>
+  <button class="tab-btn" data-tab="seleksi" role="tab" id="tabbtn-seleksi" aria-controls="tab-seleksi" aria-selected="false" tabindex="-1">Seleksi Roulette Wheel</button>
+  <button class="tab-btn" data-tab="siklus" role="tab" id="tabbtn-siklus" aria-controls="tab-siklus" aria-selected="false" tabindex="-1">Siklus GA Lengkap</button>
+  <button class="tab-btn" data-tab="eksperimen" role="tab" id="tabbtn-eksperimen" aria-controls="tab-eksperimen" aria-selected="false" tabindex="-1">Eksperimen Parameter</button>
+</div>
+
+<!-- ====== TAB 1: PENYANDIAN KROMOSOM ====== -->
+<div class="tab-content active" id="tab-encode" role="tabpanel" aria-labelledby="tabbtn-encode" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Satu kromosom terdiri dari 18 bit. Nilai desimalnya dikonversi ke
+        ruang solusi [0,255] dengan rumus
+        <code>x = 255 / (2<sup>18</sup>&minus;1) &times; nilai_desimal</code>.
+      </p>
+      <div class="kripto-sum" id="encode-display"></div>
+      <div class="section-label">Perbandingan dengan Angka pada Buku</div>
+      <table class="iter-table" id="encode-table">
+        <thead><tr><th>Versi</th><th>Nilai Desimal</th><th>x Hasil</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Kesalahan Cetak Ditemukan</h3>
+      <p>
+        Kromosom <code>100000110011100000</code> jika dikonversi biner ke
+        desimal secara benar menghasilkan <strong>134368</strong>, bukan
+        <strong>134468</strong> yang tertulis pada baris perhitungan di
+        buku.
+      </p>
+      <p>
+        Menariknya, hasil akhir x&asymp;130.7067 pada buku justru konsisten
+        dengan angka 134368 yang benar, bukan dengan 134468 yang tertulis
+        &mdash; jadi angka pada baris perhitungan tampaknya salah cetak,
+        sedangkan hasil akhirnya sudah tepat.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: POPULASI & FITNESS ====== -->
+<div class="tab-content" id="tab-populasi" role="tabpanel" aria-labelledby="tabbtn-populasi" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Fungsi fitness f(x) = sin(&pi;x/256), dimaksimumkan pada x=128
+        (f=1). Populasi awal 20 kromosom acak.
+      </p>
+      <svg id="populasi-scatter" viewBox="0 0 640 220"></svg>
+      <table class="iter-table" id="populasi-table">
+        <thead><tr><th>#</th><th>Kromosom</th><th>Biner</th><th>x</th><th>Fitness</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Sebaran Fitness Awal</h3>
+      <p>
+        Total fitness populasi awal (20 kromosom acak, benih tetap)
+        adalah <strong id="populasi-total"></strong>. Titik-titik pada
+        grafik menunjukkan posisi setiap kromosom pada kurva f(x), sebelum
+        proses seleksi dimulai.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 3: SELEKSI ROULETTE WHEEL ====== -->
+<div class="tab-content" id="tab-seleksi" role="tabpanel" aria-labelledby="tabbtn-seleksi" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Setiap kromosom baru dipilih dengan membandingkan satu bilangan
+        acak terhadap fitness kumulatif.
+      </p>
+      <svg id="roulette-wheel" viewBox="0 0 300 300"></svg>
+      <table class="iter-table" id="seleksi-table">
+        <thead><tr><th>#</th><th>Fitrel</th><th>Fitkum</th><th>Acak</th><th>Terpilih</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Bertahan Berdasarkan Fitness</h3>
+      <p>
+        Kromosom dengan fitness lebih tinggi menempati "irisan" roda yang
+        lebih besar, sehingga lebih sering terpilih &mdash; bahkan bisa
+        tersalin lebih dari sekali.
+      </p>
+      <p id="seleksi-hilang-text"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 4: SIKLUS GA LENGKAP ====== -->
+<div class="tab-content" id="tab-siklus" role="tabpanel" aria-labelledby="tabbtn-siklus" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Siklus penuh: seleksi &rarr; crossover satu titik (pc=0.8) &rarr;
+        mutasi bit (pm=0.01), diulang 200 generasi dengan populasi 20.
+      </p>
+      <svg id="ga-chart" viewBox="0 0 640 260"></svg>
+      <p class="result-highlight" id="ga-result"></p>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Konvergensi ke Solusi Optimal</h3>
+      <p>
+        Fitness terbaik dengan cepat mendekati 1 (x&asymp;128), sementara
+        fitness rata-rata populasi ikut naik seiring generasi &mdash; bukti
+        bahwa seleksi berhasil mendorong seluruh populasi, bukan cuma
+        individu terbaik.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 5: EKSPERIMEN PARAMETER ====== -->
+<div class="tab-content" id="tab-eksperimen" role="tabpanel" aria-labelledby="tabbtn-eksperimen" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        18 kombinasi ukuran populasi (10, 20, 50), peluang crossover
+        (0.6, 0.9), dan peluang mutasi (0.001, 0.01, 0.1). Rata-rata dari 6
+        pengulangan benih acak berbeda, generasi hingga fitness &gt; 0.999.
+      </p>
+      <svg id="eksperimen-heatmap" viewBox="0 0 640 300"></svg>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Populasi Besar Mempercepat Konvergensi</h3>
+      <p>
+        Ukuran populasi berpengaruh paling besar: populasi 50 hampir
+        selalu konvergen dalam hitungan generasi tunggal (karena peluang
+        satu individu awal sudah dekat optimal jauh lebih tinggi),
+        sedangkan populasi 10 butuh puluhan hingga ratusan generasi,
+        terutama saat peluang mutasi sangat kecil (0.001).
+      </p>
+      <p>
+        Peluang mutasi yang terlalu kecil membuat populasi kekurangan
+        variasi baru sehingga lambat menemukan solusi, sedangkan mutasi
+        yang cukup besar (0.1) mempercepat eksplorasi &mdash; meski
+        risikonya merusak individu yang sudah baik jika populasi besar.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; Kecerdasan Komputasional INF20052</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

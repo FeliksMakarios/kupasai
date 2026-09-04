@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Penalaran Ketidakpastian dan Kesamaan Dokumen - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/tentang/">Tentang</a></li>
+    <li><a href="/kupasai/kontak/">Kontak</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF20052 &middot; Week 5-6</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/kecerdasan-komputasional/" class="back-link">&larr; Kembali ke Daftar Topik</a>
+    <h1>Penalaran Ketidakpastian dan Kesamaan Dokumen</h1>
+    <p class="page-subtitle">
+      Tiga cara menalar dengan informasi yang tidak pasti &mdash; teorema
+      Bayes, faktor kepastian, teori Dempster-Shafer &mdash; ditutup dengan
+      mengukur kemiripan dua dokumen lewat Vector Space Model.
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul Lab 3:</strong> Menerapkan teorema Bayes untuk
+      probabilitas hipotesis, menghitung faktor kepastian atas gabungan
+      fakta, menerapkan teori Dempster-Shafer, dan menghitung kesamaan
+      dokumen dengan Vector Space Model.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="bayes" role="tab" id="tabbtn-bayes" aria-controls="tab-bayes" aria-selected="true" tabindex="0">Teorema Bayes</button>
+  <button class="tab-btn" data-tab="cf" role="tab" id="tabbtn-cf" aria-controls="tab-cf" aria-selected="false" tabindex="-1">Faktor Kepastian</button>
+  <button class="tab-btn" data-tab="dempster" role="tab" id="tabbtn-dempster" aria-controls="tab-dempster" aria-selected="false" tabindex="-1">Dempster-Shafer</button>
+  <button class="tab-btn" data-tab="vsm" role="tab" id="tabbtn-vsm" aria-controls="tab-vsm" aria-selected="false" tabindex="-1">Vector Space Model</button>
+</div>
+
+<!-- ====== TAB 1: TEOREMA BAYES ====== -->
+<div class="tab-content active" id="tab-bayes" role="tabpanel" aria-labelledby="tabbtn-bayes" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Diagnosis penyakit dari gejala bintik di wajah. Tiga hipotesis:
+        cacar, alergi, jerawat.
+      </p>
+      <table class="iter-table" id="bayes-table">
+        <thead><tr><th>Penyakit</th><th>Prior P(H)</th><th>P(Bintik|H)</th><th>P(H)&times;P(Bintik|H)</th><th>Posterior P(H|Bintik)</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <svg id="bayes-bar" viewBox="0 0 500 220"></svg>
+      <div class="section-label">Fakta Baru: Muncul Gejala Panas</div>
+      <p class="section-note" id="bayes-fakta-note"></p>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Normalisasi Bayes</h3>
+      <p>
+        Pembilang <code>P(H)&times;P(E|H)</code> untuk cacar dan alergi
+        masing-masing <strong>0.28</strong> dan <strong>0.12</strong> &mdash;
+        angka inilah yang sama dengan yang tercantum pada buku (0.28, 0.12,
+        0.27), sebelum dibagi total 0.58 untuk normalisasi.
+      </p>
+      <p>
+        Setelah dinormalisasi, posterior sebenarnya adalah <strong>0.4828,
+        0.2069, 0.3103</strong> &mdash; jumlahnya tepat 1, seperti seharusnya
+        probabilitas.
+      </p>
+      <p>
+        Ketika fakta baru "panas" muncul, formula (2) menggabungkan
+        <code>P(cacar|panas)</code> dengan rasio kecocokan gejala
+        tambahan, menghasilkan probabilitas baru
+        <strong>&asymp;0.33</strong>.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: FAKTOR KEPASTIAN ====== -->
+<div class="tab-content" id="tab-cf" role="tabpanel" aria-labelledby="tabbtn-cf" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Kasus Ani: dua gejala mengarah ke cacar &mdash; bintik dan panas.
+      </p>
+      <table class="iter-table" id="cf-table">
+        <thead><tr><th>Besaran</th><th>Nilai</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <svg id="cf-gauge" viewBox="0 0 500 140"></svg>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Gabungan Dua Fakta</h3>
+      <p>
+        <code>MB(cacar,bintik)=0.8</code> dan <code>MB(cacar,panas)=0.7</code>
+        digabung dengan rumus <code>MB1 + MB2&times;(1&minus;MB1)</code>,
+        menghasilkan <strong>MB=0.94</strong>.
+      </p>
+      <p>
+        <code>MD</code> digabung dengan rumus analog, menghasilkan
+        <strong>MD=0.0892</strong>. Faktor kepastian akhir
+        <code>CF = MB &minus; MD = 0.8508</code>.
+      </p>
+      <p>
+        Urutan penggabungan <strong>tidak memengaruhi</strong> hasil akhir
+        &mdash; <code>MB(0.8,0.7)</code> sama dengan <code>MB(0.7,0.8)</code>,
+        karena rumusnya komutatif.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 3: DEMPSTER-SHAFER ====== -->
+<div class="tab-content" id="tab-dempster" role="tabpanel" aria-labelledby="tabbtn-dempster" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Frame of Discernment: Alergi (A), Flu (F), Demam (D), Bronkitis (B).
+        Tiga gejala digabung berurutan.
+      </p>
+      <div class="mode-buttons" id="dempster-mode-buttons">
+        <button class="mode-btn active" data-stage="dua">Dua Gejala (m1 &otimes; m2)</button>
+        <button class="mode-btn" data-stage="tiga">Tiga Gejala (m12 &otimes; m3)</button>
+      </div>
+      <svg id="dempster-bar" viewBox="0 0 560 260"></svg>
+      <div class="section-label">Tabel Kombinasi</div>
+      <table class="iter-table" id="dempster-table">
+        <thead><tr><th>Himpunan A</th><th>Himpunan B</th><th>Irisan</th><th>Bobot</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Normalisasi Terhadap Konflik</h3>
+      <p>
+        Menggabungkan m1 (F,D,B=0.8) dengan m2 (A,F,D=0.9) tidak
+        menghasilkan irisan kosong sama sekali, sehingga
+        <strong>m12{F,D}=0.72</strong> langsung tanpa normalisasi.
+      </p>
+      <p>
+        Menggabungkan m12 dengan gejala ketiga m3 (A=0.6) menghasilkan
+        konflik (irisan kosong) sebesar <strong>0.48</strong> &mdash;
+        misalnya {F,D}&cap;{A}=&empty; &mdash; sehingga seluruh bobot
+        dinormalisasi terhadap (1&minus;0.48).
+      </p>
+      <p>
+        Hasil akhir: <strong>m123{F,D}&asymp;0.554</strong>,
+        <strong>m123{A}&asymp;0.231</strong>, sisanya tersebar pada
+        himpunan lain.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 4: VECTOR SPACE MODEL ====== -->
+<div class="tab-content" id="tab-vsm" role="tabpanel" aria-labelledby="tabbtn-vsm" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note" id="vsm-dok-note"></p>
+      <table class="iter-table" id="vsm-table">
+        <thead><tr><th>#</th><th>Kata</th><th>Dok 1</th><th>Dok 2</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <svg id="vsm-vector" viewBox="0 0 640 200"></svg>
+      <div class="section-label">Kesamaan Kosinus</div>
+      <p class="result-highlight" id="vsm-result"></p>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Praproses &amp; Perhitungan</h3>
+      <p>
+        Praproses meliputi case folding, penghapusan tanda baca, tokenisasi,
+        dan pemetaan bentuk berimbuhan ke bentuk dasar
+        (<code>membeli</code> &rarr; <code>beli</code>). Hasilnya 12 kata
+        unik gabungan kedua dokumen.
+      </p>
+      <p>
+        Hasil kali titik kedua vektor adalah <strong>13</strong>, panjang
+        vektor dokumen 1 adalah <strong>4</strong> (akar dari 16), dan
+        panjang vektor dokumen 2 adalah <strong>&radic;19&asymp;4.359</strong>.
+      </p>
+      <p>
+        Kesamaan kosinus = 13 &divide; (4&times;&radic;19) &asymp;
+        <strong>0.7456</strong> atau <strong>74.56%</strong>. Jika memakai
+        panjang vektor versi buku (12 dan 13), hasilnya justru berbeda
+        (&asymp;0.083) &mdash; bukti bahwa angka panjang vektor yang
+        tercetak pada buku tidak konsisten dengan nilai kosinus 0.7456
+        yang juga tercantum di sana.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; Kecerdasan Komputasional INF20052</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>
