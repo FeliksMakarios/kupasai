@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualisasi Backpropagation - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
+    <li><a href="/kupasai/ml-lanjut/" class="active">ML Lanjut</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">IN F24141 &middot; Week 7</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/ml-lanjut/" class="back-link">&larr; Kembali ke ML Lanjut</a>
+    <h1>Visualisasi Backpropagation Langkah-demi-Langkah</h1>
+    <p class="page-subtitle">
+      Satu contoh lengkap: jaringan 3&rarr;4&rarr;1 dengan ReLU. Ikuti sembilan
+      langkah dari forward pass, perhitungan error, hingga backward pass
+      yang mengoreksi bobot &mdash; dengan angka nyata di setiap langkah.
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul 7:</strong> Mahasiswa mampu menerapkan
+      <em>correlation summarization</em> dan visualisasi vektor/matriks
+      untuk memahami bagaimana arsitektur NN menyalurkan sinyal,
+      menemukan korelasi, dan memperbarui bobot lewat backpropagation.
+    </div>
+  </div>
+</div>
+
+<div class="viz-layout">
+  <div class="viz-main">
+    <div class="phase-progress" id="bp-phase-progress"></div>
+    <div class="step-title" id="bp-step-title"></div>
+    <svg id="bp-net-plot" viewBox="0 0 640 380"></svg>
+    <div class="step-controls">
+      <button id="bp-step-prev" class="step-btn">&larr; Sebelumnya</button>
+      <span id="bp-step-indicator"></span>
+      <button id="bp-step-next" class="step-btn">Selanjutnya &rarr;</button>
+    </div>
+    <div class="trace-log" id="bp-trace-log"></div>
+    <div class="mse-compare-row" id="bp-mse-compare" style="display:none">
+      <div class="mse-box before">
+        <div class="label">MSE Awal</div>
+        <div class="val">4.0</div>
+      </div>
+      <div class="mse-box after">
+        <div class="label">MSE Setelah 1 Update</div>
+        <div class="val">0.0999</div>
+      </div>
+    </div>
+  </div>
+  <div class="viz-sidebar">
+    <h3>Membaca Diagram</h3>
+    <p>
+      Garis <strong style="color:var(--accent)">biru</strong> = bobot
+      positif, <strong style="color:var(--danger)">merah</strong> = bobot
+      negatif. Ketebalan garis menunjukkan besarnya bobot. Lingkaran putus-putus
+      berarti nilai node belum dihitung.
+    </p>
+    <p>
+      Perhatikan langkah 2: dua node hidden pertama "mati" (ReLU
+      mengubah nilai negatif jadi 0), sehingga di langkah 6 &amp; 7 mereka
+      tidak menerima gradien sama sekali &mdash; hanya kolom bobot
+      ke node 3 &amp; 4 yang diperbarui.
+    </p>
+    <p>
+      Ini adalah inti backpropagation: <strong>error dari output
+      &ldquo;ditarik mundur&rdquo;</strong> melalui bobot, dikalikan gate
+      ReLU, lalu dipakai untuk mengoreksi setiap bobot secara proporsional
+      terhadap kontribusinya pada error.
+    </p>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; ML Lanjut IN F24141</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

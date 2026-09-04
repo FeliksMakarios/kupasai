@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CNN Dasar: Konvolusi &amp; Pooling - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
+    <li><a href="/kupasai/ml-lanjut/" class="active">ML Lanjut</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">IN F24141 &middot; Week 11</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/ml-lanjut/" class="back-link">&larr; Kembali ke ML Lanjut</a>
+    <h1>CNN Dasar: Konvolusi &amp; Pooling</h1>
+    <p class="page-subtitle">
+      Bagaimana filter kecil bisa mendeteksi tepi pada gambar? Geser
+      kernel 3&times;3 di atas gambar dan lihat feature map terbentuk
+      langkah demi langkah, lalu telusuri arsitektur CNN lengkap.
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul 10:</strong> Mahasiswa mampu menjelaskan
+      konsep dasar CNN dan bagaimana CNN mengklasifikasikan gambar
+      melalui mekanisme konvolusi, pooling, dan deteksi fitur, serta
+      mengimplementasikan model CNN untuk tugas klasifikasi gambar.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="conv" role="tab" id="tabbtn-conv" aria-controls="tab-conv" aria-selected="true" tabindex="0">Konvolusi Interaktif</button>
+  <button class="tab-btn" data-tab="arch" role="tab" id="tabbtn-arch" aria-controls="tab-arch" aria-selected="false" tabindex="-1">Arsitektur CNN Lengkap</button>
+</div>
+
+<!-- ====== TAB 1: INTERACTIVE CONVOLUTION ====== -->
+<div class="tab-content active" id="tab-conv" role="tabpanel" aria-labelledby="tabbtn-conv" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Gambar 6&times;6 dengan tepi vertikal (kiri terang, kanan gelap) dan
+        kernel deteksi tepi vertikal klasik <code>[[1,0,-1],[1,0,-1],[1,0,-1]]</code>.
+        Geser posisi kernel untuk melihat perhitungan konvolusinya.
+      </p>
+      <div class="ctrl-group">
+        <label for="conv-pos-slider">Posisi kernel (kolom):</label>
+        <input type="range" id="conv-pos-slider" min="0" max="3" step="1" value="0">
+        <span class="ctrl-val" id="conv-pos-value">0</span>
+      </div>
+      <div class="grid-pair">
+        <div class="grid-block">
+          <div class="grid-title">Gambar Input (6&times;6)</div>
+          <svg id="conv-image"></svg>
+        </div>
+        <div class="grid-block">
+          <div class="grid-title">Kernel (3&times;3)</div>
+          <svg id="conv-kernel"></svg>
+        </div>
+        <div class="grid-block">
+          <div class="grid-title">Feature Map (4&times;4)</div>
+          <svg id="conv-featuremap"></svg>
+        </div>
+      </div>
+      <div class="trace-log" id="conv-trace" style="font-family:var(--font-mono);font-size:0.8rem;color:var(--text-secondary);background:var(--bg-secondary);border-radius:8px;padding:0.75rem 1rem;margin-top:1rem;line-height:1.8"></div>
+      <div class="section-label">Setelah Max Pooling 2&times;2 (stride 2)</div>
+      <div class="grid-pair">
+        <div class="grid-block">
+          <svg id="conv-pooled"></svg>
+        </div>
+      </div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Filter Mendeteksi Tepi</h3>
+      <p>
+        Kernel ini menghitung selisih kiri&minus;kanan di setiap posisi.
+        Saat berada tepat di atas tepi vertikal gambar (kolom 1&ndash;2),
+        hasilnya besar (30) &mdash; menandakan "ada tepi di sini". Di area
+        seragam (semua terang atau semua gelap), hasilnya 0.
+      </p>
+      <p>
+        <strong>Max pooling</strong> lalu mengecilkan feature map 4&times;4
+        menjadi 2&times;2 dengan mengambil nilai maksimum tiap blok
+        2&times;2 &mdash; mempertahankan sinyal tepi yang kuat sambil
+        mengurangi ukuran data.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: ARCHITECTURE ====== -->
+<div class="tab-content" id="tab-arch" role="tabpanel" aria-labelledby="tabbtn-arch" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Arsitektur CNN dari notebook Modul 10 untuk klasifikasi digit MNIST
+        (28&times;28 piksel, grayscale, 10 kelas):
+      </p>
+      <div class="arch-list" id="arch-list"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Tiga Jenis Layer</h3>
+      <p>
+        <strong>Conv2D</strong> mengekstrak fitur visual (tepi, sudut,
+        tekstur) memakai banyak kernel/filter sekaligus &mdash; layer
+        pertama 32 filter, layer kedua 64 filter (semakin dalam, semakin
+        kompleks fiturnya).
+      </p>
+      <p>
+        <strong>MaxPooling2D</strong> mengecilkan ukuran feature map
+        tanpa kehilangan sinyal penting, sekaligus membuat model lebih
+        tahan terhadap pergeseran kecil posisi objek.
+      </p>
+      <p>
+        <strong>Dense</strong> (fully connected) di akhir menggabungkan
+        semua fitur yang diekstrak untuk membuat keputusan klasifikasi
+        akhir lewat softmax.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; ML Lanjut IN F24141</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

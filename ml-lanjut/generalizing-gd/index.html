@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generalizing Gradient Descent - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
+    <li><a href="/kupasai/ml-lanjut/" class="active">ML Lanjut</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">IN F24141 &middot; Week 4</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/ml-lanjut/" class="back-link">&larr; Kembali ke ML Lanjut</a>
+    <h1>Generalizing Gradient Descent</h1>
+    <p class="page-subtitle">
+      Memperluas gradient descent ke banyak bobot sekaligus: bagaimana
+      jika satu bobot dibekukan? Bagaimana jika ada banyak output?
+      Bagaimana jika keduanya terjadi bersamaan?
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul 4:</strong> Mahasiswa mampu menerapkan gradient
+      descent pada pembelajaran dengan multiple inputs dan multiple
+      outputs, serta menganalisis efek freezing weights terhadap hasil
+      prediksi.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="multi-input" role="tab" id="tabbtn-multi-input" aria-controls="tab-multi-input" aria-selected="true" tabindex="0">Banyak Input &amp; Freezing</button>
+  <button class="tab-btn" data-tab="multi-output" role="tab" id="tabbtn-multi-output" aria-controls="tab-multi-output" aria-selected="false" tabindex="-1">Banyak Output</button>
+  <button class="tab-btn" data-tab="multi-inout" role="tab" id="tabbtn-multi-inout" aria-controls="tab-multi-inout" aria-selected="false" tabindex="-1">Banyak Input &amp; Output</button>
+</div>
+
+<!-- ====== TAB 1: MULTI INPUT & FREEZING ====== -->
+<div class="tab-content active" id="tab-multi-input" role="tabpanel" aria-labelledby="tabbtn-multi-input" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="mode-buttons">
+        <button class="mode-btn mi-mode-btn active" data-mode="normal" type="button">Normal</button>
+        <button class="mode-btn mi-mode-btn" data-mode="frozen" type="button">Bekukan weight[0] (toes)</button>
+      </div>
+      <p class="section-note" id="mi-note"></p>
+      <svg id="mi-chart" viewBox="0 0 640 260"></svg>
+      <div class="section-label">Tabel Iterasi</div>
+      <table class="iter-table" id="mi-table">
+        <thead><tr><th>Langkah</th><th>Prediksi</th><th>Error</th><th>Bobot Setelah</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Membekukan Satu Bobot</h3>
+      <p>
+        Input: <code>toes=8.5, wlrec=0.65, nfans=1.2</code>, target
+        menang=1. Setiap bobot punya <code>weight_delta</code> sendiri
+        (<code>delta &times; input_ke-i</code>).
+      </p>
+      <p>
+        Saat weight[0] (bobot <em>toes</em>) <strong>dibekukan</strong>,
+        <code>weight_delta[0]</code> dipaksa 0 sehingga bobot itu tidak
+        pernah berubah &mdash; tapi jaringan tetap belajar lewat dua bobot
+        lainnya karena error sama-sama menurun.
+      </p>
+      <p>
+        Ini menunjukkan neuron lain bisa "mengambil alih" pekerjaan
+        belajar walau satu koneksi dibekukan.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: MULTI OUTPUT ====== -->
+<div class="tab-content" id="tab-multi-output" role="tabpanel" aria-labelledby="tabbtn-multi-output" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">Input: wlrec=0.65. Bobot awal: [0.3, 0.2, 0.9] &rarr; tiga output sekaligus (hurt, win, sad). alpha=0.1.</p>
+      <svg id="mo-chart" viewBox="0 0 640 300"></svg>
+      <div class="section-label">Update Bobot Satu Langkah</div>
+      <table class="iter-table">
+        <thead><tr><th>Output</th><th>Delta</th><th>Weight Delta</th><th>Bobot Baru</th></tr></thead>
+        <tbody id="mo-table-body"></tbody>
+      </table>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Satu Input, Tiga Prediksi</h3>
+      <p>
+        Ketiga output memakai <strong>input yang sama</strong> tapi bobot
+        berbeda. Prediksi <code>win</code> paling jauh dari target
+        (delta=&minus;0.87), sehingga bobotnya berubah paling besar
+        (0.2&rarr;0.257).
+      </p>
+      <p>
+        <code>weight_delta[j] = input &times; delta[j]</code> &mdash;
+        setiap output diperbarui independen, tapi semua berbagi input yang
+        sama.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 3: MULTI IN/OUT MATRIX ====== -->
+<div class="tab-content" id="tab-multi-inout" role="tabpanel" aria-labelledby="tabbtn-multi-inout" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">Input: [toes=8.5, wlrec=0.65, nfans=1.2]. Target: [hurt=0.1, win=1, sad=0.1]. alpha=0.01.</p>
+      <div class="trace-log" id="mio-trace" style="font-family:var(--font-mono);font-size:0.8rem;color:var(--text-secondary);background:var(--bg-secondary);border-radius:8px;padding:0.75rem 1rem;margin-bottom:1rem;line-height:1.8"></div>
+      <div class="matrix-pair">
+        <div class="matrix-block">
+          <div class="matrix-title">Bobot Sebelum</div>
+          <svg id="mio-before"></svg>
+        </div>
+        <div class="matrix-block">
+          <div class="matrix-title">Bobot Sesudah (1 langkah GD)</div>
+          <svg id="mio-after"></svg>
+        </div>
+      </div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Kasus Paling Umum</h3>
+      <p>
+        Setiap sel matriks bobot menghubungkan satu input ke satu output.
+        <code>weight_delta[i][j] = input[i] &times; delta[j]</code> adalah
+        <em>outer product</em> antara vektor input dan vektor delta.
+      </p>
+      <p>
+        Merah = bobot negatif, hijau = bobot positif. Perhatikan baris
+        <code>toes</code> berubah paling drastis karena nilainya
+        (8.5) jauh lebih besar dari <code>wlrec</code> dan
+        <code>nfans</code> &mdash; ilustrasi kenapa normalisasi input
+        penting.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; ML Lanjut IN F24141</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

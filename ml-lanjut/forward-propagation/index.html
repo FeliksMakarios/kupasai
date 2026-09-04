@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forward Propagation - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
+    <li><a href="/kupasai/ml-lanjut/" class="active">ML Lanjut</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">IN F24141 &middot; Week 2</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/ml-lanjut/" class="back-link">&larr; Kembali ke ML Lanjut</a>
+    <h1>Forward Propagation</h1>
+    <p class="page-subtitle">
+      Bagaimana neural network membuat prediksi? Jelajahi lima skenario
+      &mdash; dari satu input satu bobot, hingga jaringan dua lapis &mdash;
+      dan lihat perhitungan dot product-nya langkah demi langkah.
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul 2:</strong> Mahasiswa memahami mekanisme forward
+      propagation dalam neural network untuk prediksi, serta mampu membuat
+      prediksi dengan multiple inputs/outputs menggunakan operasi vektor
+      dan matriks (w_sum, ele_mul, vect_mat_mul).
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="network" role="tab" id="tabbtn-network" aria-controls="tab-network" aria-selected="true" tabindex="0">Simulasi Jaringan</button>
+  <button class="tab-btn" data-tab="numpy" role="tab" id="tabbtn-numpy" aria-controls="tab-numpy" aria-selected="false" tabindex="-1">NumPy &amp; Dot Product</button>
+</div>
+
+<!-- ====== TAB 1: NETWORK SIMULATION ====== -->
+<div class="tab-content active" id="tab-network" role="tabpanel" aria-labelledby="tabbtn-network" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="scenario-buttons">
+        <button class="scenario-btn active" data-scenario="single" type="button">Input Tunggal</button>
+        <button class="scenario-btn" data-scenario="multi_input" type="button">Banyak Input</button>
+        <button class="scenario-btn" data-scenario="multi_output" type="button">Banyak Output</button>
+        <button class="scenario-btn" data-scenario="multi_in_out" type="button">Banyak Input &amp; Output</button>
+        <button class="scenario-btn" data-scenario="hidden" type="button">Jaringan 2 Lapis</button>
+      </div>
+      <div class="scenario-title" id="scenario-title"></div>
+      <div class="scenario-story" id="scenario-story"></div>
+      <svg id="net-plot" viewBox="0 0 700 380"></svg>
+      <div class="trace-log" id="fp-trace-log"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Dari Node ke Prediksi</h3>
+      <p>
+        Setiap prediksi dihitung dengan operasi yang sama: kalikan setiap
+        input dengan bobotnya, lalu jumlahkan (<code>w_sum</code>). Garis
+        biru = bobot positif, garis merah = bobot negatif. Ketebalan garis
+        menunjukkan besarnya bobot.
+      </p>
+      <p>
+        Pada <strong>Banyak Output</strong>, satu input dikalikan beberapa
+        bobot berbeda (<code>ele_mul</code>) untuk menghasilkan beberapa
+        prediksi sekaligus.
+      </p>
+      <p>
+        Pada <strong>Banyak Input &amp; Output</strong>, setiap output
+        adalah dot product input dengan satu baris matriks bobot
+        (<code>vect_mat_mul</code>) &mdash; inilah operasi inti di balik
+        setiap layer neural network.
+      </p>
+      <p>
+        <strong>Jaringan 2 Lapis</strong> menumpuk dua operasi ini:
+        input &rarr; hidden layer (<code>ih_wgt</code>) &rarr; output
+        (<code>hp_wgt</code>). Nilai hidden layer <em>tidak ada</em> sampai
+        dihitung lewat forward pass.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: NUMPY DEMO ====== -->
+<div class="tab-content" id="tab-numpy" role="tabpanel" aria-labelledby="tabbtn-numpy" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="scenario-title">Dot Product dengan NumPy: Kapan Berhasil, Kapan Gagal</div>
+      <div class="scenario-story">
+        Forward propagation di dunia nyata memakai NumPy untuk operasi
+        vektor/matriks. Kesalahan paling umum: dimensi tidak cocok.
+      </div>
+      <div class="numpy-compare">
+        <div class="numpy-card good" id="numpy-good">
+          <h4>&#10003; Dimensi cocok</h4>
+          <pre></pre>
+          <div class="result"></div>
+          <p class="note"></p>
+        </div>
+        <div class="numpy-card bad" id="numpy-bad">
+          <h4>&#10007; Dimensi tidak cocok</h4>
+          <pre></pre>
+          <div class="result"></div>
+          <p class="note"></p>
+        </div>
+      </div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Kenapa Ini Penting?</h3>
+      <p>
+        Setiap layer neural network mensyaratkan jumlah kolom pada matriks
+        bobot sama dengan jumlah elemen pada vektor input. Notebook Modul 2
+        menunjukkan error <code>ValueError: shapes ... not aligned</code>
+        persis seperti contoh di kiri &mdash; ini adalah bug paling sering
+        muncul saat pertama kali membangun forward propagation manual.
+      </p>
+      <p>
+        Solusinya: selalu cek <code>.shape</code> setiap array sebelum
+        melakukan <code>.dot()</code>, terutama saat menumpuk banyak layer.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; ML Lanjut IN F24141</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

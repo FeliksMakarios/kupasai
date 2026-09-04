@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regularisasi: Sinyal vs Noise - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
+    <li><a href="/kupasai/ml-lanjut/" class="active">ML Lanjut</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">IN F24141 &middot; Week 9</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/ml-lanjut/" class="back-link">&larr; Kembali ke ML Lanjut</a>
+    <h1>Regularisasi: Sinyal vs Noise</h1>
+    <p class="page-subtitle">
+      Model yang sempurna di data latih belum tentu bagus di data baru.
+      Lihat overfitting terjadi secara nyata, lalu bandingkan dua cara
+      mengatasinya: early stopping dan dropout.
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul 9:</strong> Mahasiswa memahami perbedaan
+      memorisasi vs generalisasi, mengidentifikasi gejala overfitting,
+      serta menerapkan early stopping dan dropout untuk meningkatkan
+      kemampuan generalisasi model.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="baseline" role="tab" id="tabbtn-baseline" aria-controls="tab-baseline" aria-selected="true" tabindex="0">Overfitting (Baseline)</button>
+  <button class="tab-btn" data-tab="es" role="tab" id="tabbtn-es" aria-controls="tab-es" aria-selected="false" tabindex="-1">Early Stopping</button>
+  <button class="tab-btn" data-tab="dropout" role="tab" id="tabbtn-dropout" aria-controls="tab-dropout" aria-selected="false" tabindex="-1">Dropout</button>
+</div>
+
+<!-- ====== TAB 1: BASELINE OVERFITTING ====== -->
+<div class="tab-content active" id="tab-baseline" role="tabpanel" aria-labelledby="tabbtn-baseline" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Jaringan 2-lapis (64&rarr;40&rarr;10, ReLU, MSE) dilatih pada
+        <strong>120 sampel saja</strong> dari dataset digit tulisan tangan
+        (8&times;8 piksel) &mdash; sengaja kecil supaya overfitting mudah
+        terlihat, persis pendekatan notebook.
+      </p>
+      <svg id="reg-baseline-plot" viewBox="0 0 640 300"></svg>
+      <div class="stat-row">
+        <div class="stat-box highlight"><div class="label">Train Acc (akhir)</div><div class="val" id="baseline-train"></div></div>
+        <div class="stat-box"><div class="label">Val Acc</div><div class="val" id="baseline-val"></div></div>
+        <div class="stat-box"><div class="label">Test Acc</div><div class="val" id="baseline-test"></div></div>
+        <div class="stat-box gap"><div class="label">Gap Train&minus;Test</div><div class="val" id="baseline-gap"></div></div>
+      </div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Menghafal vs Generalisasi</h3>
+      <p>
+        <strong>Train accuracy</strong> mencapai 100% di sekitar epoch
+        110&mdash;120, sementara <strong>val/test accuracy</strong>
+        berhenti membaik di kisaran 90%. Kesenjangan (gap) inilah tanda
+        klasik <strong>overfitting</strong>: model mulai menghafal
+        contoh-contoh spesifik alih-alih pola umum.
+      </p>
+      <p>
+        Karena hanya 120 contoh dipakai untuk melatih 40 neuron hidden,
+        model punya "kapasitas" lebih dari cukup untuk menghafal seluruh
+        data latih.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: EARLY STOPPING ====== -->
+<div class="tab-content" id="tab-es" role="tabpanel" aria-labelledby="tabbtn-es" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">Model &amp; data sama, tapi kita simpan checkpoint bobot terbaik berdasarkan val loss, dan berhenti bila tidak membaik selama 15 epoch berturut-turut (patience=15).</p>
+      <svg id="reg-es-plot" viewBox="0 0 640 300"></svg>
+      <div class="stat-row">
+        <div class="stat-box highlight"><div class="label">Checkpoint Terbaik</div><div class="val">Epoch <span id="es-best-epoch"></span></div></div>
+        <div class="stat-box"><div class="label">Val Loss Terbaik</div><div class="val" id="es-best-loss"></div></div>
+        <div class="stat-box"><div class="label">Training Berhenti</div><div class="val">Epoch <span id="es-stopped-at"></span></div></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-box"><div class="label">Val Acc (checkpoint)</div><div class="val" id="es-restored-val"></div></div>
+        <div class="stat-box"><div class="label">Test Acc (checkpoint)</div><div class="val" id="es-restored-test"></div></div>
+      </div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Berhenti Sebelum Menghafal</h3>
+      <p>
+        Val loss mencapai titik terendah di <strong>epoch 139</strong>,
+        lalu mulai naik lagi &mdash; tanda model mulai overfit. Setelah 15
+        epoch tanpa perbaikan, training dihentikan otomatis di epoch
+        <strong>154</strong>.
+      </p>
+      <p>
+        Bobot yang dipakai bukan bobot terakhir, melainkan bobot pada
+        checkpoint val-loss terbaik &mdash; sehingga model final tetap
+        punya generalisasi terbaik yang pernah dicapai selama training.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 3: DROPOUT ====== -->
+<div class="tab-content" id="tab-dropout" role="tabpanel" aria-labelledby="tabbtn-dropout" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">Hidden layer diperbesar jadi 100 neuron, separuhnya "dimatikan" acak setiap batch (p_keep=0.5, inverted dropout) &mdash; hanya aktif saat training.</p>
+      <svg id="reg-dropout-plot" viewBox="0 0 640 300"></svg>
+      <div class="stat-row">
+        <div class="stat-box"><div class="label">Test Acc Tanpa Dropout</div><div class="val" id="dropout-baseline-test"></div></div>
+        <div class="stat-box highlight"><div class="label">Test Acc Dengan Dropout</div><div class="val" id="dropout-test"></div></div>
+      </div>
+      <div class="section-label">Ilustrasi: Neuron Dimatikan Acak Setiap Batch</div>
+      <svg id="dropout-mask-demo" viewBox="0 0 400 90" style="max-width:400px"></svg>
+      <button id="dropout-regenerate" class="preset-btn" type="button" style="margin-top:0.5rem">Acak Ulang Mask</button>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Tim yang Tangguh</h3>
+      <p>
+        Seperti tim sepak bola berlatih tanpa beberapa pemain kunci
+        secara bergilir, dropout memaksa jaringan untuk tidak bergantung
+        pada satu neuron saja.
+      </p>
+      <p>
+        <strong>Inverted dropout</strong> membagi aktivasi neuron yang
+        hidup dengan <code>p_keep</code>, supaya total sinyal tetap
+        konsisten antara saat training (sebagian mati) dan saat evaluasi
+        (semua neuron aktif).
+      </p>
+      <p>
+        Klik tombol untuk melihat mask acak baru &mdash; setiap batch
+        training memakai kombinasi neuron aktif yang berbeda.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; ML Lanjut IN F24141</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

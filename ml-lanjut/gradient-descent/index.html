@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gradient Descent - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/nlp/">NLP</a></li>
+    <li><a href="/kupasai/ml/">ML</a></li>
+    <li><a href="/kupasai/ml-lanjut/" class="active">ML Lanjut</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">IN F24141 &middot; Week 3</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/ml-lanjut/" class="back-link">&larr; Kembali ke ML Lanjut</a>
+    <h1>Gradient Descent</h1>
+    <p class="page-subtitle">
+      Bagaimana neural network tahu ke arah mana dan seberapa jauh bobot
+      harus digeser? Bandingkan hot-and-cold learning dengan gradient
+      descent, lalu jelajahi efek learning rate terhadap divergence.
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul 3:</strong> Mahasiswa memahami konsep gradient
+      descent dan bagaimana proses ini mengurangi error, mampu
+      mengimplementasikan pembaruan bobot secara iteratif, serta
+      menganalisis pengaruh learning rate (alpha) terhadap stabilitas dan
+      kecepatan konvergensi.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="compare" role="tab" id="tabbtn-compare" aria-controls="tab-compare" aria-selected="true" tabindex="0">Hot &amp; Cold vs Gradient Descent</button>
+  <button class="tab-btn" data-tab="step" role="tab" id="tabbtn-step" aria-controls="tab-step" aria-selected="false" tabindex="-1">Satu Iterasi GD</button>
+  <button class="tab-btn" data-tab="alpha" role="tab" id="tabbtn-alpha" aria-controls="tab-alpha" aria-selected="false" tabindex="-1">Alpha &amp; Divergence</button>
+</div>
+
+<!-- ====== TAB 1: COMPARE ====== -->
+<div class="tab-content active" id="tab-compare" role="tabpanel" aria-labelledby="tabbtn-compare" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="legend-row">
+        <span class="legend-item"><span class="legend-swatch" style="background:#cf222e"></span>Hot &amp; Cold (&alpha;=0.01)</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#0969da"></span>Gradient Descent</span>
+      </div>
+      <svg id="gd-compare-plot" viewBox="0 0 640 320"></svg>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Sama-sama Turun, Beda Kecepatan</h3>
+      <p>
+        Soal yang sama: <code>weight=0.5, input=0.5, goal=0.8</code>. Metode
+        <strong>hot &amp; cold</strong> harus mencoba menaikkan dan
+        menurunkan bobot lalu memilih arah yang errornya lebih kecil
+        &mdash; langkahnya tetap sekecil <code>lr=0.01</code> per iterasi.
+      </p>
+      <p>
+        <strong>Gradient descent</strong> langsung menghitung arah
+        <em>dan</em> jumlah perubahan dari turunan error
+        (<code>delta &times; input</code>), sehingga bisa melompat jauh
+        lebih besar di iterasi pertama (weight naik ke 0.775 hanya dalam
+        satu langkah).
+      </p>
+      <p>
+        Setelah 10 iterasi, error GD sudah turun ke 0.0017, sementara hot
+        &amp; cold baru turun ke 0.25 &mdash; ilustrasi kenapa turunan
+        (derivative) jauh lebih efisien dibanding coba-coba dua arah.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: ONE ITERATION STEP TRACE ====== -->
+<div class="tab-content" id="tab-step" role="tabpanel" aria-labelledby="tabbtn-step" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.5rem">
+        Contoh: <code>weight=0.1, input=8.5, goal_pred=1.0, alpha=0.01</code>
+        (prediksi menang/kalah dari jumlah jari kaki pemain).
+      </p>
+      <div class="step-trace-list" id="step-trace-list"></div>
+      <div class="error-compare-row">
+        <div class="error-compare-box before">
+          <div class="label">Error Sebelum</div>
+          <div class="val" id="err-before"></div>
+        </div>
+        <div class="error-compare-box after">
+          <div class="label">Error Sesudah</div>
+          <div class="val" id="err-after"></div>
+        </div>
+      </div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Lima Langkah Gradient Descent</h3>
+      <p>
+        Setiap update bobot adalah lima langkah kecil yang sama:
+        <strong>prediksi</strong>, hitung <strong>delta</strong>
+        (pred&minus;goal), ubah jadi <strong>weight_delta</strong>
+        (delta&times;input), lalu <strong>update</strong> bobot yang
+        dikontrol <code>alpha</code>.
+      </p>
+      <p>
+        Hanya dengan satu langkah update, error turun drastis dari
+        <code>0.0225</code> menjadi <code>0.001733</code> &mdash; lebih dari
+        12&times; lebih kecil.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 3: ALPHA & DIVERGENCE ====== -->
+<div class="tab-content" id="tab-alpha" role="tabpanel" aria-labelledby="tabbtn-alpha" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <div class="preset-buttons">
+        <button class="preset-btn" data-input="0.5" data-alpha="1.0" type="button">Normal (input=0.5, &alpha;=1.0)</button>
+        <button class="preset-btn" data-input="2" data-alpha="1.0" type="button">Broken (input=2, &alpha;=1.0)</button>
+        <button class="preset-btn" data-input="2" data-alpha="0.1" type="button">Fixed (input=2, &alpha;=0.1)</button>
+      </div>
+      <div class="alpha-controls">
+        <div class="ctrl-group">
+          <label for="input-slider">Input (skala fitur):</label>
+          <input type="range" id="input-slider" min="0.1" max="3" step="0.1" value="0.5">
+          <span class="ctrl-val" id="input-value">0.50</span>
+        </div>
+        <div class="ctrl-group">
+          <label for="alpha-slider">Alpha (learning rate):</label>
+          <input type="range" id="alpha-slider" min="0.01" max="1.2" step="0.01" value="1.0">
+          <span class="ctrl-val" id="alpha-value">1.00</span>
+        </div>
+      </div>
+      <svg id="gd-alpha-plot" viewBox="0 0 640 320"></svg>
+      <div class="divergence-warning" id="divergence-warning"></div>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Kapan Gradient Descent Meledak?</h3>
+      <p>
+        Update bobot memakai <code>weight -= alpha &times; input &times;
+        delta</code>. Jika <strong>input</strong> besar, turunannya besar,
+        sehingga langkah update ikut membesar &mdash; error bisa
+        <strong>meledak (divergence)</strong> alih-alih turun.
+      </p>
+      <p>
+        Notebook Modul 3 menunjukkan persis skenario ini: dengan
+        <code>input=2</code> dan <code>alpha=1.0</code>, error meledak.
+        Menurunkan <code>alpha</code> ke <code>0.1</code> membuatnya
+        stabil lagi.
+      </p>
+      <p>
+        Geser slider untuk mencoba kombinasi lain &mdash; grafik pakai
+        skala log supaya ledakan error tetap terlihat.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; ML Lanjut IN F24141</span>
+  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>
