@@ -23,6 +23,8 @@ kupasai/
 │   └── js/
 │       ├── main.js             # Shared utilities (nav highlighting)
 │       └── theme.js            # Dark/light toggle
+├── tentang/                     # Halaman statis "Tentang"
+├── kontak/                      # Halaman statis "Kontak"
 ├── nlp/                         # Mata kuliah Pemrosesan Bahasa Alami
 │   ├── index.html               # Daftar topik NLP
 │   ├── word-embeddings/
@@ -51,7 +53,7 @@ kupasai/
 │   ├── churn-prediction/         # Studi kasus: ABC Telekom (Logistic Regression vs Random Forest)
 │   ├── clustering/                # Studi kasus: jadwal penerbangan (K-Means, Elbow Method)
 │   └── market-basket/             # Studi kasus: transaksi kedai kopi (Apriori, mlxtend)
-└── ml-lanjut/                   # Mata kuliah Pembelajaran Mesin Lanjut
+└── ml-lanjut/                   # Mata kuliah Pemelajaran Mesin Lanjut
     ├── index.html                # Daftar topik ML Lanjut
     ├── forward-propagation/      # Week 2
     ├── gradient-descent/         # Week 3
@@ -114,6 +116,8 @@ kupasai/
 Kesepuluh visualisasi NLP, sembilan visualisasi ML, dan sembilan visualisasi ML Lanjut sudah lengkap. Tech stack final: D3.js saja. Tidak ganti framework.
 
 Data untuk visualisasi yang memakai model matematis (mis. `self-attention`, atau seluruh topik ML/ML Lanjut) di-generate dari skrip Python, bukan ditulis manual — jalankan ulang kalau perlu mengubah bobot, dataset, atau contoh, jangan edit `data.js` langsung. Skrip ML membaca dataset asli dari [repo mata kuliah `dasar-machine-learning`](https://github.com/FeliksMakarios/dasar-machine-learning) di GitHub (bisa dioverride ke path lokal lewat env var `DASAR_ML_DIR`). Skrip ML Lanjut mereproduksi angka dari notebook kuliah (PML Mod1-11) secara langsung dengan NumPy/scikit-learn — beberapa visualisasi (mis. `regularization`, `nonlinearity-activation`) memakai dataset nyata setara pengganti (`sklearn.datasets.load_digits`) karena notebook asli memakai `keras.datasets.mnist` yang butuh koneksi internet saat build.
+
+Navigasi situs hanya berisi **Tentang** dan **Kontak** (statis, dua bahasa untuk judul mata kuliah di beranda: Indonesia + Inggris dalam kurung). Kartu mata kuliah di beranda ditampilkan grid 2 kolom (`.course-grid` di `main.css`). Setiap halaman visualisasi punya link "Kembali ke Daftar Topik" yang mengarah ke `index.html` mata kuliahnya masing-masing.
 
 ## Lisensi
 
