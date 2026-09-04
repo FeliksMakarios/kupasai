@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teknik Pemecahan Permasalahan - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/tentang/">Tentang</a></li>
+    <li><a href="/kupasai/kontak/">Kontak</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">INF20052 &middot; Week 4</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <a href="/kupasai/kecerdasan-komputasional/" class="back-link">&larr; Kembali ke Daftar Topik</a>
+    <h1>Teknik Pemecahan Permasalahan</h1>
+    <p class="page-subtitle">
+      Empat pendekatan berbeda memecah persoalan besar: pengurangan masalah
+      lewat graf AND-OR, batasan yang mempersempit ruang pencarian, dan
+      penelusuran mundur ala logic programming.
+    </p>
+    <div class="learning-objectives">
+      <strong>Tujuan Modul Lab 2:</strong> Menguraikan persoalan dengan problem
+      reduction berbasis graf AND-OR, menerapkan constraint satisfaction pada
+      pewarnaan graf, kriptaritmatika, dan penalaran berbasis batasan, serta
+      menyusun basis pengetahuan logic programming.
+    </div>
+  </div>
+</div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" data-tab="andor" role="tab" id="tabbtn-andor" aria-controls="tab-andor" aria-selected="true" tabindex="0">Problem Reduction</button>
+  <button class="tab-btn" data-tab="peta" role="tab" id="tabbtn-peta" aria-controls="tab-peta" aria-selected="false" tabindex="-1">Pewarnaan Peta</button>
+  <button class="tab-btn" data-tab="kripto" role="tab" id="tabbtn-kripto" aria-controls="tab-kripto" aria-selected="false" tabindex="-1">Kriptaritmatika</button>
+  <button class="tab-btn" data-tab="rs" role="tab" id="tabbtn-rs" aria-controls="tab-rs" aria-selected="false" tabindex="-1">Penalaran Batasan</button>
+  <button class="tab-btn" data-tab="silsilah" role="tab" id="tabbtn-silsilah" aria-controls="tab-silsilah" aria-selected="false" tabindex="-1">Logic Programming</button>
+</div>
+
+<!-- ====== TAB 1: PROBLEM REDUCTION (AND-OR) ====== -->
+<div class="tab-content active" id="tab-andor" role="tabpanel" aria-labelledby="tabbtn-andor" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Graf AND-OR (Contoh 4.1). Simpul OR: biaya = minimum antarcabang.
+        Simpul AND: biaya = jumlah seluruh cabang. Cabang biru adalah cabang
+        terpilih pada setiap simpul OR.
+      </p>
+      <svg id="andor-tree" viewBox="0 0 680 300"></svg>
+      <div class="section-label">Biaya Minimum dari Akar</div>
+      <p class="result-highlight" id="andor-result"></p>
+
+      <div class="section-label" style="margin-top:2rem">Contoh Tambahan: Graf Asli Contoh 4.1 Buku</div>
+      <p class="section-note">
+        Graf modul lab di atas bukan graf yang sama dengan Contoh 4.1 buku
+        (Gambar 4.1&ndash;4.3). Berikut rekonstruksi persoalan A yang bisa
+        diselesaikan lewat B dan C (AND) atau lewat D (OR), dengan biaya
+        sinkronisasi antar simpul = 1 setiap ruas.
+      </p>
+      <svg id="andor-tree-buku" viewBox="0 0 680 300"></svg>
+      <div class="section-label">Biaya Minimum dari Akar</div>
+      <p class="result-highlight" id="andor-result-buku"></p>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Membagi untuk Menyelesaikan</h3>
+      <p>
+        Graf ini punya struktur <code>OR( AND(3,4), OR( AND(2,2,2), 9 ) )</code>.
+        Simpul AND pertama berbiaya 3+4=7. Simpul AND kedua berbiaya
+        2+2+2=6, lebih murah dari alternatif 9 pada OR di bawahnya, jadi
+        cabang OR bawah bernilai 6.
+      </p>
+      <p>
+        Simpul OR akar memilih yang termurah antara 7 dan 6, sehingga biaya
+        minimum akhir adalah <strong>6</strong>, ditempuh lewat AND(2,2,2).
+      </p>
+      <p>
+        Pada Contoh 4.1 buku, dugaan awal biaya B, C, D masing-masing 3, 4,
+        5 membuat jalur D (total 6) tampak lebih murah dari jalur B&amp;C
+        (total 9). Tapi setelah D diperluas menjadi AND(E=4, F=4), biaya
+        sebenarnya jalur D naik jadi <strong>11</strong> (4+4+1+1+1).
+      </p>
+      <p>
+        Begitu juga B ternyata OR(G=5, H=7): biaya B sebenarnya 6 (lewat G),
+        bukan 3, sehingga jalur B&amp;C naik jadi 12. Karena 11 &lt; 12,
+        persoalan A akhirnya tetap dikerjakan lewat <strong>D</strong>, sama
+        seperti kesimpulan akhir buku &mdash; hanya saja alasan finalnya
+        berbeda dari dugaan awal.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 2: PEWARNAAN PETA ====== -->
+<div class="tab-content" id="tab-peta" role="tabpanel" aria-labelledby="tabbtn-peta" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Peta benua Australia (Contoh 4.2): WA, NT, SA, Q, NSW, V, dan T (Tasmania,
+        pulau terpisah). Pewarnaan serakah dimulai dari daerah berderajat
+        tertinggi (SA, dengan 5 koneksi).
+      </p>
+      <svg id="peta-warna" viewBox="0 0 500 380"></svg>
+      <div class="section-label">Pembuktian Jumlah Warna Minimum</div>
+      <p class="result-highlight" id="peta-result"></p>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Mengapa 3 Warna, Bukan 2?</h3>
+      <p>
+        SA bertetangga dengan 5 daerah lain (WA, NT, Q, NSW, V), dan di
+        antara para tetangga SA sendiri ada pasangan yang juga bertetangga
+        (misalnya NT&ndash;Q dan Q&ndash;NSW). Ini membentuk siklus ganjil
+        pada subgraf, sehingga 2 warna tidak akan pernah cukup.
+      </p>
+      <p>
+        Pencarian menyeluruh atas k = 1, 2, 3, &hellip; membuktikan bahwa
+        pewarnaan sah pertama kali ditemukan pada <strong>k = 3</strong>.
+        Tasmania (T) tidak bertetangga dengan daerah manapun, jadi warnanya
+        bebas dipilih.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 3: KRIPTARITMATIKA ====== -->
+<div class="tab-content" id="tab-kripto" role="tabpanel" aria-labelledby="tabbtn-kripto" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        SEND + MORE = MONEY. Setiap huruf mewakili satu digit berbeda 0&ndash;9,
+        huruf pertama tidak boleh nol.
+      </p>
+      <div id="kripto-sum" class="kripto-sum"></div>
+      <table class="iter-table" id="kripto-letters-table">
+        <thead><tr><th>Huruf</th><th>Digit</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="section-label">Brute Force vs Pembangkitan Batasan</div>
+      <svg id="kripto-bar" viewBox="0 0 640 180"></svg>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Batasan Mempersempit Ruang Pencarian</h3>
+      <p>
+        Pencarian menyeluruh atas seluruh permutasi 8 huruf berbeda
+        memeriksa jutaan kandidat penugasan sebelum menemukan solusi.
+      </p>
+      <p>
+        Dengan membangkitkan batasan lebih dulu &mdash; <code>M = 1</code>
+        (karena hasil penjumlahan dua bilangan 4 digit menghasilkan bilangan
+        5 digit, carry terakhir pasti 1) dan <code>O = 0</code> &mdash;
+        ruang pencarian mengecil drastis sebelum pencarian menyeluruh
+        dilakukan pada sisa huruf.
+      </p>
+      <p>
+        Solusi unik: <strong>9567 + 1085 = 10652</strong>.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 4: PENALARAN BATASAN RUMAH SAKIT ====== -->
+<div class="tab-content" id="tab-rs" role="tabpanel" aria-labelledby="tabbtn-rs" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        16 staf rumah sakit terdiri dari Perawat Pria (PP), Perawat Wanita
+        (PW), Dokter Pria (DP), dan Dokter Wanita (DW), mengikuti lima
+        batasan pada Contoh 4.4.
+      </p>
+      <svg id="rs-bar" viewBox="0 0 500 220"></svg>
+      <div class="section-label">Uji Identitas Penutur</div>
+      <p class="section-note">
+        Kurangi satu orang dari tiap kategori (asumsikan penutur berasal
+        dari kategori itu), lalu periksa batasan 2&ndash;5 pada sisa 15 orang.
+      </p>
+      <table class="iter-table" id="rs-table">
+        <thead><tr><th>Kategori Diuji</th><th>Batasan yang Dilanggar</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Reduksi Batasan</h3>
+      <p>
+        Kelima batasan &mdash; total 16 orang, PP+PW &gt; DP+DW, DP &gt; PP,
+        PP &gt; PW, dan DW &ge; 1 &mdash; secara bersama-sama hanya
+        menyisakan satu komposisi tunggal: <strong>DP=6, PP=5, PW=4, DW=1</strong>.
+      </p>
+      <p>
+        Ketika satu orang dikurangi dari tiap kategori secara bergantian,
+        hanya pengurangan dari kategori <strong>Perawat Wanita</strong> yang
+        membuat sisa 15 orang tetap memenuhi seluruh batasan relasional
+        &mdash; sehingga penutur pastilah seorang Perawat Wanita.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 5: LOGIC PROGRAMMING SILSILAH ====== -->
+<div class="tab-content" id="tab-silsilah" role="tabpanel" aria-labelledby="tabbtn-silsilah" tabindex="0">
+  <div class="viz-layout">
+    <div class="viz-main">
+      <p class="section-note">
+        Silsilah keluarga John, Jack dan Oliver (Gambar 4.8), persis sesuai
+        buku: 16 orang, fakta <code>male/female/parent</code>, dan 12 aturan
+        Prolog (father, mother, grandfather, grandmother, sister, brother,
+        aunt, uncle, descend, ancestor). Garis putus-putus menghubungkan
+        pasangan menikah.
+      </p>
+      <svg id="silsilah-tree" viewBox="0 0 730 300"></svg>
+      <div class="section-label">Enam Kueri dari Buku</div>
+      <table class="iter-table" id="silsilah-query-table">
+        <thead><tr><th>Kueri</th><th>Jawaban</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="viz-sidebar">
+      <h3>Penelusuran Mundur</h3>
+      <p>
+        Mesin inferensi (backward chaining dengan unifikasi peubah dan
+        penggantian nama otomatis tiap aturan dipanggil) menjawab keenam
+        kueri buku persis sama: ayah Kelly = James; nenek Kelly = Helen dan
+        Sophie; saudara laki-laki Kelly = Harry; bibi Kelly = Jess dan
+        Arline.
+      </p>
+      <p>
+        <code>descend(john,X)</code> menjawab alice, ali, simon, stev
+        &mdash; seluruh keturunan John lewat Madeline, termasuk cucu Simon
+        dan Stev lewat Ali&amp;Jess.
+      </p>
+      <p>
+        Perhatikan arah aturan <code>ancestor(X,Y)</code> pada buku: bernilai
+        benar apabila <strong>Y</strong> adalah leluhur <strong>X</strong>.
+        Jadi <code>ancestor(stev,Y)</code> menjawab ali, jess, john,
+        madeline, jack, helen &mdash; seluruh leluhur Stev naik dua
+        generasi.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; Kecerdasan Komputasional INF20052</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

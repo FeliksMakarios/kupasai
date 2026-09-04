@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kecerdasan Komputasional (Computational Intelligence) - KupasAI</title>
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/tentang/">Tentang</a></li>
+    <li><a href="/kupasai/kontak/">Kontak</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="course-header">
+  <div class="course-header-content">
+    <a href="/kupasai/" style="font-size:0.85rem;color:var(--text-muted);display:inline-block;margin-bottom:0.75rem;text-decoration:none">&larr; Kembali ke Beranda</a>
+    <h1>Kecerdasan Komputasional (Computational Intelligence)</h1>
+    <span class="course-code">INF20052 &middot; 4 SKS &middot; S1 Informatika</span>
+    <p>
+      Dari pemodelan ruang keadaan dan algoritma pencarian, penalaran di
+      bawah ketidakpastian, jaringan syaraf tiruan, algoritma genetika,
+      hingga kecerdasan kawanan dan sistem fuzzy &mdash; enam modul lab
+      dengan angka yang diverifikasi ulang lewat implementasi Python
+      independen, bukan disalin dari buku.
+    </p>
+  </div>
+</div>
+
+<div class="topic-table-wrap">
+  <table class="topic-table">
+    <thead>
+      <tr>
+        <th class="col-priority">#</th>
+        <th>Topik Visualisasi</th>
+        <th class="col-week">Minggu RPS</th>
+        <th class="col-effort">Estimasi Effort</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="col-priority">1</td>
+        <td><a href="pemodelan-pencarian/">Pemodelan Ruang Keadaan dan Algoritma Pencarian</a></td>
+        <td class="col-week">Week 2-3</td>
+        <td class="col-effort"><span class="effort-badge">High</span></td>
+        <td><span class="topic-status available">Tersedia</span></td>
+      </tr>
+      <tr>
+        <td class="col-priority">2</td>
+        <td><a href="teknik-pemecahan/">Teknik Pemecahan Permasalahan</a></td>
+        <td class="col-week">Week 4</td>
+        <td class="col-effort"><span class="effort-badge">Medium-High</span></td>
+        <td><span class="topic-status available">Tersedia</span></td>
+      </tr>
+      <tr>
+        <td class="col-priority">3</td>
+        <td><a href="penalaran-ketidakpastian/">Penalaran Ketidakpastian dan Kesamaan Dokumen</a></td>
+        <td class="col-week">Week 5-6</td>
+        <td class="col-effort"><span class="effort-badge">Medium-High</span></td>
+        <td><span class="topic-status available">Tersedia</span></td>
+      </tr>
+      <tr>
+        <td class="col-priority">4</td>
+        <td><a href="jaringan-syaraf-tiruan/">Jaringan Syaraf Tiruan</a></td>
+        <td class="col-week">Week 9-10</td>
+        <td class="col-effort"><span class="effort-badge">High</span></td>
+        <td><span class="topic-status available">Tersedia</span></td>
+      </tr>
+      <tr>
+        <td class="col-priority">5</td>
+        <td><a href="algoritma-genetika/">Algoritma Genetika</a></td>
+        <td class="col-week">Week 11</td>
+        <td class="col-effort"><span class="effort-badge">Medium-High</span></td>
+        <td><span class="topic-status available">Tersedia</span></td>
+      </tr>
+      <tr>
+        <td class="col-priority">6</td>
+        <td><a href="kecerdasan-kawanan-fuzzy/">Kecerdasan Kawanan dan Sistem Fuzzy</a></td>
+        <td class="col-week">Week 12-14</td>
+        <td class="col-effort"><span class="effort-badge">High</span></td>
+        <td><span class="topic-status available">Tersedia</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026 &middot; Kecerdasan Komputasional INF20052</span>
+</footer>
+
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+/*
+ * KupasAI - Modul 5: Algoritma Genetika
+ */
+
+.page-header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 2rem 2rem 1.5rem; }
+.page-header-content { max-width: 900px; margin: 0 auto; }
+.back-link { font-size: 0.85rem; color: var(--text-muted); display: inline-block; margin-bottom: 0.75rem; text-decoration: none; }
+.back-link:hover { color: var(--accent); }
+.page-header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+.page-subtitle { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
+.learning-objectives { background: var(--accent-light); border: 1px solid #54aeff; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+.learning-objectives strong { color: var(--accent); }
+
+.tab-nav { max-width: 1150px; margin: 0 auto; padding: 1rem 2rem 0; display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.tab-btn { background: none; border: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; padding: 0.6rem 1.2rem; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; font-family: var(--font-sans); }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-content { display: none; max-width: 1150px; margin: 0 auto; padding: 1.5rem 2rem; }
+.tab-content.active { display: block; }
+
+.viz-layout { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start; }
+.viz-main { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; box-shadow: var(--shadow-sm); }
+.viz-main svg { width: 100%; height: auto; display: block; }
+.viz-sidebar h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.viz-sidebar p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem; }
+.viz-sidebar strong { color: var(--text-primary); }
+.viz-sidebar code { font-family: var(--font-mono); background: var(--bg-tertiary); padding: 1px 4px; border-radius: 3px; font-size: 0.85em; }
+
+.iter-table { width: 100%; border-collapse: collapse; font-size: 0.76rem; margin-top: 0.5rem; margin-bottom: 1rem; max-height: 360px; }
+.iter-table th, .iter-table td { padding: 0.4rem 0.5rem; text-align: right; border-bottom: 1px solid var(--border-light); font-family: var(--font-mono); }
+.iter-table th:first-child, .iter-table td:first-child { text-align: left; font-family: var(--font-sans); }
+.iter-table thead th { color: var(--text-muted); font-weight: 600; font-family: var(--font-sans); font-size: 0.68rem; text-transform: uppercase; }
+.iter-table tbody tr:hover { background: var(--bg-secondary); }
+.section-label { font-size: 0.85rem; font-weight: 600; margin: 1.25rem 0 0.25rem; color: var(--text-primary); }
+.section-note { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+.result-highlight { font-size: 1.2rem; font-weight: 700; color: var(--accent); font-family: var(--font-mono); }
+
+code { font-family: var(--font-mono); background: var(--bg-tertiary); padding: 1px 4px; border-radius: 3px; font-size: 0.85em; }
+
+.kripto-sum { font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; text-align: center; padding: 1rem; color: var(--text-primary); line-height: 1.8; word-break: break-all; }
+
+@media (max-width: 860px) {
+  .viz-layout { grid-template-columns: 1fr; }
+  .iter-table { display: block; overflow-x: auto; white-space: nowrap; max-height: 320px; overflow-y: auto; }
+}
