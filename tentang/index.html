@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tentang - KupasAI</title>
+  <meta name="description" content="Tentang KupasAI: platform visualisasi interaktif untuk mata kuliah CS/AI dalam Bahasa Indonesia.">
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/tentang/" class="active">Tentang</a></li>
+    <li><a href="/kupasai/kontak/">Kontak</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="course-header">
+  <div class="course-header-content">
+    <a href="/kupasai/" style="font-size:0.85rem;color:var(--text-muted);display:inline-block;margin-bottom:0.75rem;text-decoration:none">&larr; Kembali ke Beranda</a>
+    <h1>Tentang KupasAI</h1>
+    <p>
+      Platform visualisasi interaktif untuk mata kuliah Computer Science
+      dan Artificial Intelligence, dibangun sepenuhnya dalam Bahasa
+      Indonesia.
+    </p>
+  </div>
+</div>
+
+<div class="content-wrapper">
+
+  <div class="platform-description">
+    <p>
+      KupasAI membongkar konsep <em>Artificial Intelligence</em> dan
+      <em>Data Science</em> menjadi visualisasi yang benar-benar
+      interaktif. Bukan sekadar gambar diam atau video, melainkan
+      visualisasi yang bisa digeser, diatur, dan dieksplorasi langsung
+      &mdash; angka yang tampil pun dihitung ulang dari kode Python/NumPy
+      yang sama dengan materi kuliahnya, bukan dikarang.
+    </p>
+    <p>
+      Setiap visualisasi dirancang untuk mata kuliah spesifik, mengikuti
+      Rencana Pembelajaran Semester (RPS) masing-masing, dan dibangun
+      dengan D3.js sebagai satu-satunya library visualisasi &mdash; tanpa
+      framework tambahan, murni situs statis.
+    </p>
+  </div>
+
+  <h2 class="section-title">Kenapa Visualisasi Interaktif?</h2>
+  <p style="color:var(--text-secondary);font-size:0.95rem;margin-bottom:1.5rem">
+    Banyak konsep inti CS/AI &mdash; gradient descent, backpropagation,
+    attention, convolution &mdash; jauh lebih mudah dipahami ketika bisa
+    dicoba-coba langsung: geser learning rate dan lihat kapan model
+    mulai divergen, ubah posisi kernel dan lihat feature map terbentuk,
+    atau telusuri langkah demi langkah bagaimana error dialirkan mundur
+    lewat backpropagation. KupasAI dibangun di atas prinsip itu: setiap
+    halaman adalah simulasi kecil yang bisa dijelajahi, bukan sekadar
+    dibaca.
+  </p>
+
+  <h2 class="section-title">Pembuat</h2>
+  <p style="color:var(--text-secondary);font-size:0.95rem;margin-bottom:1.5rem">
+    KupasAI dikembangkan oleh <strong>Feliks V. P. Samosir</strong>,
+    dosen di Fakultas AI dan Data Science, Universitas Pelita Harapan,
+    untuk mata kuliah yang diampunya. Info lebih lanjut tentang beliau
+    dapat dilihat di
+    <a href="https://feliksmakarios.github.io" target="_blank" rel="noopener">situs pribadinya</a>.
+  </p>
+
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026</span>
+</footer>
+
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>

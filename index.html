@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KupasAI - Visualisasi Interaktif untuk Mata Kuliah CS/AI</title>
-  <meta name="description" content="Platform visualisasi interaktif untuk pembelajaran mata kuliah Computer Science dan AI dalam Bahasa Indonesia. D3.js + p5.js.">
+  <meta name="description" content="Platform visualisasi interaktif untuk pembelajaran mata kuliah Computer Science dan AI dalam Bahasa Indonesia, dibangun dengan D3.js.">
   <link rel="stylesheet" href="assets/css/main.css">
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
@@ -27,12 +27,10 @@
 <nav class="navbar">
   <a href="/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
   <ul class="navbar-links">
-    <li><a href="/kupasai/nlp/">NLP</a></li>
-    <li><a href="/kupasai/ml/">ML</a></li>
-    <li><a href="/kupasai/ml-lanjut/">ML Lanjut</a></li>
+    <li><a href="/kupasai/tentang/">Tentang</a></li>
+    <li><a href="/kupasai/kontak/">Kontak</a></li>
   </ul>
   <div class="navbar-spacer"></div>
-  <span class="navbar-meta">Bahasa Indonesia</span>
   <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
     <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <circle cx="12" cy="12" r="4"/>
@@ -69,83 +67,86 @@
 
   <h2 class="section-title">Mata Kuliah</h2>
 
-  <!-- NLP Card -->
-  <a href="nlp/" class="course-card-link-wrapper" style="text-decoration:none;color:inherit;display:block">
-    <div class="course-card">
-      <img src="assets/img/thumbnail-nlp.svg" alt="Ilustrasi Pemrosesan Bahasa Alami" class="course-card-thumbnail">
+  <div class="course-grid">
+
+    <!-- NLP Card -->
+    <a href="nlp/" class="course-card-link-wrapper" style="text-decoration:none;color:inherit;display:block">
+      <div class="course-card">
+        <img src="assets/img/thumbnail-nlp.svg" alt="Ilustrasi Pemrosesan Bahasa Alami" class="course-card-thumbnail">
+        <div class="course-card-body">
+          <div class="course-card-header">
+            <h3>Pemrosesan Bahasa Alami (Natural Language Processing)</h3>
+            <span class="course-code">INF20161 &middot; 3 SKS</span>
+          </div>
+          <p>
+            Word embeddings, recurrent neural networks, LSTM, Transformer,
+            text classification, named entity recognition, summarization,
+            question answering.
+          </p>
+          <span class="course-card-link">Lihat visualisasi &rarr;</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- ML Intro Card -->
+    <a href="ml/" class="course-card-link-wrapper" style="text-decoration:none;color:inherit;display:block">
+      <div class="course-card">
+        <img src="assets/img/thumbnail-ml.svg" alt="Ilustrasi Pengantar Pemelajaran Mesin" class="course-card-thumbnail">
+        <div class="course-card-body">
+          <div class="course-card-header">
+            <h3>Pengantar Pemelajaran Mesin (Introduction to Machine Learning)</h3>
+            <span class="course-code">INF24042 &middot; 2 SKS</span>
+          </div>
+          <p>
+            Pandas, linear &amp; logistic regression, decision tree, random
+            forest, na&iuml;ve Bayes, churn prediction, clustering, market
+            basket analysis.
+          </p>
+          <span class="course-card-link">Lihat visualisasi &rarr;</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- ML Lanjut Card -->
+    <a href="ml-lanjut/" class="course-card-link-wrapper" style="text-decoration:none;color:inherit;display:block">
+      <div class="course-card">
+        <img src="assets/img/thumbnail-ml-lanjut.svg" alt="Ilustrasi Pemelajaran Mesin Lanjut" class="course-card-thumbnail">
+        <div class="course-card-body">
+          <div class="course-card-header">
+            <h3>Pemelajaran Mesin Lanjut (Advanced Machine Learning)</h3>
+            <span class="course-code">IN F24141 &middot; 3 SKS</span>
+          </div>
+          <p>
+            Forward propagation, gradient descent, backpropagation manual,
+            regularisasi, convolutional neural network, dan algoritma
+            deteksi objek (YOLO).
+          </p>
+          <span class="course-card-link">Lihat visualisasi &rarr;</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Komputasional Card (coming soon) -->
+    <div class="course-card coming-soon">
+      <img src="assets/img/thumbnail-komp.svg" alt="Ilustrasi Kecerdasan Komputasional" class="course-card-thumbnail">
       <div class="course-card-body">
         <div class="course-card-header">
-          <h3>Pemrosesan Bahasa Alami (NLP)</h3>
-          <span class="course-code">INF20161 &middot; 3 SKS</span>
+          <h3>Kecerdasan Komputasional (Computational Intelligence)</h3>
+          <span class="coming-soon-badge">Segera hadir</span>
         </div>
         <p>
-          Word embeddings, recurrent neural networks, LSTM, Transformer,
-          text classification, named entity recognition, summarization,
-          question answering.
+          Fuzzy logic, genetic algorithms, swarm intelligence, dan
+          sistem cerdas.
         </p>
-        <span class="course-card-link">Lihat visualisasi &rarr;</span>
       </div>
     </div>
-  </a>
 
-  <!-- ML Intro Card -->
-  <a href="ml/" class="course-card-link-wrapper" style="text-decoration:none;color:inherit;display:block">
-    <div class="course-card">
-      <img src="assets/img/thumbnail-ml.svg" alt="Ilustrasi Machine Learning" class="course-card-thumbnail">
-      <div class="course-card-body">
-        <div class="course-card-header">
-          <h3>Pengantar Machine Learning</h3>
-          <span class="course-code">INF24042 &middot; 2 SKS</span>
-        </div>
-        <p>
-          Pandas, linear &amp; logistic regression, decision tree, random
-          forest, na&iuml;ve Bayes, churn prediction, clustering, market
-          basket analysis.
-        </p>
-        <span class="course-card-link">Lihat visualisasi &rarr;</span>
-      </div>
-    </div>
-  </a>
-
-  <!-- ML Lanjut Card -->
-  <a href="ml-lanjut/" class="course-card-link-wrapper" style="text-decoration:none;color:inherit;display:block">
-    <div class="course-card">
-      <img src="assets/img/thumbnail-ml-lanjut.svg" alt="Ilustrasi Pembelajaran Mesin Lanjut" class="course-card-thumbnail">
-      <div class="course-card-body">
-        <div class="course-card-header">
-          <h3>Pembelajaran Mesin Lanjut</h3>
-          <span class="course-code">IN F24141 &middot; 3 SKS</span>
-        </div>
-        <p>
-          Forward propagation, gradient descent, backpropagation manual,
-          regularisasi, convolutional neural network, dan algoritma
-          deteksi objek (YOLO).
-        </p>
-        <span class="course-card-link">Lihat visualisasi &rarr;</span>
-      </div>
-    </div>
-  </a>
-
-  <!-- Komputasional Card (coming soon) -->
-  <div class="course-card coming-soon">
-    <img src="assets/img/thumbnail-komp.svg" alt="Ilustrasi Kecerdasan Komputasional" class="course-card-thumbnail">
-    <div class="course-card-body">
-      <div class="course-card-header">
-        <h3>Kecerdasan Komputasional</h3>
-        <span class="coming-soon-badge">Segera hadir</span>
-      </div>
-      <p>
-        Fuzzy logic, genetic algorithms, swarm intelligence, dan
-        sistem cerdas.
-      </p>
-    </div>
   </div>
 
 </div>
 
 <footer class="footer">
   <span>KupasAI &copy; 2026</span>
-  <a href="https://github.com/FeliksMakarios/kupasai">GitHub</a>
 </footer>
 
 <script src="assets/js/main.js"></script>

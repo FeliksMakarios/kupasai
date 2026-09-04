@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kontak - KupasAI</title>
+  <meta name="description" content="Hubungi pengembang KupasAI untuk pertanyaan, masukan, atau laporan bug.">
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/tentang/">Tentang</a></li>
+    <li><a href="/kupasai/kontak/" class="active">Kontak</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<div class="course-header">
+  <div class="course-header-content">
+    <a href="/kupasai/" style="font-size:0.85rem;color:var(--text-muted);display:inline-block;margin-bottom:0.75rem;text-decoration:none">&larr; Kembali ke Beranda</a>
+    <h1>Kontak</h1>
+    <p>
+      Ada pertanyaan, masukan, atau menemukan bug di salah satu
+      visualisasi? Silakan hubungi lewat salah satu kanal berikut.
+    </p>
+  </div>
+</div>
+
+<div class="content-wrapper">
+
+  <div class="platform-description">
+    <p>
+      <strong>Email</strong><br>
+      <a href="mailto:feliksmakarios19@gmail.com">feliksmakarios19@gmail.com</a>
+    </p>
+    <p>
+      <strong>GitHub</strong><br>
+      <a href="https://github.com/FeliksMakarios" target="_blank" rel="noopener">github.com/FeliksMakarios</a>
+    </p>
+    <p>
+      <strong>LinkedIn</strong><br>
+      <a href="https://linkedin.com/in/feliksmakarios" target="_blank" rel="noopener">linkedin.com/in/feliksmakarios</a>
+    </p>
+    <p>
+      <strong>Situs Pribadi</strong><br>
+      <a href="https://feliksmakarios.github.io" target="_blank" rel="noopener">feliksmakarios.github.io</a>
+    </p>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <span>KupasAI &copy; 2026</span>
+</footer>
+
+<script src="/kupasai/assets/js/theme.js"></script>
+</body>
+</html>
