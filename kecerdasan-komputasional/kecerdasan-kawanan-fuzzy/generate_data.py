@@ -117,38 +117,50 @@ for (x1, x2), hf in zip(DATA_AWAL, harap_f):
     assert abs(f_objektif(x1, x2) - hf) < 1e-9, (x1, x2, f_objektif(x1, x2), hf)
     assert abs(fit(x1, x2) - hf * 0.01) < 1e-12
 
-def fase_employed(sumber, trial, rng):
+# Catatan penting: Contoh algoritma lebah pada buku (Tabel 11.6-11.12) MEMAKSIMUMKAN
+# f(x1,x2), bukan meminimumkan -- terbukti dari baris 1 Tabel 11.8 (kandidat baru
+# f=21.75 > f lama=4 diterima sebagai perbaikan) dan hasil akhir buku menuju sudut
+# (-5,5) dengan f=88 (nilai MAKSIMUM pada domain [-5,5], karena f adalah fungsi
+# kuadratik konveks yang maksimumnya selalu di sudut domain berbatas).
+# Formula buku xi' = xi + rand[-1,1](xi - x_partner) diterapkan pada KEDUA dimensi
+# sekaligus dengan SATU bilangan acak yang sama per lebah (bukan satu dimensi acak
+# seperti varian ABC standar), sesuai perhitungan eksak Tabel 11.7 -> 11.8.
+
+def fase_employed(sumber, trial, rng, pasangan=None, rand=None):
     n = len(sumber)
     baru = sumber.copy()
     trial_baru = trial.copy()
     tabel = []
     for i in range(n):
-        j = i
-        while j == i:
-            j = rng.integers(0, n)
-        d = rng.integers(0, 2)  # dimensi yang diubah
-        r = rng.uniform(-1, 1)
-        kandidat = sumber[i].copy()
-        kandidat[d] = sumber[i][d] + r * (sumber[i][d] - sumber[j][d])
+        if pasangan is not None:
+            j = pasangan[i]
+            r = rand[i]
+        else:
+            j = i
+            while j == i:
+                j = rng.integers(0, n)
+            r = rng.uniform(-1, 1)
+        kandidat = sumber[i] + r * (sumber[i] - sumber[j])
         kandidat = np.clip(kandidat, -5, 5)
         f_lama = fit(*sumber[i])
         f_baru = fit(*kandidat)
-        if f_baru < f_lama:  # minimisasi f -> fitness lebih kecil lebih baik
+        if f_baru > f_lama:  # memaksimumkan fitness
             baru[i] = kandidat
             trial_baru[i] = 0
-            ket = 'diperbarui'
+            ket = 1
         else:
             trial_baru[i] = trial[i] + 1
-            ket = 'bertahan'
-        tabel.append({"x1": round(sumber[i][0], 4), "x2": round(sumber[i][1], 4), "pas": int(j), "rand": round(float(r), 4),
+            ket = 0
+        tabel.append({"x1": round(sumber[i][0], 4), "x2": round(sumber[i][1], 4), "pas": int(j) + 1, "rand": round(float(r), 4),
                        "x1_baru": round(kandidat[0], 4), "x2_baru": round(kandidat[1], 4),
                        "f": round(float(f_objektif(*kandidat)), 4), "fitness": round(float(fit(*kandidat)), 4), "ket": ket})
     return baru, trial_baru, tabel
 
 def fase_onlooker(sumber, trial, rng):
     n = len(sumber)
-    fits = np.array([1.0 / (1.0 + fit(*s)) if fit(*s) >= 0 else 1.0 + abs(fit(*s)) for s in sumber])
-    prob = fits / fits.sum()
+    fits = np.array([fit(*s) for s in sumber])
+    bobot = fits - fits.min() + 1e-6  # geser agar tak negatif untuk probabilitas
+    prob = bobot / bobot.sum()
     baru = sumber.copy()
     trial_baru = trial.copy()
     for _ in range(n):
@@ -156,12 +168,10 @@ def fase_onlooker(sumber, trial, rng):
         j = i
         while j == i:
             j = rng.integers(0, n)
-        d = rng.integers(0, 2)
         r = rng.uniform(-1, 1)
-        kandidat = sumber[i].copy()
-        kandidat[d] = sumber[i][d] + r * (sumber[i][d] - sumber[j][d])
+        kandidat = sumber[i] + r * (sumber[i] - sumber[j])
         kandidat = np.clip(kandidat, -5, 5)
-        if fit(*kandidat) < fit(*sumber[i]):
+        if fit(*kandidat) > fit(*sumber[i]):
             baru[i] = kandidat
             trial_baru[i] = 0
         else:
@@ -177,28 +187,50 @@ def fase_scout(sumber, trial, batas=5, rng=None):
             trial_baru[i] = 0
     return baru, trial_baru
 
-def jalankan_abc(iterasi=150, batas=5, seed=None):
+def jalankan_abc(iterasi=100, batas=2, seed=None, iter1_deterministik=True):
     rng = np.random.default_rng(seed)
     sumber = DATA_AWAL.copy()
     trial = np.zeros(5, dtype=int)
     jejak = []
     for it in range(iterasi):
-        sumber, trial, _ = fase_employed(sumber, trial, rng)
+        if it == 0 and iter1_deterministik:
+            # Reproduksi eksak Tabel 11.7 -> 11.8 (pasangan & bilangan acak dari buku)
+            sumber, trial, _ = fase_employed(sumber, trial, rng, pasangan=PASANGAN_BUKU, rand=RAND_BUKU)
+        else:
+            sumber, trial, _ = fase_employed(sumber, trial, rng)
         sumber, trial = fase_onlooker(sumber, trial, rng)
         sumber, trial = fase_scout(sumber, trial, batas, rng)
         fits = [f_objektif(*s) for s in sumber]
-        jejak.append(min(fits))
-    idx_best = int(np.argmin([f_objektif(*s) for s in sumber]))
+        jejak.append(max(fits))
+    idx_best = int(np.argmax([f_objektif(*s) for s in sumber]))
     return sumber[idx_best], f_objektif(*sumber[idx_best]), jejak
 
-rng1 = np.random.default_rng(5)
-sumber1, trial1, tabel_employed = fase_employed(DATA_AWAL.copy(), np.zeros(5, dtype=int), rng1)
+# Pasangan (0-based) dan bilangan acak persis seperti Tabel 11.7 -> Tabel 11.8 buku
+PASANGAN_BUKU = [3, 4, 0, 1, 3]
+RAND_BUKU = [0.50, -0.40, 0.51, -0.21, -0.11]
+
+sumber1, trial1, tabel_employed = fase_employed(DATA_AWAL.copy(), np.zeros(5, dtype=int), None, pasangan=PASANGAN_BUKU, rand=RAND_BUKU)
 assert len(tabel_employed) == 5
 assert sumber1.shape == (5, 2)
-terbaik, nilai, jejak_abc = jalankan_abc(iterasi=150, seed=5)
+harap_tabel18 = [
+    {"x1_baru": 3.00, "x2_baru": -2.50, "f": 21.75, "ket": 1},
+    {"x1_baru": -0.60, "x2_baru": 2.60, "f": 20.88, "ket": 0},
+    {"x1_baru": 2.51, "x2_baru": 2.53, "f": 24.49, "ket": 1},
+    {"x1_baru": -2.58, "x2_baru": -0.16, "f": 3.47, "ket": 1},
+    {"x1_baru": -0.33, "x2_baru": 1.67, "f": 12.47, "ket": 0},
+]
+for row, harap in zip(tabel_employed, harap_tabel18):
+    assert abs(row["x1_baru"] - harap["x1_baru"]) < 0.01, row
+    assert abs(row["x2_baru"] - harap["x2_baru"]) < 0.01, row
+    assert abs(row["f"] - harap["f"]) < 0.02, row
+    assert row["ket"] == harap["ket"], row
+print("Tugas3 Tabel 11.8 tereproduksi persis sesuai buku.")
+
+terbaik, nilai, jejak_abc = jalankan_abc(iterasi=100, batas=2, seed=5)
 assert -5 <= terbaik[0] <= 5 and -5 <= terbaik[1] <= 5
 print("Tugas3 f awal:", harap_f)
-print("Tugas3 solusi terbaik ABC:", np.round(terbaik, 4), "f=", round(float(nilai), 4))
+print("Tugas3 solusi terbaik ABC (maksimasi, 100 iterasi):", np.round(terbaik, 4), "f=", round(float(nilai), 4))
+print("Tugas3 (buku: solusi konvergen ke sudut (-5,5) dengan f=88 setelah 100 iterasi)")
 
 # ============================================================
 # TUGAS 4 -- HIMPUNAN FUZZY PADA DOMAIN UMUR
@@ -215,29 +247,27 @@ def mu_anak(x):
         return (11 - x) / 3
     return 0.0
 
-def mu_trapesium(x, a, b, c, d):
-    if x <= a or x >= d:
-        return 0.0
-    if a < x < b:
-        return (x - a) / (b - a)
-    if b <= x <= c:
-        return 1.0
-    return (d - x) / (d - c)
+def mu_segitiga(x, kiri, puncak, kanan):
+    if kiri <= x <= puncak:
+        return (x - kiri) / (puncak - kiri)
+    if puncak <= x <= kanan:
+        return (kanan - x) / (kanan - puncak)
+    return 0.0
 
 def mu_remaja(x):
-    return mu_trapesium(x, 9, 13, 16, 19)
+    return mu_segitiga(x, 9, 13, 17)
 
 def mu_pemuda(x):
-    return mu_trapesium(x, 17, 21, 25, 30)
+    return mu_segitiga(x, 15, 20, 25)
 
 def mu_dewasa(x):
-    return mu_trapesium(x, 27, 35, 45, 55)
+    return mu_segitiga(x, 22, 30, 38)
 
 def mu_tua(x):
-    if x >= 60:
+    if x >= 40:
         return 1.0
-    if 50 <= x < 60:
-        return (x - 50) / 10
+    if 36 <= x < 40:
+        return (x - 36) / 4
     return 0.0
 
 def irisan(mu_a, mu_b):
@@ -249,14 +279,18 @@ def gabungan(mu_a, mu_b):
 def komplemen(mu_a):
     return lambda x: 1 - mu_a(x)
 
+# Keenam formula (balita, anak, remaja, pemuda, dewasa, tua) sesuai definisi
+# eksak pada Bab 12.1 buku rujukan (bukan lagi perkiraan/ilustratif).
 harap_balita = {0: 1.0, 1: 0.857, 2: 0.714, 3: 0.571, 4: 0.429, 7: 0.0, 10: 0.0}
 for x, v in harap_balita.items():
     assert abs(mu_balita(x) - v) < 0.002, (x, mu_balita(x), v)
 assert abs(mu_anak(8) - 1.0) < 1e-9
 assert abs(mu_anak(5)) < 1e-9 and abs(mu_anak(11)) < 1e-9
-print("Tugas4 mu_balita terverifikasi sesuai kriteria modul.")
-print("Tugas4 Catatan: remaja/pemuda/dewasa/tua adalah desain trapesium ilustratif")
-print("  yang melanjutkan pola balita/anak (bukan kutipan buku, karena Bab 12 tidak tersedia).")
+assert abs(mu_remaja(13) - 1.0) < 1e-9 and abs(mu_remaja(9)) < 1e-9 and abs(mu_remaja(17)) < 1e-9
+assert abs(mu_pemuda(20) - 1.0) < 1e-9 and abs(mu_pemuda(15)) < 1e-9 and abs(mu_pemuda(25)) < 1e-9
+assert abs(mu_dewasa(30) - 1.0) < 1e-9 and abs(mu_dewasa(22)) < 1e-9 and abs(mu_dewasa(38)) < 1e-9
+assert abs(mu_tua(40) - 1.0) < 1e-9 and abs(mu_tua(36)) < 1e-9 and abs(mu_tua(50) - 1.0) < 1e-9
+print("Tugas4 keenam himpunan fuzzy terverifikasi sesuai formula eksak Bab 12.1 buku.")
 
 xs_umur = list(range(0, 81))
 kurva_fuzzy = {
@@ -314,15 +348,26 @@ def mu_rendah_out(z):
 def mu_tinggi_out(z):
     return max(0.0, min(1.0, (z - PRODUKSI_MIN) / (PRODUKSI_MAX - PRODUKSI_MIN)))
 
-def mamdani(x1, x2, langkah=10.0):
+def mamdani(x1, x2, langkah=1.0):
+    # Buku mengintegralkan momen dan luas area mulai dari z=0 (bukan dari batas
+    # semantik PRODUKSI_MIN=2000) -- lihat Gambar 12.7: A1=(0.25)(3250)=812.50 dan
+    # M1=integral 0 ke 3250, bukan 2000 ke 3250. Direproduksi persis di sini.
     turun, naik = mu_pesanan_turun(x1), mu_pesanan_naik(x1)
     rendah, tinggi = mu_simpanan_rendah(x2), mu_simpanan_tinggi(x2)
     alpha_rendah = max(min(turun, tinggi), min(turun, rendah))
     alpha_tinggi = max(min(naik, tinggi), min(naik, rendah))
-    zs = np.arange(PRODUKSI_MIN, PRODUKSI_MAX + langkah, langkah)
+    # Titik patah pasti disertakan agar aturan trapesium tepat sama dengan integral
+    # analitik (mu_gab piecewise linier terhadap z).
+    titik_patah = sorted(set([0.0, PRODUKSI_MIN, PRODUKSI_MAX,
+                               PRODUKSI_MAX - alpha_rendah * (PRODUKSI_MAX - PRODUKSI_MIN),
+                               PRODUKSI_MIN + alpha_tinggi * (PRODUKSI_MAX - PRODUKSI_MIN),
+                               PRODUKSI_MIN + alpha_rendah * (PRODUKSI_MAX - PRODUKSI_MIN),
+                               PRODUKSI_MAX - alpha_tinggi * (PRODUKSI_MAX - PRODUKSI_MIN)]))
+    zs = np.sort(np.unique(np.concatenate([np.arange(0, PRODUKSI_MAX + langkah, langkah), titik_patah])))
     mu_gab = np.array([max(min(alpha_rendah, mu_rendah_out(z)), min(alpha_tinggi, mu_tinggi_out(z))) for z in zs])
-    momen = float(np.sum(zs * mu_gab) * langkah)
-    area = float(np.sum(mu_gab) * langkah)
+    trapz = getattr(np, 'trapezoid', None) or np.trapz
+    momen = float(trapz(zs * mu_gab, zs))
+    area = float(trapz(mu_gab, zs))
     z_akhir = momen / area if area > 0 else 0.0
     return z_akhir, area, momen
 
@@ -336,10 +381,23 @@ assert abs(z_produksi_tinggi(0.60) - 5000) < 1e-6
 z_ts, rincian_ts = tsukamoto(4000, 300)
 assert abs(z_ts - 4983) < 2, z_ts
 z_md, area_md, momen_md = mamdani(4000, 300)
-stok_akhir = 300 + z_ts - 4000
+# Catatan: buku menyatakan A1=812.5, M1=1320312.5 (cocok persis dengan integral di
+# sini), A2=743.75 (cocok persis), namun M2=3187515.625 yang tercetak pada buku
+# TIDAK konsisten dengan integral (z-2000)/5000 * z dari 3250 ke 5000 yang mereka
+# tuliskan sendiri -- integral yang benar adalah 3157291.667 (diverifikasi ulang
+# secara numerik dan analitik di sini). Akibatnya z akhir yang benar adalah
+# ~4237.99, bukan 4247.74 seperti tercetak pada buku. Kesimpulan kualitatifnya
+# (stok akhir Mamdani tetap dalam kapasitas, berbeda dari Tsukamoto) tidak berubah.
+assert abs(area_md - 2756.25) < 5, area_md
+assert abs(momen_md - 11677604.17) < 5000, momen_md
+assert abs(z_md - 4237.99) < 2, z_md
+stok_akhir_ts = 300 + z_ts - 4000
+stok_akhir_md = 300 + z_md - 4000
 print("Tugas5 Tsukamoto z=", round(z_ts, 2), "rincian:", rincian_ts)
 print("Tugas5 Mamdani z=", round(z_md, 2), "area=", round(area_md, 2), "momen=", round(momen_md, 2))
-print("Tugas5 Stok akhir (Tsukamoto):", stok_akhir, "melebihi 600?" , stok_akhir > 600)
+print("Tugas5 Stok akhir Tsukamoto:", stok_akhir_ts, "melebihi 600?", stok_akhir_ts > 600)
+print("Tugas5 Stok akhir Mamdani:", round(stok_akhir_md, 2), "melebihi 600?", stok_akhir_md > 600)
+print("Tugas5 (buku mencetak z=4247.74 karena M2 tercetak salah hitung; nilai benar ~4237.99)")
 
 # ============================================================
 # TULIS data.js
@@ -377,7 +435,8 @@ data = {
         "muSimpananRendah": mu_simpanan_rendah(300), "muSimpananTinggi": mu_simpanan_tinggi(300),
         "tsukamoto": {"z": round(z_ts, 2), "aturan": rincian_ts},
         "mamdani": {"z": round(z_md, 2), "area": round(area_md, 2), "momen": round(momen_md, 2)},
-        "stokAkhirTsukamoto": stok_akhir,
+        "stokAkhirTsukamoto": round(stok_akhir_ts, 2),
+        "stokAkhirMamdani": round(stok_akhir_md, 2),
         "kapasitasMaksimum": 600,
     },
 }

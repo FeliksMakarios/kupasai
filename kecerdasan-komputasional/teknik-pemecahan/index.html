@@ -81,6 +81,17 @@
       <svg id="andor-tree" viewBox="0 0 680 300"></svg>
       <div class="section-label">Biaya Minimum dari Akar</div>
       <p class="result-highlight" id="andor-result"></p>
+
+      <div class="section-label" style="margin-top:2rem">Contoh Tambahan: Graf Asli Contoh 4.1 Buku</div>
+      <p class="section-note">
+        Graf modul lab di atas bukan graf yang sama dengan Contoh 4.1 buku
+        (Gambar 4.1&ndash;4.3). Berikut rekonstruksi persoalan A yang bisa
+        diselesaikan lewat B dan C (AND) atau lewat D (OR), dengan biaya
+        sinkronisasi antar simpul = 1 setiap ruas.
+      </p>
+      <svg id="andor-tree-buku" viewBox="0 0 680 300"></svg>
+      <div class="section-label">Biaya Minimum dari Akar</div>
+      <p class="result-highlight" id="andor-result-buku"></p>
     </div>
     <div class="viz-sidebar">
       <h3>Membagi untuk Menyelesaikan</h3>
@@ -93,6 +104,19 @@
       <p>
         Simpul OR akar memilih yang termurah antara 7 dan 6, sehingga biaya
         minimum akhir adalah <strong>6</strong>, ditempuh lewat AND(2,2,2).
+      </p>
+      <p>
+        Pada Contoh 4.1 buku, dugaan awal biaya B, C, D masing-masing 3, 4,
+        5 membuat jalur D (total 6) tampak lebih murah dari jalur B&amp;C
+        (total 9). Tapi setelah D diperluas menjadi AND(E=4, F=4), biaya
+        sebenarnya jalur D naik jadi <strong>11</strong> (4+4+1+1+1).
+      </p>
+      <p>
+        Begitu juga B ternyata OR(G=5, H=7): biaya B sebenarnya 6 (lewat G),
+        bukan 3, sehingga jalur B&amp;C naik jadi 12. Karena 11 &lt; 12,
+        persoalan A akhirnya tetap dikerjakan lewat <strong>D</strong>, sama
+        seperti kesimpulan akhir buku &mdash; hanya saja alasan finalnya
+        berbeda dari dugaan awal.
       </p>
     </div>
   </div>
@@ -207,12 +231,14 @@
   <div class="viz-layout">
     <div class="viz-main">
       <p class="section-note">
-        Silsilah keluarga (Gambar 4.8) sebagai fakta <code>parent(X,Y)</code>.
-        Aturan <code>descend</code> dan <code>ancestor</code> dijawab lewat
-        penelusuran mundur (backward chaining) dengan unifikasi peubah.
+        Silsilah keluarga John, Jack dan Oliver (Gambar 4.8), persis sesuai
+        buku: 16 orang, fakta <code>male/female/parent</code>, dan 12 aturan
+        Prolog (father, mother, grandfather, grandmother, sister, brother,
+        aunt, uncle, descend, ancestor). Garis putus-putus menghubungkan
+        pasangan menikah.
       </p>
-      <svg id="silsilah-tree" viewBox="0 0 500 220"></svg>
-      <div class="section-label">Contoh Kueri</div>
+      <svg id="silsilah-tree" viewBox="0 0 730 300"></svg>
+      <div class="section-label">Enam Kueri dari Buku</div>
       <table class="iter-table" id="silsilah-query-table">
         <thead><tr><th>Kueri</th><th>Jawaban</th></tr></thead>
         <tbody></tbody>
@@ -221,21 +247,23 @@
     <div class="viz-sidebar">
       <h3>Penelusuran Mundur</h3>
       <p>
-        <code>descend(X,Y)</code> benar jika Y adalah keturunan X (langsung
-        lewat <code>parent</code>, atau tidak langsung lewat rekursi). Basis
-        pengetahuan menjawab <code>descend(john,X)</code> dengan lima nama:
-        jack, oliver, ryan, mary, susan.
+        Mesin inferensi (backward chaining dengan unifikasi peubah dan
+        penggantian nama otomatis tiap aturan dipanggil) menjawab keenam
+        kueri buku persis sama: ayah Kelly = James; nenek Kelly = Helen dan
+        Sophie; saudara laki-laki Kelly = Harry; bibi Kelly = Jess dan
+        Arline.
+      </p>
+      <p>
+        <code>descend(john,X)</code> menjawab alice, ali, simon, stev
+        &mdash; seluruh keturunan John lewat Madeline, termasuk cucu Simon
+        dan Stev lewat Ali&amp;Jess.
       </p>
       <p>
         Perhatikan arah aturan <code>ancestor(X,Y)</code> pada buku: bernilai
         benar apabila <strong>Y</strong> adalah leluhur <strong>X</strong>.
-        Jadi <code>ancestor(ryan,Y)</code> menjawab john, jack, dan oliver
-        &mdash; ketiganya leluhur ryan.
-      </p>
-      <p>
-        Mesin inferensi memakai penggantian nama peubah otomatis setiap
-        aturan dipanggil, agar rekursi <code>descend</code> tidak bentrok
-        peubahnya antar level pemanggilan.
+        Jadi <code>ancestor(stev,Y)</code> menjawab ali, jess, john,
+        madeline, jack, helen &mdash; seluruh leluhur Stev naik dua
+        generasi.
       </p>
     </div>
   </div>

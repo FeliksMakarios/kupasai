@@ -52,6 +52,57 @@ def node_to_tree(node, label=""):
 
 and_or_tree = node_to_tree(GRAF)
 
+# ------------------------------------------------------------
+# Contoh tambahan: graf AND-OR ASLI dari Contoh 4.1 buku (Gambar
+# 4.1-4.3), bukan graf modul lab di atas. Persoalan A diselesaikan
+# lewat cara-1 (AND B,C) atau cara-2 (D). Setiap sinkronisasi antar
+# simpul berbiaya 1. B ternyata OR{G,H} (dipilih G, biaya 5), D
+# ternyata AND{E,F} (biaya masing2 4). Hasil akhir: biaya minimum A
+# = 11, dicapai lewat D (bukan lewat B,C yang naik jadi 12).
+# ------------------------------------------------------------
+SYNC = 1
+NODE_B = ('or', [5, 7])       # B = OR{G=5, H=7}
+NODE_C = 4                    # C = 4 (leaf)
+NODE_D = ('and', [4, 4])      # D = AND{E=4, F=4}
+NODE_CARA1 = ('and', [NODE_B, NODE_C])   # cara-1: kerjakan B dan C
+NODE_CARA2 = NODE_D                       # cara-2: kerjakan D
+GRAF_BUKU = ('or', [NODE_CARA1, NODE_CARA2])
+
+def biaya_minimum_sync(node):
+    if isinstance(node, int):
+        return node
+    tipe, anak = node
+    biayas = [biaya_minimum_sync(a) + SYNC for a in anak]
+    return min(biayas) if tipe == 'or' else sum(biayas)
+
+def node_to_tree_sync(node, label=""):
+    if isinstance(node, int):
+        return {"name": str(node), "isLeaf": True, "value": node, "label": label}
+    tipe, anak = node
+    biayas = [biaya_minimum_sync(a) + SYNC for a in anak]
+    idx_min = biayas.index(min(biayas)) if tipe == 'or' else None
+    return {
+        "name": tipe.upper(), "isLeaf": False, "tipe": tipe, "label": label,
+        "biaya": biaya_minimum_sync(node),
+        "children": [node_to_tree_sync(a, ('terpilih' if (tipe == 'or' and i == idx_min) else '')) for i, a in enumerate(anak)]
+    }
+
+biaya_B = biaya_minimum_sync(NODE_B)                # OR{G,H} = min(5,7)+1 = 6
+biaya_D = biaya_minimum_sync(NODE_D)                # AND{E,F} = (4+1)+(4+1) = 10
+biaya_cara1 = biaya_minimum_sync(NODE_CARA1)        # AND{B,C} = (6+1)+(4+1) = 12
+biaya_cara2 = biaya_minimum_sync(NODE_D) + SYNC     # D+1 = 11
+biaya_A_buku = biaya_minimum_sync(GRAF_BUKU)
+assert biaya_B == 6
+assert biaya_D == 10
+assert biaya_cara1 == 12
+assert biaya_cara2 == 11
+assert biaya_A_buku == 11, biaya_A_buku
+print("Tugas1-Buku AND-OR: B=%d D=%d cara1(B,C)=%d cara2(D)=%d -> A=%d (pilih cara-2/D)"
+      % (biaya_B, biaya_D, biaya_cara1, biaya_cara2, biaya_A_buku),
+      "-- tereproduksi persis sesuai Contoh 4.1 buku.")
+
+and_or_tree_buku = node_to_tree_sync(GRAF_BUKU)
+
 # ============================================================
 # TUGAS 2 -- PEWARNAAN PETA AUSTRALIA (Contoh 4.2)
 # ============================================================
@@ -209,15 +260,36 @@ print("Tugas4 Komposisi:", k, "Penutur:", siapa)
 
 # ============================================================
 # TUGAS 5 -- LOGIC PROGRAMMING SILSILAH KELUARGA (Gambar 4.8)
+# Silsilah tiga keluarga John, Jack dan Oliver persis sesuai buku:
+# John-Madeline, Jack-Helen, Oliver-Sophie menikah; anak mereka Ali
+# (John&Madeline) menikah dengan Jess (Jack&Helen), dan Lily
+# (Jack&Helen) menikah dengan James (Oliver&Sophie).
 # ============================================================
-FAKTA = [
-    ('parent', 'john', 'jack'),
-    ('parent', 'jack', 'oliver'),
-    ('parent', 'oliver', 'ryan'),
-    ('parent', 'john', 'mary'),
-    ('parent', 'mary', 'susan'),
+LAKI = ['john', 'jack', 'oliver', 'ali', 'james', 'simon', 'stev', 'harry']
+PEREMPUAN = ['madeline', 'helen', 'sophie', 'alice', 'jess', 'lily', 'arline', 'kelly']
+PARENT_PAIRS = [
+    ('john', 'alice'), ('madeline', 'alice'),
+    ('john', 'ali'), ('madeline', 'ali'),
+    ('jack', 'jess'), ('helen', 'jess'),
+    ('jack', 'lily'), ('helen', 'lily'),
+    ('oliver', 'james'), ('sophie', 'james'),
+    ('oliver', 'arline'), ('sophie', 'arline'),
+    ('ali', 'simon'), ('jess', 'simon'),
+    ('ali', 'stev'), ('jess', 'stev'),
+    ('james', 'harry'), ('lily', 'harry'),
+    ('james', 'kelly'), ('lily', 'kelly'),
 ]
+FAKTA = ([('male', n) for n in LAKI] + [('female', n) for n in PEREMPUAN]
+         + [('parent', a, b) for a, b in PARENT_PAIRS])
 ATURAN = [
+    (('father', 'X', 'Y'), [('male', 'X'), ('parent', 'X', 'Y')]),
+    (('mother', 'X', 'Y'), [('female', 'X'), ('parent', 'X', 'Y')]),
+    (('grandfather', 'X', 'Y'), [('male', 'X'), ('parent', 'X', 'Z'), ('parent', 'Z', 'Y')]),
+    (('grandmother', 'X', 'Y'), [('female', 'X'), ('parent', 'X', 'Z'), ('parent', 'Z', 'Y')]),
+    (('sister', 'X', 'Y'), [('female', 'X'), ('parent', 'Z', 'X'), ('parent', 'Z', 'Y'), ('neq', 'X', 'Y')]),
+    (('brother', 'X', 'Y'), [('male', 'X'), ('parent', 'Z', 'X'), ('parent', 'Z', 'Y'), ('neq', 'X', 'Y')]),
+    (('aunt', 'X', 'Y'), [('parent', 'Z', 'Y'), ('sister', 'X', 'Z')]),
+    (('uncle', 'X', 'Y'), [('parent', 'Z', 'Y'), ('brother', 'X', 'Z')]),
     (('descend', 'X', 'Y'), [('parent', 'X', 'Y')]),
     (('descend', 'X', 'Y'), [('parent', 'X', 'Z'), ('descend', 'Z', 'Y')]),
     (('ancestor', 'X', 'Y'), [('parent', 'Y', 'X')]),
@@ -274,6 +346,10 @@ def buktikan(goals, subst, kedalaman):
         return
     goal = terapkan(goals[0], subst)
     sisa = goals[1:]
+    if goal[0] == 'neq':
+        if goal[1] != goal[2]:
+            yield from buktikan(sisa, subst, kedalaman + 1)
+        return
     for f in FAKTA:
         s2 = unifikasi_literal(goal, f, subst)
         if s2 is not None:
@@ -294,17 +370,26 @@ def jawab(goal):
             out.append(hasil)
     return out
 
-assert ('parent', 'john', 'jack') in jawab(('parent', 'john', 'X'))
+ayah_kelly = {g[1] for g in jawab(('father', 'X', 'kelly'))}
+nenek_kelly = {g[1] for g in jawab(('grandmother', 'X', 'kelly'))}
+saudara_kelly = {g[1] for g in jawab(('brother', 'X', 'kelly'))}
+bibi_kelly = {g[1] for g in jawab(('aunt', 'X', 'kelly'))}
 turunan_john = {g[2] for g in jawab(('descend', 'john', 'X'))}
-assert turunan_john == {'jack', 'oliver', 'ryan', 'mary', 'susan'}, turunan_john
-leluhur_ryan = {g[2] for g in jawab(('ancestor', 'ryan', 'Y'))}
-assert leluhur_ryan == {'john', 'jack', 'oliver'}, leluhur_ryan
-hasil_desc = jawab(('descend', 'john', 'X'))
-assert len(hasil_desc) == len(set(hasil_desc))
-print("Tugas5 Turunan john:", sorted(turunan_john))
-print("Tugas5 Leluhur ryan:", sorted(leluhur_ryan))
+leluhur_stev = {g[2] for g in jawab(('ancestor', 'stev', 'Y'))}
 
-query_parent_john = jawab(('parent', 'john', 'X'))
+assert ayah_kelly == {'james'}, ayah_kelly
+assert nenek_kelly == {'helen', 'sophie'}, nenek_kelly
+assert saudara_kelly == {'harry'}, saudara_kelly
+assert bibi_kelly == {'jess', 'arline'}, bibi_kelly
+assert turunan_john == {'alice', 'ali', 'simon', 'stev'}, turunan_john
+assert leluhur_stev == {'ali', 'jess', 'john', 'madeline', 'jack', 'helen'}, leluhur_stev
+print("Tugas5 father(X,kelly):", sorted(ayah_kelly))
+print("Tugas5 grandmother(X,kelly):", sorted(nenek_kelly))
+print("Tugas5 brother(X,kelly):", sorted(saudara_kelly))
+print("Tugas5 aunt(X,kelly):", sorted(bibi_kelly))
+print("Tugas5 descend(john,X):", sorted(turunan_john))
+print("Tugas5 ancestor(stev,Y):", sorted(leluhur_stev),
+      "-- keenam kueri tereproduksi persis sesuai Gambar 4.8 buku.")
 
 # ============================================================
 # TULIS data.js
@@ -313,6 +398,10 @@ data = {
     "andor": {
         "tree": and_or_tree,
         "biayaMinimum": biaya_minimum(GRAF),
+    },
+    "andorBuku": {
+        "tree": and_or_tree_buku,
+        "biayaMinimum": biaya_A_buku,
     },
     "peta": {
         "adjacency": AUSTRALIA,
@@ -337,10 +426,17 @@ data = {
         "rincian": rincian,
     },
     "silsilah": {
-        "fakta": FAKTA,
-        "queryParentJohn": query_parent_john,
-        "turunanJohn": sorted(turunan_john),
-        "leluhurRyan": sorted(leluhur_ryan),
+        "laki": LAKI,
+        "perempuan": PEREMPUAN,
+        "parentPairs": [list(p) for p in PARENT_PAIRS],
+        "queries": [
+            {"q": "father(X, kelly)", "hasil": sorted(ayah_kelly)},
+            {"q": "grandmother(X, kelly)", "hasil": sorted(nenek_kelly)},
+            {"q": "brother(X, kelly)", "hasil": sorted(saudara_kelly)},
+            {"q": "aunt(X, kelly)", "hasil": sorted(bibi_kelly)},
+            {"q": "descend(john, X)", "hasil": sorted(turunan_john)},
+            {"q": "ancestor(stev, Y)", "hasil": sorted(leluhur_stev)},
+        ],
     },
 }
 

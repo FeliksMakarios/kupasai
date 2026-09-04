@@ -45,10 +45,10 @@
   // ============================================================
   // TAB 1: AND-OR TREE
   // ============================================================
-  function renderAndOr() {
-    var svg = d3.select('#andor-tree');
+  function renderAndOr(data, svgId) {
+    var svg = d3.select(svgId);
     svg.selectAll('*').remove();
-    var root = d3.hierarchy(D.andor.tree);
+    var root = d3.hierarchy(data.tree);
     var W = 680, H = 280;
     var treeLayout = d3.tree().size([W - 80, H - 90]);
     treeLayout(root);
@@ -80,8 +80,10 @@
     });
     svg.attr('viewBox', '0 0 680 260');
   }
-  renderAndOr();
+  renderAndOr(D.andor, '#andor-tree');
   document.getElementById('andor-result').textContent = D.andor.biayaMinimum;
+  renderAndOr(D.andorBuku, '#andor-tree-buku');
+  document.getElementById('andor-result-buku').textContent = D.andorBuku.biayaMinimum;
 
   // ============================================================
   // TAB 2: PEWARNAAN PETA
@@ -203,48 +205,50 @@
   function renderSilsilah() {
     var svg = d3.select('#silsilah-tree');
     svg.selectAll('*').remove();
-    // john -> jack -> oliver -> ryan ; john -> mary -> susan
+    // 3 generasi: John/Madeline, Jack/Helen, Oliver/Sophie (gen 1) ->
+    // Alice, Ali x Jess, Lily x James, Arline (gen 2) -> Simon, Stev, Harry, Kelly (gen 3)
     var pos = {
-      john: [80, 30], jack: [80, 110], oliver: [80, 190], ryan: [80, 190 + 0],
-      mary: [320, 110], susan: [320, 190]
+      john: [90, 30], madeline: [190, 30],
+      jack: [340, 30], helen: [440, 30],
+      oliver: [590, 30], sophie: [690, 30],
+      alice: [40, 150], ali: [140, 150],
+      jess: [280, 150], lily: [400, 150],
+      james: [540, 150], arline: [660, 150],
+      simon: [180, 270], stev: [260, 270],
+      harry: [440, 270], kelly: [520, 270]
     };
-    // layout manually to avoid overlap
-    pos.john = [200, 30];
-    pos.jack = [100, 110];
-    pos.oliver = [100, 190];
-    pos.ryan = [100, 190 + 0];
-    pos.mary = [320, 110];
-    pos.susan = [320, 190];
-    // fix oliver/ryan vertical chain
-    pos.oliver = [100, 150];
-    pos.ryan = [100, 190];
+    var pasangan = [['john', 'madeline'], ['jack', 'helen'], ['oliver', 'sophie'], ['ali', 'jess'], ['lily', 'james']];
     var g = svg.append('g');
-    D.silsilah.fakta.forEach(function (f) {
-      var p1 = pos[f[1]], p2 = pos[f[2]];
+    D.silsilah.parentPairs.forEach(function (f) {
+      var p1 = pos[f[0]], p2 = pos[f[1]];
       g.append('line').attr('class', 'graph-edge').attr('x1', p1[0]).attr('y1', p1[1]).attr('x2', p2[0]).attr('y2', p2[1]).attr('marker-end', 'url(#arrow-fam)');
     });
+    pasangan.forEach(function (pr) {
+      var p1 = pos[pr[0]], p2 = pos[pr[1]];
+      g.append('line').attr('x1', p1[0]).attr('y1', p1[1]).attr('x2', p2[0]).attr('y2', p2[1])
+        .attr('stroke', C.text_muted).attr('stroke-dasharray', '2 3').attr('stroke-width', 1.5);
+    });
     var defs = svg.append('defs');
-    defs.append('marker').attr('id', 'arrow-fam').attr('viewBox', '0 0 10 10').attr('refX', 22).attr('refY', 5)
+    defs.append('marker').attr('id', 'arrow-fam').attr('viewBox', '0 0 10 10').attr('refX', 24).attr('refY', 5)
       .attr('markerWidth', 6).attr('markerHeight', 6).attr('orient', 'auto-start-reverse')
       .append('path').attr('d', 'M0,0 L10,5 L0,10 Z').attr('fill', C.text_muted);
+    var isLaki = {};
+    D.silsilah.laki.forEach(function (n) { isLaki[n] = true; });
     Object.keys(pos).forEach(function (name) {
       var p = pos[name];
       var node = g.append('g').attr('transform', 'translate(' + p[0] + ',' + p[1] + ')');
-      node.append('circle').attr('r', 20).attr('fill', C.node_fill).attr('stroke', C.axis);
-      node.append('text').attr('dy', 4).style('font-size', '10px').attr('fill', C.text_primary).text(name);
+      node.append('circle').attr('r', 20).attr('fill', isLaki[name] ? C.accent + '22' : C.danger + '22')
+        .attr('stroke', isLaki[name] ? C.accent : C.danger);
+      node.append('text').attr('dy', 4).style('font-size', '9px').attr('fill', C.text_primary).text(name);
     });
+    svg.attr('viewBox', '0 0 730 300');
   }
   renderSilsilah();
 
   var silsilahTbody = document.querySelector('#silsilah-query-table tbody');
-  var queries = [
-    { q: 'parent(john, X)', hasil: D.silsilah.queryParentJohn.map(function (r) { return r[2]; }).join(', ') },
-    { q: 'descend(john, X)', hasil: D.silsilah.turunanJohn.join(', ') },
-    { q: 'ancestor(ryan, Y)', hasil: D.silsilah.leluhurRyan.join(', ') }
-  ];
-  queries.forEach(function (r) {
+  D.silsilah.queries.forEach(function (r) {
     var tr = document.createElement('tr');
-    tr.innerHTML = '<td>' + r.q + '</td><td>' + r.hasil + '</td>';
+    tr.innerHTML = '<td>' + r.q + '</td><td>' + r.hasil.join(', ') + '</td>';
     silsilahTbody.appendChild(tr);
   });
 

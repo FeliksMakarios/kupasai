@@ -112,10 +112,10 @@
   var abcEmpTbody = document.querySelector('#abc-employed-table tbody');
   D.abc.tabelEmployed.forEach(function (r, i) {
     var tr = document.createElement('tr');
-    tr.innerHTML = '<td>Sumber ' + (i + 1) + '</td><td>Sumber ' + (r.pas + 1) + '</td><td>' + r.rand.toFixed(3) + '</td><td>(' + r.x1_baru.toFixed(3) + ', ' + r.x2_baru.toFixed(3) + ')</td><td>' + r.f.toFixed(3) + '</td><td>' + r.ket + '</td>';
+    tr.innerHTML = '<td>Sumber ' + (i + 1) + '</td><td>Sumber ' + r.pas + '</td><td>' + r.rand.toFixed(3) + '</td><td>(' + r.x1_baru.toFixed(3) + ', ' + r.x2_baru.toFixed(3) + ')</td><td>' + r.f.toFixed(3) + '</td><td>' + (r.ket ? 'diperbarui' : 'bertahan') + '</td>';
     abcEmpTbody.appendChild(tr);
   });
-  lineChart('#abc-chart', [{ label: 'f terbaik', color: C.danger, data: D.abc.jejak.map(function (v, i) { return { x: i, y: v }; }) }], { yLabel: 'f(x1,x2) terbaik', minY: -7 });
+  lineChart('#abc-chart', [{ label: 'f terbaik', color: C.success, data: D.abc.jejak.map(function (v, i) { return { x: i, y: v }; }) }], { yLabel: 'f(x1,x2) terbaik (maksimum)', minY: 0 });
   document.getElementById('abc-result-x1').textContent = D.abc.terbaik[0];
   document.getElementById('abc-result-x2').textContent = D.abc.terbaik[1];
   document.getElementById('abc-result-f').textContent = D.abc.fTerbaik;

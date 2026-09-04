@@ -220,6 +220,22 @@
         <thead><tr><th>Algoritma</th><th>Nilai Akar</th><th>Daun Dievaluasi</th></tr></thead>
         <tbody></tbody>
       </table>
+
+      <div class="section-label" style="margin-top:2rem">Contoh Tambahan: Pohon Asli Gambar 3.23 Buku</div>
+      <p class="section-note">
+        Pohon dari modul lab di atas bukan pohon yang sama dengan contoh buku
+        &mdash; berikut rekonstruksi persis Gambar 3.23 (Bab 3.3.2 Alpha Beta
+        Pruning): daun {3,5,6,2,7,9,1,0,2}, akar A = maks{B,C,D} = 3.
+      </p>
+      <div class="mode-buttons" id="minimax-mode-buttons-buku">
+        <button class="mode-btn active" data-mode="minimax">Min-max Murni</button>
+        <button class="mode-btn" data-mode="alphabeta">Alpha-Beta Pruning</button>
+      </div>
+      <svg id="minimax-tree-buku" viewBox="0 0 680 380"></svg>
+      <table class="iter-table" id="minimax-summary-table-buku">
+        <thead><tr><th>Algoritma</th><th>Nilai Akar</th><th>Daun Dievaluasi</th></tr></thead>
+        <tbody></tbody>
+      </table>
     </div>
     <div class="viz-sidebar">
       <h3>Pemangkasan Tanpa Mengubah Hasil</h3>
@@ -237,6 +253,15 @@
         Ini membuktikan klaim inti Alpha-Beta Pruning: pemangkasan mengurangi
         jumlah simpul yang perlu diperiksa tanpa pernah mengubah nilai akhir
         pohon.
+      </p>
+      <p>
+        Pada contoh asli buku (Gambar 3.23) di bawah, akarnya bernilai
+        <strong>3</strong> (A melangkah ke B). Min-max murni mengevaluasi
+        <strong>9 daun</strong>, sedangkan Alpha-Beta Pruning cukup
+        <strong>5 daun</strong> &mdash; simpul {7, 9, 0, 2} terpangkas persis
+        seperti dijelaskan buku, karena begitu B = 3 diketahui (menjadi
+        &alpha;), leaf pertama C = 2 dan leaf pertama D = 1 sudah cukup
+        membuktikan kedua cabang itu tidak akan pernah mengalahkan B.
       </p>
     </div>
   </div>

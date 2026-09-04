@@ -65,31 +65,63 @@ assert (O >= 0).all() and (O <= 1).all()
 print("Tugas2 Forward O:\n", np.round(O, 4))
 
 # ============================================================
-# TUGAS 3a -- ATURAN DELTA (AND/OR)
+# TUGAS 3a -- ATURAN DELTA (AND/OR), sesuai Tabel 7.2/7.3 buku:
+# aturan delta ASLI Widrow-Hoff dipakai di sini adalah pembaruan bobot
+# per-sampel (online) dengan fungsi aktivasi AMBANG (bukan penurunan
+# gradien MSE kontinu): Wij += alpha * Xi * (Yj - Oj), dengan
+# O = f(net) = 1 jika net >= theta else 0.
 # ============================================================
 def perceptron(x1, x2, w1, w2, theta=THETA):
     return 1 if (x1 * w1 + x2 * w2) >= theta else 0
 
-def latih_delta(X, t, alpha=0.1, epoch=100):
-    w = np.array([0.1, 0.1])
-    jejak = []
-    for _ in range(epoch):
-        pred = X @ w
-        err = pred - t
-        w = w - alpha * (X.T @ err) / len(X)
-        jejak.append(float(np.mean(err ** 2)))
-    return w, jejak
+def latih_delta_ambang(X, t, w_awal, alpha, n_epoch, theta=THETA):
+    w = np.array(w_awal, dtype=float)
+    trace = []
+    for epoch in range(1, n_epoch + 1):
+        for i in range(len(X)):
+            x1, x2 = X[i]
+            target = t[i]
+            net = x1 * w[0] + x2 * w[1]
+            o = 1.0 if net >= theta else 0.0
+            e = target - o
+            dw1 = alpha * x1 * e
+            dw2 = alpha * x2 * e
+            trace.append({"epoch": epoch, "x1": x1, "x2": x2, "target": target,
+                           "w1": round(float(w[0]), 4), "w2": round(float(w[1]), 4),
+                           "net": round(float(net), 4), "o": o,
+                           "dw1": round(float(dw1), 4), "dw2": round(float(dw2), 4)})
+            w = w + np.array([dw1, dw2])
+    return w, trace
 
 X_log = np.array([[0, 0], [0, 1], [1, 0], [1, 1]], dtype=float)
 t_and = np.array([0, 0, 0, 1], dtype=float)
 t_or = np.array([0, 1, 1, 1], dtype=float)
-delta_hasil = {}
-for nama, t in [('AND', t_and), ('OR', t_or)]:
-    w, jejak = latih_delta(X_log, t, alpha=0.5, epoch=200)
-    pred = [perceptron(a, b, w[0], w[1]) for a, b in X_log]
-    assert pred == list(t.astype(int)), (nama, pred, t)
-    delta_hasil[nama] = {"w": w.tolist(), "jejakGalat": jejak[::10] + [jejak[-1]], "predAkhir": pred}
-    print("Tugas3a", nama, "w=", np.round(w, 4), "galat akhir=", jejak[-1])
+
+w_or, trace_or = latih_delta_ambang(X_log, t_or, [0.3, 0.3], alpha=0.2, n_epoch=4)
+# Tereproduksi persis sesuai narasi buku Bab 7.4.1 (bukan tabel 7.3 mentah
+# yang kolomnya kacau akibat ekstraksi PDF, melainkan narasi hitungan
+# tangan yang eksplisit dan tak ambigu setelah tabel itu).
+assert trace_or[0]['w1'] == 0.3 and trace_or[0]['w2'] == 0.3 and trace_or[0]['dw1'] == 0 and trace_or[0]['dw2'] == 0
+assert trace_or[1]['w1'] == 0.3 and trace_or[1]['w2'] == 0.3 and trace_or[1]['net'] == 0.3
+assert trace_or[1]['dw1'] == 0 and trace_or[1]['dw2'] == 0.2
+assert trace_or[2]['w1'] == 0.3 and trace_or[2]['w2'] == 0.5 and trace_or[2]['dw1'] == 0.2 and trace_or[2]['dw2'] == 0
+assert trace_or[3]['w1'] == 0.5 and trace_or[3]['w2'] == 0.5 and trace_or[3]['o'] == 1 and trace_or[3]['dw1'] == 0
+assert list(w_or) == [0.5, 0.5]
+assert all(r['dw1'] == 0 and r['dw2'] == 0 for r in trace_or[4:]), "epoch 2-4 seharusnya tanpa perubahan bobot"
+print("Tugas3a-Buku OR: W akhir =", w_or.tolist(), "konvergen dalam 1 epoch (3 pembaruan bobot)",
+      "-- tereproduksi persis sesuai Tabel 7.2/7.3 buku.")
+
+w_and, trace_and = latih_delta_ambang(X_log, t_and, [0.3, 0.3], alpha=0.2, n_epoch=4)
+assert list(w_and) == [0.3, 0.3], w_and
+assert all(r['dw1'] == 0 and r['dw2'] == 0 for r in trace_and)
+pred_and = [perceptron(a, b, w_and[0], w_and[1]) for a, b in X_log]
+assert pred_and == list(t_and.astype(int))
+print("Tugas3a-Buku AND: W akhir =", w_and.tolist(), "sudah benar sejak bobot awal (0 pembaruan)")
+
+delta_hasil = {
+    "OR": {"w": w_or.tolist(), "trace": trace_or, "predAkhir": [perceptron(a, b, w_or[0], w_or[1]) for a, b in X_log]},
+    "AND": {"w": w_and.tolist(), "trace": trace_and, "predAkhir": pred_and},
+}
 
 # ============================================================
 # TUGAS 3b -- BACK PROPAGATION PENGENALAN HURUF 25 x n_hidden x 4
@@ -116,7 +148,7 @@ def buat_data_huruf(n_varian=8, derau=0.08, rng=rng):
             T.append(target)
     return np.array(X), np.array(T)
 
-def latih_backprop(X, T, n_hidden=6, alpha=0.7, momentum=0.4, epoch=1500, theta=0.5):
+def latih_backprop(X, T, n_hidden=5, alpha=0.7, momentum=0.4, epoch=1500, theta=0.5):
     n_in, n_out = X.shape[1], T.shape[1]
     WH = rng.normal(0, 0.3, (n_in, n_hidden))
     WO = rng.normal(0, 0.3, (n_hidden, n_out))
@@ -152,8 +184,13 @@ def akurasi_per_huruf(WH, WO, X, T, theta=0.5):
         hasil[h] = float(np.mean(pred[mask] == truth[mask]))
     return hasil
 
-X_h, T_h = buat_data_huruf(n_varian=8)
-assert X_h.shape == (32, 25) and T_h.shape == (32, 4)
+# n_varian=5 dan n_hidden=5 sesuai buku: "setiap huruf diwakili oleh 5
+# gambar, maka data pelatihan ada 20 gambar" dan "jumlah hidden layer
+# ada satu yang terdiri dari 5 neuron" (Bab 7.4.2). Akurasi 98/94/80/83%
+# yang dicetak buku tidak bisa direproduksi persis karena datanya
+# (Gambar 7.10) tidak diberikan sebagai teks, tapi konfigurasinya sama.
+X_h, T_h = buat_data_huruf(n_varian=5)
+assert X_h.shape == (20, 25) and T_h.shape == (20, 4)
 WH_h, WO_h, jejak_bp = latih_backprop(X_h, T_h, epoch=1500)
 assert jejak_bp[-1] < jejak_bp[0]
 akurasi = akurasi_per_huruf(WH_h, WO_h, X_h, T_h)

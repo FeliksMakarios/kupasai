@@ -313,17 +313,17 @@
     };
   }
 
-  function renderMinimaxTree(mode) {
-    var svg = d3.select('#minimax-tree');
+  function renderMinimaxTree(data, svgId, mode) {
+    var svg = d3.select(svgId);
     svg.selectAll('*').remove();
-    var root = d3.hierarchy(treeToHierarchy(D.minimax.tree));
+    var root = d3.hierarchy(treeToHierarchy(data.tree));
     var W = 680, H = 380;
     var treeLayout = d3.tree().size([W - 60, H - 70]);
     treeLayout(root);
     var g = svg.append('g').attr('transform', 'translate(30,20)');
 
     var visitedSet = {};
-    if (mode === 'alphabeta') D.minimax.alphabetaVisited.forEach(function (p) { visitedSet[p] = true; });
+    if (mode === 'alphabeta') data.alphabetaVisited.forEach(function (p) { visitedSet[p] = true; });
 
     function isVisited(d) {
       if (mode === 'minimax') return true;
@@ -355,28 +355,33 @@
     svg.attr('viewBox', '0 0 680 400');
   }
 
-  var minimaxMode = 'minimax';
-  function refreshMinimax() {
-    renderMinimaxTree(minimaxMode);
-    var tbody = document.querySelector('#minimax-summary-table tbody');
-    tbody.innerHTML = '';
-    [
-      { nama: 'Min-max Murni', nilai: D.minimax.rootValue, daun: D.minimax.leavesMinimax },
-      { nama: 'Alpha-Beta Pruning', nilai: D.minimax.rootValue, daun: D.minimax.leavesAlphabeta }
-    ].forEach(function (r) {
-      var tr = document.createElement('tr');
-      tr.innerHTML = '<td>' + r.nama + '</td><td>' + r.nilai + '</td><td>' + r.daun + ' dari 12</td>';
-      tbody.appendChild(tr);
+  function setupMinimaxTab(data, svgId, buttonsId, tableId, totalDaun) {
+    var mode = 'minimax';
+    function refresh() {
+      renderMinimaxTree(data, svgId, mode);
+      var tbody = document.querySelector(tableId + ' tbody');
+      tbody.innerHTML = '';
+      [
+        { nama: 'Min-max Murni', nilai: data.rootValue, daun: data.leavesMinimax },
+        { nama: 'Alpha-Beta Pruning', nilai: data.rootValue, daun: data.leavesAlphabeta }
+      ].forEach(function (r) {
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + r.nama + '</td><td>' + r.nilai + '</td><td>' + r.daun + ' dari ' + totalDaun + '</td>';
+        tbody.appendChild(tr);
+      });
+    }
+    document.querySelectorAll(buttonsId + ' .mode-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll(buttonsId + ' .mode-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        mode = btn.getAttribute('data-mode');
+        refresh();
+      });
     });
+    refresh();
   }
-  document.querySelectorAll('#minimax-mode-buttons .mode-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      document.querySelectorAll('#minimax-mode-buttons .mode-btn').forEach(function (b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-      minimaxMode = btn.getAttribute('data-mode');
-      refreshMinimax();
-    });
-  });
-  refreshMinimax();
+
+  setupMinimaxTab(D.minimax, '#minimax-tree', '#minimax-mode-buttons', '#minimax-summary-table', 12);
+  setupMinimaxTab(D.minimaxBuku, '#minimax-tree-buku', '#minimax-mode-buttons-buku', '#minimax-summary-table-buku', 9);
 
 })();

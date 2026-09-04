@@ -312,24 +312,24 @@ var KK1_DATA = {
   "peta": {
     "nodes": [
       "Arad",
-      "Zerind",
-      "Oradea",
-      "Sibiu",
       "Timisoara",
+      "Sibiu",
+      "Zerind",
       "Lugoj",
-      "Mehadia",
-      "Drobeta",
-      "Craiova",
       "Rimnicu",
       "Fagaras",
+      "Oradea",
+      "Mehadia",
+      "Craiova",
       "Pitesti",
-      "Bucharest"
+      "Bucharest",
+      "Drobeta"
     ],
     "edges": [
       {
         "from": "Arad",
-        "to": "Zerind",
-        "jarak": 75
+        "to": "Timisoara",
+        "jarak": 118
       },
       {
         "from": "Arad",
@@ -338,18 +338,8 @@ var KK1_DATA = {
       },
       {
         "from": "Arad",
-        "to": "Timisoara",
-        "jarak": 118
-      },
-      {
-        "from": "Oradea",
         "to": "Zerind",
-        "jarak": 71
-      },
-      {
-        "from": "Oradea",
-        "to": "Sibiu",
-        "jarak": 151
+        "jarak": 75
       },
       {
         "from": "Lugoj",
@@ -362,26 +352,6 @@ var KK1_DATA = {
         "jarak": 70
       },
       {
-        "from": "Drobeta",
-        "to": "Mehadia",
-        "jarak": 75
-      },
-      {
-        "from": "Craiova",
-        "to": "Drobeta",
-        "jarak": 120
-      },
-      {
-        "from": "Craiova",
-        "to": "Rimnicu",
-        "jarak": 146
-      },
-      {
-        "from": "Craiova",
-        "to": "Pitesti",
-        "jarak": 138
-      },
-      {
         "from": "Rimnicu",
         "to": "Sibiu",
         "jarak": 80
@@ -390,6 +360,26 @@ var KK1_DATA = {
         "from": "Fagaras",
         "to": "Sibiu",
         "jarak": 99
+      },
+      {
+        "from": "Oradea",
+        "to": "Zerind",
+        "jarak": 71
+      },
+      {
+        "from": "Craiova",
+        "to": "Drobeta",
+        "jarak": 120
+      },
+      {
+        "from": "Craiova",
+        "to": "Pitesti",
+        "jarak": 138
+      },
+      {
+        "from": "Craiova",
+        "to": "Rimnicu",
+        "jarak": 146
       },
       {
         "from": "Pitesti",
@@ -405,6 +395,11 @@ var KK1_DATA = {
         "from": "Bucharest",
         "to": "Pitesti",
         "jarak": 101
+      },
+      {
+        "from": "Drobeta",
+        "to": "Mehadia",
+        "jarak": 75
       }
     ],
     "sld": {
@@ -430,7 +425,7 @@ var KK1_DATA = {
         "Bucharest"
       ],
       "jarak": 450,
-      "dikunjungi": 9,
+      "dikunjungi": 12,
       "langkah": [
         {
           "kunjungan": "Arad",
@@ -438,31 +433,46 @@ var KK1_DATA = {
           "antrian": []
         },
         {
-          "kunjungan": "Sibiu",
+          "kunjungan": "Timisoara",
           "bucharest": false,
           "antrian": [
-            "Timisoara",
+            "Sibiu",
             "Zerind"
           ]
         },
         {
-          "kunjungan": "Timisoara",
+          "kunjungan": "Sibiu",
           "bucharest": false,
           "antrian": [
             "Zerind",
-            "Fagaras",
-            "Oradea",
-            "Rimnicu"
+            "Lugoj"
           ]
         },
         {
           "kunjungan": "Zerind",
           "bucharest": false,
           "antrian": [
+            "Lugoj",
+            "Rimnicu",
+            "Fagaras"
+          ]
+        },
+        {
+          "kunjungan": "Lugoj",
+          "bucharest": false,
+          "antrian": [
+            "Rimnicu",
+            "Fagaras",
+            "Oradea"
+          ]
+        },
+        {
+          "kunjungan": "Rimnicu",
+          "bucharest": false,
+          "antrian": [
             "Fagaras",
             "Oradea",
-            "Rimnicu",
-            "Lugoj"
+            "Mehadia"
           ]
         },
         {
@@ -470,43 +480,52 @@ var KK1_DATA = {
           "bucharest": false,
           "antrian": [
             "Oradea",
-            "Rimnicu",
-            "Lugoj"
+            "Mehadia",
+            "Craiova",
+            "Pitesti"
           ]
         },
         {
           "kunjungan": "Oradea",
           "bucharest": false,
           "antrian": [
-            "Rimnicu",
-            "Lugoj",
+            "Mehadia",
+            "Craiova",
+            "Pitesti",
             "Bucharest"
           ]
         },
         {
-          "kunjungan": "Rimnicu",
+          "kunjungan": "Mehadia",
           "bucharest": false,
           "antrian": [
-            "Lugoj",
+            "Craiova",
+            "Pitesti",
             "Bucharest"
           ]
         },
         {
-          "kunjungan": "Lugoj",
+          "kunjungan": "Craiova",
+          "bucharest": false,
+          "antrian": [
+            "Pitesti",
+            "Bucharest",
+            "Drobeta"
+          ]
+        },
+        {
+          "kunjungan": "Pitesti",
           "bucharest": false,
           "antrian": [
             "Bucharest",
-            "Craiova",
-            "Pitesti"
+            "Drobeta"
           ]
         },
         {
           "kunjungan": "Bucharest",
           "bucharest": true,
           "antrian": [
-            "Craiova",
-            "Pitesti",
-            "Mehadia"
+            "Drobeta"
           ]
         }
       ]
@@ -836,6 +855,55 @@ var KK1_DATA = {
       "0",
       "",
       "0/0/1"
+    ]
+  },
+  "minimaxBuku": {
+    "tree": [
+      [
+        3,
+        5,
+        6
+      ],
+      [
+        2,
+        7,
+        9
+      ],
+      [
+        1,
+        0,
+        2
+      ]
+    ],
+    "rootValue": 3,
+    "leavesMinimax": 9,
+    "leavesAlphabeta": 5,
+    "pruned": 4,
+    "allPaths": [
+      "",
+      "0",
+      "0/0",
+      "0/1",
+      "0/2",
+      "1",
+      "1/0",
+      "1/1",
+      "1/2",
+      "2",
+      "2/0",
+      "2/1",
+      "2/2"
+    ],
+    "alphabetaVisited": [
+      "0/1",
+      "2",
+      "0/0",
+      "2/0",
+      "1",
+      "0/2",
+      "1/0",
+      "0",
+      ""
     ]
   }
 };

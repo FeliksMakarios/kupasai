@@ -111,20 +111,25 @@ print("Tugas2 Kendi:", aturan_kendi, jalur_kendi)
 # ============================================================
 # TUGAS 3 -- BFS & DFS PADA PETA (Gambar 3.1)
 # ============================================================
+# Urutan tetangga tiap kota direkonstruksi persis dari Tabel 3.1 (BFS) dan
+# Tabel 3.2 (DFS) pada buku -- diverifikasi menghasilkan kunjungan dan isi
+# antrian yang identik baris demi baris dengan kedua tabel itu. Peta buku
+# TIDAK memuat ruas Sibiu-Oradea (hanya Zerind-Oradea), berbeda tipis dari
+# peta AIMA klasik, namun ini tidak memengaruhi jalur manapun yang dibahas.
 PETA = {
-    'Arad':        {'Zerind': 75, 'Sibiu': 140, 'Timisoara': 118},
-    'Zerind':      {'Arad': 75, 'Oradea': 71},
-    'Oradea':      {'Zerind': 71, 'Sibiu': 151},
-    'Sibiu':       {'Arad': 140, 'Oradea': 151, 'Fagaras': 99, 'Rimnicu': 80},
+    'Arad':        {'Timisoara': 118, 'Sibiu': 140, 'Zerind': 75},
     'Timisoara':   {'Arad': 118, 'Lugoj': 111},
+    'Sibiu':       {'Arad': 140, 'Rimnicu': 80, 'Fagaras': 99},
+    'Zerind':      {'Arad': 75, 'Oradea': 71},
     'Lugoj':       {'Timisoara': 111, 'Mehadia': 70},
-    'Mehadia':     {'Lugoj': 70, 'Drobeta': 75},
-    'Drobeta':     {'Mehadia': 75, 'Craiova': 120},
-    'Craiova':     {'Drobeta': 120, 'Rimnicu': 146, 'Pitesti': 138},
     'Rimnicu':     {'Sibiu': 80, 'Craiova': 146, 'Pitesti': 97},
     'Fagaras':     {'Sibiu': 99, 'Bucharest': 211},
-    'Pitesti':     {'Rimnicu': 97, 'Craiova': 138, 'Bucharest': 101},
+    'Oradea':      {'Zerind': 71},
+    'Mehadia':     {'Lugoj': 70, 'Drobeta': 75},
+    'Craiova':     {'Drobeta': 120, 'Pitesti': 138, 'Rimnicu': 146},
+    'Pitesti':     {'Bucharest': 101, 'Rimnicu': 97, 'Craiova': 138},
     'Bucharest':   {'Fagaras': 211, 'Pitesti': 101},
+    'Drobeta':     {'Mehadia': 75, 'Craiova': 120},
 }
 
 def panjang_jalur(jalur):
@@ -142,7 +147,7 @@ def bfs(graf, awal, tujuan):
         steps.append({"kunjungan": node, "bucharest": node == tujuan, "antrian": [p[-1] for p in frontier]})
         if node == tujuan:
             return jalur, n, steps
-        for tetangga in sorted(graf[node]):
+        for tetangga in graf[node]:
             if tetangga not in visited:
                 visited.add(tetangga)
                 frontier.append(jalur + [tetangga])
@@ -163,7 +168,7 @@ def dfs(graf, awal, tujuan):
         n += 1
         if node == tujuan:
             return jalur, n, order
-        for tetangga in graf[node].keys():
+        for tetangga in reversed(list(graf[node].keys())):
             if tetangga not in visited:
                 stack.append(jalur + [tetangga])
     return None, n, order
@@ -333,6 +338,61 @@ def semua_path(node, path=()):
 semua_path_list = ['/'.join(map(str, p)) for p in semua_path(POHON)]
 alphabeta_visited_list = ['/'.join(map(str, p)) for p in alphabeta_visited]
 
+# ------------------------------------------------------------
+# Contoh tambahan: pohon ASLI dari Gambar 3.23 buku (bukan dari
+# modul lab, melainkan dari BAB 3.3.2 Alpha Beta Pruning). Daun:
+# {3,5,6,2,7,9,1,0,2}, akar A=maks{B,C,D}=maks{3,2,0}=3 (melangkah
+# ke B). Node yang tak perlu dihitung heuristiknya: {7,9,0,2}.
+# ------------------------------------------------------------
+POHON_BUKU = [[3, 5, 6], [2, 7, 9], [1, 0, 2]]
+
+minimax_leaves_b = {"n": 0}
+alphabeta_leaves_b = {"n": 0}
+alphabeta_visited_b = set()
+
+def minimax_b(node, is_max):
+    if isinstance(node, int):
+        minimax_leaves_b["n"] += 1
+        return node
+    vals = [minimax_b(child, not is_max) for child in node]
+    return max(vals) if is_max else min(vals)
+
+def alphabeta_b(node, alpha, beta, is_max, path=()):
+    alphabeta_visited_b.add(path)
+    if isinstance(node, int):
+        alphabeta_leaves_b["n"] += 1
+        return node
+    if is_max:
+        v = float('-inf')
+        for i, child in enumerate(node):
+            v = max(v, alphabeta_b(child, alpha, beta, False, path + (i,)))
+            alpha = max(alpha, v)
+            if alpha >= beta:
+                break
+    else:
+        v = float('inf')
+        for i, child in enumerate(node):
+            v = min(v, alphabeta_b(child, alpha, beta, True, path + (i,)))
+            beta = min(beta, v)
+            if beta <= alpha:
+                break
+    return v
+
+v1b = minimax_b(POHON_BUKU, True)
+v2b = alphabeta_b(POHON_BUKU, float('-inf'), float('inf'), True)
+assert v1b == v2b == 3
+assert minimax_leaves_b["n"] == 9
+assert alphabeta_leaves_b["n"] == 5
+path_daun_b = [p for p in semua_path(POHON_BUKU) if len(p) == 2]
+nilai_dipangkas_b = sorted(POHON_BUKU[p[0]][p[1]] for p in path_daun_b if p not in alphabeta_visited_b)
+assert nilai_dipangkas_b == [0, 2, 7, 9]
+print("Tugas5-Buku Minimax root:", v1b, "daun minimax:", minimax_leaves_b["n"],
+      "daun alphabeta:", alphabeta_leaves_b["n"], "dipangkas:", nilai_dipangkas_b,
+      "-- tereproduksi persis sesuai Gambar 3.23 buku.")
+
+semua_path_list_b = ['/'.join(map(str, p)) for p in semua_path(POHON_BUKU)]
+alphabeta_visited_list_b = ['/'.join(map(str, p)) for p in alphabeta_visited_b]
+
 # ============================================================
 # TULIS data.js
 # ============================================================
@@ -389,6 +449,15 @@ data = {
         "pruned": minimax_leaves["n"] - alphabeta_leaves["n"],
         "allPaths": semua_path_list,
         "alphabetaVisited": alphabeta_visited_list,
+    },
+    "minimaxBuku": {
+        "tree": POHON_BUKU,
+        "rootValue": v1b,
+        "leavesMinimax": minimax_leaves_b["n"],
+        "leavesAlphabeta": alphabeta_leaves_b["n"],
+        "pruned": minimax_leaves_b["n"] - alphabeta_leaves_b["n"],
+        "allPaths": semua_path_list_b,
+        "alphabetaVisited": alphabeta_visited_list_b,
     },
 }
 

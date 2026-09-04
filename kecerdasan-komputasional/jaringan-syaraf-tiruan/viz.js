@@ -171,21 +171,31 @@
   // ============================================================
   function renderDeltaView() {
     var container = document.getElementById('delta-view');
-    container.innerHTML = '<svg id="delta-chart" viewBox="0 0 640 220"></svg><table class="iter-table" id="delta-table"><thead><tr><th>Gerbang</th><th>Bobot Akhir (w1,w2)</th><th>Prediksi</th></tr></thead><tbody></tbody></table>';
-    var series = ['AND', 'OR'].map(function (nama, i) {
-      return { label: nama, color: i === 0 ? C.accent : C.success, data: D.delta[nama].jejakGalat.map(function (v, j) { return { x: j, y: v }; }) };
-    });
-    lineChart('#delta-chart', series, { yLabel: 'Galat (MSE)' });
-    var tbody = document.querySelector('#delta-table tbody');
-    ['AND', 'OR'].forEach(function (nama) {
-      var d = D.delta[nama];
-      var tr = document.createElement('tr');
-      tr.innerHTML = '<td>' + nama + '</td><td>(' + d.w.map(function (v) { return v.toFixed(4); }).join(', ') + ')</td><td>[' + d.predAkhir.join(', ') + ']</td>';
-      tbody.appendChild(tr);
-    });
-    document.getElementById('delta-sidebar-title').textContent = 'Konvergensi Sederhana';
+    container.innerHTML =
+      '<p class="section-note">Aturan delta Widrow-Hoff asli (Bab 7.4.1): pembaruan bobot per-sampel dengan aktivasi ambang &theta;=0.5, ' +
+      '&alpha;=0.2, bobot awal (0.3, 0.3) &mdash; persis Gambar 7.5 dan Tabel 7.2/7.3 buku, untuk gerbang OR.</p>' +
+      '<table class="iter-table" id="delta-table-or"><thead><tr><th>Epoch</th><th>X1</th><th>X2</th><th>Target</th><th>W1</th><th>W2</th><th>net</th><th>O</th><th>&Delta;W1</th><th>&Delta;W2</th></tr></thead><tbody></tbody></table>' +
+      '<div class="section-label" style="margin-top:1.5rem">Gerbang AND dengan Bobot Awal Sama</div>' +
+      '<table class="iter-table" id="delta-table-and"><thead><tr><th>Epoch</th><th>X1</th><th>X2</th><th>Target</th><th>W1</th><th>W2</th><th>net</th><th>O</th><th>&Delta;W1</th><th>&Delta;W2</th></tr></thead><tbody></tbody></table>';
+
+    function isiTabel(sel, trace) {
+      var tbody = document.querySelector(sel + ' tbody');
+      trace.forEach(function (r) {
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + r.epoch + '</td><td>' + r.x1 + '</td><td>' + r.x2 + '</td><td>' + r.target + '</td>' +
+          '<td>' + r.w1.toFixed(1) + '</td><td>' + r.w2.toFixed(1) + '</td><td>' + r.net.toFixed(1) + '</td><td>' + r.o + '</td>' +
+          '<td>' + r.dw1.toFixed(1) + '</td><td>' + r.dw2.toFixed(1) + '</td>';
+        if (r.dw1 !== 0 || r.dw2 !== 0) tr.style.color = C.accent;
+        tbody.appendChild(tr);
+      });
+    }
+    isiTabel('#delta-table-or', D.delta.OR.trace.slice(0, 4));
+    isiTabel('#delta-table-and', D.delta.AND.trace.slice(0, 4));
+
+    document.getElementById('delta-sidebar-title').textContent = 'Konvergen dalam Satu Epoch';
     document.getElementById('delta-sidebar-text').innerHTML =
-      'Aturan delta melatih jaringan 2×1 pada gerbang logika AND dan OR. Keduanya konvergen ke bobot yang memisahkan input secara linear sempurna &mdash; AND butuh bobot lebih kecil karena targetnya lebih "ketat" (hanya 1 dari 4 kombinasi bernilai 1).';
+      'Gerbang OR dengan bobot awal (0.3, 0.3) dan &alpha;=0.2 hanya perlu <strong>3 pembaruan bobot</strong> pada epoch pertama untuk konvergen ke W=(0.5, 0.5) &mdash; persis sesuai perhitungan tangan buku setelah Tabel 7.3. Epoch ke-2 sampai ke-4 tidak ada perubahan bobot lagi karena keempat sampel sudah diklasifikasikan benar.' +
+      '<br><br>Gerbang AND dengan bobot awal yang sama justru sudah benar <strong>sejak awal</strong> (0 pembaruan) &mdash; kebetulan (0.3, 0.3) dengan &theta;=0.5 sudah cukup memisahkan AND secara linear.';
   }
   function renderBackpropView() {
     var container = document.getElementById('letter-patterns');
@@ -233,7 +243,7 @@
       .text(function (d) { return (d.value * 100).toFixed(0) + '%'; });
     document.getElementById('delta-sidebar-title').textContent = 'Belajar dari Pola Bising';
     document.getElementById('delta-sidebar-text').innerHTML =
-      'Jaringan dilatih dari 32 varian huruf A/B/C/D yang diberi derau acak (8% piksel dibalik). Galat turun dari <strong>' + D.backprop.galatAwal.toFixed(4) + '</strong> menjadi <strong>' + D.backprop.galatAkhir.toFixed(6) + '</strong> setelah pelatihan, dan seluruh huruf dikenali dengan akurasi 100% pada data latih.';
+      'Jaringan dilatih dari 20 gambar huruf A/B/C/D (5 varian tiap huruf) yang diberi derau acak (8% piksel dibalik) &mdash; sesuai jumlah data pelatihan Bab 7.4.2 buku. Galat turun dari <strong>' + D.backprop.galatAwal.toFixed(4) + '</strong> menjadi <strong>' + D.backprop.galatAkhir.toFixed(6) + '</strong> setelah pelatihan, dan seluruh huruf dikenali dengan akurasi 100% pada data latih (buku sendiri melaporkan 98/94/80/83% pada data uji dengan gambar aslinya, yang tidak tersedia sebagai teks untuk direproduksi persis).';
   }
   renderDeltaView();
   document.querySelectorAll('#delta-mode-buttons .mode-btn').forEach(function (btn) {

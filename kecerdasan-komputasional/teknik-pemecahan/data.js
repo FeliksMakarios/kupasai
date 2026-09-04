@@ -79,6 +79,75 @@ var KK2_DATA = {
     },
     "biayaMinimum": 6
   },
+  "andorBuku": {
+    "tree": {
+      "name": "OR",
+      "isLeaf": false,
+      "tipe": "or",
+      "label": "",
+      "biaya": 11,
+      "children": [
+        {
+          "name": "AND",
+          "isLeaf": false,
+          "tipe": "and",
+          "label": "",
+          "biaya": 12,
+          "children": [
+            {
+              "name": "OR",
+              "isLeaf": false,
+              "tipe": "or",
+              "label": "",
+              "biaya": 6,
+              "children": [
+                {
+                  "name": "5",
+                  "isLeaf": true,
+                  "value": 5,
+                  "label": "terpilih"
+                },
+                {
+                  "name": "7",
+                  "isLeaf": true,
+                  "value": 7,
+                  "label": ""
+                }
+              ]
+            },
+            {
+              "name": "4",
+              "isLeaf": true,
+              "value": 4,
+              "label": ""
+            }
+          ]
+        },
+        {
+          "name": "AND",
+          "isLeaf": false,
+          "tipe": "and",
+          "label": "terpilih",
+          "biaya": 10,
+          "children": [
+            {
+              "name": "4",
+              "isLeaf": true,
+              "value": 4,
+              "label": ""
+            },
+            {
+              "name": "4",
+              "isLeaf": true,
+              "value": 4,
+              "label": ""
+            }
+          ]
+        }
+      ]
+    },
+    "biayaMinimum": 11
+  },
   "peta": {
     "adjacency": {
       "WA": [
@@ -145,8 +214,8 @@ var KK2_DATA = {
     "money": 10652,
     "kandidatBrute": 1748230,
     "kandidatBatasan": 173050,
-    "waktuBrute": 4.7744,
-    "waktuBatasan": 0.1519
+    "waktuBrute": 4.6698,
+    "waktuBatasan": 0.1452
   },
   "rumahSakit": {
     "komposisi": {
@@ -177,56 +246,155 @@ var KK2_DATA = {
     }
   },
   "silsilah": {
-    "fakta": [
-      [
-        "parent",
-        "john",
-        "jack"
-      ],
-      [
-        "parent",
-        "jack",
-        "oliver"
-      ],
-      [
-        "parent",
-        "oliver",
-        "ryan"
-      ],
-      [
-        "parent",
-        "john",
-        "mary"
-      ],
-      [
-        "parent",
-        "mary",
-        "susan"
-      ]
-    ],
-    "queryParentJohn": [
-      [
-        "parent",
-        "john",
-        "jack"
-      ],
-      [
-        "parent",
-        "john",
-        "mary"
-      ]
-    ],
-    "turunanJohn": [
-      "jack",
-      "mary",
-      "oliver",
-      "ryan",
-      "susan"
-    ],
-    "leluhurRyan": [
-      "jack",
+    "laki": [
       "john",
-      "oliver"
+      "jack",
+      "oliver",
+      "ali",
+      "james",
+      "simon",
+      "stev",
+      "harry"
+    ],
+    "perempuan": [
+      "madeline",
+      "helen",
+      "sophie",
+      "alice",
+      "jess",
+      "lily",
+      "arline",
+      "kelly"
+    ],
+    "parentPairs": [
+      [
+        "john",
+        "alice"
+      ],
+      [
+        "madeline",
+        "alice"
+      ],
+      [
+        "john",
+        "ali"
+      ],
+      [
+        "madeline",
+        "ali"
+      ],
+      [
+        "jack",
+        "jess"
+      ],
+      [
+        "helen",
+        "jess"
+      ],
+      [
+        "jack",
+        "lily"
+      ],
+      [
+        "helen",
+        "lily"
+      ],
+      [
+        "oliver",
+        "james"
+      ],
+      [
+        "sophie",
+        "james"
+      ],
+      [
+        "oliver",
+        "arline"
+      ],
+      [
+        "sophie",
+        "arline"
+      ],
+      [
+        "ali",
+        "simon"
+      ],
+      [
+        "jess",
+        "simon"
+      ],
+      [
+        "ali",
+        "stev"
+      ],
+      [
+        "jess",
+        "stev"
+      ],
+      [
+        "james",
+        "harry"
+      ],
+      [
+        "lily",
+        "harry"
+      ],
+      [
+        "james",
+        "kelly"
+      ],
+      [
+        "lily",
+        "kelly"
+      ]
+    ],
+    "queries": [
+      {
+        "q": "father(X, kelly)",
+        "hasil": [
+          "james"
+        ]
+      },
+      {
+        "q": "grandmother(X, kelly)",
+        "hasil": [
+          "helen",
+          "sophie"
+        ]
+      },
+      {
+        "q": "brother(X, kelly)",
+        "hasil": [
+          "harry"
+        ]
+      },
+      {
+        "q": "aunt(X, kelly)",
+        "hasil": [
+          "arline",
+          "jess"
+        ]
+      },
+      {
+        "q": "descend(john, X)",
+        "hasil": [
+          "ali",
+          "alice",
+          "simon",
+          "stev"
+        ]
+      },
+      {
+        "q": "ancestor(stev, Y)",
+        "hasil": [
+          "ali",
+          "helen",
+          "jack",
+          "jess",
+          "john",
+          "madeline"
+        ]
+      }
     ]
   }
 };

@@ -112,7 +112,10 @@
     <div class="viz-main">
       <p class="section-note">
         Meminimumkan f(x1,x2)=x1&sup2;&minus;x1x2+x2&sup2;+2x1+4x2+3 pada
-        selang [&minus;5,5]. Fitness = 0.01&times;f. 5 employed bee.
+        selang [&minus;5,5]. Fitness = 0.01&times;f. 5 employed bee. Sesuai
+        contoh pada buku, algoritma ini <strong>memaksimumkan</strong> f
+        (bukan meminimumkan) &mdash; fungsinya konveks sehingga
+        maksimumnya berada di sudut domain berbatas.
       </p>
       <table class="iter-table" id="abc-initial-table">
         <thead><tr><th>Sumber</th><th>x1</th><th>x2</th><th>f(x1,x2)</th><th>Fitness</th></tr></thead>
@@ -123,22 +126,31 @@
         <thead><tr><th>Sumber</th><th>Pasangan</th><th>Rand</th><th>Kandidat Baru</th><th>f Baru</th><th>Keputusan</th></tr></thead>
         <tbody></tbody>
       </table>
-      <div class="section-label">Konvergensi 150 Iterasi (3 Fase Berulang)</div>
+      <div class="section-label">Konvergensi 100 Iterasi (3 Fase Berulang)</div>
       <svg id="abc-chart" viewBox="0 0 640 220"></svg>
     </div>
     <div class="viz-sidebar">
       <h3>Tiga Fase yang Saling Melengkapi</h3>
       <p>
-        Employed bee mengeksplorasi sekitar sumber yang sudah dimiliki.
-        Onlooker bee memilih sumber secara probabilistik berdasar fitness
-        &mdash; sumber lebih baik lebih sering dieksploitasi. Scout bee
-        mengganti sumber yang gagal membaik setelah beberapa percobaan
+        Tabel iterasi pertama di atas adalah reproduksi <strong>persis</strong>
+        Tabel 11.7&ndash;11.9 pada buku (pasangan dan bilangan acak yang sama),
+        termasuk kandidat 3.00,&minus;2.50 dengan f=21.75 yang diterima karena
+        lebih besar dari f lama (4.00) &mdash; bukti bahwa algoritma ini
+        memaksimumkan, bukan meminimumkan.
+      </p>
+      <p>
+        Employed bee mengeksplorasi sekitar sumber yang sudah dimiliki dengan
+        mengubah kedua dimensi sekaligus memakai satu bilangan acak yang sama
+        per lebah. Onlooker bee memilih sumber secara probabilistik berdasar
+        fitness &mdash; sumber lebih baik lebih sering dieksploitasi. Scout
+        bee mengganti sumber yang gagal membaik setelah beberapa percobaan
         (trial melebihi batas) dengan sumber baru acak.
       </p>
       <p>
-        Solusi terbaik yang ditemukan mendekati minimum analitis fungsi ini
-        (x1&asymp;&minus;2.67, x2&asymp;&minus;3.33, f&asymp;&minus;6.33):
-        hasil algoritma <strong>x1=<span id="abc-result-x1"></span>,
+        Buku melaporkan hasil akhir menuju sudut domain (&minus;5,5) dengan
+        f=88 setelah 100 iterasi. Karena tahap onlooker dan scout bersifat
+        acak, hasil algoritma ini pada satu kali jalan bisa berbeda dari buku
+        namun tetap konvergen ke arah sudut &minus;x1,+x2: <strong>x1=<span id="abc-result-x1"></span>,
         x2=<span id="abc-result-x2"></span>, f=<span id="abc-result-f"></span></strong>.
       </p>
     </div>
@@ -150,9 +162,9 @@
   <div class="viz-layout">
     <div class="viz-main">
       <p class="section-note">
-        Enam himpunan fuzzy pada domain umur. Hanya kurva <strong>balita</strong>
-        yang nilainya dipatok eksplisit oleh kriteria modul; kurva lain
-        adalah desain trapesium yang melanjutkan pola tersebut.
+        Enam himpunan fuzzy pada domain umur, sesuai definisi eksak pada
+        Bab 12.1 buku rujukan: balita dan tua berkurva penyusutan/pertumbuhan,
+        sedangkan anak, remaja, pemuda, dan dewasa berkurva segitiga (bel).
       </p>
       <svg id="fuzzy-umur-chart" viewBox="0 0 640 260"></svg>
       <div class="section-label">Verifikasi Himpunan Balita</div>
@@ -165,15 +177,17 @@
       <h3>Irisan, Gabungan, Komplemen</h3>
       <p>
         Himpunan <strong>balita</strong> didefinisikan
-        <code>1&minus;x/7</code> untuk 0&le;x&le;7: derajat keanggotaan 1
-        penuh pada umur 0, turun linear hingga 0 pada umur 7.
+        <code>1&minus;x/7</code> untuk 0&le;x&le;7. Empat himpunan tengah
+        berbentuk segitiga dengan puncak dan alas berdekatan sehingga saling
+        tumpang tindih: anak (puncak 8, alas 5&ndash;11), remaja (puncak 13,
+        alas 9&ndash;17), pemuda (puncak 20, alas 15&ndash;25), dan dewasa
+        (puncak 30, alas 22&ndash;38). Himpunan tua naik dari umur 36 dan
+        penuh (&mu;=1) sejak umur 40.
       </p>
       <p>
         Operasi dasar fuzzy: irisan memakai nilai minimum kedua himpunan,
         gabungan memakai nilai maksimum, dan komplemen adalah
-        <code>1 &minus; &mu;(x)</code>. Ketiganya berlaku pada seluruh
-        pasangan himpunan, termasuk balita dan anak yang saling tumpang
-        tindih di sekitar umur 5&ndash;7.
+        <code>1 &minus; &mu;(x)</code>.
       </p>
     </div>
   </div>
@@ -203,7 +217,7 @@
       <p class="result-highlight" id="sistem-result"></p>
     </div>
     <div class="viz-sidebar">
-      <h3>Stok Melebihi Kapasitas</h3>
+      <h3>Tsukamoto Gagal, Mamdani Berhasil</h3>
       <p>
         Dengan metode Tsukamoto, jumlah produksi &asymp;4983 satuan. Stok
         akhir = simpanan awal (300) + produksi &minus; pesanan (4000) =
@@ -211,11 +225,18 @@
         kapasitas simpanan maksimum 600 plat.
       </p>
       <p>
-        Ini menunjukkan sistem fuzzy dengan basis aturan sederhana bisa
-        menghasilkan keputusan yang secara praktis tidak layak, meskipun
-        secara matematis konsisten dengan aturan yang diberikan &mdash;
-        aturan tambahan (misalnya mempertimbangkan kapasitas simpanan
-        secara eksplisit) diperlukan agar hasilnya realistis.
+        Metode <strong>Mamdani</strong> untuk kasus yang sama menghasilkan
+        produksi &asymp;4237 satuan, sehingga stok akhir hanya
+        &asymp;537 plat &mdash; masih dalam kapasitas 600 plat. Buku
+        mencetak hasil 4247.74, namun perhitungan ulang integral momennya
+        menunjukkan angka itu mengandung salah hitung kecil pada buku; nilai
+        yang matematis benar adalah &asymp;4237.99 &mdash; kesimpulannya
+        tetap sama.
+      </p>
+      <p>
+        Ini menunjukkan bahwa memilih metode defuzzifikasi bisa menentukan
+        apakah sebuah sistem fuzzy menghasilkan keputusan yang layak secara
+        praktis, meskipun basis aturannya identik.
       </p>
     </div>
   </div>
