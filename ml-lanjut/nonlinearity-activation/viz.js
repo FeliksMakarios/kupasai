@@ -100,16 +100,23 @@
     var maxAbs = Math.max(0.3, d3.max(delta1, Math.abs));
     var y = d3.scaleLinear().domain([-maxAbs, maxAbs]).range([ih, 0]);
     var g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-    g.append('g').attr('transform', 'translate(0,' + y(0) + ')').call(d3.axisBottom(x)).selectAll('text').attr('fill', C.text_muted).style('font-size', '10px');
+    // Garis nol polos saja -- label kategori ditulis di dasar plot supaya
+    // tidak tertimpa batang yang nilainya nol/dekat nol (mis. node 1 di sini
+    // selalu bernilai 0 karena weights12[0] = 0).
+    g.append('line').attr('x1', 0).attr('x2', iw).attr('y1', y(0)).attr('y2', y(0)).attr('stroke', C.axis);
     g.append('g').call(d3.axisLeft(y).ticks(5)).selectAll('text').attr('fill', C.text_muted).style('font-size', '10px');
     g.selectAll('.domain, .tick line').attr('stroke', C.axis);
     labels.forEach(function (lab, i) {
       var v = delta1[i];
-      g.append('rect').attr('x', x(lab)).attr('y', y(Math.max(0, v))).attr('width', x.bandwidth())
+      var barTop = y(Math.max(0, v));
+      g.append('rect').attr('x', x(lab)).attr('y', barTop).attr('width', x.bandwidth())
         .attr('height', Math.abs(y(v) - y(0))).attr('fill', v >= 0 ? C.accent : C.danger);
-      g.append('text').attr('x', x(lab) + x.bandwidth() / 2).attr('y', v >= 0 ? y(v) - 6 : y(v) + 16)
+      var labelY = v >= 0 ? Math.min(barTop - 6, y(0) - 10) : Math.max(y(v) + 16, y(0) + 16);
+      g.append('text').attr('x', x(lab) + x.bandwidth() / 2).attr('y', labelY)
         .attr('text-anchor', 'middle').attr('fill', C.text_primary).style('font-size', '11px').style('font-weight', 700)
         .text(v.toFixed(3));
+      g.append('text').attr('x', x(lab) + x.bandwidth() / 2).attr('y', ih + 16)
+        .attr('text-anchor', 'middle').attr('fill', C.text_muted).style('font-size', '10px').text(lab);
     });
 
     var trace = document.getElementById('delta-prop-trace');

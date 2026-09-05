@@ -159,8 +159,8 @@
   // ============================================================
   var PETA_POS = {
     Oradea: [300, 35], Zerind: [165, 75], Arad: [55, 165], Sibiu: [335, 155],
-    Fagaras: [500, 110], Timisoara: [55, 300], Rimnicu: [360, 250], Lugoj: [125, 355],
-    Pitesti: [455, 300], Bucharest: [590, 365], Mehadia: [150, 405], Drobeta: [230, 405],
+    Fagaras: [500, 110], Timisoara: [50, 280], Rimnicu: [360, 250], Lugoj: [115, 365],
+    Pitesti: [455, 300], Bucharest: [590, 365], Mehadia: [140, 430], Drobeta: [230, 405],
     Craiova: [320, 400]
   };
 
@@ -188,8 +188,17 @@
       g.append('line').attr('class', 'graph-edge' + (onPath ? ' highlight' : ''))
         .attr('x1', p1[0]).attr('y1', p1[1]).attr('x2', p2[0]).attr('y2', p2[1])
         .attr('opacity', onPath ? 1 : 0.35);
+      // Label jarak digeser tegak lurus garis (selalu ke arah atas) supaya
+      // tidak menumpuk persis di atas garis maupun di zona label nama kota
+      // yang terletak di bawah tiap simpul.
       var mx = (p1[0] + p2[0]) / 2, my = (p1[1] + p2[1]) / 2;
-      g.append('text').attr('class', 'edge-label').attr('x', mx).attr('y', my - 3).attr('text-anchor', 'middle').text(e.jarak);
+      var dx = p2[0] - p1[0], dy = p2[1] - p1[1], len = Math.sqrt(dx * dx + dy * dy) || 1;
+      var px = -dy / len, py = dx / len;
+      if (py > 0) { px = -px; py = -py; }
+      var lx = mx + px * 10, ly = my + py * 10;
+      g.append('text').attr('class', 'edge-label').attr('x', lx).attr('y', ly).attr('text-anchor', 'middle')
+        .style('paint-order', 'stroke').style('stroke', C.node_fill).style('stroke-width', '3px')
+        .text(e.jarak);
     });
     Object.keys(PETA_POS).forEach(function (name) {
       var p = PETA_POS[name];
