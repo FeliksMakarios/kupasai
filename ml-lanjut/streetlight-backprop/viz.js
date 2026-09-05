@@ -131,16 +131,27 @@
     var maxAbs = d3.max(wd.finalWeights, Math.abs);
     var y = d3.scaleLinear().domain([-maxAbs * 1.2, maxAbs * 1.2]).range([ih, 0]);
     var g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-    g.append('g').attr('transform', 'translate(0,' + y(0) + ')').call(d3.axisBottom(x)).selectAll('text').attr('fill', C.text_muted).style('font-size', '10px');
+    // Sumbu-x hanya garis nol polos (tanpa label kategori di sini) supaya
+    // tidak bertabrakan dengan label nilai batang yang nilainya dekat nol;
+    // nama kategori (Kiri/Tengah/Kanan) ditulis manual di dasar area plot.
+    g.append('line').attr('x1', 0).attr('x2', iw).attr('y1', y(0)).attr('y2', y(0)).attr('stroke', C.axis);
     g.append('g').call(d3.axisLeft(y).ticks(4)).selectAll('text').attr('fill', C.text_muted).style('font-size', '10px');
     g.selectAll('.domain, .tick line').attr('stroke', C.axis);
     labels.forEach(function (lab, i) {
       var v = wd.finalWeights[i];
-      g.append('rect').attr('x', x(lab)).attr('y', y(Math.max(0, v))).attr('width', x.bandwidth())
-        .attr('height', Math.abs(y(v) - y(0))).attr('fill', i === 1 ? C.success : C.text_muted);
-      g.append('text').attr('x', x(lab) + x.bandwidth() / 2).attr('y', v >= 0 ? y(v) - 6 : y(v) + 16)
+      var barTop = y(Math.max(0, v)), barHeight = Math.abs(y(v) - y(0));
+      var cx = x(lab) + x.bandwidth() / 2;
+      g.append('rect').attr('x', x(lab)).attr('y', barTop).attr('width', x.bandwidth())
+        .attr('height', barHeight).attr('fill', i === 1 ? C.success : C.text_muted);
+      // Label nilai selalu di luar ujung batang menjauhi nol, dengan jarak
+      // aman minimum supaya batang yang nyaris nol tidak membuat labelnya
+      // menempel ke garis nol.
+      var labelY = v >= 0 ? Math.min(barTop - 6, y(0) - 10) : Math.max(y(v) + 16, y(0) + 16);
+      g.append('text').attr('x', cx).attr('y', labelY)
         .attr('text-anchor', 'middle').attr('fill', C.text_primary).style('font-size', '11px').style('font-weight', 700)
         .text(v.toFixed(3));
+      g.append('text').attr('x', cx).attr('y', ih + 16)
+        .attr('text-anchor', 'middle').attr('fill', C.text_muted).style('font-size', '10px').text(lab);
     });
   }
   renderWhole();

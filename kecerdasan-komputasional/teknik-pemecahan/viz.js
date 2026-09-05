@@ -229,7 +229,7 @@
         .attr('stroke', C.text_muted).attr('stroke-dasharray', '2 3').attr('stroke-width', 1.5);
     });
     var defs = svg.append('defs');
-    defs.append('marker').attr('id', 'arrow-fam').attr('viewBox', '0 0 10 10').attr('refX', 24).attr('refY', 5)
+    defs.append('marker').attr('id', 'arrow-fam').attr('viewBox', '0 0 10 10').attr('refX', 13).attr('refY', 5)
       .attr('markerWidth', 6).attr('markerHeight', 6).attr('orient', 'auto-start-reverse')
       .append('path').attr('d', 'M0,0 L10,5 L0,10 Z').attr('fill', C.text_muted);
     var isLaki = {};
@@ -237,11 +237,13 @@
     Object.keys(pos).forEach(function (name) {
       var p = pos[name];
       var node = g.append('g').attr('transform', 'translate(' + p[0] + ',' + p[1] + ')');
-      node.append('circle').attr('r', 20).attr('fill', isLaki[name] ? C.accent + '22' : C.danger + '22')
+      node.append('circle').attr('r', 10).attr('fill', isLaki[name] ? C.accent + '22' : C.danger + '22')
         .attr('stroke', isLaki[name] ? C.accent : C.danger);
-      node.append('text').attr('dy', 4).style('font-size', '9px').attr('fill', C.text_primary).text(name);
+      node.append('text').attr('dy', 24).attr('text-anchor', 'middle').style('font-size', '10px').attr('fill', C.text_primary)
+        .style('paint-order', 'stroke').style('stroke', C.node_fill).style('stroke-width', '3px')
+        .text(name);
     });
-    svg.attr('viewBox', '0 0 730 300');
+    svg.attr('viewBox', '0 0 730 320');
   }
   renderSilsilah();
 

@@ -39,6 +39,27 @@
     });
   });
 
+  // Menempatkan label kotak agar tidak saling tumpang tindih: mulai dari
+  // posisi yang diinginkan (tepat di atas kotak), lalu geser ke atas jika
+  // bertabrakan dengan label lain yang sudah ditempatkan pada rentang x
+  // yang sama -- perlu karena beberapa kotak deteksi saling berhimpitan.
+  function placeLabel(svg, x, yDesired, text, color, placed) {
+    var width = text.length * 7.4 + 8;
+    var height = 15;
+    var y = yDesired;
+    var collide = true;
+    while (collide) {
+      collide = placed.some(function (p) {
+        return x < p.x + p.width && x + width > p.x && y > p.y - p.height && y < p.y + p.height;
+      });
+      if (collide) y -= height;
+    }
+    placed.push({ x: x, y: y, width: width, height: height });
+    svg.append('text').attr('x', x).attr('y', y).attr('fill', color).style('font-size', '11px').style('font-weight', 700)
+      .style('paint-order', 'stroke').style('stroke', C.bg2).style('stroke-width', '4px')
+      .text(text);
+  }
+
   function computeIoU(a, b) {
     var xi1 = Math.max(a[0], b[0]), yi1 = Math.max(a[1], b[1]);
     var xi2 = Math.min(a[2], b[2]), yi2 = Math.min(a[3], b[3]);
@@ -70,13 +91,14 @@
     var iou = computeIoU(gt, pred);
 
     iouSvg.selectAll('*').remove();
-    iouSvg.attr('viewBox', '0 0 ' + D.iou.canvasW + ' ' + D.iou.canvasH);
-    iouSvg.append('rect').attr('x', 0).attr('y', 0).attr('width', D.iou.canvasW).attr('height', D.iou.canvasH).attr('fill', C.bg2);
+    iouSvg.attr('viewBox', '0 -22 ' + D.iou.canvasW + ' ' + (D.iou.canvasH + 22));
+    iouSvg.append('rect').attr('x', 0).attr('y', -22).attr('width', D.iou.canvasW).attr('height', D.iou.canvasH + 22).attr('fill', C.bg2);
 
+    var placedIou = [];
     function drawBox(box, color, label) {
       iouSvg.append('rect').attr('x', box[0]).attr('y', box[1]).attr('width', box[2] - box[0]).attr('height', box[3] - box[1])
         .attr('fill', color).attr('fill-opacity', 0.15).attr('stroke', color).attr('stroke-width', 2.5);
-      iouSvg.append('text').attr('x', box[0]).attr('y', box[1] - 6).attr('fill', color).style('font-size', '11px').style('font-weight', 700).text(label);
+      placeLabel(iouSvg, box[0], box[1] - 6, label, color, placedIou);
     }
     drawBox(gt, C.danger, 'Ground Truth');
     drawBox(pred, C.accent, 'Prediksi');
@@ -115,15 +137,15 @@
   function renderNms() {
     var svg = d3.select('#nms-canvas');
     svg.selectAll('*').remove();
-    svg.attr('viewBox', '0 0 ' + D.nms.canvasW + ' ' + D.nms.canvasH);
-    svg.append('rect').attr('x', 0).attr('y', 0).attr('width', D.nms.canvasW).attr('height', D.nms.canvasH).attr('fill', C.bg2);
+    svg.attr('viewBox', '0 -85 ' + D.nms.canvasW + ' ' + (D.nms.canvasH + 85));
+    svg.append('rect').attr('x', 0).attr('y', -85).attr('width', D.nms.canvasW).attr('height', D.nms.canvasH + 85).attr('fill', C.bg2);
     var boxesToShow = nmsMode === 'before' ? D.nms.boxes : D.nms.boxes.filter(function (b) { return D.nms.keep.indexOf(b.id) !== -1; });
+    var placedNms = [];
     boxesToShow.forEach(function (b) {
       var color = C.palette[b.id % C.palette.length];
       svg.append('rect').attr('x', b.box[0]).attr('y', b.box[1]).attr('width', b.box[2] - b.box[0]).attr('height', b.box[3] - b.box[1])
         .attr('fill', color).attr('fill-opacity', 0.12).attr('stroke', color).attr('stroke-width', nmsMode === 'after' ? 3 : 2);
-      svg.append('text').attr('x', b.box[0]).attr('y', b.box[1] - 6).attr('fill', color).style('font-size', '11px').style('font-weight', 700)
-        .text(b.label + ' (pc=' + b.score.toFixed(2) + ')');
+      placeLabel(svg, b.box[0], b.box[1] - 6, b.label + ' (pc=' + b.score.toFixed(2) + ')', color, placedNms);
     });
   }
   nmsBtns.forEach(function (btn) {
