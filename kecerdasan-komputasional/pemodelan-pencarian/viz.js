@@ -196,10 +196,12 @@
       var onPath = info.jalur.indexOf(name) !== -1;
       var visited = visitedSet[name];
       var node = g.append('g').attr('class', 'graph-node' + (onPath ? ' highlight' : '')).attr('transform', 'translate(' + p[0] + ',' + p[1] + ')');
-      node.append('circle').attr('r', 22)
+      node.append('circle').attr('r', 10)
         .attr('fill', onPath ? C.accent + '33' : (visited ? C.text_muted + '22' : C.node_fill))
         .attr('stroke', onPath ? C.accent : C.axis);
-      node.append('text').attr('dy', 4).style('font-size', '9px').text(name);
+      node.append('text').attr('dy', 24).style('font-size', '10px').style('font-weight', onPath ? 700 : 400)
+        .style('paint-order', 'stroke').style('stroke', C.node_fill).style('stroke-width', '3px')
+        .text(name);
     });
   }
 

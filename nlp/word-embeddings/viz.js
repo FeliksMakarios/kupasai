@@ -583,12 +583,14 @@
         .startAngle(arcStart)
         .endAngle(arcEnd);
 
-      // Vector A
-      drawVector(g, cx, cy, aData.x * maxLen, aData.y * maxLen, '#58a6ff', selectA.value);
-      // Vector B
-      drawVector(g, cx, cy, bData.x * maxLen, bData.y * maxLen, '#c77dff', selectB.value);
+      // Vector A dan B -- diberi sisi (side) berlawanan supaya jika kedua
+      // vektor kebetulan nyaris searah (proyeksi 2D-nya berhimpit), label
+      // keduanya tetap terpisah, tidak saling menimpa garis/panah.
+      drawVector(g, cx, cy, aData.x * maxLen, aData.y * maxLen, '#58a6ff', selectA.value, -1, UI.viz_bg);
+      drawVector(g, cx, cy, bData.x * maxLen, bData.y * maxLen, '#c77dff', selectB.value, 1, UI.viz_bg);
 
-      // Angle label
+      // Angle label -- didorong sedikit lebih jauh dari pusat + diberi latar
+      // (halo) putih/gelap supaya tetap terbaca walau berada di atas garis.
       var midAngle = (aAngle + bAngle) / 2;
       var labelR = maxLen * 0.32;
       g.append('text')
@@ -598,10 +600,12 @@
         .attr('dominant-baseline', 'middle')
         .attr('fill', UI.text_muted)
         .attr('font-size', '12px')
+        .style('paint-order', 'stroke')
+        .style('stroke', UI.viz_bg).style('stroke-width', '4px')
         .text(angle.toFixed(0) + '\u00B0');
     }
 
-    function drawVector(g, x1, y1, dx, dy, color, label) {
+    function drawVector(g, x1, y1, dx, dy, color, label, side, bg) {
       var x2 = x1 + dx;
       var y2 = y1 + dy;
 
@@ -627,15 +631,21 @@
         })
         .attr('fill', color);
 
-      // Label
+      // Label -- digeser menjauhi ujung panah SEKALIGUS tegak lurus garis
+      // (arah "side") supaya tidak menimpa garis vektor lain yang searah.
+      var perp = angle + Math.PI / 2;
+      var labelX = x2 + Math.cos(angle) * 14 + Math.cos(perp) * 11 * side;
+      var labelY = y2 + Math.sin(angle) * 14 + Math.sin(perp) * 11 * side;
       g.append('text')
-        .attr('x', x2 + Math.cos(angle) * 12)
-        .attr('y', y2 + Math.sin(angle) * 12)
+        .attr('x', labelX)
+        .attr('y', labelY)
         .attr('fill', color)
         .attr('font-size', '13px')
         .attr('font-weight', '700')
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'middle')
+        .style('paint-order', 'stroke')
+        .style('stroke', bg).style('stroke-width', '4px')
         .text(label);
     }
 
