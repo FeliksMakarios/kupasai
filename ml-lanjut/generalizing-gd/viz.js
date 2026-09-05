@@ -84,8 +84,14 @@
     var y = d3.scaleLinear().domain([Math.min(yMin, 0) - 0.02, yMax + 0.02]).range([ih, 0]).nice();
     var g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     g.append('g').call(d3.axisLeft(y).ticks(5)).selectAll('text').attr('fill', C.text_muted).style('font-size', '10px');
-    g.append('g').attr('transform', 'translate(0,' + y(0) + ')').call(d3.axisBottom(x).ticks(allW.length).tickFormat(function (d) { return d === 0 ? 'awal' : 'iter ' + d; }))
-      .selectAll('text').attr('fill', C.text_muted).style('font-size', '9px');
+    // Garis nol polos saja (tanpa label kategori di sini) -- label iterasi
+    // ditulis di dasar area plot supaya tidak tertimpa garis/titik data yang
+    // kebetulan melintasi nol (mis. deret "nfans" yang berganti tanda).
+    g.append('line').attr('x1', 0).attr('x2', iw).attr('y1', y(0)).attr('y2', y(0)).attr('stroke', C.axis);
+    g.selectAll('.tick-label-x').data(allW).enter().append('text').attr('class', 'tick-label-x')
+      .attr('x', function (_, i) { return x(i); }).attr('y', ih + 16).attr('text-anchor', 'middle')
+      .attr('fill', C.text_muted).style('font-size', '9px')
+      .text(function (_, i) { return i === 0 ? 'awal' : 'iter ' + i; });
     g.selectAll('.domain, .tick line').attr('stroke', C.axis);
     var colors = [C.accent, C.success, C.danger];
     labels.forEach(function (lab, wi) {

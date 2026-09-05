@@ -23,7 +23,7 @@
     svg.selectAll('*').remove();
     var xIn = D.x, hidden = step.hidden, output = step.output;
     var layerXs = [80, 320, 560];
-    var topPad = 40, botPad = 30;
+    var topPad = 56, botPad = 30;
     var usableH = VBH - topPad - botPad;
 
     function yFor(n, idx) {
