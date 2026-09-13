@@ -2,6 +2,8 @@
 // Churn Prediction data for KupasAI ML Week 9 - real ABC Telekom dataset (10,000 pelanggan)
 
 const CHURN_DATA = {
+  "seed": 42,
+  "auc_input": "positive class probability",
   "n_total": 10000,
   "n_churn": 2000,
   "n_active": 8000,
@@ -329,266 +331,72 @@ const CHURN_DATA = {
     ]
   ],
   "metrics_lr": {
-    "accuracy": 0.83,
-    "precision": 0.6124,
-    "recall": 0.3307,
-    "auc": 0.6403
+    "accuracy": 0.819,
+    "precision": 0.5754,
+    "recall": 0.3625,
+    "auc": 0.8637
   },
   "metrics_rf": {
-    "accuracy": 0.9195,
-    "precision": 0.8599,
-    "recall": 0.6977,
-    "auc": 0.8352
+    "accuracy": 0.924,
+    "precision": 0.8316,
+    "recall": 0.7775,
+    "auc": 0.9478
   },
   "rf_best_params": {
     "max_depth": null,
-    "min_samples_leaf": 2,
-    "min_samples_split": 2,
-    "n_estimators": 50
+    "min_samples_leaf": 1,
+    "min_samples_split": 5,
+    "n_estimators": 100
   },
   "feature_importance": [
     {
       "feature": "tenure",
-      "importance": 0.2919
+      "importance": 0.3587
     },
     {
       "feature": "reload_1",
-      "importance": 0.2394
+      "importance": 0.213
     },
     {
       "feature": "days_active",
-      "importance": 0.2085
-    },
-    {
-      "feature": "Kartu C",
-      "importance": 0.0566
+      "importance": 0.1947
     },
     {
       "feature": "internet",
-      "importance": 0.0483
+      "importance": 0.0463
+    },
+    {
+      "feature": "Kartu C",
+      "importance": 0.0436
     },
     {
       "feature": "chat_1",
-      "importance": 0.0376
+      "importance": 0.0342
     },
     {
       "feature": "music",
-      "importance": 0.0319
+      "importance": 0.0307
     },
     {
       "feature": "chat_2",
-      "importance": 0.0308
-    },
-    {
-      "feature": "Kartu B",
-      "importance": 0.0182
+      "importance": 0.0283
     },
     {
       "feature": "video",
-      "importance": 0.0179
+      "importance": 0.0173
+    },
+    {
+      "feature": "Kartu B",
+      "importance": 0.0154
     },
     {
       "feature": "socmed_1",
-      "importance": 0.011
+      "importance": 0.0098
     },
     {
       "feature": "Kartu A",
-      "importance": 0.0079
+      "importance": 0.0081
     }
   ],
-  "n_test": 2000,
-  "samples": [
-    {
-      "customer_id": "635e8c2a",
-      "reload_1": 0.0,
-      "video": 0.0,
-      "music": 0.0,
-      "chat_1": 0.0,
-      "chat_2": 0.0,
-      "socmed_1": 0.0,
-      "internet": 0.0,
-      "days_active": 15,
-      "tenure": 1155,
-      "product": "Kartu C",
-      "actual": 0,
-      "pred_lr": 0,
-      "pred_rf": 0
-    },
-    {
-      "customer_id": "1c83f6da",
-      "reload_1": 25564.0,
-      "video": 0.0,
-      "music": 0.0,
-      "chat_1": 21021.0,
-      "chat_2": 24882.0,
-      "socmed_1": 0.0,
-      "internet": 13596.0,
-      "days_active": 15,
-      "tenure": 7044,
-      "product": "Kartu C",
-      "actual": 0,
-      "pred_lr": 0,
-      "pred_rf": 0
-    },
-    {
-      "customer_id": "55d0e6df",
-      "reload_1": 0.0,
-      "video": 0.0,
-      "music": 0.0,
-      "chat_1": 0.0,
-      "chat_2": 0.0,
-      "socmed_1": 0.0,
-      "internet": 0.0,
-      "days_active": 1,
-      "tenure": 197,
-      "product": "Kartu C",
-      "actual": 0,
-      "pred_lr": 0,
-      "pred_rf": 1
-    },
-    {
-      "customer_id": "ce9228eb",
-      "reload_1": 0.67,
-      "video": 0.0,
-      "music": 0.0,
-      "chat_1": 0.0,
-      "chat_2": 0.0,
-      "socmed_1": 0.0,
-      "internet": 0.0,
-      "days_active": 15,
-      "tenure": 652,
-      "product": "Kartu C",
-      "actual": 0,
-      "pred_lr": 0,
-      "pred_rf": 0
-    },
-    {
-      "customer_id": "90520ea8",
-      "reload_1": 0.0,
-      "video": 0.0,
-      "music": 0.0,
-      "chat_1": 0.0,
-      "chat_2": 0.0,
-      "socmed_1": 0.0,
-      "internet": 0.0,
-      "days_active": 1,
-      "tenure": 693,
-      "product": "Kartu C",
-      "actual": 0,
-      "pred_lr": 0,
-      "pred_rf": 0
-    },
-    {
-      "customer_id": "57ce3128",
-      "reload_1": 129957.67,
-      "video": 0.0,
-      "music": 0.0,
-      "chat_1": 72072.0,
-      "chat_2": 90948.0,
-      "socmed_1": 264.0,
-      "internet": 35534.4,
-      "days_active": 15,
-      "tenure": 7154,
-      "product": "Kartu C",
-      "actual": 0,
-      "pred_lr": 0,
-      "pred_rf": 0
-    },
-    {
-      "customer_id": "648543d9",
-      "reload_1": 401698.73,
-      "video": 0.0,
-      "music": 0.0,
-      "chat_1": 399119.6,
-      "chat_2": 216286.4,
-      "socmed_1": 0.0,
-      "internet": 201471.6,
-      "days_active": 13,
-      "tenure": 2344,
-      "product": "Kartu A",
-      "actual": 0,
-      "pred_lr": 0,
-      "pred_rf": 0
-    },
-    {
-      "customer_id": "fca6fbce",
-      "reload_1": 0.0,
-      "video": 0.0,
-      "music": 0.0,
-      "chat_1": 0.0,
-      "chat_2": 0.0,
-      "socmed_1": 0.0,
-      "internet": 0.0,
-      "days_active": 15,
-      "tenure": 1737,
-      "product": "Kartu C",
-      "actual": 0,
-      "pred_lr": 0,
-      "pred_rf": 0
-    },
-    {
-      "customer_id": "60664251",
-      "reload_1": 0.0,
-      "video": 0.0,
-      "music": 0.0,
-      "chat_1": 0.0,
-      "chat_2": 0.0,
-      "socmed_1": 0.0,
-      "internet": 0.0,
-      "days_active": 1,
-      "tenure": 994,
-      "product": "Kartu C",
-      "actual": 0,
-      "pred_lr": 0,
-      "pred_rf": 0
-    },
-    {
-      "customer_id": "5f19efa0",
-      "reload_1": 0.0,
-      "video": 0.0,
-      "music": 0.0,
-      "chat_1": 0.0,
-      "chat_2": 0.0,
-      "socmed_1": 0.0,
-      "internet": 0.0,
-      "days_active": 1,
-      "tenure": 253,
-      "product": "Kartu C",
-      "actual": 0,
-      "pred_lr": 0,
-      "pred_rf": 1
-    },
-    {
-      "customer_id": "c388ce9d",
-      "reload_1": 0.0,
-      "video": 0.0,
-      "music": 0.0,
-      "chat_1": 0.0,
-      "chat_2": 0.0,
-      "socmed_1": 0.0,
-      "internet": 0.0,
-      "days_active": 1,
-      "tenure": 497,
-      "product": "Kartu B",
-      "actual": 0,
-      "pred_lr": 1,
-      "pred_rf": 0
-    },
-    {
-      "customer_id": "7fe8a5e3",
-      "reload_1": 0.0,
-      "video": 0.0,
-      "music": 0.0,
-      "chat_1": 0.0,
-      "chat_2": 0.0,
-      "socmed_1": 0.0,
-      "internet": 0.0,
-      "days_active": 15,
-      "tenure": 972,
-      "product": "Kartu C",
-      "actual": 0,
-      "pred_lr": 0,
-      "pred_rf": 0
-    }
-  ]
+  "n_test": 2000
 };

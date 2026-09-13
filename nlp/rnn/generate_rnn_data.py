@@ -121,22 +121,32 @@ for sent in SENTENCES:
 # VANISHING GRADIENT (same as before)
 # ============================================================
 
-def compute_gradient_flow(seq_len, weight_scale=0.5):
-    W = np.random.randn(HIDDEN_DIM, HIDDEN_DIM) * weight_scale
-    grad = np.ones(HIDDEN_DIM)
-    norms = []
-    for t in range(seq_len):
-        grad = W.T @ grad
-        grad = grad * 0.9
-        norms.append(round(float(np.linalg.norm(grad)), 4))
-    return norms
+def gradient_experiment(seq_len):
+    # Scalar recurrent networks, fixed input and weights across sequence lengths.
+    # Exact chain derivatives checked independently by finite differences.
+    h = 0.0
+    rnn_derivatives = []
+    c = 0.2
+    forget = 1 / (1 + np.exp(-2.0))
+    input_gate = 1 / (1 + np.exp(1.0))
+    output_gate = 1 / (1 + np.exp(-1.0))
+    for _ in range(seq_len):
+        h = np.tanh(0.1 + 0.7 * h)
+        rnn_derivatives.append(0.7 * (1 - h*h))
+        c = forget*c + input_gate*np.tanh(0.1)
+    rnn, lstm = [1.0], [1.0]
+    # d h_T / d h_(T-k), and d h_T / d c_(T-k), respectively.
+    gr = 1.0
+    gl = output_gate * (1 - np.tanh(c)**2)
+    lstm = [float(gl)]
+    for derivative in reversed(rnn_derivatives):
+        gr *= derivative
+        gl *= forget
+        rnn.append(float(gr))
+        lstm.append(float(gl))
+    return {"rnn": rnn, "lstm": lstm}
 
-gradient_data = {}
-for seq_len in [5, 10, 15, 20]:
-    gradient_data[str(seq_len)] = {
-        "rnn": compute_gradient_flow(seq_len, 0.5),
-        "lstm": compute_gradient_flow(seq_len, 0.9),
-    }
+gradient_data = {str(n): gradient_experiment(n) for n in [5,10,15,20]}
 
 # ============================================================
 # SENTENCE REPRESENTATIONS

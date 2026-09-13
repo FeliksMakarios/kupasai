@@ -66,7 +66,7 @@ print("Tugas2 Forward O:\n", np.round(O, 4))
 
 # ============================================================
 # TUGAS 3a -- ATURAN DELTA (AND/OR), sesuai Tabel 7.2/7.3 buku:
-# aturan delta ASLI Widrow-Hoff dipakai di sini adalah pembaruan bobot
+# aturan perceptron ambang dipakai di sini adalah pembaruan bobot
 # per-sampel (online) dengan fungsi aktivasi AMBANG (bukan penurunan
 # gradien MSE kontinu): Wij += alpha * Xi * (Yj - Oj), dengan
 # O = f(net) = 1 jika net >= theta else 0.
@@ -213,8 +213,8 @@ DATA_LVQ = np.array([
     [0, 1, 1, 1, 1, 1],
 ], dtype=float)
 
-def hamming(a, b):
-    return float(np.sum(np.abs(a - b)) / 2)
+def jarak_l1(a, b):
+    return float(np.sum(np.abs(a - b)))
 
 def latih_lvq(X, alpha=0.05, epoch=30, rekam_epoch1=False):
     W = np.array([X[0].copy(), X[1].copy()])
@@ -222,9 +222,9 @@ def latih_lvq(X, alpha=0.05, epoch=30, rekam_epoch1=False):
     for ep in range(epoch):
         for i in range(2, len(X)) if ep == 0 else range(len(X)):
             x = X[i]
-            d = [hamming(x, W[0]), hamming(x, W[1])]
+            d = [jarak_l1(x, W[0]), jarak_l1(x, W[1])]
             j = 0 if d[0] <= d[1] else 1
-            kelas_x = 0 if i % 2 == 0 else 1  # tidak dipakai; LVQ di sini unsupervised-kompetitif murni
+             # Pembelajaran kompetitif tanpa label, bukan LVQ terawasi.
             W[j] = W[j] + alpha * (x - W[j])
             if ep == 0 and rekam_epoch1:
                 riwayat.append(W.copy())
@@ -242,7 +242,7 @@ W30, _ = latih_lvq(DATA_LVQ, alpha=0.05, epoch=30)
 def kelas_data(X, W):
     kelas = []
     for x in X:
-        d = [hamming(x, W[0]), hamming(x, W[1])]
+        d = [jarak_l1(x, W[0]), jarak_l1(x, W[1])]
         kelas.append(1 if d[0] <= d[1] else 2)
     return kelas
 

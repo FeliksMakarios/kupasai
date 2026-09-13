@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -137,9 +139,25 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+<script src="../../assets/vendor/d3.v7.9.0.min.js"></script>
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Persamaan garis dan rata-rata. <strong>Durasi:</strong> sekitar 25 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Regresi dilatih pada bensin.csv dan MLG_data.csv.</p><p>R² uji dapat turun saat fitur ditambah. Residual adalah nilai aktual dikurangi prediksi. Korelasi tidak membuktikan sebab-akibat.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Bagaimana garis berubah bila satu pengamatan jauh dari pola umum?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Bandingkan residual pada rentang liter rendah dan tinggi.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://scikit-learn.org/stable/modules/linear_model.html#ordinary-least-squares" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml/linear-regression" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 </body>
 </html>

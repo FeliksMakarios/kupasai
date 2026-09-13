@@ -142,33 +142,8 @@
   // TAB 2: TITANIC CASE STUDY
   // ============================================================
 
-  function renderPassenger(idx) {
-    var p = D.titanic.samples[idx];
-    var html = '<div class="passenger-card"><div class="pg-name">' + p.name + '</div>';
-    html += '<div class="passenger-grid">';
-    html += '<div class="pg-item"><span class="pg-label">Kelas</span><span class="pg-value">' + p.pclass + '</span></div>';
-    html += '<div class="pg-item"><span class="pg-label">Jenis Kelamin</span><span class="pg-value">' + p.sex + '</span></div>';
-    html += '<div class="pg-item"><span class="pg-label">Usia</span><span class="pg-value">' + (p.age !== null ? p.age : '?') + '</span></div>';
-    html += '<div class="pg-item"><span class="pg-label">Tarif</span><span class="pg-value">' + (p.fare !== null ? p.fare : '?') + '</span></div>';
-    html += '<div class="pg-item"><span class="pg-label">Embarkasi</span><span class="pg-value">' + p.embarked + '</span></div>';
-    html += '</div>';
-    html += '<div class="verdict-box">P(Selamat) = <strong>' + (p.proba_survive * 100).toFixed(1) + '%</strong> &rarr; ' +
-      'prediksi: <strong>' + (p.predicted ? 'Selamat' : 'Tidak Selamat') + '</strong> &middot; ' +
-      'label sebenarnya: <strong>' + (p.actual ? 'Selamat' : 'Tidak Selamat') + '</strong> ' +
-      (p.predicted === p.actual ? '&#9989;' : '&#10060;') +
-      '</div></div>';
-    document.getElementById('passenger-detail').innerHTML = html;
-  }
-
-  var pSelect = document.getElementById('passenger-select');
-  D.titanic.samples.forEach(function (p, i) {
-    var opt = document.createElement('option');
-    opt.value = i;
-    opt.textContent = p.name;
-    pSelect.appendChild(opt);
-  });
-  pSelect.addEventListener('change', function () { renderPassenger(+this.value); });
-  renderPassenger(0);
+  var cm=D.titanic.confusion_matrix;
+  document.getElementById('titanic-confusion').innerHTML='<table><caption>Matriks kebingungan pada data uji</caption><thead><tr><th>Aktual</th><th>Prediksi tidak selamat</th><th>Prediksi selamat</th></tr></thead><tbody><tr><th>Tidak selamat</th><td>'+cm[0][0]+'</td><td>'+cm[0][1]+'</td></tr><tr><th>Selamat</th><td>'+cm[1][0]+'</td><td>'+cm[1][1]+'</td></tr></tbody></table><p>F1 kelas selamat: '+D.titanic.f1.toFixed(4)+'</p>';
 
   document.getElementById('titanic-accuracy').textContent = (D.titanic.accuracy * 100).toFixed(2) + '%';
   document.getElementById('titanic-n').textContent = D.titanic.n_test;

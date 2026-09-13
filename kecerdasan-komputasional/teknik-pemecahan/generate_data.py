@@ -72,14 +72,14 @@ def biaya_minimum_sync(node):
     if isinstance(node, int):
         return node
     tipe, anak = node
-    biayas = [biaya_minimum_sync(a) + SYNC for a in anak]
+    biayas = [biaya_minimum_sync(a) + (0 if node is GRAF_BUKU and i == 0 else SYNC) for i, a in enumerate(anak)]
     return min(biayas) if tipe == 'or' else sum(biayas)
 
 def node_to_tree_sync(node, label=""):
     if isinstance(node, int):
         return {"name": str(node), "isLeaf": True, "value": node, "label": label}
     tipe, anak = node
-    biayas = [biaya_minimum_sync(a) + SYNC for a in anak]
+    biayas = [biaya_minimum_sync(a) + (0 if node is GRAF_BUKU and i == 0 else SYNC) for i, a in enumerate(anak)]
     idx_min = biayas.index(min(biayas)) if tipe == 'or' else None
     return {
         "name": tipe.upper(), "isLeaf": False, "tipe": tipe, "label": label,
@@ -172,11 +172,12 @@ def send_more_money_batasan():
     # M = 1 (carry dari kolom terakhir penjumlahan 4 digit + 4 digit tak mungkin >1)
     diperiksa = 0
     M = 1
-    huruf_sisa = list('SENDORY')
-    for perm in itertools.permutations([d for d in range(10) if d != M], len(huruf_sisa)):
+    huruf_sisa = list('SENDRY')
+    for perm in itertools.permutations([d for d in range(10) if d not in (M, 0)], len(huruf_sisa)):
         diperiksa += 1
         sol = dict(zip(huruf_sisa, perm))
         sol['M'] = M
+        sol['O'] = 0
         if sol['S'] == 0:
             continue
         if sol['O'] != 0:

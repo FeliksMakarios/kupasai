@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -155,13 +157,29 @@
   </div>
 </div>
 
+
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> RNN dan sigmoid. <strong>Durasi:</strong> sekitar 30 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Gerbang skalar dan hidden state ilustratif dengan bobot yang dipilih manual.</p><p>LSTM memiliki tiga gerbang dan satu kandidat pembaruan sel. Gerbang tidak selalu merespons x dengan arah seperti contoh. Konteks dot-product attention berada dalam convex hull value.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Apa hasil jika forget gate mendekati 0?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Bandingkan dot-product attention dengan additive attention.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.LSTM.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/lstm-attention" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="../../assets/vendor/d3.v7.9.0.min.js"></script>
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
 </body>
 </html>

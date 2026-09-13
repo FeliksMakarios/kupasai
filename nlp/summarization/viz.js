@@ -91,7 +91,7 @@
   }
 
   function countMap(arr) {
-    var m = {};
+    var m = Object.create(null);
     arr.forEach(function (x) { m[x] = (m[x] || 0) + 1; });
     return m;
   }
@@ -107,6 +107,7 @@
 
   function computeBLEU(candidate, reference, smooth) {
     var cand = tokenize(candidate), ref = tokenize(reference);
+    if (!cand.length || !ref.length) return { precisions: [0,0,0,0], bp: 0, bleu: 0, empty: true };
     var precisions = [];
     for (var n = 1; n <= 4; n++) {
       var cn = ngrams(cand, n), rn = ngrams(ref, n);

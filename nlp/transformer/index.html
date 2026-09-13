@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -86,14 +88,10 @@
       </p>
       <p>
         Inilah arsitektur dasar dari <strong>GPT, BERT, T5</strong>, dan
-        semua Large Language Model modern. BERT hanya menggunakan encoder,
+        banyak model bahasa modern. BERT hanya menggunakan encoder,
         GPT hanya decoder, T5 menggunakan keduanya.
       </p>
-      <p>
-        Kunci inovasi Transformer: memproses semua token secara
-        <strong>paralel</strong> (bukan berurutan seperti RNN), sehingga
-        training jauh lebih cepat di GPU.
-      </p>
+      <p>Pelatihan Transformer dapat menghitung representasi banyak posisi secara paralel dengan mask yang sesuai. Pembangkitan autoregresif tetap menghasilkan token secara berurutan. BERT memakai encoder, GPT memakai blok decoder-only tanpa cross-attention encoder, sedangkan T5 memakai encoder-decoder.</p>
     </div>
   </div>
 </div>
@@ -187,13 +185,29 @@
   </div>
 </div>
 
+
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Self-attention dan jaringan saraf. <strong>Durasi:</strong> sekitar 35 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Diagram arsitektur encoder-decoder klasik. Angka dan teks demonstrasi bersifat ilustratif.</p><p>BERT encoder-only, GPT decoder-only tanpa cross-attention encoder, T5 encoder-decoder. Pelatihan paralel berbeda dari generasi autoregresif.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Dari mana Q, K, V pada cross-attention berasal?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Telusuri satu token keluaran beserta mask dan sambungan residual.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/transformer" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="../../assets/vendor/d3.v7.9.0.min.js"></script>
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
 </body>
 </html>

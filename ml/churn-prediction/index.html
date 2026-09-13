@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -91,19 +93,8 @@
         perilaku penggunaan (reload, internet, video, musik, chat,
         media sosial) serta <code>tenure</code> dan <code>days_active</code>.
       </p>
-      <p>
-        Sebelum training, tiga fitur yang berkorelasi tinggi dengan
-        pasangannya (<code>reload_2</code>, <code>socmed_2</code>,
-        <code>games</code>) dibuang lewat <strong>Pearson correlation</strong>
-        &mdash; hanya salah satu dari tiap pasangan yang disimpan.
-      </p>
-      <p>
-        <strong>Random Forest</strong> jauh mengungguli Logistic Regression
-        di semua metrik, terutama recall &mdash; menandakan model non-linear
-        lebih mampu menangkap pola perilaku churn yang kompleks.
-        <code>tenure</code>, <code>reload</code>, dan <code>days_active</code>
-        adalah tiga fitur paling menentukan, sesuai hipotesis awal modul.
-      </p>
+      <p>Tiga fitur dikeluarkan sebagai spesifikasi tetap contoh: reload_2, socmed_2, dan games. Bila pemilihan fitur ditentukan dari data pada eksperimen baru, lakukan pemilihan tersebut hanya di dalam data latih setiap lipatan validasi silang.</p>
+      <p>Bandingkan angka aktual pada kartu metrik. ROC-AUC dihitung dari probabilitas kelas churn, sedangkan precision dan recall memakai ambang 0,5. Keunggulan suatu model berlaku untuk pembagian data dan pengaturan ini. Untuk keputusan retensi, pertimbangkan biaya pelanggan terlewat dan promosi yang tidak perlu.</p>
     </div>
   </div>
 </div>
@@ -112,33 +103,37 @@
 <div class="tab-content" id="tab-predict" role="tabpanel" aria-labelledby="tabbtn-predict" tabindex="0">
   <div class="viz-layout">
     <div class="viz-main">
-      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1rem">
-        Dipilih dari <strong id="churn-n-test" style="color:var(--accent)">-</strong> pelanggan di test set
-      </p>
-      <div class="att-controls">
-        <label>Pelanggan:</label>
-        <select id="customer-select"></select>
-      </div>
-      <div id="customer-detail"></div>
+      <p>Evaluasi agregat pada <strong id="churn-n-test">-</strong> baris data uji.</p>
+      <label for="evaluation-count">Jumlah kasus untuk ilustrasi</label>
+      <input id="evaluation-count" type="range" min="100" max="1000" step="100" value="100">
+      <div id="aggregate-estimate" aria-live="polite"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Bandingkan Prediksi</h3>
-      <p>
-        Pilih pelanggan dari test set dan lihat bagaimana kedua model
-        memprediksi status churn-nya, dibandingkan dengan label
-        sebenarnya.
-      </p>
-      <p>
-        Perhatikan pelanggan dengan <code>tenure</code> pendek dan
-        <code>days_active</code> rendah &mdash; ini biasanya yang paling
-        sering diprediksi churn oleh Random Forest.
-      </p>
+      <h3>Memahami Penyebut Metrik</h3>
+      <p>Recall menjawab berapa bagian kasus churn aktual yang ditemukan. Precision menjawab berapa bagian prediksi churn yang benar.</p>
+      <p>Ilustrasi mengalikan proporsi evaluasi dengan jumlah kasus pilihan. Kedua baris memakai kelompok acuan berbeda. Nilainya merupakan perkiraan dari metrik yang dibulatkan.</p>
     </div>
   </div>
 </div>
 
+
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Klasifikasi dan metrik evaluasi. <strong>Durasi:</strong> sekitar 35 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Dataset churn contoh kuliah. AUC memakai probabilitas, pembagian berstrata, dan validasi silang pada data latih.</p><p>Pilih metrik berdasarkan biaya keputusan. Pentingnya fitur bukan hubungan sebab-akibat.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Model mana yang lebih sesuai bila pelanggan churn terlewat sangat mahal?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Rancang evaluasi dengan anggaran promosi retensi terbatas.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://scikit-learn.org/stable/modules/model_evaluation.html#roc-metrics" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml/churn-prediction" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 </body>
 </html>

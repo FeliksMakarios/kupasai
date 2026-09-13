@@ -21,7 +21,7 @@ X = iris["data"][:100, :2]
 y = iris["target"][:100]
 feature_names = iris["feature_names"][:2]
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test, train_idx, test_idx = train_test_split(X, y, np.arange(len(y)), test_size=0.2, random_state=42)
 
 model = LogisticRegression()
 model.fit(X_train, y_train)
@@ -44,7 +44,7 @@ proba_grid = model.predict_proba(grid_points)[:, 1].reshape(GRID_N, GRID_N)
 data = {
     "feature_names": [str(f) for f in feature_names],
     "points": [
-        {"x": float(X[i, 0]), "y": float(X[i, 1]), "label": int(y[i]), "test": bool(any(np.array_equal(X[i], xt) for xt in X_test))}
+        {"x": float(X[i, 0]), "y": float(X[i, 1]), "label": int(y[i]), "test": bool(i in test_idx)}
         for i in range(len(X))
     ],
     "w": [round(float(v), 4) for v in w],

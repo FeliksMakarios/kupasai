@@ -179,7 +179,7 @@
     var g = svg.append('g');
     var info = D.peta[algo];
     var visitedSet = {};
-    (algo === 'dfs' ? D.peta.dfs.urutan : algo === 'bfs' ? D.peta.bfs.langkah.map(function(s){return s.kunjungan;}) : info.jalur).forEach(function(n){ visitedSet[n] = true; });
+    (algo === 'dfs' ? D.peta.dfs.urutan : algo === 'bfs' ? D.peta.bfs.langkah.map(function(s){return s.kunjungan;}) : (info.urutan || info.jalur)).forEach(function(n){ visitedSet[n] = true; });
     var pset = pathEdges(info.jalur);
 
     D.peta.edges.forEach(function (e) {
@@ -217,7 +217,7 @@
   function renderPetaTable(algo) {
     var label = document.getElementById('peta-result-label');
     var info = D.peta[algo];
-    var namaAlgo = { bfs: 'Breadth First Search', dfs: 'Depth First Search', greedy: 'Greedy Best First Search' }[algo];
+    var namaAlgo = { bfs: 'Breadth First Search', dfs: 'Depth First Search', greedy: 'Greedy Best First Search', ucs: 'Uniform Cost Search' }[algo];
     label.textContent = namaAlgo + ': ' + info.jalur.join(' → ') + ' (' + info.jarak + ' km, ' + info.dikunjungi + ' simpul dikunjungi)';
     var table = document.getElementById('peta-bfs-table');
     var tbody = table.querySelector('tbody');

@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -31,7 +33,7 @@
     <li><a href="/kupasai/kontak/">Kontak</a></li>
   </ul>
   <div class="navbar-spacer"></div>
-  <span class="navbar-meta">IN F24141 &middot; Week 11</span>
+  <span class="navbar-meta">INF24141 &middot; Week 11</span>
   <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
     <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <circle cx="12" cy="12" r="4"/>
@@ -103,8 +105,7 @@
         tinggi IoU (maksimum 1.0 untuk overlap sempurna).
       </p>
       <p>
-        Konvensi umum: prediksi dianggap <strong>benar</strong> jika
-        <code>IoU &ge; 0.5</code>. Geser slider atau klik preset untuk
+        Ambang <code>IoU &ge; 0.5</code> adalah contoh kriteria kecocokan lokasi. Evaluasi deteksi juga memerlukan kelas yang benar, pencocokan satu-ke-satu, serta ambang yang ditetapkan protokol evaluasi. Geser slider atau klik preset untuk
         melihat bagaimana posisi &amp; ukuran prediksi memengaruhi IoU.
       </p>
     </div>
@@ -176,13 +177,29 @@
   </div>
 </div>
 
+
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Luas persegi panjang dan probabilitas. <strong>Durasi:</strong> sekitar 30 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Kotak ilustratif dengan IoU dan NMS yang dihitung dari koordinat.</p><p>Grid dan anchor adalah penyederhanaan keluarga YOLO berbasis anchor, bukan semua versi YOLO. Normalisasi ukuran kotak harus menyebut acuannya. NMS contoh ini satu kelas.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Apakah dua kotak dengan IoU tinggi selalu mewakili objek yang sama?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Jelaskan mengapa evaluasi deteksi memerlukan kelas dan pencocokan unik.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://arxiv.org/abs/1612.08242" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml-lanjut/object-detection" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 <footer class="footer">
-  <span>KupasAI &copy; 2026 &middot; ML Lanjut IN F24141</span>
+  <span>KupasAI &copy; 2026 &middot; ML Lanjut INF24141</span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="../../assets/vendor/d3.v7.9.0.min.js"></script>
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
 </body>
 </html>

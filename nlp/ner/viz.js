@@ -70,9 +70,9 @@
     var html = '';
     D.example.tokens.forEach(function (word, i) {
       var tag = D.example.tags[i];
-      html += '<div class="token-chip" data-idx="' + i + '">' +
+      html += '<button type="button" class="token-chip" data-idx="' + i + '">' +
         '<div class="tc-word">' + word + '</div>' +
-        '<div class="tc-tag ' + tagClass(tag) + '">' + tag + '</div></div>';
+        '<div class="tc-tag ' + tagClass(tag) + '">' + tag + '</div></button>';
     });
     document.getElementById('token-row').innerHTML = html;
 
@@ -115,6 +115,7 @@
 
   var TAGSET1 = ['O', 'B-MISC', 'I-MISC'];
   var TAGSET2 = ['O', 'B-PER', 'I-PER'];
+  var strictMode = false;
   var pred1 = D.seqeval_example.pred1_default.slice();
   var pred2 = D.seqeval_example.pred2_default.slice();
 
@@ -127,10 +128,10 @@
         if (start !== null) entities.push(etype + ':' + start + '-' + (i - 1));
         start = i; etype = tag.slice(2);
       } else if (tag.indexOf('I-') === 0) {
-        if (start === null) { start = i; etype = tag.slice(2); }
+        if (start === null) { if (!strictMode) { start = i; etype = tag.slice(2); } }
         else if (tag.slice(2) !== etype) {
           entities.push(etype + ':' + start + '-' + (i - 1));
-          start = i; etype = tag.slice(2);
+          start = strictMode ? null : i; etype = strictMode ? null : tag.slice(2);
         }
       } else {
         if (start !== null) { entities.push(etype + ':' + start + '-' + (i - 1)); start = null; etype = null; }
@@ -203,6 +204,10 @@
     document.getElementById('num-labels').textContent = D.facts.num_labels;
   }
 
+  var control=document.createElement('label');
+  control.innerHTML='<input type="checkbox" id="strict-iob2"> Evaluasi strict IOB2 (I tanpa B yang sah diabaikan)';
+  document.getElementById('seq-metrics').before(control);
+  control.querySelector('input').addEventListener('change',function(){strictMode=this.checked;renderAll();});
   renderTokens();
   renderSubwords();
   renderAll();

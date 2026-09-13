@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -115,16 +117,31 @@
         kebetulan tidak mendominasi urutan lift.
       </p>
       <p>
-        Pilih produk apa pun dan lihat 5 produk lain yang paling sering
-        dibeli bersamanya, diurutkan dari <strong>lift</strong> tertinggi
+        Pilih produk apa pun dan lihat 5 produk pendamping dengan lift tertinggi yang memenuhi ambang support, diurutkan dari <strong>lift</strong> tertinggi
         &mdash; makin tinggi lift, makin kuat keterkaitannya.
       </p>
     </div>
   </div>
 </div>
 
+
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Frekuensi dan probabilitas. <strong>Durasi:</strong> sekitar 25 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Aturan dihitung dari transaksi kedai kopi menggunakan Apriori.</p><p>Lift bukan jumlah transaksi. Hubungan langka dapat memiliki lift tinggi. Asosiasi tidak membuktikan pembelian satu produk menyebabkan pembelian lain.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Bisakah produk populer memiliki confidence tinggi tetapi lift mendekati 1?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Buat aturan dengan confidence tinggi dan lift rendah.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml/market-basket" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 </body>
 </html>

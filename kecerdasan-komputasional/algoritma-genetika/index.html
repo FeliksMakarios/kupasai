@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -86,19 +88,14 @@
       </table>
     </div>
     <div class="viz-sidebar">
-      <h3>Kesalahan Cetak Ditemukan</h3>
+      <h3>Verifikasi Angka Contoh</h3>
       <p>
         Kromosom <code>100000110011100000</code> jika dikonversi biner ke
         desimal secara benar menghasilkan <strong>134368</strong>, bukan
         <strong>134468</strong> yang tertulis pada baris perhitungan di
         buku.
       </p>
-      <p>
-        Menariknya, hasil akhir x&asymp;130.7067 pada buku justru konsisten
-        dengan angka 134368 yang benar, bukan dengan 134468 yang tertulis
-        &mdash; jadi angka pada baris perhitungan tampaknya salah cetak,
-        sedangkan hasil akhirnya sudah tepat.
-      </p>
+      <p>Angka pada contoh ini dihitung ulang dari input yang tersedia di kode. Klaim koreksi terhadap buku belum disertakan karena edisi dan halaman sumber belum tersedia untuk diverifikasi.</p>
     </div>
   </div>
 </div>
@@ -190,13 +187,9 @@
       <svg id="eksperimen-heatmap" viewBox="0 0 640 300"></svg>
     </div>
     <div class="viz-sidebar">
-      <h3>Populasi Besar Mempercepat Konvergensi</h3>
+      <h3>Membandingkan Generasi dan Biaya Evaluasi</h3>
       <p>
-        Ukuran populasi berpengaruh paling besar: populasi 50 hampir
-        selalu konvergen dalam hitungan generasi tunggal (karena peluang
-        satu individu awal sudah dekat optimal jauh lebih tinggi),
-        sedangkan populasi 10 butuh puluhan hingga ratusan generasi,
-        terutama saat peluang mutasi sangat kecil (0.001).
+        Pada konfigurasi ini, populasi besar lebih sering memuat individu awal yang mendekati target. Generasi yang lebih sedikit tidak otomatis berarti biaya komputasi lebih rendah. Tabel tambahan menampilkan simpangan baku, keberhasilan, dan jumlah pemanggilan fitness, termasuk evaluasi ulang pada seleksi roulette.
       </p>
       <p>
         Peluang mutasi yang terlalu kecil membuat populasi kekurangan
@@ -208,13 +201,29 @@
   </div>
 </div>
 
+
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Biner, probabilitas, dan optimasi. <strong>Durasi:</strong> sekitar 35 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Kromosom 18 bit dan fungsi sinus sintetis. Enam pengulangan per kombinasi parameter.</p><p>Generasi pertama dapat sudah memenuhi target. Bandingkan jumlah evaluasi fitness serta variasi, bukan generasi saja. Bedakan terbaik saat ini dan terbaik sepanjang proses.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Mengapa populasi besar mungkin lebih cepat dalam generasi namun lebih mahal?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Bandingkan keberhasilan beberapa benih pada batas evaluasi yang sama.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://deap.readthedocs.io/en/master/tutorials/basic/part2.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/kecerdasan-komputasional/algoritma-genetika" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; Kecerdasan Komputasional INF20052</span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="../../assets/vendor/d3.v7.9.0.min.js"></script>
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
 </body>
 </html>

@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -122,12 +124,12 @@
     <div class="viz-main">
       <p class="section-note">
         Peta rute antarkota Rumania (Gambar 3.1). Cari jalur dari Arad ke
-        Bucharest dengan tiga algoritma berbeda.
+        Bucharest dengan empat algoritma berbeda.
       </p>
       <div class="mode-buttons" id="peta-mode-buttons">
         <button class="mode-btn active" data-algo="bfs">BFS</button>
         <button class="mode-btn" data-algo="dfs">DFS</button>
-        <button class="mode-btn" data-algo="greedy">Greedy Best First</button>
+        <button class="mode-btn" data-algo="greedy">Greedy Best First</button><button class="mode-btn" data-algo="ucs">Uniform Cost Search</button>
       </div>
       <svg id="peta-graph" viewBox="0 0 680 475"></svg>
       <div class="section-label" id="peta-result-label"></div>
@@ -137,12 +139,8 @@
       </table>
     </div>
     <div class="viz-sidebar">
-      <h3>Hasil Ketiga Algoritma</h3>
-      <p>
-        <strong>BFS</strong> menelusuri lapis demi lapis dan menemukan jalur
-        Arad&ndash;Sibiu&ndash;Fagaras&ndash;Bucharest sepanjang
-        <strong>450 km</strong>, mengunjungi 9 simpul.
-      </p>
+      <h3>Perbandingan Jumlah Ruas dan Biaya</h3>
+      <p>BFS menemukan jalur tiga ruas Arad–Sibiu–Fagaras–Bucharest, sepanjang 450 km. Jumlah simpul yang dikeluarkan dari frontier ditampilkan pada hasil algoritma. BFS meminimumkan jumlah ruas pada graf ini, bukan jumlah kilometer. UCS menemukan jalur Arad–Sibiu–Rimnicu–Pitesti–Bucharest, sepanjang 418 km.</p>
       <p>
         <strong>DFS</strong> menyelam ke satu cabang sedalam mungkin. Dengan
         urutan tetangga sesuai Gambar 3.1, DFS malah menempuh jalur lewat
@@ -150,12 +148,7 @@
         sejauh <strong>733 km</strong> &mdash; bukti bahwa jalur pertama yang
         ditemukan DFS belum tentu jalur terpendek.
       </p>
-      <p>
-        <strong>Greedy Best First Search</strong> memakai jarak garis lurus ke
-        Bucharest sebagai heuristik dan kebetulan menemukan jalur optimal yang
-        sama dengan BFS (450 km), tetapi hanya mengunjungi 4 simpul &mdash;
-        jauh lebih sedikit karena heuristiknya langsung mengarah ke tujuan.
-      </p>
+      <p>Greedy Best First memakai jarak garis lurus sebagai heuristik dan menemukan jalur 450 km setelah mengunjungi empat simpul. Jalur tersebut lebih mahal dari solusi UCS. Heuristik yang mengarah ke tujuan tidak menjamin biaya total minimum.</p>
     </div>
   </div>
 </div>
@@ -224,7 +217,7 @@
       <div class="section-label" style="margin-top:2rem">Contoh Tambahan: Pohon Asli Gambar 3.23 Buku</div>
       <p class="section-note">
         Pohon dari modul lab di atas bukan pohon yang sama dengan contoh buku
-        &mdash; berikut rekonstruksi persis Gambar 3.23 (Bab 3.3.2 Alpha Beta
+        &mdash; berikut rekonstruksi contoh Gambar 3.23 (Bab 3.3.2 Alpha Beta
         Pruning): daun {3,5,6,2,7,9,1,0,2}, akar A = maks{B,C,D} = 3.
       </p>
       <div class="mode-buttons" id="minimax-mode-buttons-buku">
@@ -267,13 +260,29 @@
   </div>
 </div>
 
+
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Graf dan keadaan. <strong>Durasi:</strong> sekitar 35 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Graf kecil dan algoritma pencarian diimplementasikan langsung dalam Python.</p><p>BFS minimum ruas, UCS minimum biaya nonnegatif. Greedy tidak menjamin biaya optimal. Hitungan kunjungan berarti node dikeluarkan dan diproses.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Apakah jalur tiga ruas selalu lebih murah dari empat ruas?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Ubah satu bobot ruas dan bandingkan BFS dengan UCS.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://aima.cs.berkeley.edu/" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/kecerdasan-komputasional/pemodelan-pencarian" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; Kecerdasan Komputasional INF20052</span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="../../assets/vendor/d3.v7.9.0.min.js"></script>
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
 </body>
 </html>

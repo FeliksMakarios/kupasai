@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -77,7 +79,7 @@
       <p>
         Kelima ringkasan ini dihasilkan dari artikel nyata (kecelakaan
         jembatan Minneapolis, CNN/DailyMail dataset), dipotong ke 2.000
-        karakter yang sama persis agar perbandingan adil.
+        karakter yang sama persis untuk menyamakan teks masukan. Ini perbandingan satu contoh dengan checkpoint berbeda, bukan pemeringkatan kualitas umum model.
       </p>
       <p>
         Perhatikan <strong>GPT-2</strong>: karena tidak pernah di-fine-tune
@@ -142,7 +144,7 @@
         Tanpa smoothing, satu saja n-gram tingkat tinggi (3-gram/4-gram)
         yang tidak cocok membuat skor BLEU langsung <strong>0</strong>
         &mdash; nilai default di atas persis mereplikasi kasus ini dari
-        Modul 10. Aktifkan smoothing untuk melihat skor yang lebih realistis.
+        Modul 10. Aktifkan smoothing untuk melihat pengaruh penghalusan add-one pada seluruh orde n-gram.
       </p>
       <p>
         <strong>ROUGE</strong> sebaliknya menekankan <strong>recall</strong>:
@@ -160,6 +162,21 @@
   </div>
 </div>
 
+
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Generasi teks dan n-gram. <strong>Durasi:</strong> sekitar 30 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Keluaran contoh tersimpan dari materi kuliah. Belum menjadi benchmark lintas dataset.</p><p>Satu artikel dan checkpoint berbeda tidak cukup untuk memeringkat model. BLEU panel adalah sentence BLEU-4 dengan tokenizer spasi dan add-one opsional. ROUGE menampilkan P/R/F1.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Bisakah sinonim menurunkan skor tanpa menurunkan kualitas makna?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Nilai faktualitas ringkasan secara terpisah dari kemiripan n-gram.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://aclanthology.org/P02-1040/" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/summarization" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>
@@ -167,5 +184,6 @@
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
 </body>
 </html>

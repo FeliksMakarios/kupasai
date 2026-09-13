@@ -117,7 +117,7 @@
 
       // Layout: unrolled RNN horizontally
       var nodeSpacing = 160;
-      var startX = 90;
+      var startX = 210;
       var inputY = 80;
       var hiddenY = 200;
       var outputY = 310;
@@ -154,8 +154,8 @@
       // Draw each timestep
       for (var t = 0; t < totalSteps; t++) {
         var x = startX + t * nodeSpacing;
-        var isActive = t <= currentStep;
-        var isCurrent = t === currentStep;
+        var isActive = t < currentStep;
+        var isCurrent = t === currentStep - 1;
         var opacity = isActive ? 1.0 : 0.3;
 
         // Input node
@@ -346,7 +346,7 @@
       var g = svg.append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-      var x = d3.scaleLinear().domain([0, seqLen - 1]).range([0, innerW]);
+      var x = d3.scaleLinear().domain([0, seqLen]).range([0, innerW]);
       var yMax = Math.max(
         d3.max(rnnData), d3.max(lstmData)
       ) * 1.1;
@@ -464,7 +464,7 @@
       g.append('text')
         .attr('x', 5).attr('y', y(0.05) - 5)
         .attr('font-size', '10px').attr('fill', COLORS.output_neg).attr('opacity', 0.6)
-        .text('Ambang belajar');
+        .text('Garis bantu 0,05, bukan ambang belajar universal');
     }
 
     slider.addEventListener('input', draw);

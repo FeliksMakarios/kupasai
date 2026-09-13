@@ -141,7 +141,7 @@
     for (var i = 0; i < labels.length; i++) {
       if (total > bins[i] && total <= bins[i + 1]) return labels[i];
     }
-    return labels[0];
+    return total === 0 ? labels[0] : 'NaN';
   }
 
   function renderCleanTable() {
@@ -179,8 +179,8 @@
     if (cleanState.showNull) codeLines.push('df.isnull()');
     if (cleanState.dropna) codeLines.push('df = df.dropna()');
     if (cleanState.derive) {
-      codeLines.push("df['Jumlah Buah'] = df['Apples'] + df['Oranges'] + df['Gomu-Gomu']");
-      codeLines.push("df['Kategori Stok'] = pd.cut(df['Jumlah Buah'], bins, labels=labels)");
+      codeLines.push("df['Jumlah Buah'] = df[['Apples', 'Oranges', 'Gomu-Gomu']].fillna(0).sum(axis=1)");
+      codeLines.push("df['Kategori Stok'] = pd.cut(df['Jumlah Buah'], bins, labels=labels, include_lowest=True)");
     }
     document.getElementById('clean-code').textContent = codeLines.join('\n') || '# pilih langkah di bawah';
   }

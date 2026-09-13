@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -141,9 +143,25 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+<script src="../../assets/vendor/d3.v7.9.0.min.js"></script>
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Fungsi sigmoid dan probabilitas. <strong>Durasi:</strong> sekitar 25 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Model dilatih pada dua kelas Iris. Penanda uji mengikuti indeks baris asli.</p><p>Ambang mengubah label keputusan, bukan probabilitas model. Hasil pada dua kelas yang mudah dipisahkan tidak berlaku untuk semua data.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Apa yang terjadi pada recall saat ambang diturunkan?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Jelaskan pilihan ambang untuk deteksi penyakit dan deteksi spam.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml/logistic-regression" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 </body>
 </html>

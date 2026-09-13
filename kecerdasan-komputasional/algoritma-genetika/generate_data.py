@@ -6,6 +6,7 @@ Modul_5_Algoritma_Genetika (RPS INF20052 Kecerdasan Komputasional).
 import json
 import math
 import random
+import statistics
 
 PANJANG = 18
 BATAS_ATAS = 255
@@ -34,11 +35,6 @@ for _ in range(20):
     x = rnd.uniform(0, 255)
     assert abs(decode(encode(x)) - x) < 0.01
 print("Tugas1 decode(KROM)=", decode(KROM))
-
-# perbandingan dengan angka salah cetak pada buku (134468 vs 134368)
-salah_cetak = BATAS_ATAS / (2 ** PANJANG - 1) * 134468
-benar = decode(KROM)
-print("Tugas1 Jika pakai 134468 (versi buku):", salah_cetak, "| versi benar (134368):", benar)
 
 # ============================================================
 # TUGAS 2 -- POPULASI AWAL DAN FUNGSI FITNESS
@@ -183,7 +179,7 @@ def eksperimen(ulangan=6):
         for pc in (0.6, 0.9):
             for pm in (0.001, 0.01, 0.1):
                 gens = [generasi_sampai_konvergen(n_pop, pc, pm, seed=1000 * n_pop + int(pc * 100) + int(pm * 10000) + u) for u in range(ulangan)]
-                hasil.append({"n_pop": n_pop, "pc": pc, "pm": pm, "rata_generasi": round(sum(gens) / len(gens), 2)})
+                hasil.append({"n_pop": n_pop, "pc": pc, "pm": pm, "rata_generasi": round(sum(gens) / len(gens), 2), "sd_generasi": round(statistics.stdev(gens),2), "success_rate": sum(g<300 for g in gens)/len(gens), "rata_evaluasi": round(statistics.mean(n_pop*((2*g+1) if g<300 else 600) for g in gens),2), "generations": gens})
     return hasil
 
 hasil_eks = eksperimen(ulangan=6)

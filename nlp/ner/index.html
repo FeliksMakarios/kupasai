@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -96,7 +98,7 @@
       </p>
       <p>
         Karena tokenizer subword (SentencePiece) bisa memecah satu kata
-        menjadi beberapa token, PAN-X mengikuti konvensi BERT: hanya subword
+        menjadi beberapa token, strategi penyelarasan dalam contoh ini memakai: hanya subword
         pertama yang diberi label sebenarnya, sisanya di-mask agar tidak
         ikut dihitung dalam loss.
       </p>
@@ -141,6 +143,21 @@
   </div>
 </div>
 
+
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Tokenisasi dan klasifikasi. <strong>Durasi:</strong> sekitar 30 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Contoh IOB2 dan evaluator JavaScript ilustratif. Angka model diwarisi dari materi sumber, bukan eksperimen baru.</p><p>Pelabelan hanya subkata pertama adalah pilihan pelatihan. Evaluator panel memakai aturan permisif seperti seqeval default, bukan strict IOB2. Entitas cocok bila tipe dan rentang sama.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Apa dampak B-PER berubah menjadi I-PER pada awal urutan?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Bandingkan token accuracy dengan entity F1.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://github.com/chakki-works/seqeval" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/ner" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>
@@ -148,5 +165,6 @@
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
 </body>
 </html>

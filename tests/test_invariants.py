@@ -1,0 +1,80 @@
+"""Independent checks of teaching claims and local resource integrity."""
+import json
+import math
+import re
+import unittest
+from pathlib import Path
+from html.parser import HTMLParser
+import numpy as np
+ROOT=Path(__file__).resolve().parents[1]
+def data(path):
+    s=(ROOT/path/'data.js').read_text()
+    start=re.search(r'(?:var|const|let)\s+\w+\s*=\s*',s).end()
+    return json.JSONDecoder().raw_decode(s[start:])[0]
+class Tags(HTMLParser):
+    def __init__(self,s):
+        super().__init__();self.tags=[];self.feed(s)
+    def handle_starttag(self,tag,attrs):self.tags.append((tag,dict(attrs)))
+class Site(unittest.TestCase):
+    def test_pages_and_assets(self):
+        pages=list(ROOT.glob('**/index.html'));self.assertEqual(len(pages),41)
+        for p in pages:
+            s=p.read_text();tags=Tags(s).tags
+            ids=[a['id'] for t,a in tags if 'id' in a]
+            self.assertEqual(len(ids),len(set(ids)),str(p))
+            for tag,a in tags:
+                for attr in ['src','href']:
+                    url=a.get(attr,'').split('#')[0].split('?')[0]
+                    if not url or ':' in url or url.startswith('//'):continue
+                    target=ROOT/url.removeprefix('/kupasai/') if url.startswith('/kupasai/') else p.parent/url
+                    self.assertTrue(target.exists(),f'{p.relative_to(ROOT)}: {url}')
+            if (p.parent/'viz.js').exists():self.assertEqual(s.count('learning-aid:start'),1,str(p))
+    def test_backprop_finite_differences(self):
+        d=data('ml-lanjut/backprop-visualizer');x=np.array(d['x']);w=np.array(d['W01_initial']);v=np.array(d['W12_initial']);t=d['target'];eps=1e-6
+        def loss(w,v):return .5*(np.maximum(x@w,0)@v-t)**2
+        for original,final,which in [(w,np.array(d['W01_final']),0),(v,np.array(d['W12_final']),1)]:
+            for ix in np.ndindex(original.shape):
+                plus=original.copy();minus=original.copy();plus[ix]+=eps;minus[ix]-=eps
+                grad=((loss(plus,v)-loss(minus,v)) if which==0 else (loss(w,plus)-loss(w,minus)))/(2*eps)
+                self.assertAlmostEqual(final[ix],original[ix]-d['alpha']*grad,places=6)
+        for step in d['steps'][:7]:np.testing.assert_allclose(step['W12'],v)
+    def test_recurrent_finite_differences(self):
+        d=data('nlp/rnn')['gradient_data'];eps=1e-6
+        f=1/(1+math.exp(-2));i=1/(1+math.exp(1));o=1/(1+math.exp(-1))
+        for n,curves in d.items():
+            n=int(n)
+            def run(h,c):
+                for _ in range(n):h=math.tanh(.1+.7*h);c=f*c+i*math.tanh(.1)
+                return h,o*math.tanh(c)
+            self.assertAlmostEqual(curves['rnn'][-1],(run(eps,.2)[0]-run(-eps,.2)[0])/(2*eps),places=7)
+            self.assertAlmostEqual(curves['lstm'][-1],(run(0,.2+eps)[1]-run(0,.2-eps)[1])/(2*eps),places=7)
+            self.assertEqual(len(curves['rnn']),n+1)
+    def test_iou(self):
+        d=data('ml-lanjut/object-detection')['iou'];a=d['groundTruth']
+        for p in d['presets']:
+            b=p['box'];inter=max(0,min(a[2],b[2])-max(a[0],b[0]))*max(0,min(a[3],b[3])-max(a[1],b[1]))
+            union=(a[2]-a[0])*(a[3]-a[1])+(b[2]-b[0])*(b[3]-b[1])-inter
+            self.assertAlmostEqual(p['iou'],inter/union,places=7)
+        self.assertEqual(d['presets'][2]['iou'],0)
+    def test_true_labels(self):
+        d=data('ml/naive-bayes')['titanic'];self.assertNotIn('samples',d);self.assertEqual(d['n_train']+d['n_test'],891)
+        cm=np.array(d['confusion_matrix']);self.assertEqual(cm.sum(),d['n_test']);self.assertIn('train.csv',d['label_source'])
+    def test_churn_aggregates_only(self):
+        d=data("ml/churn-prediction")
+        self.assertNotIn("samples",d)
+        self.assertNotIn("customer_id",json.dumps(d))
+
+    def test_search_cost(self):
+        d=data('kecerdasan-komputasional/pemodelan-pencarian')
+        def find(obj,key):
+            if isinstance(obj,dict):
+                if key in obj:return obj[key]
+                for v in obj.values():
+                    result=find(v,key)
+                    if result is not None:return result
+        self.assertEqual(find(d,'ucs')['jarak'],418);self.assertEqual(find(d,'bfs')['jarak'],450)
+    def test_early_stopping(self):
+        d=data('ml-lanjut/regularization');meta=d['earlyStopMeta']
+        self.assertLessEqual(meta['bestEpoch'],meta['stoppedAt'])
+        self.assertEqual(len(d['repeats']),3)
+if __name__=='__main__':unittest.main()

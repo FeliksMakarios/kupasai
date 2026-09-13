@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -31,7 +33,7 @@
     <li><a href="/kupasai/kontak/">Kontak</a></li>
   </ul>
   <div class="navbar-spacer"></div>
-  <span class="navbar-meta">IN F24141 &middot; Week 7</span>
+  <span class="navbar-meta">INF24141 &middot; Week 7</span>
   <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
     <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <circle cx="12" cy="12" r="4"/>
@@ -106,13 +108,29 @@
   </div>
 </div>
 
+
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Aturan rantai dan ReLU. <strong>Durasi:</strong> sekitar 35 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Satu jaringan manual. Semua angka dihitung ulang dari input dan bobot awal.</p><p>Objektif L=½(ŷ−t)² memiliki delta=ŷ−t. Semua gradien dihitung dari bobot lama sebelum pembaruan serentak.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Neuron mana yang gradiennya nol pada contoh ini?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Verifikasi satu gradien dengan beda hingga.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://docs.pytorch.org/docs/stable/notes/autograd.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml-lanjut/backprop-visualizer" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 <footer class="footer">
-  <span>KupasAI &copy; 2026 &middot; ML Lanjut IN F24141</span>
+  <span>KupasAI &copy; 2026 &middot; ML Lanjut INF24141</span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="../../assets/vendor/d3.v7.9.0.min.js"></script>
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
 </body>
 </html>

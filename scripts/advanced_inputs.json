@@ -1,0 +1,529 @@
+{
+  "forward": {
+    "scenarios": [
+      {
+        "id": "single",
+        "label": "Input Tunggal",
+        "title": "Prediksi dengan Satu Input, Satu Bobot",
+        "story": "Jaringan paling sederhana: satu angka masuk, dikalikan satu bobot, menghasilkan satu prediksi.",
+        "layers": [
+          {
+            "name": "Input",
+            "nodes": [
+              {
+                "label": "toes",
+                "value": 8.5
+              }
+            ]
+          },
+          {
+            "name": "Output",
+            "nodes": [
+              {
+                "label": "menang?"
+              }
+            ]
+          }
+        ],
+        "weights": [
+          [
+            [
+              0.1
+            ]
+          ]
+        ]
+      },
+      {
+        "id": "multi_input",
+        "label": "Banyak Input",
+        "title": "Prediksi dengan Banyak Input, Satu Output",
+        "story": "Tiga fitur pertandingan (toes, win-loss ratio, jumlah fans) digabung lewat weighted sum untuk memprediksi menang/kalah.",
+        "layers": [
+          {
+            "name": "Input",
+            "nodes": [
+              {
+                "label": "toes",
+                "value": 8.5
+              },
+              {
+                "label": "wlrec",
+                "value": 0.65
+              },
+              {
+                "label": "nfans",
+                "value": 1.2
+              }
+            ]
+          },
+          {
+            "name": "Output",
+            "nodes": [
+              {
+                "label": "menang?"
+              }
+            ]
+          }
+        ],
+        "weights": [
+          [
+            [
+              0.1,
+              0.2,
+              0
+            ]
+          ]
+        ]
+      },
+      {
+        "id": "multi_output",
+        "label": "Banyak Output",
+        "title": "Prediksi dengan Satu Input, Banyak Output",
+        "story": "Satu fitur (win-loss ratio) dipakai untuk memprediksi tiga hal sekaligus: apakah pemain cedera, menang, atau sedih &mdash; lewat elementwise multiply.",
+        "layers": [
+          {
+            "name": "Input",
+            "nodes": [
+              {
+                "label": "wlrec",
+                "value": 0.65
+              }
+            ]
+          },
+          {
+            "name": "Output",
+            "nodes": [
+              {
+                "label": "hurt?"
+              },
+              {
+                "label": "win?"
+              },
+              {
+                "label": "sad?"
+              }
+            ]
+          }
+        ],
+        "weights": [
+          [
+            [
+              0.3
+            ],
+            [
+              0.2
+            ],
+            [
+              0.9
+            ]
+          ]
+        ]
+      },
+      {
+        "id": "multi_in_out",
+        "label": "Banyak Input & Output",
+        "title": "Prediksi dengan Banyak Input dan Banyak Output",
+        "story": "Tiga input dan tiga output dihubungkan lewat matriks bobot 3&times;3 menggunakan vect_mat_mul &mdash; setiap output adalah dot product input dengan satu baris matriks.",
+        "layers": [
+          {
+            "name": "Input",
+            "nodes": [
+              {
+                "label": "toes",
+                "value": 8.5
+              },
+              {
+                "label": "wlrec",
+                "value": 0.65
+              },
+              {
+                "label": "nfans",
+                "value": 1.2
+              }
+            ]
+          },
+          {
+            "name": "Output",
+            "nodes": [
+              {
+                "label": "hurt?"
+              },
+              {
+                "label": "win?"
+              },
+              {
+                "label": "sad?"
+              }
+            ]
+          }
+        ],
+        "weights": [
+          [
+            [
+              0.1,
+              0.1,
+              -0.3
+            ],
+            [
+              0.1,
+              0.2,
+              0
+            ],
+            [
+              0,
+              1.3,
+              0.1
+            ]
+          ]
+        ]
+      },
+      {
+        "id": "hidden",
+        "label": "Jaringan 2 Lapis (Hidden Layer)",
+        "title": "Jaringan dengan Hidden Layer",
+        "story": "Input diteruskan ke hidden layer (ih_wgt) lebih dulu, baru hidden layer diteruskan ke output (hp_wgt). Inilah cikal-bakal deep network.",
+        "layers": [
+          {
+            "name": "Input",
+            "nodes": [
+              {
+                "label": "toes",
+                "value": 8.5
+              },
+              {
+                "label": "wlrec",
+                "value": 0.65
+              },
+              {
+                "label": "nfans",
+                "value": 1.2
+              }
+            ]
+          },
+          {
+            "name": "Hidden",
+            "nodes": [
+              {
+                "label": "h0"
+              },
+              {
+                "label": "h1"
+              },
+              {
+                "label": "h2"
+              }
+            ]
+          },
+          {
+            "name": "Output",
+            "nodes": [
+              {
+                "label": "hurt?"
+              },
+              {
+                "label": "win?"
+              },
+              {
+                "label": "sad?"
+              }
+            ]
+          }
+        ],
+        "weights": [
+          [
+            [
+              0.1,
+              0.2,
+              -0.1
+            ],
+            [
+              -0.1,
+              0.1,
+              0.9
+            ],
+            [
+              0.1,
+              0.4,
+              0.1
+            ]
+          ],
+          [
+            [
+              0.3,
+              1.1,
+              -0.3
+            ],
+            [
+              0.1,
+              0.2,
+              0
+            ],
+            [
+              0,
+              1.3,
+              0.1
+            ]
+          ]
+        ]
+      }
+    ],
+    "numpyDemo": {
+      "good": {
+        "code": "a = np.array([1,2,3])\nb = np.array([0.1,0.2,0.3])\na.dot(b)",
+        "result": "1.4",
+        "note": "Dot product berhasil karena kedua vektor berukuran sama (3,)."
+      },
+      "bad": {
+        "code": "a = np.array([1,2,3,4])\nb = np.array([0.1,0.2,0.3])\na.dot(b)",
+        "result": "ValueError: shapes (4,) and (3,) not aligned:\n4 (dim 0) != 3 (dim 0)",
+        "note": "Dot product gagal karena ukuran vektor tidak cocok (4 vs 3) — kesalahan paling umum saat membangun forward propagation manual."
+      }
+    }
+  },
+  "cnn": {
+    "image": [
+      [
+        10,
+        10,
+        10,
+        0,
+        0,
+        0
+      ],
+      [
+        10,
+        10,
+        10,
+        0,
+        0,
+        0
+      ],
+      [
+        10,
+        10,
+        10,
+        0,
+        0,
+        0
+      ],
+      [
+        10,
+        10,
+        10,
+        0,
+        0,
+        0
+      ],
+      [
+        10,
+        10,
+        10,
+        0,
+        0,
+        0
+      ],
+      [
+        10,
+        10,
+        10,
+        0,
+        0,
+        0
+      ]
+    ],
+    "kernel": [
+      [
+        1,
+        0,
+        -1
+      ],
+      [
+        1,
+        0,
+        -1
+      ],
+      [
+        1,
+        0,
+        -1
+      ]
+    ],
+    "architecture": [
+      {
+        "layer": "Conv2D",
+        "detail": "32 filter, 3&times;3, ReLU",
+        "note": "input 28&times;28&times;1"
+      },
+      {
+        "layer": "MaxPooling2D",
+        "detail": "pool 2&times;2",
+        "note": "downsample fitur"
+      },
+      {
+        "layer": "Conv2D",
+        "detail": "64 filter, 3&times;3, ReLU",
+        "note": "fitur lebih kompleks"
+      },
+      {
+        "layer": "MaxPooling2D",
+        "detail": "pool 2&times;2",
+        "note": "downsample lagi"
+      },
+      {
+        "layer": "Flatten",
+        "detail": "ratakan ke vektor 1D",
+        "note": ""
+      },
+      {
+        "layer": "Dense",
+        "detail": "64 neuron, ReLU",
+        "note": "fully connected"
+      },
+      {
+        "layer": "Dense",
+        "detail": "10 neuron, Softmax",
+        "note": "probabilitas 10 kelas (0-9)"
+      }
+    ]
+  },
+  "detection": {
+    "iou": {
+      "canvasW": 500,
+      "canvasH": 350,
+      "groundTruth": [
+        60,
+        50,
+        420,
+        300
+      ],
+      "presets": [
+        {
+          "label": "Prediksi Bagus",
+          "box": [
+            80,
+            60,
+            440,
+            310
+          ]
+        },
+        {
+          "label": "Prediksi Kurang Baik",
+          "box": [
+            200,
+            120,
+            480,
+            340
+          ]
+        },
+        {
+          "label": "Tidak Ada Overlap",
+          "box": [
+            430,
+            0,
+            500,
+            40
+          ]
+        }
+      ]
+    },
+    "nms": {
+      "canvasW": 600,
+      "canvasH": 400,
+      "boxes": [
+        {
+          "id": 0,
+          "box": [
+            80,
+            60,
+            380,
+            300
+          ],
+          "score": 0.92,
+          "label": "Mobil 1a"
+        },
+        {
+          "id": 1,
+          "box": [
+            100,
+            70,
+            400,
+            310
+          ],
+          "score": 0.85,
+          "label": "Mobil 1b"
+        },
+        {
+          "id": 2,
+          "box": [
+            90,
+            50,
+            390,
+            290
+          ],
+          "score": 0.78,
+          "label": "Mobil 1c"
+        },
+        {
+          "id": 3,
+          "box": [
+            60,
+            80,
+            360,
+            320
+          ],
+          "score": 0.7,
+          "label": "Mobil 1d"
+        },
+        {
+          "id": 4,
+          "box": [
+            400,
+            200,
+            570,
+            370
+          ],
+          "score": 0.88,
+          "label": "Mobil 2"
+        }
+      ],
+      "iouThreshold": 0.5
+    },
+    "yolo": {
+      "gridSize": 3,
+      "numClasses": 3,
+      "outputPerCell": 8,
+      "anchorExample": {
+        "numAnchors": 2,
+        "outputPerCellWithAnchors": 16
+      }
+    }
+  },
+  "activation": {
+    "deltaProp": {
+      "delta2": 0.25,
+      "weights12": [
+        0,
+        0.5,
+        1,
+        -1
+      ]
+    },
+    "activations": {
+      "relu": {
+        "name": "ReLU",
+        "formula": "f(x) = max(0, x)",
+        "color": "#0969da"
+      },
+      "sigmoid": {
+        "name": "Sigmoid",
+        "formula": "f(x) = 1 / (1 + e^(&minus;x))",
+        "color": "#8250df"
+      },
+      "tanh": {
+        "name": "Tanh",
+        "formula": "f(x) = tanh(x)",
+        "color": "#1a7f37"
+      }
+    }
+  }
+}

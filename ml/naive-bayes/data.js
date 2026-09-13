@@ -31,141 +31,26 @@ const NB_DATA = {
     }
   },
   "titanic": {
-    "n_test": 418,
-    "accuracy": 0.8971,
-    "samples": [
-      {
-        "name": "Kelly, Mr. James",
-        "pclass": 3,
-        "sex": "male",
-        "age": 34.5,
-        "fare": 7.83,
-        "embarked": "Q",
-        "actual": 0,
-        "predicted": 0,
-        "proba_survive": 0.0542
-      },
-      {
-        "name": "Wilkes, Mrs. James (Ellen Needs)",
-        "pclass": 3,
-        "sex": "female",
-        "age": 47.0,
-        "fare": 7.0,
-        "embarked": "S",
-        "actual": 1,
-        "predicted": 1,
-        "proba_survive": 0.5701
-      },
-      {
-        "name": "Myles, Mr. Thomas Francis",
-        "pclass": 2,
-        "sex": "male",
-        "age": 62.0,
-        "fare": 9.69,
-        "embarked": "Q",
-        "actual": 0,
-        "predicted": 0,
-        "proba_survive": 0.1465
-      },
-      {
-        "name": "Wirz, Mr. Albert",
-        "pclass": 3,
-        "sex": "male",
-        "age": 27.0,
-        "fare": 8.66,
-        "embarked": "S",
-        "actual": 0,
-        "predicted": 0,
-        "proba_survive": 0.0373
-      },
-      {
-        "name": "Hirvonen, Mrs. Alexander (Helga E Lindqvist)",
-        "pclass": 3,
-        "sex": "female",
-        "age": 22.0,
-        "fare": 12.29,
-        "embarked": "S",
-        "actual": 1,
-        "predicted": 1,
-        "proba_survive": 0.6362
-      },
-      {
-        "name": "Svensson, Mr. Johan Cervin",
-        "pclass": 3,
-        "sex": "male",
-        "age": 14.0,
-        "fare": 9.22,
-        "embarked": "S",
-        "actual": 0,
-        "predicted": 0,
-        "proba_survive": 0.0476
-      },
-      {
-        "name": "Connolly, Miss. Kate",
-        "pclass": 3,
-        "sex": "female",
-        "age": 30.0,
-        "fare": 7.63,
-        "embarked": "Q",
-        "actual": 1,
-        "predicted": 1,
-        "proba_survive": 0.6918
-      },
-      {
-        "name": "Caldwell, Mr. Albert Francis",
-        "pclass": 2,
-        "sex": "male",
-        "age": 26.0,
-        "fare": 29.0,
-        "embarked": "S",
-        "actual": 0,
-        "predicted": 0,
-        "proba_survive": 0.0942
-      },
-      {
-        "name": "Abrahim, Mrs. Joseph (Sophie Halaut Easu)",
-        "pclass": 3,
-        "sex": "female",
-        "age": 18.0,
-        "fare": 7.23,
-        "embarked": "C",
-        "actual": 1,
-        "predicted": 1,
-        "proba_survive": 0.8958
-      },
-      {
-        "name": "Davies, Mr. John Samuel",
-        "pclass": 3,
-        "sex": "male",
-        "age": 21.0,
-        "fare": 24.15,
-        "embarked": "S",
-        "actual": 0,
-        "predicted": 0,
-        "proba_survive": 0.009
-      },
-      {
-        "name": "Ilieff, Mr. Ylio",
-        "pclass": 3,
-        "sex": "male",
-        "age": null,
-        "fare": 7.9,
-        "embarked": "S",
-        "actual": 0,
-        "predicted": 0,
-        "proba_survive": 0.0374
-      },
-      {
-        "name": "Jones, Mr. Charles Cresson",
-        "pclass": 1,
-        "sex": "male",
-        "age": 46.0,
-        "fare": 26.0,
-        "embarked": "S",
-        "actual": 0,
-        "predicted": 0,
-        "proba_survive": 0.2407
-      }
-    ]
+    "n_test": 179,
+    "n_train": 712,
+    "seed": 42,
+    "label_source": "Survived from labeled train.csv, stratified 80/20 holdout",
+    "imputation_train_only": {
+      "Age": 28.5,
+      "Fare": 14.4542,
+      "Embarked": "S"
+    },
+    "f1": 0.7111,
+    "confusion_matrix": [
+      [
+        92,
+        18
+      ],
+      [
+        21,
+        48
+      ]
+    ],
+    "accuracy": 0.7821
   }
 };

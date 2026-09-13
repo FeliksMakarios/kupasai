@@ -69,7 +69,7 @@ kupasai/
     ├── pemodelan-pencarian/       # Modul 1: Ruang keadaan & algoritma pencarian (Week 2-3)
     ├── teknik-pemecahan/          # Modul 2: Teknik pemecahan permasalahan (Week 4)
     ├── penalaran-ketidakpastian/  # Modul 3: Penalaran ketidakpastian & kesamaan dokumen (Week 5-6)
-    ├── jaringan-syaraf-tiruan/    # Modul 4: Jaringan syaraf tiruan (Week 9-10)
+    ├── jaringan-syaraf-tiruan/    # Modul 4: Jaringan saraf tiruan (Week 9-10)
     ├── algoritma-genetika/        # Modul 5: Algoritma genetika (Week 11)
     └── kecerdasan-kawanan-fuzzy/  # Modul 6: Kecerdasan kawanan & sistem fuzzy (Week 12-14)
 ```
@@ -134,7 +134,20 @@ kupasai/
 
 Kesepuluh visualisasi NLP, sembilan visualisasi ML, sembilan visualisasi ML Lanjut, dan enam visualisasi Kecerdasan Komputasional sudah lengkap. Tech stack final: D3.js saja. Tidak ganti framework.
 
-Data untuk visualisasi yang memakai model matematis (mis. `self-attention`, atau seluruh topik ML/ML Lanjut/Kecerdasan Komputasional) di-generate dari skrip Python, bukan ditulis manual — jalankan ulang kalau perlu mengubah bobot, dataset, atau contoh, jangan edit `data.js` langsung. Skrip ML membaca dataset asli dari [repo mata kuliah `dasar-machine-learning`](https://github.com/FeliksMakarios/dasar-machine-learning) di GitHub (bisa dioverride ke path lokal lewat env var `DASAR_ML_DIR`). Skrip ML Lanjut mereproduksi angka dari notebook kuliah (PML Mod1-11) secara langsung dengan NumPy/scikit-learn — beberapa visualisasi (mis. `regularization`, `nonlinearity-activation`) memakai dataset nyata setara pengganti (`sklearn.datasets.load_digits`) karena notebook asli memakai `keras.datasets.mnist` yang butuh koneksi internet saat build. Skrip Kecerdasan Komputasional mereimplementasikan seluruh algoritma (BFS/DFS, AND-OR graph, Bayes, faktor kepastian, Dempster-Shafer, VSM, backpropagation, LVQ, SOM, algoritma genetika, ACO, ABC, sistem fuzzy) secara independen dari nol berdasarkan enam Modul Lab Mandiri (INF20052) dan notebook pendampingnya, lalu memverifikasi setiap angka terhadap kriteria assert pada notebook tersebut — bukan menyalin nilai dari buku rujukan.
+Data numerik dibuat ulang menggunakan skrip Python. Jalankan `python scripts/regenerate.py` dari akar repositori setelah memasang `requirements.txt`. Dataset ML dikunci pada commit `41db3dc8c328eab6e7fa5f5604194ab5e49c4d05` repositori [dasar-machine-learning](https://github.com/FeliksMakarios/dasar-machine-learning/tree/41db3dc8c328eab6e7fa5f5604194ab5e49c4d05). Variabel `DASAR_ML_DIR` dapat menunjuk salinan lokal commit tersebut.
+
+Sembilan topik ML Lanjut dibuat oleh `scripts/generate_advanced.py`, berdasarkan masukan di `scripts/advanced_inputs.json`. Eksperimen regularisasi memakai dataset digits, pembagian data tetap, arsitektur sama, dan tiga benih. Hasilnya merupakan eksperimen pendamping, bukan keluaran notebook asli yang belum tersedia di repositori. Tata letak diagram, skor ilustratif, dan metadata pembelajaran dibedakan dari hasil pelatihan pada panduan setiap topik.
+
+Jalankan `python scripts/build_lessons.py` untuk memperbarui panduan 34 topik. Rujukan buku yang belum memiliki judul, edisi, dan halaman terverifikasi tidak diperlakukan sebagai bukti salah cetak. Kode komputasional merupakan implementasi pengajaran mandiri. Demo pembelajaran kompetitif tidak dilabeli sebagai LVQ tersupervisi.
+
+## Pemeriksaan
+
+1. Pasang Python 3.11 atau lebih baru dan `pip install -r requirements.txt`.
+2. Jalankan `python -m unittest discover -s tests` untuk pemeriksaan numerik dan struktur situs.
+3. Pasang dependensi peramban dengan `npm ci` dan `npx playwright install --with-deps chromium`.
+4. Jalankan `npm test` untuk menguji seluruh halaman, tab, tema, dan tampilan ponsel.
+
+GitHub Actions menjalankan pemeriksaan tersebut untuk setiap pull request. Situs tetap berupa HTML, CSS, dan D3 tanpa proses kompilasi aplikasi.
 
 Navigasi situs hanya berisi **Tentang** dan **Kontak** (statis, dua bahasa untuk judul mata kuliah di beranda: Indonesia + Inggris dalam kurung). Kartu mata kuliah di beranda ditampilkan grid 2 kolom (`.course-grid` di `main.css`). Setiap halaman visualisasi punya link "Kembali ke Daftar Topik" yang mengarah ke `index.html` mata kuliahnya masing-masing.
 

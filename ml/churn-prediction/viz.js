@@ -115,45 +115,12 @@
   // TAB 2: CUSTOMER PREDICTION PICKER
   // ============================================================
 
-  function fmtRp(v) { return 'Rp' + Math.round(v).toLocaleString('id-ID'); }
-
-  function predCard(label, pred, actual) {
-    var correct = pred === actual;
-    return '<div class="pred-card ' + (correct ? 'correct' : 'wrong') + '">' +
-      '<div class="pc-model">' + label + '</div>' +
-      '<div class="pc-verdict">' + (pred ? 'Churn' : 'Tetap') + '</div></div>';
+  function renderAggregate(){
+    var n=+document.getElementById('evaluation-count').value;
+    document.getElementById('aggregate-estimate').innerHTML=[['Regresi Logistik',D.metrics_lr],['Random Forest',D.metrics_rf]].map(function(pair){var m=pair[1];return '<h3>'+pair[0]+'</h3><p>Dari '+n+' kasus churn aktual, sekitar '+(n*m.recall).toFixed(1)+' terdeteksi dan '+(n*(1-m.recall)).toFixed(1)+' terlewat.</p><p>Dari '+n+' prediksi churn, sekitar '+(n*m.precision).toFixed(1)+' benar dan '+(n*(1-m.precision)).toFixed(1)+' keliru.</p>';}).join('');
   }
-
-  function renderCustomer(idx) {
-    var c = D.samples[idx];
-    var html = '<div class="customer-card"><div class="cc-id">Pelanggan #' + c.customer_id + ' &middot; ' + c.product + '</div>';
-    html += '<div class="customer-grid">';
-    html += '<div class="cg-item"><span class="cg-label">Tenure</span><span class="cg-value">' + c.tenure + ' hari</span></div>';
-    html += '<div class="cg-item"><span class="cg-label">Hari Aktif</span><span class="cg-value">' + c.days_active + '</span></div>';
-    html += '<div class="cg-item"><span class="cg-label">Reload</span><span class="cg-value">' + fmtRp(c.reload_1) + '</span></div>';
-    html += '<div class="cg-item"><span class="cg-label">Internet</span><span class="cg-value">' + fmtRp(c.internet) + '</span></div>';
-    html += '<div class="cg-item"><span class="cg-label">Video</span><span class="cg-value">' + fmtRp(c.video) + '</span></div>';
-    html += '<div class="cg-item"><span class="cg-label">Musik</span><span class="cg-value">' + fmtRp(c.music) + '</span></div>';
-    html += '</div>';
-    html += '<div class="pred-row">';
-    html += predCard('Logistic Regression', c.pred_lr, c.actual);
-    html += predCard('Random Forest', c.pred_rf, c.actual);
-    html += '</div>';
-    html += '<p style="margin-top:0.75rem;font-size:0.8rem;color:var(--text-secondary)">Label sebenarnya: <strong>' +
-      (c.actual ? 'Churn' : 'Tetap Berlangganan') + '</strong></p>';
-    html += '</div>';
-    document.getElementById('customer-detail').innerHTML = html;
-  }
-
-  var cSelect = document.getElementById('customer-select');
-  D.samples.forEach(function (c, i) {
-    var opt = document.createElement('option');
-    opt.value = i;
-    opt.textContent = 'Pelanggan #' + c.customer_id + ' (' + c.product + ')';
-    cSelect.appendChild(opt);
-  });
-  cSelect.addEventListener('change', function () { renderCustomer(+this.value); });
-  renderCustomer(0);
+  document.getElementById('evaluation-count').addEventListener('input',renderAggregate);
+  renderAggregate();
 
   document.getElementById('churn-n-test').textContent = D.n_test.toLocaleString('id-ID');
 })();
