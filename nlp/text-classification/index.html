@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -166,31 +168,42 @@
         dilatih pada korpus besar, lalu sesuaikan (fine-tune) untuk
         tugas spesifik.
       </p>
-      <p>
-        <strong>IndoBERT</strong> sudah memahami struktur Bahasa Indonesia.
-        Dengan menambahkan satu lapis klasifikasi dan fine-tuning singkat
-        (3-5 epoch), model mencapai akurasi tinggi bahkan dengan dataset
-        kecil.
-      </p>
+      <p>Model pralatih menyediakan representasi awal yang kemudian disesuaikan pada data berlabel. Jumlah epoch dan akurasi bergantung pada dataset, pembagian data, serta konfigurasi. Matriks kebingungan pada halaman ini adalah contoh ilustratif, bukan laporan pelatihan IndoBERT.</p>
       <p>
         Ini jauh lebih efisien daripada melatih dari awal, dan inilah
         pendekatan standar dalam NLP modern setelah munculnya Transformer.
       </p>
       <p>
-        Confusion matrix di langkah terakhir menunjukkan distribusi
+        Confusion matrix ilustratif di langkah terakhir menunjukkan distribusi
         prediksi: diagonal = benar, off-diagonal = salah.
       </p>
     </div>
   </div>
 </div>
 
+
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Representasi teks dan klasifikasi. <strong>Durasi:</strong> sekitar 30 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Batas keputusan, skor, dan confusion matrix dirancang sebagai ilustrasi, bukan pelatihan IndoBERT.</p><p>Pipeline klasik dapat memakai TF-IDF. BERT memakai tokenizer checkpoint, attention mask, dan token khusus. Jangan otomatis membuang negasi atau stopword sebelum BERT.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Apa dampak menghapus kata tidak pada analisis sentimen?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Hitung precision dan recall dari confusion matrix ilustratif.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://huggingface.co/docs/transformers/tasks/sequence_classification" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/text-classification" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="../../assets/vendor/d3.v7.9.0.min.js"></script>
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
 </body>
 </html>

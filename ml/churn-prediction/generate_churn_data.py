@@ -18,7 +18,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 DATASET_DIR = os.environ.get(
     "DASAR_ML_DIR",
-    "https://raw.githubusercontent.com/FeliksMakarios/dasar-machine-learning/main",
+    "https://raw.githubusercontent.com/FeliksMakarios/dasar-machine-learning/41db3dc8c328eab6e7fa5f5604194ab5e49c4d05",
 )
 
 
@@ -41,14 +41,14 @@ cols = list(df2.columns)
 cols.append(cols.pop(cols.index("churn")))
 df2 = df2[cols]
 
-korelasi = df2.corr()
+korelasi = df2.corr()  # descriptive only, fixed feature exclusions below
 
 # ---- Feature selection: drop the three redundant highly-correlated features ----
 X = df2.drop(["churn", "reload_2", "socmed_2", "games"], axis=1)
 y = df2["churn"]
 feature_names = list(X.columns)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
 scl = pp.StandardScaler()
 X_train_s = scl.fit_transform(X_train)
@@ -63,7 +63,7 @@ metrics_lr = {
     "accuracy": round(float(accuracy_score(y_test, y_pred_lr)), 4),
     "precision": round(float(precision_score(y_test, y_pred_lr)), 4),
     "recall": round(float(recall_score(y_test, y_pred_lr)), 4),
-    "auc": round(float(roc_auc_score(y_test, y_pred_lr)), 4),
+    "auc": round(float(roc_auc_score(y_test, model_lr.predict_proba(X_test_s)[:, 1])), 4),
 }
 
 # ---- Random Forest + GridSearchCV ----
@@ -74,16 +74,16 @@ param_grid = {
     "min_samples_split": [2, 5, 10],
     "min_samples_leaf": [1, 2, 4],
 }
-grid_search = GridSearchCV(estimator=model_rf, param_grid=param_grid, cv=5, scoring="accuracy", n_jobs=-1)
-grid_search.fit(X_train_s, y_train)
+grid_search = GridSearchCV(estimator=model_rf, param_grid=param_grid, cv=5, scoring="accuracy", n_jobs=int(os.environ.get("JOBS", "2")))
+grid_search.fit(X_train, y_train)
 best_model_rf = grid_search.best_estimator_
-y_pred_rf = best_model_rf.predict(X_test_s)
+y_pred_rf = best_model_rf.predict(X_test)
 
 metrics_rf = {
     "accuracy": round(float(accuracy_score(y_test, y_pred_rf)), 4),
     "precision": round(float(precision_score(y_test, y_pred_rf)), 4),
     "recall": round(float(recall_score(y_test, y_pred_rf)), 4),
-    "auc": round(float(roc_auc_score(y_test, y_pred_rf)), 4),
+    "auc": round(float(roc_auc_score(y_test, best_model_rf.predict_proba(X_test)[:, 1])), 4),
 }
 
 importances = best_model_rf.feature_importances_
@@ -94,31 +94,10 @@ feature_importance = [{"feature": k, "importance": round(float(v), 4)} for k, v 
 corr_cols = list(korelasi.columns)
 corr_matrix = [[round(float(v), 3) for v in row] for row in korelasi.values]
 
-# ---- Sample test-set rows for an interactive picker ----
-sample_n = 12
-sample_idx = X_test.index[:sample_n]
-samples = []
-for i in sample_idx:
-    row = X_test.loc[i]
-    pos = list(X_test.index).index(i)
-    samples.append({
-        "customer_id": str(i)[:8],
-        "reload_1": round(float(row["reload_1"]), 2),
-        "video": round(float(row["video"]), 2),
-        "music": round(float(row["music"]), 2),
-        "chat_1": round(float(row["chat_1"]), 2),
-        "chat_2": round(float(row["chat_2"]), 2),
-        "socmed_1": round(float(row["socmed_1"]), 2),
-        "internet": round(float(row["internet"]), 2),
-        "days_active": int(row["days_active"]),
-        "tenure": int(row["tenure"]),
-        "product": "Kartu A" if row["Kartu A"] == 1 else ("Kartu B" if row["Kartu B"] == 1 else "Kartu C"),
-        "actual": int(y_test.loc[i]),
-        "pred_lr": int(y_pred_lr[pos]),
-        "pred_rf": int(y_pred_rf[pos]),
-    })
-
+# Publish aggregate evaluation only, without customer-level records.
 data = {
+    "seed": 42,
+    "auc_input": "positive class probability",
     "n_total": n_total,
     "n_churn": n_churn,
     "n_active": n_active,
@@ -131,7 +110,6 @@ data = {
     "rf_best_params": {k: (v if v is not None else None) for k, v in grid_search.best_params_.items()},
     "feature_importance": feature_importance,
     "n_test": int(len(X_test)),
-    "samples": samples,
 }
 
 outpath = os.path.join(HERE, "data.js")

@@ -213,9 +213,9 @@ var KK2_DATA = {
     "more": 1085,
     "money": 10652,
     "kandidatBrute": 1748230,
-    "kandidatBatasan": 173050,
-    "waktuBrute": 4.6698,
-    "waktuBatasan": 0.1452
+    "kandidatBatasan": 18946,
+    "waktuBrute": 3.513,
+    "waktuBatasan": 0.0417
   },
   "rumahSakit": {
     "komposisi": {

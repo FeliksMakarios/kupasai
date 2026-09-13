@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -139,8 +141,24 @@
   </div>
 </div>
 
+
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Tabel dan indeks. <strong>Durasi:</strong> sekitar 20 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Simulasi operasi pada data gudang kecil. Tidak menjalankan Python di peramban.</p><p>Pengisian nol pada kolom turunan adalah keputusan eksplisit. dropna menghapus baris, sedangkan isnull hanya menandainya.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Apa hasil penjumlahan sebelum nilai kosong diisi?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Bandingkan membuang baris dengan imputasi pada data yang sama.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://pandas.pydata.org/docs/user_guide/missing_data.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml/pandas" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 </body>
 </html>

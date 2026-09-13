@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -83,7 +85,7 @@
       </p>
       <p>
         <strong>Entropy</strong> mengukur ketidakpastian &mdash; 0 berarti murni
-        satu kelas, mendekati 1 berarti campuran. <strong>Information Gain</strong>
+        satu kelas, maksimum 1 berarti dua kelas seimbang (untuk K kelas, maksimum log₂ K). <strong>Information Gain</strong>
         adalah seberapa besar entropy turun setelah split.
       </p>
       <p>
@@ -128,9 +130,25 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+<script src="../../assets/vendor/d3.v7.9.0.min.js"></script>
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Probabilitas kelas. <strong>Durasi:</strong> sekitar 25 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Contoh 15 baris dan model pada decisiontree_ch6.csv memakai data berbeda.</p><p>Entropi maksimum log₂ K untuk K kelas. Akurasi uji dengan sampel kecil dapat berubah besar bila satu prediksi berubah.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Fitur mana yang memberi penurunan entropi terbesar?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Buat satu contoh ketika pohon terlalu dalam menghafal data.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://scikit-learn.org/stable/modules/tree.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml/decision-tree" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 </body>
 </html>

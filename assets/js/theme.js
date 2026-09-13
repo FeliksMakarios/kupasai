@@ -15,6 +15,7 @@
       var current = document.documentElement.getAttribute('data-theme');
       var next = current === 'dark' ? 'light' : 'dark';
       try { localStorage.setItem('theme', next); } catch (e) {}
+      if (window.KupasLearning) window.KupasLearning.saveForTheme();
       location.reload();
     });
   });

@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -49,7 +51,7 @@
     <h1>Na&iuml;ve Bayes</h1>
     <p class="page-subtitle">
       Menghitung probabilitas suatu kelas dengan Teorema Bayes, dengan
-      asumsi &ldquo;naif&rdquo; bahwa semua fitur saling independen.
+      asumsi &ldquo;naif&rdquo; bahwa fitur saling independen bersyarat pada kelas.
     </p>
     <div class="learning-objectives">
       <strong>Sub-CPMK 2.2:</strong> Mahasiswa dapat mengimplementasikan
@@ -98,7 +100,7 @@
         Coba matikan <strong>Laplace Smoothing</strong> lalu pilih Diskon=Ya,
         Hadiah=Ya: posterior Non-Spam langsung menjadi 0 hanya karena tidak
         ada email Non-Spam berdiskon di data training &mdash; padahal fitur
-        Hadiah sebenarnya cukup mendukung Non-Spam.
+        Hadiah=Ya memiliki likelihood yang sama pada kedua kelas dalam contoh ini.
       </p>
     </div>
   </div>
@@ -112,29 +114,36 @@
         GaussianNB pada <strong id="titanic-n" style="color:var(--accent)">-</strong> penumpang test set &middot;
         akurasi: <strong id="titanic-accuracy" style="color:var(--accent)">-</strong>
       </p>
-      <div class="att-controls">
-        <label>Penumpang:</label>
-        <select id="passenger-select"></select>
-      </div>
-      <div id="passenger-detail"></div>
+      <div id="titanic-confusion"></div>
     </div>
     <div class="viz-sidebar">
       <h3>Data Nyata: RMS Titanic</h3>
+      <p>Model GaussianNB menggunakan pembagian berstrata 80% latih dan 20% uji dari train.csv yang memiliki label Survived. Median usia, median tarif, dan modus pelabuhan dipelajari dari data latih saja. Label aktual berasal dari data berlabel, bukan contoh berkas pengiriman prediksi. GaussianNB di sini merupakan model dasar dengan penyederhanaan distribusi fitur campuran.</p>
       <p>
-        Model <code>GaussianNB</code> memprediksi apakah penumpang selamat
-        berdasarkan kelas tiket, jenis kelamin, usia, tarif, dan pelabuhan
-        keberangkatan.
-      </p>
-      <p>
-        Perhatikan pola klasik: penumpang perempuan dan kelas 1 cenderung
-        diprediksi selamat, sedangkan laki-laki kelas 3 cenderung tidak.
+        Hitung akurasi dari jumlah diagonal matriks dibagi seluruh kasus. Bandingkan dengan F1 yang mempertimbangkan precision dan recall kelas selamat.
       </p>
     </div>
   </div>
 </div>
 
+
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Probabilitas bersyarat. <strong>Durasi:</strong> sekitar 30 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Contoh email sintetis dan Titanic berlabel dengan pembagian berstrata 80/20, benih 42.</p><p>Independensi yang diasumsikan bersyarat pada kelas. GaussianNB adalah baseline sederhana untuk fitur campuran.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Apa yang terjadi jika likelihood satu fitur nol?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Bandingkan GaussianNB dengan model yang menangani fitur kategorikal.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://scikit-learn.org/stable/modules/naive_bayes.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml/naive-bayes" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 </body>
 </html>

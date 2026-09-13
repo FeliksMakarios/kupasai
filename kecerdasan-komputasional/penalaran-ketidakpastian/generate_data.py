@@ -79,6 +79,8 @@ def gabung_bpa(ma, mb):
             else:
                 kombinasi[irisan] = kombinasi.get(irisan, 0.0) + w
     norm = 1 - konflik
+    if norm <= 1e-12:
+        raise ValueError("Konflik total: aturan Dempster tidak terdefinisi")
     return {s: w / norm for s, w in kombinasi.items()}, kombinasi, konflik
 
 def tabel_kombinasi(ma, mb):

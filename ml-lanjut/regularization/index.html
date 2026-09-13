@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -31,7 +33,7 @@
     <li><a href="/kupasai/kontak/">Kontak</a></li>
   </ul>
   <div class="navbar-spacer"></div>
-  <span class="navbar-meta">IN F24141 &middot; Week 9</span>
+  <span class="navbar-meta">INF24141 &middot; Week 9</span>
   <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
     <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <circle cx="12" cy="12" r="4"/>
@@ -87,13 +89,7 @@
     </div>
     <div class="viz-sidebar">
       <h3>Menghafal vs Generalisasi</h3>
-      <p>
-        <strong>Train accuracy</strong> mencapai 100% di sekitar epoch
-        110&mdash;120, sementara <strong>val/test accuracy</strong>
-        berhenti membaik di kisaran 90%. Kesenjangan (gap) inilah tanda
-        klasik <strong>overfitting</strong>: model mulai menghafal
-        contoh-contoh spesifik alih-alih pola umum.
-      </p>
+      <p>Bandingkan akurasi latih dengan validasi sepanjang pelatihan. Kesenjangan mengindikasikan perbedaan kemampuan pada data yang sudah dan belum dilihat. Overfitting lebih kuat ditunjukkan ketika galat validasi memburuk sementara galat latih turun. Data uji hanya dievaluasi pada model akhir atau checkpoint yang dipilih melalui validasi.</p>
       <p>
         Karena hanya 120 contoh dipakai untuk melatih 40 neuron hidden,
         model punya "kapasitas" lebih dari cukup untuk menghafal seluruh
@@ -121,12 +117,7 @@
     </div>
     <div class="viz-sidebar">
       <h3>Berhenti Sebelum Menghafal</h3>
-      <p>
-        Val loss mencapai titik terendah di <strong>epoch 139</strong>,
-        lalu mulai naik lagi &mdash; tanda model mulai overfit. Setelah 15
-        epoch tanpa perbaikan, training dihentikan otomatis di epoch
-        <strong>154</strong>.
-      </p>
+      <p>Checkpoint dipilih dari galat validasi terendah sebelum penghentian. Pelatihan dihentikan setelah 15 epoch tanpa perbaikan. Angka epoch, galat, dan akurasi pada kartu dihitung dari eksperimen ini. Jika batas 300 epoch tercapai dahulu, pelatihan selesai pada batas tersebut. Checkpoint validasi terbaik tidak menjamin hasil terbaik pada semua data baru.</p>
       <p>
         Bobot yang dipakai bukan bobot terakhir, melainkan bobot pada
         checkpoint val-loss terbaik &mdash; sehingga model final tetap
@@ -140,7 +131,7 @@
 <div class="tab-content" id="tab-dropout" role="tabpanel" aria-labelledby="tabbtn-dropout" tabindex="0">
   <div class="viz-layout">
     <div class="viz-main">
-      <p class="section-note">Hidden layer diperbesar jadi 100 neuron, separuhnya "dimatikan" acak setiap batch (p_keep=0.5, inverted dropout) &mdash; hanya aktif saat training.</p>
+      <p>Kedua jaringan memakai 40 neuron tersembunyi, pembagian data, bobot awal, urutan batch, dan laju pembelajaran yang sama. Perlakuan pembanding hanya dropout dengan p_keep=0,5. Eksperimen diulang pada tiga benih. Dropout mempertahankan nilai harapan aktivasi, bukan total aktivasi yang persis sama pada setiap batch.</p>
       <svg id="reg-dropout-plot" viewBox="0 0 640 300"></svg>
       <div class="stat-row">
         <div class="stat-box"><div class="label">Test Acc Tanpa Dropout</div><div class="val" id="dropout-baseline-test"></div></div>
@@ -171,13 +162,29 @@
   </div>
 </div>
 
+
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Data latih, validasi, dan uji. <strong>Durasi:</strong> sekitar 35 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Digits 8×8, jaringan 64→40→10. Pembanding dropout berukuran sama, diulang pada benih 42,43,44.</p><p>Validasi memilih checkpoint. Data uji dipakai pada checkpoint terpilih dan akhir, bukan sebagai panduan setiap epoch. Hasil satu benih tidak menjamin keunggulan dropout.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Apakah galat latih yang terus turun selalu diikuti galat validasi?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Bandingkan variasi hasil tiga benih sebelum menyimpulkan efek dropout.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Dropout.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml-lanjut/regularization" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 <footer class="footer">
-  <span>KupasAI &copy; 2026 &middot; ML Lanjut IN F24141</span>
+  <span>KupasAI &copy; 2026 &middot; ML Lanjut INF24141</span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="../../assets/vendor/d3.v7.9.0.min.js"></script>
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
 </body>
 </html>

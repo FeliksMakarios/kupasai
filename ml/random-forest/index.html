@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -78,13 +80,7 @@
     </div>
     <div class="viz-sidebar">
       <h3>7 Pohon, 7 Sudut Pandang</h3>
-      <p>
-        Tiap kartu adalah <strong>Decision Tree</strong> yang dilatih pada
-        <em>bootstrap sample</em> berbeda (baris diundi ulang dengan
-        pengembalian) dan hanya melihat 2 dari 3 fitur secara acak
-        &mdash; persis prinsip <strong>bagging</strong> dan
-        <strong>random feature selection</strong> di Random Forest.
-      </p>
+      <p>Tujuh kartu ini adalah ilustrasi bagging dengan dua fitur tetap per pohon. Random Forest standar memilih kandidat fitur acak pada setiap pemisahan simpul. Akurasi Random Forest yang ditampilkan berasal dari model 100 pohon yang terpisah, bukan otomatis akurasi tujuh kartu ini.</p>
       <p>
         Akurasi test set: <strong id="rf-vs-single">-</strong>. Dataset
         kendaraan ini kecil dan sangat mudah dipisahkan, jadi ketujuh pohon
@@ -114,11 +110,7 @@
         &sim;32.000 baris data sensus penduduk AS 1994, memprediksi apakah
         penghasilan seseorang &gt;$50K atau &le;$50K per tahun.
       </p>
-      <p>
-        <strong>Feature importance</strong> menunjukkan fitur mana yang
-        paling sering dipakai model untuk memisahkan kelas &mdash; di sini
-        usia dan capital gain paling dominan.
-      </p>
+      <p>Feature importance bawaan mengukur penurunan impurity tertimbang. Nilainya bukan frekuensi pemakaian fitur dan bukan pengaruh sebab-akibat. Fitur dengan banyak kemungkinan nilai dapat diuntungkan. Bandingkan dengan permutation importance pada data validasi bila diperlukan.</p>
       <p>
         Precision/recall kelas <code>&gt;50K</code> (minoritas) lebih rendah
         dari kelas mayoritas <code>&le;50K</code> &mdash; contoh nyata
@@ -129,8 +121,24 @@
   </div>
 </div>
 
+
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Pohon keputusan. <strong>Durasi:</strong> sekitar 30 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Tujuh pohon bagging ilustratif dan Random Forest 100 pohon merupakan dua model terpisah.</p><p>Pada Random Forest, kandidat fitur dipilih per pemisahan. Importance berbasis impurity bukan frekuensi fitur atau pengaruh kausal.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Apakah tujuh pohon selalu menghasilkan prediksi lebih baik?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Bandingkan suara mayoritas dan rata-rata probabilitas.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://scikit-learn.org/stable/modules/ensemble.html#random-forests-and-other-randomized-tree-ensembles" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml/random-forest" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 </body>
 </html>

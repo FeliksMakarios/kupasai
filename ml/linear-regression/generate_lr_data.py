@@ -19,7 +19,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # disk instead (e.g. while offline).
 DATASET_DIR = os.environ.get(
     "DASAR_ML_DIR",
-    "https://raw.githubusercontent.com/FeliksMakarios/dasar-machine-learning/main",
+    "https://raw.githubusercontent.com/FeliksMakarios/dasar-machine-learning/41db3dc8c328eab6e7fa5f5604194ab5e49c4d05",
 )
 
 
@@ -44,6 +44,8 @@ r2 = model.score(X_test, y_test)
 
 simple = {
     "points": [{"x": float(r[0]), "y": float(v)} for r, v in zip(X, y)],
+    "train_r2": float(model.score(X_train, y_train)),
+    "residuals": [{"x":float(a[0]),"actual":float(b),"predicted":float(c),"residual":float(b-c)} for a,b,c in zip(X_test,y_test,model.predict(X_test))],
     "slope": round(float(model.coef_[0]), 4),
     "intercept": round(float(model.intercept_), 4),
     "r2": round(float(r2), 4),
@@ -83,6 +85,7 @@ for key, feats in feature_sets.items():
         "intercept": round(float(m.intercept_), 3),
         "coef": [round(float(c), 3) for c in m.coef_],
         "r2": round(float(m.score(Xte, yte)), 4),
+        "train_r2": round(float(m.score(Xtr,ytr)),4),
     }
 
 data = {

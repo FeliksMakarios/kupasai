@@ -396,6 +396,27 @@ alphabeta_visited_list_b = ['/'.join(map(str, p)) for p in alphabeta_visited_b]
 # ============================================================
 # TULIS data.js
 # ============================================================
+def uniform_cost(graf, awal, tujuan):
+    import heapq
+    frontier = [(0, [awal])]
+    seen = set()
+    order = []
+    while frontier:
+        cost, path = heapq.heappop(frontier)
+        node = path[-1]
+        if node in seen:
+            continue
+        seen.add(node)
+        order.append(node)
+        if node == tujuan:
+            return {"jalur": path, "jarak": cost, "dikunjungi": len(order), "urutan": order}
+        for neighbor, weight in graf[node].items():
+            heapq.heappush(frontier, (cost + weight, path + [neighbor]))
+    raise ValueError("No path")
+
+ucs = uniform_cost(PETA, 'Arad', 'Bucharest')
+assert ucs['jarak'] == 418
+
 data = {
     "robot": {
         "states": [list(s) for s in states8],
@@ -423,6 +444,7 @@ data = {
         },
     },
     "peta": {
+        "ucs": ucs,
         "nodes": list(PETA.keys()),
         "edges": [{"from": a, "to": b, "jarak": d} for a, adj in PETA.items() for b, d in adj.items() if a < b],
         "sld": SLD,

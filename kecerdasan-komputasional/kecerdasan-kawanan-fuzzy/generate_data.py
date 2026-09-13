@@ -169,13 +169,13 @@ def fase_onlooker(sumber, trial, rng):
         while j == i:
             j = rng.integers(0, n)
         r = rng.uniform(-1, 1)
-        kandidat = sumber[i] + r * (sumber[i] - sumber[j])
+        kandidat = baru[i] + r * (baru[i] - baru[j])
         kandidat = np.clip(kandidat, -5, 5)
-        if fit(*kandidat) > fit(*sumber[i]):
+        if fit(*kandidat) > fit(*baru[i]):
             baru[i] = kandidat
             trial_baru[i] = 0
         else:
-            trial_baru[i] = trial[i] + 1
+            trial_baru[i] += 1
     return baru, trial_baru
 
 def fase_scout(sumber, trial, batas=5, rng=None):
@@ -192,6 +192,7 @@ def jalankan_abc(iterasi=100, batas=2, seed=None, iter1_deterministik=True):
     sumber = DATA_AWAL.copy()
     trial = np.zeros(5, dtype=int)
     jejak = []
+    terbaik_global = sumber[int(np.argmax([f_objektif(*s) for s in sumber]))].copy()
     for it in range(iterasi):
         if it == 0 and iter1_deterministik:
             # Reproduksi eksak Tabel 11.7 -> 11.8 (pasangan & bilangan acak dari buku)
@@ -201,9 +202,12 @@ def jalankan_abc(iterasi=100, batas=2, seed=None, iter1_deterministik=True):
         sumber, trial = fase_onlooker(sumber, trial, rng)
         sumber, trial = fase_scout(sumber, trial, batas, rng)
         fits = [f_objektif(*s) for s in sumber]
-        jejak.append(max(fits))
+        calon = sumber[int(np.argmax(fits))]
+        if f_objektif(*calon) > f_objektif(*terbaik_global):
+            terbaik_global = calon.copy()
+        jejak.append(float(f_objektif(*terbaik_global)))
     idx_best = int(np.argmax([f_objektif(*s) for s in sumber]))
-    return sumber[idx_best], f_objektif(*sumber[idx_best]), jejak
+    return terbaik_global, f_objektif(*terbaik_global), jejak
 
 # Pasangan (0-based) dan bilangan acak persis seperti Tabel 11.7 -> Tabel 11.8 buku
 PASANGAN_BUKU = [3, 4, 0, 1, 3]
@@ -349,15 +353,13 @@ def mu_tinggi_out(z):
     return max(0.0, min(1.0, (z - PRODUKSI_MIN) / (PRODUKSI_MAX - PRODUKSI_MIN)))
 
 def mamdani(x1, x2, langkah=1.0):
-    # Buku mengintegralkan momen dan luas area mulai dari z=0 (bukan dari batas
-    # semantik PRODUKSI_MIN=2000) -- lihat Gambar 12.7: A1=(0.25)(3250)=812.50 dan
-    # M1=integral 0 ke 3250, bukan 2000 ke 3250. Direproduksi persis di sini.
+    # Domain keluaran contoh ini adalah [0, 7000].
     turun, naik = mu_pesanan_turun(x1), mu_pesanan_naik(x1)
     rendah, tinggi = mu_simpanan_rendah(x2), mu_simpanan_tinggi(x2)
     alpha_rendah = max(min(turun, tinggi), min(turun, rendah))
     alpha_tinggi = max(min(naik, tinggi), min(naik, rendah))
-    # Titik patah pasti disertakan agar aturan trapesium tepat sama dengan integral
-    # analitik (mu_gab piecewise linier terhadap z).
+    # Titik patah pasti disertakan agar luas dihitung tepat dan momen didekati
+    # secara numerik. Integran momen bersifat kuadratik per segmen.
     titik_patah = sorted(set([0.0, PRODUKSI_MIN, PRODUKSI_MAX,
                                PRODUKSI_MAX - alpha_rendah * (PRODUKSI_MAX - PRODUKSI_MIN),
                                PRODUKSI_MIN + alpha_tinggi * (PRODUKSI_MAX - PRODUKSI_MIN),
@@ -381,23 +383,16 @@ assert abs(z_produksi_tinggi(0.60) - 5000) < 1e-6
 z_ts, rincian_ts = tsukamoto(4000, 300)
 assert abs(z_ts - 4983) < 2, z_ts
 z_md, area_md, momen_md = mamdani(4000, 300)
-# Catatan: buku menyatakan A1=812.5, M1=1320312.5 (cocok persis dengan integral di
-# sini), A2=743.75 (cocok persis), namun M2=3187515.625 yang tercetak pada buku
-# TIDAK konsisten dengan integral (z-2000)/5000 * z dari 3250 ke 5000 yang mereka
-# tuliskan sendiri -- integral yang benar adalah 3157291.667 (diverifikasi ulang
-# secara numerik dan analitik di sini). Akibatnya z akhir yang benar adalah
-# ~4237.99, bukan 4247.74 seperti tercetak pada buku. Kesimpulan kualitatifnya
-# (stok akhir Mamdani tetap dalam kapasitas, berbeda dari Tsukamoto) tidak berubah.
-assert abs(area_md - 2756.25) < 5, area_md
-assert abs(momen_md - 11677604.17) < 5000, momen_md
-assert abs(z_md - 4237.99) < 2, z_md
+# Acuan integral analitik dari fungsi keanggotaan yang didefinisikan di atas.
+assert abs(area_md - 2756.25) < 1e-6, area_md
+assert abs(momen_md - 11677604.1666667) < 0.1, momen_md
+assert abs(z_md - 11677604.1666667 / 2756.25) < 0.0001, z_md
 stok_akhir_ts = 300 + z_ts - 4000
 stok_akhir_md = 300 + z_md - 4000
 print("Tugas5 Tsukamoto z=", round(z_ts, 2), "rincian:", rincian_ts)
 print("Tugas5 Mamdani z=", round(z_md, 2), "area=", round(area_md, 2), "momen=", round(momen_md, 2))
 print("Tugas5 Stok akhir Tsukamoto:", stok_akhir_ts, "melebihi 600?", stok_akhir_ts > 600)
 print("Tugas5 Stok akhir Mamdani:", round(stok_akhir_md, 2), "melebihi 600?", stok_akhir_md > 600)
-print("Tugas5 (buku mencetak z=4247.74 karena M2 tercetak salah hitung; nilai benar ~4237.99)")
 
 # ============================================================
 # TULIS data.js

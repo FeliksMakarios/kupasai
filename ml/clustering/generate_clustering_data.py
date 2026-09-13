@@ -15,7 +15,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 DATASET_DIR = os.environ.get(
     "DASAR_ML_DIR",
-    "https://raw.githubusercontent.com/FeliksMakarios/dasar-machine-learning/main",
+    "https://raw.githubusercontent.com/FeliksMakarios/dasar-machine-learning/41db3dc8c328eab6e7fa5f5604194ab5e49c4d05",
 )
 
 

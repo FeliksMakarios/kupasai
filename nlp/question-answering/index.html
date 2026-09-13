@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -86,7 +88,7 @@
       <h3 class="section-title">Contoh Nyata: ExtractedAnswer (Haystack)</h3>
       <div class="ref-card-row" id="ref-answers"></div>
 
-      <h3 class="section-title">F1-score Model pada SQuAD 2.0</h3>
+      <h3 class="section-title">Membandingkan Model pada SQuAD 2.0</h3>
       <div id="f1-table"></div>
     </div>
     <div class="viz-sidebar">
@@ -103,11 +105,7 @@
         skor tertinggi pada "1"/"6000" untuk start dan "MB/minute,"/"hours"
         untuk end, sehingga jawaban terekstrak "6000 hours".
       </p>
-      <p>
-        Coba klik token lain untuk melihat bagaimana span jawaban berubah
-        &mdash; ini persis cara kerja <code>torch.argmax(start_logits)</code>
-        dan <code>torch.argmax(end_logits)</code> di notebook.
-      </p>
+      <p>Pilih awal dan akhir hanya pada konteks dengan awal ≤ akhir. Decoder span yang lebih lengkap memaksimalkan skor pasangan di bawah batas panjang jawaban. Dua argmax independen dapat menghasilkan span tidak sah. Skor pada panel ini dirancang sebagai ilustrasi.</p>
     </div>
   </div>
 </div>
@@ -159,6 +157,21 @@
   </div>
 </div>
 
+
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Tokenisasi dan Transformer. <strong>Durasi:</strong> sekitar 30 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Skor span manual, contoh jawaban tersimpan, serta ilustrasi sliding window dan RAG.</p><p>Span harus berada pada konteks, awal≤akhir, dan memenuhi batas panjang. Argmax independen tidak menjamin span sah. RAG tidak menjamin jawaban benar.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Apa yang terjadi bila start tertinggi berada setelah end tertinggi?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Rancang kasus konteks tidak memiliki jawaban dan bukti yang dibutuhkan.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://huggingface.co/docs/transformers/tasks/question_answering" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/question-answering" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>
@@ -166,5 +179,6 @@
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
 </body>
 </html>

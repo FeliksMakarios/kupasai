@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -49,11 +51,11 @@
     <h1>Clustering</h1>
     <p class="page-subtitle">
       Mengelompokkan data tanpa label ke dalam kelompok-kelompok yang mirip,
-      menggunakan K-Means dan Elbow Method untuk menemukan K yang optimal.
+      menggunakan K-Means dan Elbow Method untuk menemukan K yang masuk akal.
     </p>
     <div class="learning-objectives">
       <strong>Modul 10:</strong> Mahasiswa mampu menerapkan K-Means dengan
-      Scikit-learn, mengevaluasi jumlah cluster optimal dengan Elbow Method,
+      Scikit-learn, mengevaluasi jumlah cluster yang sesuai dengan Elbow Method,
       dan menyusun insight dari hasil clustering.
     </div>
   </div>
@@ -94,11 +96,7 @@
         mendominasi jarak Euclidean dibanding <code>durasi</code> yang hanya
         puluhan-ratusan.
       </p>
-      <p>
-        Perhatikan grafik <strong>Elbow Method</strong>: penurunan SSE mulai
-        melandai di sekitar K=3, menandakan 3 cluster adalah jumlah yang
-        cukup masuk akal untuk data ini.
-      </p>
+      <p>Siku pada kurva SSE merupakan petunjuk, bukan bukti jumlah cluster optimal. Bandingkan K=2 sampai K=5, ukuran kelompok, kestabilan antarbenih, dan konteks penerbangan. Durasi panjang pada jarak pendek perlu diperiksa datanya sebelum dikaitkan dengan transit atau jenis pesawat.</p>
     </div>
   </div>
 </div>
@@ -133,9 +131,25 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+<script src="../../assets/vendor/d3.v7.9.0.min.js"></script>
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Jarak Euclidean dan standardisasi. <strong>Durasi:</strong> sekitar 25 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>K-Means dilatih pada durasi dan jarak penerbangan yang distandardisasi.</p><p>Siku SSE adalah petunjuk. Validasi kelompok dengan konteks dan kestabilan, bukan label benar-salah yang tidak tersedia.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Apa akibat memakai jarak km tanpa standardisasi?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Bandingkan K=2 dan K=4 dari ukuran kelompok serta interpretasi.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://scikit-learn.org/stable/modules/clustering.html#k-means" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml/clustering" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 </body>
 </html>

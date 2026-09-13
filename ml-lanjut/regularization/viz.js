@@ -89,8 +89,7 @@
   // ============================================================
   lineChart('#reg-baseline-plot', [
     { data: pluck(D.baseline, 'train_acc'), color: C.accent, label: 'Train Acc' },
-    { data: pluck(D.baseline, 'val_acc'), color: C.warn, label: 'Val Acc' },
-    { data: pluck(D.baseline, 'test_acc'), color: C.danger, label: 'Test Acc' }
+    { data: pluck(D.baseline, 'val_acc'), color: C.warn, label: 'Val Acc' }
   ], { yDomain: [0, 1.05] });
 
   document.getElementById('baseline-train').textContent = (D.baselineFinal.train_acc * 100).toFixed(1) + '%';
@@ -116,8 +115,8 @@
   // TAB 3: DROPOUT
   // ============================================================
   lineChart('#reg-dropout-plot', [
-    { data: pluck(D.baseline, 'test_acc'), color: C.danger, label: 'Test Acc (tanpa dropout)' },
-    { data: pluck(D.dropout, 'test_acc'), color: C.success, label: 'Test Acc (dropout p=0.5)' }
+    { data: pluck(D.baseline, 'val_acc'), color: C.danger, label: 'Val Acc (tanpa dropout)' },
+    { data: pluck(D.dropout, 'val_acc'), color: C.success, label: 'Val Acc (dropout p=0.5)' }
   ], { yDomain: [0, 1.05] });
 
   document.getElementById('dropout-baseline-test').textContent = (D.baselineFinal.test_acc * 100).toFixed(1) + '%';

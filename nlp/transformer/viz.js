@@ -87,122 +87,31 @@
     var arch = D.full_arch;
 
     svg.selectAll('*').remove();
-    var W = 700, H = 460;
-    var g = svg.append('g');
-
-    // Encoder container
-    var enc = arch.encoder;
-    drawStack(g, enc, 'ENCODER', C.enc_color);
-
-    // Decoder container
-    var dec = arch.decoder;
-    drawStack(g, dec, 'DECODER', C.dec_color);
-
-    // Cross-attention arrow from encoder to decoder
-    var cl = arch.cross_link;
-    g.append('line')
-      .attr('x1', cl.from_x).attr('y1', cl.y)
-      .attr('x2', cl.to_x).attr('y2', cl.y)
-      .attr('stroke', C.cross_color).attr('stroke-width', 2.5)
-      .attr('stroke-dasharray', '5 3');
-    g.append('text')
-      .attr('x', (cl.from_x + cl.to_x) / 2)
-      .attr('y', cl.y - 8)
-      .attr('text-anchor', 'middle')
-      .attr('font-size', '10px')
-      .attr('fill', C.cross_color)
-      .attr('font-weight', '600')
-      .text('K, V');
-
-    function drawStack(g, stack, label, color) {
-      // Outer container
-      g.append('rect')
-        .attr('x', stack.x).attr('y', stack.y)
-        .attr('width', stack.w).attr('height', stack.h)
-        .attr('rx', 8)
-        .attr('fill', 'none')
-        .attr('stroke', color)
-        .attr('stroke-width', 2)
-        .attr('stroke-dasharray', '6 3')
-        .attr('opacity', 0.5);
-
-      // Label
-      g.append('text')
-        .attr('x', stack.x + stack.w / 2)
-        .attr('y', stack.y - 8)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', '14px')
-        .attr('font-weight', '700')
-        .attr('fill', color)
-        .text(label);
-
-      // Stack note
-      g.append('text')
-        .attr('x', stack.x + stack.w / 2)
-        .attr('y', stack.y + stack.h + 15)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', '10px')
-        .attr('fill', C.text_muted)
-        .text(stack.stack_note);
-
-      // Layers
-      stack.layers.forEach(function (layer, i) {
-        var ly = stack.y + layer.y;
-
-        g.append('rect')
-          .attr('x', stack.x + 10)
-          .attr('y', ly)
-          .attr('width', stack.w - 20)
-          .attr('height', layer.h)
-          .attr('rx', 5)
-          .attr('fill', layer.color)
-          .attr('opacity', 0.15)
-          .attr('stroke', layer.color)
-          .attr('stroke-width', 1.5)
-          .style('cursor', 'pointer')
-          .on('mouseover', function () {
-            d3.select(this).attr('opacity', 0.3);
-            hintEl.textContent = layer.label + ': ' + layer.detail;
-          })
-          .on('mouseout', function () {
-            d3.select(this).attr('opacity', 0.15);
-          })
-          .on('click', function () {
-            hintEl.innerHTML = '<strong style="color:' + layer.color + '">' + layer.label + '</strong>: ' + layer.detail;
-          });
-
-        g.append('text')
-          .attr('x', stack.x + stack.w / 2)
-          .attr('y', ly + layer.h / 2 + 4)
-          .attr('text-anchor', 'middle')
-          .attr('font-size', '12px')
-          .attr('font-weight', '600')
-          .attr('fill', layer.color)
-          .text(layer.label);
+    svg.attr('viewBox','0 0 700 590');
+    var defs=svg.append('defs');
+    defs.append('marker').attr('id','flow-arrow').attr('viewBox','0 0 10 10').attr('refX',9).attr('refY',5).attr('markerWidth',5).attr('markerHeight',5).attr('orient','auto').append('path').attr('d','M0,0 L10,5 L0,10 Z').attr('fill',C.text_muted);
+    function arrow(points,color){svg.append('path').attr('d',d3.line()(points)).attr('fill','none').attr('stroke',color||C.text_muted).attr('stroke-width',1.5).attr('marker-end','url(#flow-arrow)');}
+    function stack(x,name,layers,decoder){
+      svg.append('text').attr('x',x+100).attr('y',25).attr('text-anchor','middle').attr('fill',C.text_primary).text(name);
+      var labels=[decoder?'Embedding target digeser + posisi':'Embedding masukan + posisi'].concat(layers.map(function(l){return l.label;}));
+      labels.forEach(function(label,i){
+        var y=45+i*58;
+        svg.append('rect').attr('x',x).attr('y',y).attr('width',200).attr('height',38).attr('rx',5).attr('fill',C.bg).attr('stroke',i?layers[i-1].color:C.enc_color).on('click',function(){hintEl.textContent=i?layers[i-1].detail:label;});
+        svg.append('text').attr('x',x+100).attr('y',y+23).attr('text-anchor','middle').attr('font-size',10).attr('fill',C.text_primary).style('pointer-events','none').text(label);
+        if(i)arrow([[x+100,y-20],[x+100,y]]);
+        if(label==='Add & Norm')arrow([[x+200,y-78],[x+220,y-78],[x+220,y+19],[x+200,y+19]],C.res_color);
       });
-
-      // Input label
-      if (stack.input) {
-        g.append('text')
-          .attr('x', stack.x + stack.w / 2)
-          .attr('y', stack.y + stack.input.y)
-          .attr('text-anchor', 'middle')
-          .attr('font-size', '10px')
-          .attr('fill', C.text_muted)
-          .text(stack.input.label);
-      }
-
-      // Output label (decoder only)
-      if (stack.output) {
-        g.append('text')
-          .attr('x', stack.x + stack.w / 2)
-          .attr('y', stack.y + stack.output.y)
-          .attr('text-anchor', 'middle')
-          .attr('font-size', '10px')
-          .attr('fill', C.text_muted)
-          .text(stack.output.label);
-      }
+      var end=45+(labels.length-1)*58+38;
+      arrow([[x+100,end],[x+100,end+28]]);
+      svg.append('text').attr('x',x+100).attr('y',end+43).attr('text-anchor','middle').attr('font-size',10).attr('fill',C.text_primary).text(decoder?'Ulang N lapis → Linear + Softmax':'Ulang N lapis → keluaran encoder');
+      return end;
     }
+    var end=stack(45,'ENCODER',arch.encoder.layers,false);
+    stack(415,'DECODER',arch.decoder.layers,true);
+    // The final encoder representation supplies K and V to decoder cross-attention.
+    arrow([[145,end+24],[335,end+24],[335,238],[415,238]],C.cross_color);
+    svg.append('text').attr('x',365).attr('y',228).attr('fill',C.cross_color).attr('font-size',11).text('K, V');
+    svg.append('text').attr('x',515).attr('y',213).attr('fill',C.text_muted).attr('font-size',10).text('Q ↓');
   }
 
   // ============================================================
@@ -225,8 +134,10 @@
     function draw() {
       var step = D.encoder_detail.steps[currentStep - 1];
       svg.selectAll('*').remove();
-      var W = 700, H = 320;
+      var W = 700, H = 350;
+      svg.attr('viewBox','0 0 700 350');
       var g = svg.append('g');
+      svg.append('defs').append('marker').attr('id',svg.attr('id')+'-arrow').attr('viewBox','0 0 10 10').attr('refX',9).attr('refY',5).attr('markerWidth',4).attr('markerHeight',4).attr('orient','auto').append('path').attr('d','M0,0 L10,5 L0,10 Z').attr('fill',C.text_muted);
 
       // Draw encoder pipeline vertically
       var components = [
@@ -288,6 +199,7 @@
             .attr('x2', cx).attr('y2', nextY - 2)
             .attr('stroke', C.border)
             .attr('stroke-width', 1.5)
+            .attr('marker-end','url(#'+svg.attr('id')+'-arrow)')
             .attr('opacity', opacity * 0.6);
         }
       });
@@ -309,6 +221,7 @@
           .attr('opacity', 0.3);
       }
 
+      components.forEach(function(comp,i){if(comp.label==='Add & Norm')g.append('path').attr('d',d3.line()([[cx+boxW/2,components[i-1].y-5],[cx+boxW/2+30,components[i-1].y-5],[cx+boxW/2+30,comp.y+comp.h/2],[cx+boxW/2,comp.y+comp.h/2]])).attr('fill','none').attr('stroke',C.res_color).attr('marker-end','url(#'+svg.attr('id')+'-arrow)');});
       // Detail panel
       detailEl.innerHTML =
         '<div class="detail-title">' + step.title + '</div>' +
@@ -332,7 +245,7 @@
         { title: 'Feed-Forward', html: '<span class="token active">kucing</span> <span class="token">duduk</span> <span class="token muted">diatas</span> <span class="token muted">karpet</span>', note: 'Transformasi non-linear per posisi' },
         { title: 'Output Layer', html: '<span class="token active">kucing</span> <span class="token active">duduk</span> <span class="token">diatas</span> <span class="token">karpet</span>', note: 'Semua token kaya konteks, siap untuk layer berikutnya' },
       ];
-      var s = stages[currentStep - 1] || stages[0];
+      var s = stages[currentStep] || stages[0];
       textDemoEl.innerHTML =
         '<h5>Input</h5>' +
         '<div class="demo-title">' + s.title + '</div>' +
@@ -370,8 +283,10 @@
     function draw() {
       var step = D.decoder_detail.steps[currentStep - 1];
       svg.selectAll('*').remove();
-      var W = 700, H = 320;
+      var W = 700, H = 350;
+      svg.attr('viewBox','0 0 700 350');
       var g = svg.append('g');
+      svg.append('defs').append('marker').attr('id',svg.attr('id')+'-arrow').attr('viewBox','0 0 10 10').attr('refX',9).attr('refY',5).attr('markerWidth',4).attr('markerHeight',4).attr('orient','auto').append('path').attr('d','M0,0 L10,5 L0,10 Z').attr('fill',C.text_muted);
 
       var components = [
         { label: 'Output Embedding', y: 20, color: C.dec_color, h: 25 },
@@ -471,10 +386,12 @@
             .attr('x2', cx).attr('y2', nextY - 2)
             .attr('stroke', C.border)
             .attr('stroke-width', 1.5)
+            .attr('marker-end','url(#'+svg.attr('id')+'-arrow)')
             .attr('opacity', opacity * 0.6);
         }
       });
 
+      components.forEach(function(comp,i){if(comp.label==='Add & Norm')g.append('path').attr('d',d3.line()([[cx+boxW/2,components[i-1].y-5],[cx+boxW/2+30,components[i-1].y-5],[cx+boxW/2+30,comp.y+comp.h/2],[cx+boxW/2,comp.y+comp.h/2]])).attr('fill','none').attr('stroke',C.res_color).attr('marker-end','url(#'+svg.attr('id')+'-arrow)');});
       // Output label (step 5)
       if (currentStep === 5) {
         g.append('text')

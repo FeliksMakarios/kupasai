@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -144,12 +146,7 @@
     </div>
     <div class="viz-sidebar">
       <h3>Mengapa Ini Penting?</h3>
-      <p>
-        Word analogies membuktikan bahwa embeddings menangkap
-        <strong>relasi semantik</strong>, bukan sekadar kemiripan
-        permukaan. Dua kata tidak harus sering muncul bersama untuk
-        memiliki hubungan yang bisa dipelajari model.
-      </p>
+      <p>Analogi pada demo ini muncul karena vektor dirancang manual. Pada embedding terlatih, analogi dapat muncul tetapi tidak selalu berhasil. Dimensi semantik berlabel di sini adalah alat bantu, bukan deskripsi dimensi Word2Vec atau Transformer. Hindari menafsirkan nilai buatan tentang profesi dan gender sebagai fakta sosial.</p>
       <p>
         Vektor <code>raja - ratu</code> menangkap arah "gender" di
         ruang vektor. Menambahkan arah ini ke kata lain mengubah
@@ -206,12 +203,7 @@
         information retrieval, semantic search, dan clustering teks
         semuanya mengandalkan metrik ini.
       </p>
-      <p>
-        Dalam praktik, kata-kata dengan cosine similarity di atas 0.7
-        biasanya dianggap mirip, sedangkan di bawah 0.3 dianggap tidak
-        terkait. Coba bandingkan kata yang menurut Anda mirip dan
-        lihat apakah model setuju dengan intuisi Anda.
-      </p>
+      <p>Tidak ada ambang cosine similarity universal untuk semua model dan tugas. Tentukan ambang menggunakan contoh berlabel dan evaluasi pada domain yang sesuai. Grafik PCA hanya proyeksi dua dimensi, sehingga kedekatan di grafik dapat berbeda dari kemiripan di ruang asal.</p>
 
       <h4>Coba Sendiri</h4>
       <div class="sim-controls sim-controls-sidebar">
@@ -228,13 +220,29 @@
   </div>
 </div>
 
+
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Vektor, sudut, dan dot product. <strong>Durasi:</strong> sekitar 25 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Vektor semantik manual 10 dimensi, diproyeksikan dengan PCA. Bukan hasil pelatihan embedding.</p><p>Dimensi berlabel merupakan rancangan ilustrasi. Tidak ada ambang cosine universal. Analogi dan stereotip dalam nilai manual tidak menjadi fakta bahasa atau sosial.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Apakah jarak dekat pada PCA selalu berarti cosine tinggi pada ruang asal?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Cari analogi yang gagal dan jelaskan batas contoh ini.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://arxiv.org/abs/1301.3781" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/word-embeddings" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="../../assets/vendor/d3.v7.9.0.min.js"></script>
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
 </body>
 </html>

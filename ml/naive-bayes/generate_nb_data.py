@@ -11,12 +11,14 @@ import os
 import pandas as pd
 from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix, f1_score
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 DATASET_DIR = os.environ.get(
     "DASAR_ML_DIR",
-    "https://raw.githubusercontent.com/FeliksMakarios/dasar-machine-learning/main",
+    "https://raw.githubusercontent.com/FeliksMakarios/dasar-machine-learning/41db3dc8c328eab6e7fa5f5604194ab5e49c4d05",
 )
 
 
@@ -73,17 +75,17 @@ bayes_toy = {
 # PART 2: Titanic dataset (real, GaussianNB)
 # ============================================================
 
-df_train = pd.read_csv(dataset_path("buku1", "titanic", "train.csv"))
-df_test = pd.read_csv(dataset_path("buku1", "titanic", "test.csv"))
-df_gender = pd.read_csv(dataset_path("buku1", "titanic", "gender_submission.csv"))
-df_joined = pd.merge(df_test, df_gender, on="PassengerId")
-
+df = pd.read_csv(dataset_path("buku1", "titanic", "train.csv"))
+df_train, df_joined = train_test_split(df, test_size=0.2, random_state=42, stratify=df["Survived"])
+df_train = df_train.reset_index(drop=True)
+df_joined = df_joined.reset_index(drop=True)
+imputation = {"Age": float(df_train["Age"].median()), "Fare": float(df_train["Fare"].median()), "Embarked": df_train["Embarked"].mode()[0]}
 
 def preprocess(d):
     d = d.drop(["PassengerId", "Name", "Ticket", "Cabin"], axis=1)
-    d["Age"] = d["Age"].fillna(d["Age"].median())
-    d["Fare"] = d["Fare"].fillna(d["Fare"].median())
-    d["Embarked"] = d["Embarked"].fillna(d["Embarked"].mode()[0])
+    d["Age"] = d["Age"].fillna(imputation["Age"])
+    d["Fare"] = d["Fare"].fillna(imputation["Fare"])
+    d["Embarked"] = d["Embarked"].fillna(imputation["Embarked"])
     d["Sex"] = d["Sex"].map({"male": 0, "female": 1})
     d["Embarked"] = d["Embarked"].map({"C": 0, "Q": 1, "S": 2})
     return d
@@ -103,30 +105,18 @@ y_pred = model.predict(X_test)
 y_proba = model.predict_proba(X_test)
 acc = accuracy_score(y_test, y_pred)
 
-# Sample passengers for the interactive picker (first 12 of test set)
-passengers_raw = df_joined.head(12)
-sample_idx = passengers_raw.index
-titanic_samples = []
-for i in sample_idx:
-    row = df_joined.loc[i]
-    titanic_samples.append({
-        "name": row["Name"],
-        "pclass": int(row["Pclass"]),
-        "sex": row["Sex"],
-        "age": None if pd.isna(row["Age"]) else float(row["Age"]),
-        "fare": round(float(row["Fare"]), 2) if not pd.isna(row["Fare"]) else None,
-        "embarked": row["Embarked"],
-        "actual": int(row["Survived"]),
-        "predicted": int(y_pred[list(df_joined.index).index(i)]),
-        "proba_survive": round(float(y_proba[list(df_joined.index).index(i)][1]), 4),
-    })
-
+# Publish aggregate evaluation without passenger-level records.
 data = {
     "bayes_toy": bayes_toy,
     "titanic": {
         "n_test": int(len(df_joined)),
+        "n_train": len(df_train),
+        "seed": 42,
+        "label_source": "Survived from labeled train.csv, stratified 80/20 holdout",
+        "imputation_train_only": imputation,
+        "f1": round(float(f1_score(y_test, y_pred)), 4),
+        "confusion_matrix": confusion_matrix(y_test, y_pred).tolist(),
         "accuracy": round(float(acc), 4),
-        "samples": titanic_samples,
     },
 }
 

@@ -21,6 +21,8 @@
       } catch(e) {}
     })();
   </script>
+<link rel="stylesheet" href="../../assets/css/learning.css">
+<script src="../../assets/js/learning.js"></script>
 </head>
 <body>
 
@@ -249,7 +251,7 @@
       <p>
         Mesin inferensi (backward chaining dengan unifikasi peubah dan
         penggantian nama otomatis tiap aturan dipanggil) menjawab keenam
-        kueri buku persis sama: ayah Kelly = James; nenek Kelly = Helen dan
+        kueri buku dari aturan yang ditampilkan: ayah Kelly = James; nenek Kelly = Helen dan
         Sophie; saudara laki-laki Kelly = Harry; bibi Kelly = Jess dan
         Arline.
       </p>
@@ -269,13 +271,29 @@
   </div>
 </div>
 
+
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Graf, logika, dan batasan. <strong>Durasi:</strong> sekitar 40 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Graf AND-OR, pewarnaan, SEND+MORE, dan aturan keluarga ditetapkan dalam kode.</p><p>Simpul pengelompokan AND bukan aksi tambahan. Biaya dihitung pada ruas aksi asli. Rujukan nomor buku lama belum diverifikasi terhadap edisi dan halaman.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Mengapa carry terakhir SEND+MORE harus 1?</li>
+<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
+<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Refleksi dan transfer:</strong> Turunkan O=0 dari kolom ribuan dan keunikan digit, lalu jelaskan pengurangan kandidat.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<p><a href="https://aima.cs.berkeley.edu/" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/kecerdasan-komputasional/teknik-pemecahan" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+</section><!-- learning-aid:end -->
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; Kecerdasan Komputasional INF20052</span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="../../assets/vendor/d3.v7.9.0.min.js"></script>
 <script src="data.js"></script>
 <script src="viz.js"></script>
 <script src="/kupasai/assets/js/theme.js"></script>
+<script src="../../assets/js/enhancements.js"></script>
 </body>
 </html>

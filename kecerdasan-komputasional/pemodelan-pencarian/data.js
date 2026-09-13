@@ -310,6 +310,32 @@ var KK1_DATA = {
     }
   },
   "peta": {
+    "ucs": {
+      "jalur": [
+        "Arad",
+        "Sibiu",
+        "Rimnicu",
+        "Pitesti",
+        "Bucharest"
+      ],
+      "jarak": 418,
+      "dikunjungi": 13,
+      "urutan": [
+        "Arad",
+        "Zerind",
+        "Timisoara",
+        "Sibiu",
+        "Oradea",
+        "Rimnicu",
+        "Lugoj",
+        "Fagaras",
+        "Mehadia",
+        "Pitesti",
+        "Craiova",
+        "Drobeta",
+        "Bucharest"
+      ]
+    },
     "nodes": [
       "Arad",
       "Timisoara",

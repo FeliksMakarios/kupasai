@@ -55,6 +55,8 @@
   var startIdx = S.default_start_idx;
   var endIdx = S.default_end_idx;
   var pickMode = 'start';
+  var noAnswer=false;
+  var maxSpan=8;
 
   function renderTokens() {
     var html = '';
@@ -64,7 +66,7 @@
       if (i === startIdx) cls += ' is-start';
       else if (i === endIdx) cls += ' is-end';
       else if (i > startIdx && i < endIdx) cls += ' is-span';
-      html += '<div class="' + cls + '" data-idx="' + i + '">' + tok + '</div>';
+      html += '<button type="button" class="' + cls + '" data-idx="' + i + '"'+(i<qLen?' disabled':'')+'>' + tok + '</button>';
     });
     document.getElementById('qa-token-row').innerHTML = html;
 
@@ -74,6 +76,8 @@
         if (idx < qLen) return; // hanya token konteks yang bisa dipilih
         if (pickMode === 'start') { startIdx = Math.min(idx, endIdx); }
         else { endIdx = Math.max(idx, startIdx); }
+        noAnswer=false;
+        if(endIdx-startIdx+1>maxSpan)endIdx=startIdx+maxSpan-1;
         renderTokens();
         renderAnswer();
       });
@@ -81,9 +85,9 @@
   }
 
   function renderAnswer() {
-    var span = allTokens.slice(startIdx, endIdx + 1).join(' ');
+    var span = noAnswer ? 'Tidak ada jawaban yang didukung konteks (skenario ilustratif).' : allTokens.slice(startIdx, endIdx + 1).join(' ');
     document.getElementById('qa-answer-box').innerHTML =
-      '<strong>Q:</strong> ' + S.question.join(' ') + '<br>' +
+      '<strong>Q:</strong> ' + (noAnswer ? 'Who manufactured this MP3 player?' : S.question.join(' ')) + '<br>' +
       '<strong>A:</strong> <strong>' + span + '</strong>';
   }
 
@@ -116,6 +120,11 @@
     document.getElementById('qa-logit-bars').innerHTML = html;
   }
 
+  var qaControls=document.createElement('div');
+  qaControls.innerHTML='<button type="button" id="qa-best-span">Cari pasangan skor terbaik (maks. 8 token)</button> <button type="button" id="qa-no-answer">Skenario tanpa jawaban</button>';
+  document.getElementById('qa-answer-box').before(qaControls);
+  document.getElementById('qa-best-span').addEventListener('click',function(){var best=-Infinity;for(var i=qLen;i<allTokens.length;i++)for(var j=i;j<Math.min(i+maxSpan,allTokens.length);j++){var score=S.start_scores[i]+S.end_scores[j];if(score>best){best=score;startIdx=i;endIdx=j;}}noAnswer=false;renderTokens();renderAnswer();});
+  document.getElementById('qa-no-answer').addEventListener('click',function(){noAnswer=true;renderAnswer();});
   renderTokens();
   renderAnswer();
   renderLogitBars();
@@ -142,15 +151,7 @@
   }
 
   function renderF1Table() {
-    var maxF1 = Math.max.apply(null, D.f1_table.map(function (m) { return m.f1; }));
-    var html = '';
-    D.f1_table.slice().sort(function (a, b) { return b.f1 - a.f1; }).forEach(function (m) {
-      var pct = (m.f1 / maxF1) * 100;
-      html += '<div class="fi-row"><div class="fi-label">' + m.model + ' (' + m.params + ')</div>' +
-        '<div class="fi-track"><div class="fi-fill" style="width:' + pct + '%"></div></div>' +
-        '<div class="fi-val">' + m.f1.toFixed(1) + '</div></div>';
-    });
-    document.getElementById('f1-table').innerHTML = html;
+    document.getElementById('f1-table').innerHTML = '<p>Perbandingan F1 memerlukan nama checkpoint, pembagian data, dan prosedur evaluasi yang sama. Metadata untuk angka perbandingan lama belum terverifikasi. Gunakan <a href="https://rajpurkar.github.io/SQuAD-explorer/" target="_blank" rel="noopener">sumber SQuAD</a> dan laporan evaluasi checkpoint yang dipilih.</p>';
   }
 
   renderReferenceAnswers();
