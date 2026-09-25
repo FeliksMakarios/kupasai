@@ -16,7 +16,16 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const base=`http://127.0.0.1:${server.address().port}/kupasai/`;
  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH||undefined,args:['--no-sandbox']});
- const page=await browser.newPage();const errors=[];let current='',checks=0;
+ const page=await browser.newPage();
+ // Theme switches must not reload the page: a marker on window survives only without a reload.
+ async function toggleTheme(){
+  const before=await page.locator('html').getAttribute('data-theme');
+  await page.evaluate(()=>{window.__sameDocument=true;});
+  await page.locator('#theme-toggle').click();
+  await page.waitForFunction(b=>document.documentElement.getAttribute('data-theme')!==b&&!document.documentElement.hasAttribute('data-rerendering'),before);
+  assert.equal(await page.evaluate(()=>window.__sameDocument===true),true,`Theme switch reloaded ${current}`);
+  return before;
+ }const errors=[];let current='',checks=0;
  page.on('pageerror',e=>errors.push(`${current}: ${e.message}`));
  page.on('console',e=>{if(e.type()==='error')errors.push(`${current}: ${e.text()}`);});
  try {
@@ -30,8 +39,7 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
    }
    const reflection=page.locator('#reflection');if(await reflection.count())await reflection.fill('Catatan uji tema');
    const active=(await page.locator('.tab-btn.active').count())?await page.locator('.tab-btn.active').getAttribute('data-tab'):null;
-   const before=await page.locator('html').getAttribute('data-theme');
-   await Promise.all([page.waitForEvent('load'),page.locator('#theme-toggle').click()]);
+   const before=await toggleTheme();
    assert.notEqual(await page.locator('html').getAttribute('data-theme'),before,file);
    if(active)assert.equal(await page.locator('.tab-btn.active').getAttribute('data-tab'),active,file);
    if(await reflection.count())assert.equal(await reflection.inputValue(),'Catatan uji tema',file);
@@ -46,8 +54,10 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   assert(!/NaN|Infinity/.test(await page.locator('#bleu-metrics').innerText()));
   await page.goto(base+'nlp/rnn/');await page.locator('#step-next').click();await page.locator('#step-next').click();
   const step=await page.locator('#step-indicator').innerText();
-  await Promise.all([page.waitForEvent('load'),page.locator('#theme-toggle').click()]);
+  current='rnn theme';await toggleTheme();
   assert.equal(await page.locator('#step-indicator').innerText(),step);
+  // Switching back rebuilds again from the same inputs.
+  await toggleTheme();assert.equal(await page.locator('#step-indicator').innerText(),step);
   await page.goto(base+'nlp/question-answering/');await page.locator('#qa-best-span').click();
   assert((await page.locator('#qa-answer-box').innerText()).includes('6000 hours'));
   await page.locator('#qa-no-answer').click();assert((await page.locator('#qa-answer-box').innerText()).includes('Who manufactured'));
@@ -61,6 +71,10 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   const smallest=await page.evaluate(()=>{const svg=document.querySelector('.tab-content.active svg');const k=svg.getBoundingClientRect().width/svg.viewBox.baseVal.width;return Math.min(...[...svg.querySelectorAll('text')].filter(t=>t.textContent.trim()).map(t=>parseFloat(getComputedStyle(t).fontSize)*k));});
   assert(smallest>=7.5,`Diagram text too small on phones: ${smallest}px`);
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
+  // The navbar stays on one row on phones; the course code moves into the page header.
+  current='navbar mobile';await page.goto(base+'kecerdasan-komputasional/pemodelan-pencarian/');
+  assert((await page.evaluate(()=>document.querySelector('.navbar').getBoundingClientRect().height))<=64);
+  assert(await page.locator('.page-meta-mobile').isVisible());
   current='expected-404';const missing=await page.goto(base+'halaman-yang-tidak-ada/');assert.equal(missing.status(),404);
   assert((await page.locator('h1').innerText()).includes('tidak ditemukan'));
   errors.splice(0,errors.length,...errors.filter(e=>!e.startsWith('expected-404:')));

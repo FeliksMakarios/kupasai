@@ -97,3 +97,19 @@ class Publishing(unittest.TestCase):
         for tag,a in Tags(s).tags:
             url=a.get('src',a.get('href','')).split('#')[0]
             if url.startswith('/kupasai/'):self.assertTrue((ROOT/url.removeprefix('/kupasai/')).exists(),url)
+class Maintenance(unittest.TestCase):
+    def test_manifest(self):
+        m=json.loads((ROOT/'site.webmanifest').read_text())
+        for k in ['name','short_name','description','lang','start_url','scope','icons']:self.assertIn(k,m)
+        self.assertEqual(m['start_url'],'/kupasai/');self.assertEqual(m['scope'],'/kupasai/')
+    def test_shared_scripts_and_paths(self):
+        for p in [p for p in ROOT.glob('**/*.html') if 'node_modules' not in p.parts]:
+            s=p.read_text();rel=p.relative_to(ROOT)
+            self.assertNotRegex(s,r'(src|href)="\.\./',str(rel))
+            if 'learning.js' in s:self.assertIn('learning.js" defer',s,str(rel))
+            if (p.parent/'viz.js').exists():
+                self.assertIn('<noscript>',s,str(rel))
+                self.assertNotIn('tab-btn',(p.parent/'viz.js').read_text(),str(rel))
+                if 'class="tab-btn' in s:self.assertLess(s.index('assets/js/tabs.js'),s.index('src="viz.js"'),str(rel))
+                themed='data-theme' in (p.parent/'viz.js').read_text()
+                self.assertEqual(themed,'data-theme-aware' in s,str(rel))

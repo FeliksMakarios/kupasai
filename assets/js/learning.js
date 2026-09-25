@@ -103,10 +103,18 @@
         el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();el.dispatchEvent(new MouseEvent('click',{bubbles:true}));}});
       });
     }
-    document.querySelectorAll('table').forEach(function(t){var wrap=document.createElement('div');wrap.className='table-scroll';t.before(wrap);wrap.appendChild(t);});
-    accessible(document);
-    document.querySelectorAll('svg').forEach(prepareSvg);
-    markScrollRegions();
+    // Everything below can run again after the main content is rebuilt for a theme switch.
+    function enhance(){
+      document.querySelectorAll('table').forEach(function(t){if(t.parentElement.classList.contains('table-scroll'))return;var wrap=document.createElement('div');wrap.className='table-scroll';t.before(wrap);wrap.appendChild(t);});
+      accessible(document);
+      document.querySelectorAll('svg').forEach(prepareSvg);
+      markScrollRegions();
+      // On phones the course code moves from the navbar into the page header.
+      var meta=document.querySelector('.navbar-meta'),head=document.querySelector('.page-header-content');
+      if(meta&&head&&!head.querySelector('.page-meta-mobile')){var m=document.createElement('p');m.className='page-meta-mobile';m.textContent=meta.textContent;var back=head.querySelector('.back-link');(back||head.firstElementChild).after(m);}
+      document.querySelectorAll('input,select,textarea').forEach(function(el){if(el.id && !document.querySelector('label[for="'+el.id+'"]')&&!el.hasAttribute('aria-label'))el.setAttribute('aria-label',el.id.replace(/-/g,' '));});
+      bindNote();
+    }
     var pending=new Set(),queued=false;
     function flush(){queued=false;pending.forEach(prepareSvg);pending.clear();scheduleScrollRegions();}
     new MutationObserver(function(records){records.forEach(function(r){
@@ -118,8 +126,10 @@
       if(r.type==='childList')scheduleScrollRegions();
     });}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['viewBox']});
     // Learning notes persist per page in this browser only.
-    var note=document.getElementById('reflection'),noteKey='kupasai-reflection:'+location.pathname,status=document.getElementById('reflection-status');
-    if(note){
+    function bindNote(){
+      var note=document.getElementById('reflection'),noteKey='kupasai-reflection:'+location.pathname,status=document.getElementById('reflection-status');
+      if(!note||note.hasAttribute('data-bound'))return;
+      note.setAttribute('data-bound','');
       try{var stored=localStorage.getItem(noteKey);if(stored&&!note.value)note.value=stored;}catch(e){}
       note.addEventListener('input',function(){
         try{if(note.value)localStorage.setItem(noteKey,note.value);else localStorage.removeItem(noteKey);
@@ -127,17 +137,40 @@
         catch(e){if(status)status.textContent='Catatan tidak dapat disimpan di peramban ini.';}
       });
     }
-    var saved;
-    try {saved=JSON.parse(sessionStorage.getItem(key));sessionStorage.removeItem(key);} catch(e) {}
-    if(saved){
+    enhance();
+    function replay(saved){
       replaying=true;
       saved.history.forEach(function(e){var el=document.querySelector(e.selector);if(!el)return;if(e.type==='click')el.dispatchEvent(new MouseEvent('click',{bubbles:true}));else{el.value=e.value;if(e.checked!==undefined)el.checked=e.checked;el.dispatchEvent(new Event(e.type,{bubbles:true}));}});
       history=saved.history;replaying=false;
       requestAnimationFrame(function(){window.scrollTo(0,saved.scroll);});
     }
+    var saved;
+    try {saved=JSON.parse(sessionStorage.getItem(key));sessionStorage.removeItem(key);} catch(e) {}
+    if(saved)replay(saved);
+    // Theme switch without a reload: rebuild <main> from the page source, rerun its
+    // scripts (data and the D3 bundle stay loaded), then replay the learner's inputs.
+    window.KupasLearning.rerender=function(){
+      var main=document.querySelector('main');
+      if(!main||!window.fetch||!window.DOMParser||location.protocol==='file:')return Promise.reject(new Error('unsupported'));
+      var state={history:history.slice(),scroll:scrollY};
+      return fetch(location.pathname+location.search,{credentials:'same-origin'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.text();}).then(function(html){
+        var doc=new DOMParser().parseFromString(html,'text/html'),fresh=doc.querySelector('main');
+        if(!fresh)throw new Error('no main');
+        var node=document.importNode(fresh,true);
+        node.style.minHeight=main.offsetHeight+'px';
+        main.replaceWith(node);
+        // Imported <script> elements stay inert; page scripts run again as fresh copies.
+        var sources=[].slice.call(doc.body.querySelectorAll('script[src]')).map(function(x){return x.getAttribute('src');})
+          .filter(function(src){return !/vendor\/|data\.js$|theme\.js$|learning\.js$/.test(src);});
+        return sources.reduce(function(chain,src){return chain.then(function(){return new Promise(function(resolve,reject){
+          var s=document.createElement('script');s.src=src;s.onload=function(){s.remove();resolve();};s.onerror=reject;document.body.appendChild(s);
+        });});},Promise.resolve()).then(function(){
+          enhance();replay(state);
+          requestAnimationFrame(function(){node.style.minHeight='';});
+        });
+      });
+    };
     var main=document.querySelector('main')||document.querySelector('.viz-container,.content-wrapper,.topic-table-wrap');
     if(main){main.id=main.id||'main-content';var skip=document.createElement('a');skip.className='skip-link';skip.href='#'+main.id;skip.textContent='Langsung ke materi';document.body.prepend(skip);main.setAttribute('tabindex','-1');}
-    var inputs=document.querySelectorAll('input,select,textarea');
-    inputs.forEach(function(el){if(el.id && !document.querySelector('label[for="'+el.id+'"]')&&!el.hasAttribute('aria-label'))el.setAttribute('aria-label',el.id.replace(/-/g,' '));});
   });
 })();

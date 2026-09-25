@@ -1,6 +1,12 @@
 {
   "name": "KupasAI",
   "short_name": "KupasAI",
+  "description": "Visualisasi interaktif mata kuliah Computer Science dan AI dalam Bahasa Indonesia.",
+  "lang": "id",
+  "dir": "ltr",
+  "id": "/kupasai/",
+  "start_url": "/kupasai/",
+  "scope": "/kupasai/",
   "icons": [
     { "src": "/kupasai/assets/img/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/kupasai/assets/img/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
