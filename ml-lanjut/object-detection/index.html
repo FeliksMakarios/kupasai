@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Deteksi Objek: IoU, NMS &amp; YOLO - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/ml-lanjut/object-detection/">
+  <meta name="description" content="Dari lokalisasi satu objek ke deteksi banyak objek sekaligus. Jelajahi metrik IoU, algoritma Non-Max Suppression, dan konsep grid di balik YOLO (You Only Look…">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Deteksi Objek: IoU, NMS &amp; YOLO - KupasAI">
+  <meta property="og:description" content="Dari lokalisasi satu objek ke deteksi banyak objek sekaligus. Jelajahi metrik IoU, algoritma Non-Max Suppression, dan konsep grid di balik YOLO (You Only Look…">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/ml-lanjut/object-detection/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-lanjut.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Deteksi Objek: IoU, NMS &amp; YOLO - KupasAI">
+  <meta name="twitter:description" content="Dari lokalisasi satu objek ke deteksi banyak objek sekaligus. Jelajahi metrik IoU, algoritma Non-Max Suppression, dan konsep grid di balik YOLO (You Only Look…">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-lanjut.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -44,6 +61,8 @@
     </svg>
   </button>
 </nav>
+
+<main id="main-content" tabindex="-1">
 
 <div class="page-header">
   <div class="page-header-content">
@@ -98,7 +117,7 @@
       <div class="iou-verdict" id="iou-verdict"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Mengukur Kecocokan Bounding Box</h3>
+      <h2>Mengukur Kecocokan Bounding Box</h2>
       <p>
         <code>IoU = Area Intersection / Area Union</code>. Semakin besar
         tumpang tindih relatif terhadap gabungan kedua kotak, semakin
@@ -128,7 +147,7 @@
       <div class="nms-steps" id="nms-steps"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Satu Objek, Satu Box</h3>
+      <h2>Satu Objek, Satu Box</h2>
       <p>
         Banyak sel grid sering mendeteksi objek yang sama, menghasilkan
         beberapa bounding box tumpang tindih. NMS memilih box dengan skor
@@ -159,7 +178,7 @@
       </div>
     </div>
     <div class="viz-sidebar">
-      <h3>Encoding Relatif terhadap Sel</h3>
+      <h2>Encoding Relatif terhadap Sel</h2>
       <p>
         <code>bx, by</code> harus berada di rentang [0,1] karena titik
         tengah objek harus berada di dalam sel yang bertanggung jawab.
@@ -179,19 +198,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Luas persegi panjang dan probabilitas. <strong>Durasi:</strong> sekitar 30 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Kotak ilustratif dengan IoU dan NMS yang dihitung dari koordinat.</p><p>Grid dan anchor adalah penyederhanaan keluarga YOLO berbasis anchor, bukan semua versi YOLO. Normalisasi ukuran kotak harus menyebut acuannya. NMS contoh ini satu kelas.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Apakah dua kotak dengan IoU tinggi selalu mewakili objek yang sama?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Geser kotak prediksi secara horizontal, vertikal, dan skala, lalu bandingkan Sebelum NMS dan Sesudah NMS.</li>
+<li><strong>Perhitungan:</strong> Hitung IoU = luas irisan / luas gabungan dari koordinat kedua kotak dan cocokkan dengan nilai di panel.</li>
 <li><strong>Refleksi dan transfer:</strong> Jelaskan mengapa evaluasi deteksi memerlukan kelas dan pencocokan unik.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://arxiv.org/abs/1612.08242" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml-lanjut/object-detection" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; ML Lanjut INF24141</span>
 </footer>

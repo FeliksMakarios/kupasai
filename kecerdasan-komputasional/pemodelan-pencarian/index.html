@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pemodelan Ruang Keadaan dan Algoritma Pencarian - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/pemodelan-pencarian/">
+  <meta name="description" content="Dari robot penyedot debu dua ruangan sampai peta rute Arad–Bucharest: bagaimana persoalan nyata diubah menjadi ruang keadaan, lalu dipecahkan dengan pencarian…">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Pemodelan Ruang Keadaan dan Algoritma Pencarian - KupasAI">
+  <meta property="og:description" content="Dari robot penyedot debu dua ruangan sampai peta rute Arad–Bucharest: bagaimana persoalan nyata diubah menjadi ruang keadaan, lalu dipecahkan dengan pencarian…">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/pemodelan-pencarian/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-komp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pemodelan Ruang Keadaan dan Algoritma Pencarian - KupasAI">
+  <meta name="twitter:description" content="Dari robot penyedot debu dua ruangan sampai peta rute Arad–Bucharest: bagaimana persoalan nyata diubah menjadi ruang keadaan, lalu dipecahkan dengan pencarian…">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-komp.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -44,6 +61,8 @@
     </svg>
   </button>
 </nav>
+
+<main id="main-content" tabindex="-1">
 
 <div class="page-header">
   <div class="page-header-content">
@@ -97,7 +116,7 @@
       </table>
     </div>
     <div class="viz-sidebar">
-      <h3>Tiga Tahap Pemodelan</h3>
+      <h2>Tiga Tahap Pemodelan</h2>
       <p>
         Setiap persoalan diformulasikan lewat tiga tahap: ubah ke himpunan
         keadaan, definisikan sistem produksi, lalu tentukan cara solusi dicapai.
@@ -139,7 +158,7 @@
       </table>
     </div>
     <div class="viz-sidebar">
-      <h3>Perbandingan Jumlah Ruas dan Biaya</h3>
+      <h2>Perbandingan Jumlah Ruas dan Biaya</h2>
       <p>BFS menemukan jalur tiga ruas Arad–Sibiu–Fagaras–Bucharest, sepanjang 450 km. Jumlah simpul yang dikeluarkan dari frontier ditampilkan pada hasil algoritma. BFS meminimumkan jumlah ruas pada graf ini, bukan jumlah kilometer. UCS menemukan jalur Arad–Sibiu–Rimnicu–Pitesti–Bucharest, sepanjang 418 km.</p>
       <p>
         <strong>DFS</strong> menyelam ke satu cabang sedalam mungkin. Dengan
@@ -173,7 +192,7 @@
       <svg id="hc-chart-2" viewBox="0 0 640 220"></svg>
     </div>
     <div class="viz-sidebar">
-      <h3>Temuan yang Mengejutkan</h3>
+      <h2>Temuan yang Mengejutkan</h2>
       <p>
         Untuk keadaan awal wajib pada modul, <strong>kedua varian</strong>
         Simple Hill Climbing maupun Steepest-Ascent justru berhasil mencapai
@@ -200,7 +219,7 @@
   <div class="viz-layout">
     <div class="viz-main">
       <p class="section-note">
-        Pohon permainan pada Gambar 3.23. Lapisan akar adalah pemain maksimum.
+        Pohon permainan dari modul lab (Tugas 5). Lapisan akar adalah pemain maksimum.
         Klik tombol untuk beralih antara Min-max murni dan Alpha-Beta Pruning.
       </p>
       <div class="mode-buttons" id="minimax-mode-buttons">
@@ -216,8 +235,8 @@
 
       <div class="section-label" style="margin-top:2rem">Contoh Tambahan: Pohon Asli Gambar 3.23 Buku</div>
       <p class="section-note">
-        Pohon dari modul lab di atas bukan pohon yang sama dengan contoh buku
-        &mdash; berikut rekonstruksi contoh Gambar 3.23 (Bab 3.3.2 Alpha Beta
+        Pohon dari modul lab di atas bukan pohon yang sama dengan contoh buku.
+        Berikut rekonstruksi contoh Gambar 3.23 (Bab 3.3.2 Alpha Beta
         Pruning): daun {3,5,6,2,7,9,1,0,2}, akar A = maks{B,C,D} = 3.
       </p>
       <div class="mode-buttons" id="minimax-mode-buttons-buku">
@@ -231,7 +250,7 @@
       </table>
     </div>
     <div class="viz-sidebar">
-      <h3>Pemangkasan Tanpa Mengubah Hasil</h3>
+      <h2>Pemangkasan Tanpa Mengubah Hasil</h2>
       <p>
         Nilai akar pohon permainan ini adalah <strong>5</strong>, identik pada
         Min-max murni maupun Alpha-Beta Pruning.
@@ -262,19 +281,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Graf dan keadaan. <strong>Durasi:</strong> sekitar 35 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Graf kecil dan algoritma pencarian diimplementasikan langsung dalam Python.</p><p>BFS minimum ruas, UCS minimum biaya nonnegatif. Greedy tidak menjamin biaya optimal. Hitungan kunjungan berarti node dikeluarkan dan diproses.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Apakah jalur tiga ruas selalu lebih murah dari empat ruas?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Bandingkan BFS, DFS, Greedy Best First, dan Uniform Cost Search pada peta, lalu Min-max Murni dengan Alpha-Beta Pruning.</li>
+<li><strong>Perhitungan:</strong> Jumlahkan biaya ruas jalur UCS secara manual dan telusuri satu pemangkasan alpha-beta beserta nilai alpha dan beta-nya.</li>
 <li><strong>Refleksi dan transfer:</strong> Ubah satu bobot ruas dan bandingkan BFS dengan UCS.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://aima.cs.berkeley.edu/" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/kecerdasan-komputasional/pemodelan-pencarian" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; Kecerdasan Komputasional INF20052</span>
 </footer>

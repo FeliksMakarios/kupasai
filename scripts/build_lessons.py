@@ -2,26 +2,29 @@
 from pathlib import Path
 from html import escape
 import re
-from lessons import LESSONS
+from lessons import LESSONS, STEPS
 ROOT=Path(__file__).resolve().parents[1]
 SOURCE='https://github.com/FeliksMakarios/kupasai/tree/main/'
 for topic,(prereq,minutes,origin,note,predict,transfer,reference) in LESSONS.items():
     page=ROOT/topic/'index.html';s=page.read_text()
+    explore,compute=STEPS[topic]
     section=f'''<!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> {escape(prereq)}. <strong>Durasi:</strong> sekitar {minutes} menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>{escape(origin)}</p><p>{escape(note)}</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> {escape(predict)}</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> {escape(explore)}</li>
+<li><strong>Perhitungan:</strong> {escape(compute)}</li>
 <li><strong>Refleksi dan transfer:</strong> {escape(transfer)}</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="{escape(reference)}" target="_blank" rel="noopener">Rujukan utama</a> · <a href="{SOURCE+topic}" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->'''
-    s=re.sub(r'<!-- learning-aid:start -->[\s\S]*?<!-- learning-aid:end -->','',s)
-    pos=s.find('<footer')
+    s=re.sub(r'<!-- learning-aid:start -->[\s\S]*?<!-- learning-aid:end -->\n?','',s)
+    pos=s.find('</main>')
+    if pos<0:pos=s.find('<footer')
     if pos<0:pos=s.find('</body>')
     s=s[:pos]+section+'\n'+s[pos:]
     page.write_text(s)

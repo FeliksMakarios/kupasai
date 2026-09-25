@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tensor &amp; Autograd - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/nlp/autograd/">
+  <meta name="description" content="Apa yang sebenarnya terjadi di balik .backward()? Membangun mini deep learning framework dari nol untuk memahami computational graph dan gradien otomatis.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Tensor &amp; Autograd - KupasAI">
+  <meta property="og:description" content="Apa yang sebenarnya terjadi di balik .backward()? Membangun mini deep learning framework dari nol untuk memahami computational graph dan gradien otomatis.">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/nlp/autograd/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tensor &amp; Autograd - KupasAI">
+  <meta name="twitter:description" content="Apa yang sebenarnya terjadi di balik .backward()? Membangun mini deep learning framework dari nol untuk memahami computational graph dan gradien otomatis.">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -45,6 +62,8 @@
   </button>
 </nav>
 
+<main id="main-content" tabindex="-1">
+
 <div class="page-header">
   <div class="page-header-content">
     <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke Daftar Topik</a>
@@ -85,7 +104,7 @@
       <div class="verdict-box" id="ag-verdict" style="display:none"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Bug Akumulasi Gradien (Modul 3.2)</h3>
+      <h2>Bug Akumulasi Gradien (Modul 3.2)</h2>
       <p>
         Graf ini persis dari notebook: <code>a=[1,2,3,4,5]</code>,
         <code>b=[2,2,2,2,2]</code>, <code>c=[5,4,3,2,1]</code>,
@@ -133,7 +152,7 @@
       <p class="chain-result" id="chain-result"></p>
     </div>
     <div class="viz-sidebar">
-      <h3>Mengapa Gradien Bisa Hilang atau Meledak?</h3>
+      <h2>Mengapa Gradien Bisa Hilang atau Meledak?</h2>
       <p>
         Backward pass pada operasi perkalian mengalikan gradien dengan nilai
         input lain di setiap langkah (Modul 3.3.2). Jika faktor ini
@@ -157,19 +176,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Aturan rantai. <strong>Durasi:</strong> sekitar 25 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Graf tensor kecil dengan perhitungan gradien manual.</p><p>Dalam PyTorch, backward mengakumulasi gradien pada tensor leaf. Kosongkan gradien sebelum langkah baru bila tidak menghendaki akumulasi lintas batch.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Berapa gradien b jika b digunakan pada dua cabang?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Bandingkan Autograd Naif (Ada Bug) dengan Autograd Diperbaiki, lalu coba preset g=0.9, 1.0, dan 1.1.</li>
+<li><strong>Perhitungan:</strong> Hitung g pangkat n untuk satu preset dan jelaskan kaitannya dengan gradien yang menghilang atau meledak.</li>
 <li><strong>Refleksi dan transfer:</strong> Bandingkan dua backward dengan dan tanpa pengosongan gradien.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/autograd" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>

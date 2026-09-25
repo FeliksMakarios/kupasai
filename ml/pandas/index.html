@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pengenalan Pandas - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/ml/pandas/">
+  <meta name="description" content="Sebelum melatih model apa pun, kita harus bisa memilih, membersihkan, dan mengubah data. Pandas adalah alat utamanya.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Pengenalan Pandas - KupasAI">
+  <meta property="og:description" content="Sebelum melatih model apa pun, kita harus bisa memilih, membersihkan, dan mengubah data. Pandas adalah alat utamanya.">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/ml/pandas/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pengenalan Pandas - KupasAI">
+  <meta name="twitter:description" content="Sebelum melatih model apa pun, kita harus bisa memilih, membersihkan, dan mengubah data. Pandas adalah alat utamanya.">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -45,6 +62,8 @@
   </button>
 </nav>
 
+<main id="main-content" tabindex="-1">
+
 <div class="page-header">
   <div class="page-header-content">
     <a href="/kupasai/ml/" class="back-link">&larr; Kembali ke Daftar Topik</a>
@@ -82,7 +101,7 @@
       <p class="df-caption" id="op-caption"></p>
     </div>
     <div class="viz-sidebar">
-      <h3>Dataset Gudang</h3>
+      <h2>Dataset Gudang</h2>
       <p>
         Dataset persis seperti di Modul 2: 10 gudang (<code>B0</code>&ndash;<code>B9</code>),
         masing-masing menyimpan stok <code>Apples</code>, <code>Oranges</code>,
@@ -121,7 +140,7 @@
       </p>
     </div>
     <div class="viz-sidebar">
-      <h3>Data Kosong &amp; Transformasi</h3>
+      <h2>Data Kosong &amp; Transformasi</h2>
       <p>
         Baris <code>B3</code>, <code>B6</code>, dan <code>B8</code> masing-masing
         punya satu nilai kosong (<code>NaN</code>) &mdash; persis seperti dataset asli
@@ -147,18 +166,24 @@
 <script src="/kupasai/assets/js/theme.js"></script>
 <script src="../../assets/js/enhancements.js"></script>
 
+
+
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Tabel dan indeks. <strong>Durasi:</strong> sekitar 20 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Simulasi operasi pada data gudang kecil. Tidak menjalankan Python di peramban.</p><p>Pengisian nol pada kolom turunan adalah keputusan eksplisit. dropna menghapus baris, sedangkan isnull hanya menandainya.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Apa hasil penjumlahan sebelum nilai kosong diisi?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Klik Selection, Slicing, .loc, .iloc, lalu Filtering secara berurutan dan catat baris serta kolom mana yang ikut terpilih.</li>
+<li><strong>Perhitungan:</strong> Pada tab Data Kosong dan Binning, jalankan dropna() dan Kolom Turunan + Binning, lalu hitung sendiri jumlah baris yang tersisa dan kelompok bin satu baris.</li>
 <li><strong>Refleksi dan transfer:</strong> Bandingkan membuang baris dengan imputasi pada data yang sama.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://pandas.pydata.org/docs/user_guide/missing_data.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml/pandas" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 </body>
 </html>

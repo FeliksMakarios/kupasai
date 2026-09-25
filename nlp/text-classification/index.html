@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Text Classification Pipeline - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/nlp/text-classification/">
+  <meta name="description" content="Dari teks mentah menjadi prediksi kelas. Pipeline lengkap text classification, dari preprocessing hingga deep learning dengan BERT.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Text Classification Pipeline - KupasAI">
+  <meta property="og:description" content="Dari teks mentah menjadi prediksi kelas. Pipeline lengkap text classification, dari preprocessing hingga deep learning dengan BERT.">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/nlp/text-classification/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Text Classification Pipeline - KupasAI">
+  <meta name="twitter:description" content="Dari teks mentah menjadi prediksi kelas. Pipeline lengkap text classification, dari preprocessing hingga deep learning dengan BERT.">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -45,6 +62,8 @@
   </button>
 </nav>
 
+<main id="main-content" tabindex="-1">
+
 <div class="page-header">
   <div class="page-header-content">
     <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke Daftar Topik</a>
@@ -85,7 +104,7 @@
       <div class="step-detail" id="pipe-detail"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Pipeline Klasifikasi Teks</h3>
+      <h2>Pipeline Klasifikasi Teks</h2>
       <p>
         Klasifikasi teks adalah tugas menentukan kategori (label) untuk
         sebuah dokumen. Contoh: analisis sentimen (positif/negatif),
@@ -119,7 +138,7 @@
       <svg id="boundary-plot" viewBox="0 0 600 400"></svg>
     </div>
     <div class="viz-sidebar">
-      <h3>Decision Boundary</h3>
+      <h2>Decision Boundary</h2>
       <p>
         Setelah teks diubah menjadi vektor (2 dimensi di sini untuk
         visualisasi), classifier mempelajari garis pemisah antar kelas.
@@ -161,7 +180,7 @@
       <div class="step-detail" id="bert-detail"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Fine-tuning BERT</h3>
+      <h2>Fine-tuning BERT</h2>
       <p>
         Alih-alih melatih model dari nol, pendekatan modern menggunakan
         <strong>transfer learning</strong>: ambil model yang sudah
@@ -183,19 +202,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Representasi teks dan klasifikasi. <strong>Durasi:</strong> sekitar 30 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Batas keputusan, skor, dan confusion matrix dirancang sebagai ilustrasi, bukan pelatihan IndoBERT.</p><p>Pipeline klasik dapat memakai TF-IDF. BERT memakai tokenizer checkpoint, attention mask, dan token khusus. Jangan otomatis membuang negasi atau stopword sebelum BERT.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Apa dampak menghapus kata tidak pada analisis sentimen?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Ganti teks contoh pada Pipeline, lalu telusuri langkah BERT Fine-tuning.</li>
+<li><strong>Perhitungan:</strong> Dari confusion matrix ilustratif, hitung precision, recall, dan F1 satu kelas.</li>
 <li><strong>Refleksi dan transfer:</strong> Hitung precision dan recall dari confusion matrix ilustratif.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://huggingface.co/docs/transformers/tasks/sequence_classification" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/text-classification" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>

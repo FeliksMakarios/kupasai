@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Forward Propagation - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/ml-lanjut/forward-propagation/">
+  <meta name="description" content="Bagaimana neural network membuat prediksi? Jelajahi lima skenario — dari satu input satu bobot, hingga jaringan dua lapis — dan lihat perhitungan dot…">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Forward Propagation - KupasAI">
+  <meta property="og:description" content="Bagaimana neural network membuat prediksi? Jelajahi lima skenario — dari satu input satu bobot, hingga jaringan dua lapis — dan lihat perhitungan dot…">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/ml-lanjut/forward-propagation/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-lanjut.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Forward Propagation - KupasAI">
+  <meta name="twitter:description" content="Bagaimana neural network membuat prediksi? Jelajahi lima skenario — dari satu input satu bobot, hingga jaringan dua lapis — dan lihat perhitungan dot…">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-lanjut.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -45,6 +62,8 @@
   </button>
 </nav>
 
+<main id="main-content" tabindex="-1">
+
 <div class="page-header">
   <div class="page-header-content">
     <a href="/kupasai/ml-lanjut/" class="back-link">&larr; Kembali ke Daftar Topik</a>
@@ -85,7 +104,7 @@
       <div class="trace-log" id="fp-trace-log"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Dari Node ke Prediksi</h3>
+      <h2>Dari Node ke Prediksi</h2>
       <p>
         Setiap prediksi dihitung dengan operasi yang sama: kalikan setiap
         input dengan bobotnya, lalu jumlahkan (<code>w_sum</code>). Garis
@@ -124,13 +143,13 @@
       </div>
       <div class="numpy-compare">
         <div class="numpy-card good" id="numpy-good">
-          <h4>&#10003; Dimensi cocok</h4>
+          <h2>&#10003; Dimensi cocok</h2>
           <pre></pre>
           <div class="result"></div>
           <p class="note"></p>
         </div>
         <div class="numpy-card bad" id="numpy-bad">
-          <h4>&#10007; Dimensi tidak cocok</h4>
+          <h2>&#10007; Dimensi tidak cocok</h2>
           <pre></pre>
           <div class="result"></div>
           <p class="note"></p>
@@ -138,7 +157,7 @@
       </div>
     </div>
     <div class="viz-sidebar">
-      <h3>Kenapa Ini Penting?</h3>
+      <h2>Kenapa Ini Penting?</h2>
       <p>
         Setiap layer neural network mensyaratkan jumlah kolom pada matriks
         bobot sama dengan jumlah elemen pada vektor input. Notebook Modul 2
@@ -156,19 +175,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Vektor dan perkalian matriks. <strong>Durasi:</strong> sekitar 25 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Bobot dan input contoh manual, keluaran dihitung ulang oleh generator.</p><p>Di halaman ini W berbentuk output×input. Bias dan aktivasi dihilangkan untuk isolasi operasi linear. Pada jaringan umum, gunakan aktivasi(Wx+b).</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Berapa bentuk matriks untuk tiga input dan dua output?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Klik skenario Input Tunggal sampai Jaringan 2 Lapis dan amati bentuk matriks bobot pada tiap skenario.</li>
+<li><strong>Perhitungan:</strong> Hitung satu keluaran sebagai dot product baris bobot dengan vektor input, lalu cocokkan dengan hasil NumPy.</li>
 <li><strong>Refleksi dan transfer:</strong> Tambahkan bias lalu hitung ulang satu prediksi.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://numpy.org/doc/stable/reference/generated/numpy.matmul.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml-lanjut/forward-propagation" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; ML Lanjut INF24141</span>
 </footer>

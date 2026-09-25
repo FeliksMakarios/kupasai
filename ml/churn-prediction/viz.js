@@ -117,7 +117,7 @@
 
   function renderAggregate(){
     var n=+document.getElementById('evaluation-count').value;
-    document.getElementById('aggregate-estimate').innerHTML=[['Regresi Logistik',D.metrics_lr],['Random Forest',D.metrics_rf]].map(function(pair){var m=pair[1];return '<h3>'+pair[0]+'</h3><p>Dari '+n+' kasus churn aktual, sekitar '+(n*m.recall).toFixed(1)+' terdeteksi dan '+(n*(1-m.recall)).toFixed(1)+' terlewat.</p><p>Dari '+n+' prediksi churn, sekitar '+(n*m.precision).toFixed(1)+' benar dan '+(n*(1-m.precision)).toFixed(1)+' keliru.</p>';}).join('');
+    document.getElementById('aggregate-estimate').innerHTML=[['Regresi Logistik',D.metrics_lr],['Random Forest',D.metrics_rf]].map(function(pair){var m=pair[1];return '<h2 class="estimate-title">'+pair[0]+'</h2><p>Dari '+n+' kasus churn aktual, sekitar '+(n*m.recall).toFixed(1)+' terdeteksi dan '+(n*(1-m.recall)).toFixed(1)+' terlewat.</p><p>Dari '+n+' prediksi churn, sekitar '+(n*m.precision).toFixed(1)+' benar dan '+(n*(1-m.precision)).toFixed(1)+' keliru.</p>';}).join('');
   }
   document.getElementById('evaluation-count').addEventListener('input',renderAggregate);
   renderAggregate();

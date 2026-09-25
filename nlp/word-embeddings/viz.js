@@ -542,7 +542,7 @@
         '<div class="sim-bar-container">' +
         '<div class="sim-bar" style="width:' + ((sim + 1) / 2 * 100) + '%;background:' + barColor + '"></div>' +
         '</div>' +
-        '<div style="font-size:0.75rem;color:#6e7681;margin-top:0.5rem">' +
+        '<div style="font-size:0.75rem;color:var(--text-secondary);margin-top:0.5rem">' +
         'Skala: -1 (berlawanan) &larr; 0 (tidak terkait) &rarr; +1 (sama arah)' +
         '</div>';
 

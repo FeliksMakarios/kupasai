@@ -1,7 +1,7 @@
 /* Small learning controls derived from the same data as the main panels. */
 (function(){
   'use strict';
-  function panel(parent,title){var e=document.createElement('section');e.className='threshold-control';var h=document.createElement('h3');h.textContent=title;e.appendChild(h);parent.appendChild(e);return e;}
+  function panel(parent,title){var e=document.createElement('section');e.className='threshold-control';var h=document.createElement('h2');h.textContent=title;e.appendChild(h);parent.appendChild(e);return e;}
   function table(el,headers,rows){var t=document.createElement('table');t.className='topic-table';var head=t.createTHead().insertRow();headers.forEach(function(h){var c=document.createElement('th');c.textContent=h;head.appendChild(c);});var b=t.createTBody();rows.forEach(function(row){var r=b.insertRow();row.forEach(function(v){r.insertCell().textContent=v;});});var wrap=document.createElement('div');wrap.style.overflowX='auto';wrap.appendChild(t);el.appendChild(wrap);}
   if(typeof LOGREG_DATA!=='undefined'){
     var D=LOGREG_DATA,parent=document.getElementById('boundary-plot').parentElement;

@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Word Embeddings &amp; Vector Space - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/nlp/word-embeddings/">
+  <meta name="description" content="Bagaimana komputer memahami makna kata? Setiap kata direpresentasikan sebagai vektor di ruang multidimensi. Kata yang mirip maknanya berdekatan.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Word Embeddings &amp; Vector Space - KupasAI">
+  <meta property="og:description" content="Bagaimana komputer memahami makna kata? Setiap kata direpresentasikan sebagai vektor di ruang multidimensi. Kata yang mirip maknanya berdekatan.">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/nlp/word-embeddings/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Word Embeddings &amp; Vector Space - KupasAI">
+  <meta name="twitter:description" content="Bagaimana komputer memahami makna kata? Setiap kata direpresentasikan sebagai vektor di ruang multidimensi. Kata yang mirip maknanya berdekatan.">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -45,6 +62,8 @@
   </button>
 </nav>
 
+<main id="main-content" tabindex="-1">
+
 <div class="page-header">
   <div class="page-header-content">
     <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke Daftar Topik</a>
@@ -75,7 +94,7 @@
       <svg id="scatter-plot" viewBox="0 0 700 500"></svg>
     </div>
     <div class="viz-sidebar">
-      <h3>Tentang Visualisasi Ini</h3>
+      <h2>Tentang Visualisasi Ini</h2>
       <p>
         Setiap titik adalah satu kata Bahasa Indonesia. Posisi dihitung dengan
         <strong>PCA</strong> dari 10 dimensi semantik (gender, kerajaan, usia,
@@ -86,10 +105,10 @@
         cenderung berdekatan.
       </p>
 
-      <h4>Kategori</h4>
+      <h3>Kategori</h3>
       <div class="legend" id="scatter-legend"></div>
 
-      <h4>Cara Pakai</h4>
+      <h3>Cara Pakai</h3>
       <ul class="help-list">
         <li><strong>Hover</strong> ke titik untuk melihat detail kata</li>
         <li><strong>Klik</strong> titik untuk melihat vektor lengkapnya</li>
@@ -106,7 +125,7 @@
   <div class="viz-layout">
     <div class="viz-main">
       <div class="analogy-builder">
-        <h3>Word Analogy Explorer</h3>
+        <h2>Word Analogy Explorer</h2>
         <p class="analogy-intro">
           Analogi kata: <strong>A - B + C = ?</strong><br>
           Contoh klasik: <code>raja - pria + wanita &asymp; ratu</code>
@@ -135,7 +154,7 @@
         </div>
 
         <div class="analogy-presets">
-          <h4>Contoh Preset</h4>
+          <h3>Contoh Preset</h3>
           <div class="preset-buttons" id="analogy-presets"></div>
         </div>
       </div>
@@ -145,7 +164,7 @@
       <div class="analogy-explanation" id="analogy-explanation"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Mengapa Ini Penting?</h3>
+      <h2>Mengapa Ini Penting?</h2>
       <p>Analogi pada demo ini muncul karena vektor dirancang manual. Pada embedding terlatih, analogi dapat muncul tetapi tidak selalu berhasil. Dimensi semantik berlabel di sini adalah alat bantu, bukan deskripsi dimensi Word2Vec atau Transformer. Hindari menafsirkan nilai buatan tentang profesi dan gender sebagai fakta sosial.</p>
       <p>
         Vektor <code>raja - ratu</code> menangkap arah "gender" di
@@ -182,7 +201,7 @@
       <div class="sim-result" id="sim-result"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Rumus</h3>
+      <h2>Rumus</h2>
       <div class="formula">
         cos(&theta;) = (A &middot; B) / (|A| &times; |B|)
       </div>
@@ -205,7 +224,7 @@
       </p>
       <p>Tidak ada ambang cosine similarity universal untuk semua model dan tugas. Tentukan ambang menggunakan contoh berlabel dan evaluasi pada domain yang sesuai. Grafik PCA hanya proyeksi dua dimensi, sehingga kedekatan di grafik dapat berbeda dari kemiripan di ruang asal.</p>
 
-      <h4>Coba Sendiri</h4>
+      <h3>Coba Sendiri</h3>
       <div class="sim-controls sim-controls-sidebar">
         <div class="sim-slot">
           <label>Kata 1</label>
@@ -222,19 +241,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Vektor, sudut, dan dot product. <strong>Durasi:</strong> sekitar 25 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Vektor semantik manual 10 dimensi, diproyeksikan dengan PCA. Bukan hasil pelatihan embedding.</p><p>Dimensi berlabel merupakan rancangan ilustrasi. Tidak ada ambang cosine universal. Analogi dan stereotip dalam nilai manual tidak menjadi fakta bahasa atau sosial.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Apakah jarak dekat pada PCA selalu berarti cosine tinggi pada ruang asal?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Pilih kata A, B, dan C pada tab Analogi Kata, lalu ganti Kata 1 dan Kata 2 pada tab Cosine Similarity.</li>
+<li><strong>Perhitungan:</strong> Hitung cosine similarity dua vektor sebagai dot product dibagi hasil kali panjang keduanya.</li>
 <li><strong>Refleksi dan transfer:</strong> Cari analogi yang gagal dan jelaskan batas contoh ini.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://arxiv.org/abs/1301.3781" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/word-embeddings" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>

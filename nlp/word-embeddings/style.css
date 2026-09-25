@@ -127,13 +127,13 @@
   font-size: 0.9rem;
 }
 
-.viz-sidebar h3 {
+.viz-sidebar h2 {
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
-.viz-sidebar h4 {
+.viz-sidebar h3 {
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-secondary);
@@ -364,7 +364,7 @@
   margin-bottom: 1rem;
 }
 
-.analogy-presets h4 {
+.analogy-presets h3 {
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -515,3 +515,4 @@
     text-align: center;
   }
 }
+.analogy-builder > h2 { font-size: 1.17em; }

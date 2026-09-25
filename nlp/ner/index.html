@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Named Entity Recognition - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/nlp/ner/">
+  <meta name="description" content="Naik satu tingkat dari klasifikasi teks: memberi label pada setiap token, bukan satu label untuk seluruh kalimat. Multibahasa dengan XLM-RoBERTa dan skema tag…">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Named Entity Recognition - KupasAI">
+  <meta property="og:description" content="Naik satu tingkat dari klasifikasi teks: memberi label pada setiap token, bukan satu label untuk seluruh kalimat. Multibahasa dengan XLM-RoBERTa dan skema tag…">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/nlp/ner/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Named Entity Recognition - KupasAI">
+  <meta name="twitter:description" content="Naik satu tingkat dari klasifikasi teks: memberi label pada setiap token, bukan satu label untuk seluruh kalimat. Multibahasa dengan XLM-RoBERTa dan skema tag…">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -45,6 +62,8 @@
   </button>
 </nav>
 
+<main id="main-content" tabindex="-1">
+
 <div class="page-header">
   <div class="page-header-content">
     <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke Daftar Topik</a>
@@ -71,11 +90,11 @@
 <div class="tab-content active" id="tab-iob2" role="tabpanel" aria-labelledby="tabbtn-iob2" tabindex="0">
   <div class="viz-layout">
     <div class="viz-main">
-      <h3 class="section-title">Klik Token untuk Melihat Tag IOB2-nya</h3>
+      <h2 class="section-title">Klik Token untuk Melihat Tag IOB2-nya</h2>
       <div class="token-row" id="token-row"></div>
       <div class="tag-detail-box" id="tag-detail"></div>
 
-      <h3 class="section-title">Penyelarasan Subword &rarr; Label (Modul 9.6)</h3>
+      <h2 class="section-title">Penyelarasan Subword &rarr; Label (Modul 9.6)</h2>
       <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:0.5rem">
         Contoh nyata dari notebook: kata <code>Einwohnern</code> dipecah SentencePiece
         menjadi dua subword, <code>▁Einwohner</code> dan <code>n</code>. Hanya subword
@@ -85,7 +104,7 @@
       <div class="subword-row" id="subword-row"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Format IOB2</h3>
+      <h2>Format IOB2</h2>
       <p>
         Prefix <strong>B-</strong> menandai awal (Beginning) sebuah entitas,
         <strong>I-</strong> menandai lanjutan (Inside) entitas yang sama, dan
@@ -110,16 +129,16 @@
 <div class="tab-content" id="tab-eval" role="tabpanel" aria-labelledby="tabbtn-eval" tabindex="0">
   <div class="viz-layout">
     <div class="viz-main">
-      <h3 class="section-title">Kalkulator seqeval (persis contoh Modul 9.7)</h3>
+      <h2 class="section-title">Kalkulator seqeval (persis contoh Modul 9.7)</h2>
       <div id="seq1-container"></div>
       <div id="seq2-container"></div>
       <div class="metric-row" id="seq-metrics"></div>
 
-      <h3 class="section-title">Distribusi Bahasa dalam Korpus PAN-X (Swiss)</h3>
+      <h2 class="section-title">Distribusi Bahasa dalam Korpus PAN-X (Swiss)</h2>
       <div id="lang-dist"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Evaluasi Level-Entitas, Bukan Level-Token</h3>
+      <h2>Evaluasi Level-Entitas, Bukan Level-Token</h2>
       <p>
         Sebuah entitas hanya dianggap <strong>benar</strong> jika
         <strong>seluruh</strong> token penyusunnya cocok persis dengan label
@@ -145,19 +164,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Tokenisasi dan klasifikasi. <strong>Durasi:</strong> sekitar 30 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Contoh IOB2 dan evaluator JavaScript ilustratif. Angka model diwarisi dari materi sumber, bukan eksperimen baru.</p><p>Pelabelan hanya subkata pertama adalah pilihan pelatihan. Evaluator panel memakai aturan permisif seperti seqeval default, bukan strict IOB2. Entitas cocok bila tipe dan rentang sama.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Apa dampak B-PER berubah menjadi I-PER pada awal urutan?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Klik token untuk melihat tag IOB2, lalu ubah tag prediksi pada tab Evaluasi Level-Entitas.</li>
+<li><strong>Perhitungan:</strong> Hitung precision, recall, dan F1 tingkat entitas setelah satu tag diubah, lalu bandingkan dengan token accuracy.</li>
 <li><strong>Refleksi dan transfer:</strong> Bandingkan token accuracy dengan entity F1.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://github.com/chakki-works/seqeval" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/ner" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>

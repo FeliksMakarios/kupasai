@@ -10,7 +10,7 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   let file=path.resolve(root,relative||'index.html');
   if(!file.startsWith(root+path.sep)){res.writeHead(403);res.end();return;}
   if(fs.existsSync(file)&&fs.statSync(file).isDirectory())file=path.join(file,'index.html');
-  if(!fs.existsSync(file)){res.writeHead(404);res.end();return;}
+  if(!fs.existsSync(file)){res.writeHead(404,{'Content-Type':'text/html'});fs.createReadStream(path.join(root,'404.html')).pipe(res);return;}
   res.setHeader('Content-Type',file.endsWith('.js')?'application/javascript':file.endsWith('.css')?'text/css':file.endsWith('.html')?'text/html':'application/octet-stream');fs.createReadStream(file).pipe(res);
  });
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
@@ -51,8 +51,22 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   await page.goto(base+'nlp/question-answering/');await page.locator('#qa-best-span').click();
   assert((await page.locator('#qa-answer-box').innerText()).includes('6000 hours'));
   await page.locator('#qa-no-answer').click();assert((await page.locator('#qa-answer-box').innerText()).includes('Who manufactured'));
+  // Learning notes survive a fresh visit, not only a theme switch.
+  current='ml/pandas';await page.goto(base+'ml/pandas/');await page.locator('#reflection').fill('Catatan tersimpan');
+  await page.goto(base+'ml/pandas/');assert.equal(await page.locator('#reflection').inputValue(),'Catatan tersimpan');
+  await page.locator('#reflection').fill('');
+  // Phone-width diagrams keep their text readable and scroll inside their own box.
+  await page.setViewportSize({width:390,height:844});current='pemodelan-pencarian mobile';
+  await page.goto(base+'kecerdasan-komputasional/pemodelan-pencarian/');await page.locator('[data-tab="peta"]').click();
+  const smallest=await page.evaluate(()=>{const svg=document.querySelector('.tab-content.active svg');const k=svg.getBoundingClientRect().width/svg.viewBox.baseVal.width;return Math.min(...[...svg.querySelectorAll('text')].filter(t=>t.textContent.trim()).map(t=>parseFloat(getComputedStyle(t).fontSize)*k));});
+  assert(smallest>=7.5,`Diagram text too small on phones: ${smallest}px`);
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
+  current='expected-404';const missing=await page.goto(base+'halaman-yang-tidak-ada/');assert.equal(missing.status(),404);
+  assert((await page.locator('h1').innerText()).includes('tidak ditemukan'));
+  errors.splice(0,errors.length,...errors.filter(e=>!e.startsWith('expected-404:')));
+  current='404';await page.goto(base+'404.html');assert((await page.locator('h1').innerText()).includes('tidak ditemukan'));
   if(process.env.REVIEW_SCREENSHOT){await page.goto(base+'nlp/transformer/');await page.setViewportSize({width:1280,height:1000});await page.screenshot({path:process.env.REVIEW_SCREENSHOT});}
   console.log(`Visited ${pages(root).length} pages, ${checks} tab transitions, desktop/mobile and theme restoration.`);
-  assert.deepEqual(errors,[]);
+  if(errors.length)console.error(errors.join('\n'));assert.deepEqual(errors,[]);
  } finally {await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

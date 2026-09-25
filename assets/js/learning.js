@@ -32,11 +32,67 @@
     try {sessionStorage.setItem(key,JSON.stringify({history:history,scroll:scrollY,focus:selector(document.activeElement)}));} catch(e) {}
   }};
   document.addEventListener('DOMContentLoaded',function () {
-    document.querySelectorAll('svg').forEach(function(svg){
-      if (svg.closest('.theme-toggle')) return;
-      if (!svg.getAttribute('aria-label')) svg.setAttribute('aria-label', svg.id.replace(/-/g,' ') || 'Diagram pembelajaran');
-      svg.setAttribute('role','img');
-    });
+    // Diagram labels come from the tab and the nearest caption, not from element ids.
+    function text(el){return el?el.textContent.replace(/\s+/g,' ').trim():'';}
+    function describe(svg){
+      var parts=[],panel=svg.closest('.tab-content'),tab=panel&&document.getElementById(panel.getAttribute('aria-labelledby'));
+      if(tab)parts.push(text(tab));
+      for(var el=svg.closest('.svg-scroll')||svg;el&&el!==panel&&el!==document.body;el=el.parentElement){
+        var sib=el.previousElementSibling,found=null;
+        while(sib&&!found){if(sib.matches('.section-label,h2,h3,h4'))found=sib;else if(sib.querySelector)found=sib.querySelector('.section-label,h2,h3,h4');sib=sib.previousElementSibling;}
+        if(found){var t=text(found);if(t&&parts.indexOf(t)<0)parts.push(t);break;}
+      }
+      if(!parts.length)parts.push(text(document.querySelector('h1'))||'pembelajaran');
+      return 'Diagram '+parts.join(': ');
+    }
+    // On phones, keep diagram text at a readable size and let the diagram scroll sideways.
+    var MIN_TEXT=9,MAX_WIDTH=820;
+    function fitWidth(svg){
+      var vb=svg.viewBox&&svg.viewBox.baseVal;if(!vb||!vb.width)return 0;
+      var sizes=[];svg.querySelectorAll('text').forEach(function(t){if(t.textContent.trim())sizes.push(parseFloat(getComputedStyle(t).fontSize)||0);});
+      sizes=sizes.filter(function(x){return x>0;}).sort(function(a,b){return a-b;});
+      if(!sizes.length)return 0;
+      var small=sizes[Math.floor(sizes.length*0.1)];
+      return Math.round(Math.min(vb.width,MAX_WIDTH,vb.width*MIN_TEXT/small));
+    }
+    var hintObserver='ResizeObserver' in window?new ResizeObserver(function(entries){entries.forEach(function(e){updateHint(e.target);});}):null;
+    function updateHint(wrap){
+      var scrollable=wrap.scrollWidth>wrap.clientWidth+2;
+      wrap.classList.toggle('is-scrollable',scrollable);
+      if(scrollable){wrap.setAttribute('tabindex','0');wrap.setAttribute('role','region');wrap.setAttribute('aria-label',(wrap.firstElementChild&&wrap.firstElementChild.getAttribute('aria-label')||'Diagram')+', dapat digeser ke samping');}
+      else{wrap.removeAttribute('tabindex');wrap.removeAttribute('role');wrap.removeAttribute('aria-label');}
+    }
+    function prepareSvg(svg){
+      if(!svg.isConnected||svg.closest('.theme-toggle,button,[aria-hidden="true"]'))return;
+      var interactive=svg.querySelector('[tabindex],[role="button"],a');
+      svg.setAttribute('role',interactive?'group':'img');
+      if(!svg.getAttribute('aria-label')||svg.hasAttribute('data-auto-label')){svg.setAttribute('aria-label',describe(svg));svg.setAttribute('data-auto-label','');}
+      var need=fitWidth(svg);
+      var wrap=svg.parentElement&&svg.parentElement.classList.contains('svg-scroll')?svg.parentElement:null;
+      if(!need){if(wrap)svg.style.removeProperty('--svg-min');return;}
+      if(!wrap){wrap=document.createElement('div');wrap.className='svg-scroll';svg.before(wrap);wrap.appendChild(svg);if(hintObserver)hintObserver.observe(wrap);}
+      svg.style.setProperty('--svg-min',need+'px');
+      updateHint(wrap);
+    }
+    // Scrolling regions (wide or tall tables) must be reachable by keyboard.
+    function markScrollRegions(){
+      document.querySelectorAll('main div,main table,main pre').forEach(function(el){
+        if(el.classList.contains('svg-scroll'))return;
+        var cs=getComputedStyle(el),can=function(v){return v==='auto'||v==='scroll';};
+        var scrolls=((can(cs.overflowX)&&el.scrollWidth>el.clientWidth+2)||(can(cs.overflowY)&&el.scrollHeight>el.clientHeight+2))&&!el.querySelector('a,button,input,select,textarea,[tabindex]');
+        if(scrolls&&!el.hasAttribute('tabindex')){
+          el.setAttribute('tabindex','0');el.setAttribute('data-scroll-region','');
+          if(el.localName==='div'&&!el.hasAttribute('role')){el.setAttribute('role','region');el.setAttribute('aria-label',(el.querySelector('table')?'Tabel':'Konten')+' yang dapat digeser');}
+        } else if(!scrolls&&el.hasAttribute('data-scroll-region')){
+          el.removeAttribute('tabindex');el.removeAttribute('data-scroll-region');
+          if(el.getAttribute('role')==='region'){el.removeAttribute('role');el.removeAttribute('aria-label');}
+        }
+      });
+    }
+    var scrollTimer;
+    function scheduleScrollRegions(){clearTimeout(scrollTimer);scrollTimer=setTimeout(markScrollRegions,120);}
+    window.addEventListener('resize',scheduleScrollRegions);
+    document.addEventListener('click',scheduleScrollRegions);
     // Existing clickable SVG marks become keyboard-operable, including rebuilt marks.
     function accessible(root) {
       root.querySelectorAll('svg rect,svg circle,svg g,.token-chip,.pred-chip,.qa-token').forEach(function(el){
@@ -49,7 +105,28 @@
     }
     document.querySelectorAll('table').forEach(function(t){var wrap=document.createElement('div');wrap.className='table-scroll';t.before(wrap);wrap.appendChild(t);});
     accessible(document);
-    new MutationObserver(function(records){records.forEach(function(r){r.addedNodes.forEach(function(n){if(n.nodeType===1)accessible(n.parentElement || n);});});}).observe(document.body,{childList:true,subtree:true});
+    document.querySelectorAll('svg').forEach(prepareSvg);
+    markScrollRegions();
+    var pending=new Set(),queued=false;
+    function flush(){queued=false;pending.forEach(prepareSvg);pending.clear();scheduleScrollRegions();}
+    new MutationObserver(function(records){records.forEach(function(r){
+      r.addedNodes.forEach(function(n){if(n.nodeType===1)accessible(n.parentElement || n);});
+      var svg=r.target.closest && (r.target.localName==='svg'?r.target:r.target.closest('svg'));
+      if(r.type==='childList') r.addedNodes.forEach(function(n){if(n.nodeType===1&&n.querySelectorAll)n.querySelectorAll('svg').forEach(function(x){pending.add(x);});if(n.localName==='svg')pending.add(n);});
+      if(svg)pending.add(svg);
+      if(pending.size&&!queued){queued=true;requestAnimationFrame(flush);}
+      if(r.type==='childList')scheduleScrollRegions();
+    });}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['viewBox']});
+    // Learning notes persist per page in this browser only.
+    var note=document.getElementById('reflection'),noteKey='kupasai-reflection:'+location.pathname,status=document.getElementById('reflection-status');
+    if(note){
+      try{var stored=localStorage.getItem(noteKey);if(stored&&!note.value)note.value=stored;}catch(e){}
+      note.addEventListener('input',function(){
+        try{if(note.value)localStorage.setItem(noteKey,note.value);else localStorage.removeItem(noteKey);
+          if(status)status.textContent='Tersimpan di peramban ini pukul '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})+'.';}
+        catch(e){if(status)status.textContent='Catatan tidak dapat disimpan di peramban ini.';}
+      });
+    }
     var saved;
     try {saved=JSON.parse(sessionStorage.getItem(key));sessionStorage.removeItem(key);} catch(e) {}
     if(saved){
@@ -58,7 +135,7 @@
       history=saved.history;replaying=false;
       requestAnimationFrame(function(){window.scrollTo(0,saved.scroll);});
     }
-    var main=document.querySelector('.viz-container,.content-wrapper,.topic-table-wrap');
+    var main=document.querySelector('main')||document.querySelector('.viz-container,.content-wrapper,.topic-table-wrap');
     if(main){main.id=main.id||'main-content';var skip=document.createElement('a');skip.className='skip-link';skip.href='#'+main.id;skip.textContent='Langsung ke materi';document.body.prepend(skip);main.setAttribute('tabindex','-1');}
     var inputs=document.querySelectorAll('input,select,textarea');
     inputs.forEach(function(el){if(el.id && !document.querySelector('label[for="'+el.id+'"]')&&!el.hasAttribute('aria-label'))el.setAttribute('aria-label',el.id.replace(/-/g,' '));});

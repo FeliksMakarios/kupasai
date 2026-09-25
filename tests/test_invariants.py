@@ -17,7 +17,7 @@ class Tags(HTMLParser):
     def handle_starttag(self,tag,attrs):self.tags.append((tag,dict(attrs)))
 class Site(unittest.TestCase):
     def test_pages_and_assets(self):
-        pages=list(ROOT.glob('**/index.html'));self.assertEqual(len(pages),41)
+        pages=[p for p in ROOT.glob('**/index.html') if 'node_modules' not in p.parts];self.assertEqual(len(pages),41)
         for p in pages:
             s=p.read_text();tags=Tags(s).tags
             ids=[a['id'] for t,a in tags if 'id' in a]
@@ -78,3 +78,22 @@ class Site(unittest.TestCase):
         self.assertLessEqual(meta['bestEpoch'],meta['stoppedAt'])
         self.assertEqual(len(d['repeats']),3)
 if __name__=='__main__':unittest.main()
+class Publishing(unittest.TestCase):
+    def test_seo_tags_and_sitemap(self):
+        pages=sorted(p for p in ROOT.glob('**/index.html') if 'node_modules' not in p.parts)
+        sitemap=(ROOT/'sitemap.xml').read_text()
+        for p in pages:
+            s=p.read_text();rel=p.parent.relative_to(ROOT).as_posix()
+            url='https://feliksmakarios.github.io/kupasai/'+('' if rel=='.' else rel+'/')
+            self.assertEqual(s.count('<meta name="description"'),1,rel)
+            self.assertIn(f'<link rel="canonical" href="{url}">',s)
+            self.assertIn(f'<loc>{url}</loc>',sitemap)
+            image=re.search(r'<meta property="og:image" content="https://feliksmakarios.github.io/kupasai/([^"]+)"',s)
+            self.assertTrue(image and (ROOT/image[1]).exists(),rel)
+            self.assertEqual(s.count('<main'),1,rel)
+    def test_not_found_page(self):
+        s=(ROOT/'404.html').read_text()
+        self.assertIn('noindex',s)
+        for tag,a in Tags(s).tags:
+            url=a.get('src',a.get('href','')).split('#')[0]
+            if url.startswith('/kupasai/'):self.assertTrue((ROOT/url.removeprefix('/kupasai/')).exists(),url)

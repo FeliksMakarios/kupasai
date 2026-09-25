@@ -247,7 +247,7 @@
       ];
       var s = stages[currentStep] || stages[0];
       textDemoEl.innerHTML =
-        '<h5>Input</h5>' +
+        '<h2>Input</h2>' +
         '<div class="demo-title">' + s.title + '</div>' +
         '<div class="demo-stage">' + s.html + '</div>' +
         '<div class="demo-note">' + s.note + '</div>';
@@ -428,7 +428,7 @@
       ];
       var s = stages[currentStep - 1] || stages[0];
       textDemoEl.innerHTML =
-        '<h5>Output</h5>' +
+        '<h2>Output</h2>' +
         '<div class="demo-title">' + s.title + '</div>' +
         '<div class="demo-stage">' + s.html + '</div>' +
         '<div class="demo-note">' + s.note + '</div>';

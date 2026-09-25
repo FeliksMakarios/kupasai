@@ -14,7 +14,7 @@
 .viz-layout { max-width: 1150px; margin: 0 auto; padding: 1.5rem 2rem; display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start; }
 .viz-main { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; box-shadow: var(--shadow-sm); }
 .viz-main svg { width: 100%; height: auto; display: block; }
-.viz-sidebar h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.viz-sidebar h2 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
 .viz-sidebar p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem; }
 .viz-sidebar strong { color: var(--text-primary); }
 .viz-sidebar code { font-family: var(--font-mono); background: var(--bg-tertiary); padding: 1px 4px; border-radius: 3px; font-size: 0.85em; }
@@ -22,7 +22,7 @@
 /* ==================== STEP CONTROLS ==================== */
 .step-controls { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1rem; }
 .step-btn {
-  background: var(--accent); color: white; border: none; border-radius: 6px;
+  background: var(--accent); color: var(--on-accent); border: none; border-radius: 6px;
   padding: 0.5rem 1.25rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;
   font-family: var(--font-sans); transition: background 0.15s;
 }

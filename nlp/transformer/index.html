@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Transformer Architecture - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/nlp/transformer/">
+  <meta name="description" content="Arsitektur lengkap Transformer: encoder memproses input, decoder menghasilkan output token demi token, dan cross-attention menjembatani keduanya.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Transformer Architecture - KupasAI">
+  <meta property="og:description" content="Arsitektur lengkap Transformer: encoder memproses input, decoder menghasilkan output token demi token, dan cross-attention menjembatani keduanya.">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/nlp/transformer/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Transformer Architecture - KupasAI">
+  <meta name="twitter:description" content="Arsitektur lengkap Transformer: encoder memproses input, decoder menghasilkan output token demi token, dan cross-attention menjembatani keduanya.">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -45,6 +62,8 @@
   </button>
 </nav>
 
+<main id="main-content" tabindex="-1">
+
 <div class="page-header">
   <div class="page-header-content">
     <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke Daftar Topik</a>
@@ -76,7 +95,7 @@
       <svg id="full-plot" viewBox="0 0 700 460"></svg>
     </div>
     <div class="viz-sidebar">
-      <h3>Arsitektur Transformer</h3>
+      <h2>Arsitektur Transformer</h2>
       <p>
         Transformer terdiri dari dua bagian: <strong>encoder</strong>
         yang membaca dan memahami input, serta <strong>decoder</strong>
@@ -114,7 +133,7 @@
       </div>
     </div>
     <div class="viz-sidebar">
-      <h3>Encoder Layer</h3>
+      <h2>Encoder Layer</h2>
       <p>
         Satu encoder layer terdiri dari dua sub-layer: multi-head
         self-attention dan feed-forward network. Keduanya dibungkus
@@ -158,7 +177,7 @@
       </div>
     </div>
     <div class="viz-sidebar">
-      <h3>Decoder Layer</h3>
+      <h2>Decoder Layer</h2>
       <p>
         Decoder memiliki <strong>tiga sub-layer</strong>, satu lebih
         banyak dari encoder. Yang membedakan adalah
@@ -187,19 +206,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Self-attention dan jaringan saraf. <strong>Durasi:</strong> sekitar 35 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Diagram arsitektur encoder-decoder klasik. Angka dan teks demonstrasi bersifat ilustratif.</p><p>BERT encoder-only, GPT decoder-only tanpa cross-attention encoder, T5 encoder-decoder. Pelatihan paralel berbeda dari generasi autoregresif.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Dari mana Q, K, V pada cross-attention berasal?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Telusuri langkah pada tab Encoder Detail dan Decoder Detail, perhatikan kapan mask dan cross-attention dipakai.</li>
+<li><strong>Perhitungan:</strong> Jelaskan asal Q, K, dan V pada cross-attention serta bentuk tensor sebelum dan sesudah sambungan residual.</li>
 <li><strong>Refleksi dan transfer:</strong> Telusuri satu token keluaran beserta mask dan sambungan residual.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/transformer" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>

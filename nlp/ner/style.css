@@ -20,13 +20,13 @@
 
 .viz-layout { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start; }
 .viz-main { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; box-shadow: var(--shadow-sm); }
-.viz-sidebar h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.viz-sidebar h2 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
 .viz-sidebar p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem; }
 .viz-sidebar strong { color: var(--text-primary); }
 .viz-sidebar code { font-family: var(--font-mono); background: var(--bg-tertiary); padding: 1px 4px; border-radius: 3px; font-size: 0.85em; }
 
-h3.section-title { font-size: 0.95rem; margin: 1.5rem 0 0.75rem; }
-h3.section-title:first-child { margin-top: 0; }
+h2.section-title { font-size: 0.95rem; margin: 1.5rem 0 0.75rem; }
+h2.section-title:first-child { margin-top: 0; }
 
 /* ==================== IOB2 TOKEN TAGGER ==================== */
 
@@ -36,9 +36,9 @@ h3.section-title:first-child { margin-top: 0; }
 .token-chip.selected { border-color: var(--accent); background: var(--accent-light); }
 .token-chip .tc-word { font-weight: 600; font-size: 0.85rem; color: var(--text-primary); }
 .token-chip .tc-tag { font-family: var(--font-mono); font-size: 0.68rem; margin-top: 0.2rem; padding: 1px 5px; border-radius: 4px; display: inline-block; }
-.token-chip .tc-tag.tag-per { background: rgba(88,166,255,0.18); color: var(--accent); }
-.token-chip .tc-tag.tag-org { background: rgba(210,153,34,0.18); color: var(--warning); }
-.token-chip .tc-tag.tag-loc { background: rgba(63,185,80,0.18); color: var(--success); }
+.token-chip .tc-tag.tag-per { background: rgba(88,166,255,0.18); color: var(--accent-strong); }
+.token-chip .tc-tag.tag-org { background: rgba(210,153,34,0.18); color: var(--warning-strong); }
+.token-chip .tc-tag.tag-loc { background: rgba(63,185,80,0.18); color: var(--success-strong); }
 .token-chip .tc-tag.tag-o { background: var(--bg-tertiary); color: var(--text-muted); }
 
 .tag-detail-box { background: var(--bg-secondary); border-radius: 8px; padding: 0.85rem 1rem; font-size: 0.85rem; color: var(--text-primary); min-height: 3rem; }
@@ -50,19 +50,20 @@ h3.section-title:first-child { margin-top: 0; }
 .subword-chip { text-align: center; font-family: var(--font-mono); font-size: 0.78rem; border-radius: 6px; padding: 0.4rem 0.55rem; background: var(--bg-tertiary); color: var(--text-secondary); }
 .subword-chip .sc-wid { font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem; }
 .subword-chip.first-subword { background: var(--accent-light); color: var(--accent); font-weight: 700; }
-.subword-chip.ignored { opacity: 0.55; text-decoration: line-through; }
+.subword-chip.ignored { text-decoration: line-through; border-style: dashed; }
+.subword-chip.ignored .sc-wid { color: var(--text-secondary); }
 
 /* ==================== SEQEVAL EVALUATOR ==================== */
 
 .seq-block { margin-bottom: 1.5rem; }
-.seq-block h4 { font-size: 0.82rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-secondary); }
+.seq-block h3 { font-size: 0.82rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-secondary); }
 .seq-tag-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.5rem; }
 .seq-tag-chip { font-family: var(--font-mono); font-size: 0.72rem; border-radius: 5px; padding: 0.3rem 0.5rem; background: var(--bg-tertiary); color: var(--text-secondary); text-align: center; min-width: 3.2rem; }
 .seq-tag-chip.true-chip { background: var(--bg-secondary); }
 .seq-tag-chip.pred-chip { cursor: pointer; border: 1px solid var(--border); }
 .seq-tag-chip.pred-chip:hover { border-color: var(--accent); }
-.seq-tag-chip.match { background: rgba(63,185,80,0.18); color: var(--success); }
-.seq-tag-chip.mismatch { background: rgba(248,81,73,0.18); color: var(--danger); }
+.seq-tag-chip.match { background: rgba(63,185,80,0.18); color: var(--success-strong); }
+.seq-tag-chip.mismatch { background: rgba(248,81,73,0.18); color: var(--danger-strong); }
 
 .metric-row { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
 .metric-chip { background: var(--bg-secondary); border-radius: 8px; padding: 0.6rem 1rem; font-size: 0.8rem; color: var(--text-secondary); }

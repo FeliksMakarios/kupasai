@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Logistic Regression - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/ml/logistic-regression/">
+  <meta name="description" content="Bukan memprediksi angka, tapi probabilitas: apakah sebuah data termasuk kelas A atau kelas B?">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Logistic Regression - KupasAI">
+  <meta property="og:description" content="Bukan memprediksi angka, tapi probabilitas: apakah sebuah data termasuk kelas A atau kelas B?">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/ml/logistic-regression/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Logistic Regression - KupasAI">
+  <meta name="twitter:description" content="Bukan memprediksi angka, tapi probabilitas: apakah sebuah data termasuk kelas A atau kelas B?">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -45,6 +62,8 @@
   </button>
 </nav>
 
+<main id="main-content" tabindex="-1">
+
 <div class="page-header">
   <div class="page-header-content">
     <a href="/kupasai/ml/" class="back-link">&larr; Kembali ke Daftar Topik</a>
@@ -82,7 +101,7 @@
       <svg id="boundary-plot" viewBox="0 0 700 460"></svg>
     </div>
     <div class="viz-sidebar">
-      <h3>Data Nyata: Iris</h3>
+      <h2>Data Nyata: Iris</h2>
       <p>
         100 sampel bunga Iris (kelas <strong>setosa</strong> vs <strong>versicolor</strong>),
         memakai dua fitur pertama: panjang &amp; lebar sepal.
@@ -122,7 +141,7 @@
       <div class="sigmoid-result" id="sigmoid-result"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Dari Angka ke Probabilitas</h3>
+      <h2>Dari Angka ke Probabilitas</h2>
       <p>
         Logistic Regression menghitung kombinasi linear
         <code>z = b + w1&times;x1 + w2&times;x2</code>, lalu memasukkannya ke
@@ -150,18 +169,24 @@
 <script src="/kupasai/assets/js/theme.js"></script>
 <script src="../../assets/js/enhancements.js"></script>
 
+
+
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Fungsi sigmoid dan probabilitas. <strong>Durasi:</strong> sekitar 25 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Model dilatih pada dua kelas Iris. Penanda uji mengikuti indeks baris asli.</p><p>Ambang mengubah label keputusan, bukan probabilitas model. Hasil pada dua kelas yang mudah dipisahkan tidak berlaku untuk semua data.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Apa yang terjadi pada recall saat ambang diturunkan?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Geser slider panjang sepal dan lebar sepal, lalu amati kapan titik berpindah sisi decision boundary.</li>
+<li><strong>Perhitungan:</strong> Pada tab Fungsi Sigmoid, hitung σ(z)=1/(1+e^(−z)) untuk satu nilai z dan cocokkan dengan kurva.</li>
 <li><strong>Refleksi dan transfer:</strong> Jelaskan pilihan ambang untuk deteksi penyakit dan deteksi spam.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml/logistic-regression" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 </body>
 </html>

@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Generalizing Gradient Descent - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/ml-lanjut/generalizing-gd/">
+  <meta name="description" content="Memperluas gradient descent ke banyak bobot sekaligus: bagaimana jika satu bobot dibekukan? Bagaimana jika ada banyak output? Bagaimana jika keduanya terjadi…">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Generalizing Gradient Descent - KupasAI">
+  <meta property="og:description" content="Memperluas gradient descent ke banyak bobot sekaligus: bagaimana jika satu bobot dibekukan? Bagaimana jika ada banyak output? Bagaimana jika keduanya terjadi…">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/ml-lanjut/generalizing-gd/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-lanjut.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Generalizing Gradient Descent - KupasAI">
+  <meta name="twitter:description" content="Memperluas gradient descent ke banyak bobot sekaligus: bagaimana jika satu bobot dibekukan? Bagaimana jika ada banyak output? Bagaimana jika keduanya terjadi…">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-lanjut.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -44,6 +61,8 @@
     </svg>
   </button>
 </nav>
+
+<main id="main-content" tabindex="-1">
 
 <div class="page-header">
   <div class="page-header-content">
@@ -86,7 +105,7 @@
       </table>
     </div>
     <div class="viz-sidebar">
-      <h3>Membekukan Satu Bobot</h3>
+      <h2>Membekukan Satu Bobot</h2>
       <p>
         Input: <code>toes=8.5, wlrec=0.65, nfans=1.2</code>, target
         menang=1. Setiap bobot punya <code>weight_delta</code> sendiri
@@ -116,7 +135,7 @@
       </table>
     </div>
     <div class="viz-sidebar">
-      <h3>Satu Input, Tiga Prediksi</h3>
+      <h2>Satu Input, Tiga Prediksi</h2>
       <p>
         Ketiga output memakai <strong>input yang sama</strong> tapi bobot
         berbeda. Prediksi <code>win</code> paling jauh dari target
@@ -150,7 +169,7 @@
       </div>
     </div>
     <div class="viz-sidebar">
-      <h3>Kasus Paling Umum</h3>
+      <h2>Kasus Paling Umum</h2>
       <p>
         Setiap sel matriks bobot menghubungkan satu input ke satu output.
         <code>weight_delta[i][j] = input[i] &times; delta[j]</code> adalah
@@ -169,19 +188,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Outer product dan penurunan gradien. <strong>Durasi:</strong> sekitar 30 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Perhitungan manual pada satu sampel. Perbandingan pembekuan memakai alpha yang sama.</p><p>Bobot yang dibekukan adalah satu koneksi menuju neuron yang sama. Galat tabel dihitung sebelum pembaruan, kolom bobot menampilkan keadaan sesudahnya.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Koneksi mana yang tidak berubah ketika inputnya nol?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Bandingkan mode Normal dengan Bekukan weight[0] (toes) dan amati bobot mana yang tetap.</li>
+<li><strong>Perhitungan:</strong> Pada Update Bobot Satu Langkah, hitung satu elemen gradien sebagai input × delta, lalu kurangi alpha kali nilai itu dari bobot lama.</li>
 <li><strong>Refleksi dan transfer:</strong> Hitung satu matriks gradien untuk dua input dan tiga output.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Linear.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml-lanjut/generalizing-gd" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; ML Lanjut INF24141</span>
 </footer>

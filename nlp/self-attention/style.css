@@ -63,7 +63,7 @@
 }
 .viz-main svg { width: 100%; height: auto; display: block; }
 
-.viz-sidebar h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.viz-sidebar h2 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
 .viz-sidebar p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem; }
 .viz-sidebar strong { color: var(--text-primary); }
 .viz-sidebar code {
@@ -94,7 +94,7 @@
 }
 
 .step-btn {
-  background: var(--accent); color: white; border: none; border-radius: 6px;
+  background: var(--accent); color: var(--on-accent); border: none; border-radius: 6px;
   padding: 0.5rem 1.25rem; font-size: 0.85rem; font-weight: 600;
   cursor: pointer; font-family: var(--font-sans); transition: background 0.15s;
 }
@@ -136,7 +136,7 @@
   font-family: var(--font-sans); cursor: pointer; transition: all 0.15s;
 }
 .mh-btn:hover { border-color: var(--accent); color: var(--text-primary); }
-.mh-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+.mh-btn.active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 
 /* ==================== RESPONSIVE ==================== */
 

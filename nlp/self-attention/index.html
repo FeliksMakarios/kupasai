@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Self-Attention Mechanism - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/nlp/self-attention/">
+  <meta name="description" content="Inti dari Transformer: setiap kata &quot;melihat&quot; semua kata lain dalam kalimat dan memutuskan mana yang paling relevan. Tidak lagi memproses kata satu per satu…">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Self-Attention Mechanism - KupasAI">
+  <meta property="og:description" content="Inti dari Transformer: setiap kata &quot;melihat&quot; semua kata lain dalam kalimat dan memutuskan mana yang paling relevan. Tidak lagi memproses kata satu per satu…">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/nlp/self-attention/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Self-Attention Mechanism - KupasAI">
+  <meta name="twitter:description" content="Inti dari Transformer: setiap kata &quot;melihat&quot; semua kata lain dalam kalimat dan memutuskan mana yang paling relevan. Tidak lagi memproses kata satu per satu…">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -45,6 +62,8 @@
   </button>
 </nav>
 
+<main id="main-content" tabindex="-1">
+
 <div class="page-header">
   <div class="page-header-content">
     <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke Daftar Topik</a>
@@ -81,7 +100,7 @@
       <div class="matrix-hint" id="matrix-hint">Klik sel untuk melihat detail attention</div>
     </div>
     <div class="viz-sidebar">
-      <h3>Attention Matrix</h3>
+      <h2>Attention Matrix</h2>
       <p>
         Setiap sel menunjukkan seberapa banyak sebuah kata
         <strong>"memperhatikan"</strong> kata lain. Baris = kata yang
@@ -126,7 +145,7 @@
       <div class="step-detail" id="qkv-detail"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Query, Key, Value</h3>
+      <h2>Query, Key, Value</h2>
       <p>
         Attention bekerja seperti sistem <strong>pencarian</strong>.
         Setiap kata menghasilkan tiga vektor:
@@ -169,7 +188,7 @@
       <svg id="mh-plot" viewBox="0 0 600 450"></svg>
     </div>
     <div class="viz-sidebar">
-      <h3>Multi-Head Attention</h3>
+      <h2>Multi-Head Attention</h2>
       <p>Setiap kepala perhatian dapat menggabungkan beberapa pola. Label Sintaktik, Lokasi, dan Semantik di sini adalah nama ilustrasi: matriks dua kepala pertama dirancang manual, sedangkan kepala ketiga memakai bobot acak. Hasil ini tidak membuktikan bahwa kepala model terlatih memiliki fungsi linguistik tertentu.</p>
       <p>Kepala dirancang memperlihatkan pengaruh proyeksi Q dan K. Periksa angka aktual pada matriks. Bobot perhatian yang tinggi bukan penjelasan kausal tentang alasan model menghasilkan prediksi.</p>
       <p>Bandingkan distribusi perhatian antar kepala. Arah keterkaitan mengikuti bobot contoh dan tidak dijamin muncul pada model yang dilatih.</p>
@@ -185,19 +204,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Dot product, softmax, dan matriks. <strong>Durasi:</strong> sekitar 35 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Embedding manual, dua proyeksi dirancang, satu proyeksi acak.</p><p>Nama kepala bukan fungsi linguistik yang terbukti. Self-attention memerlukan informasi posisi untuk menyandikan urutan. Kompleksitas kuadratik berlaku untuk full attention.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Apa akibat menaikkan semua skor QK dengan faktor positif besar?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Ganti kalimat pada tiap tab dan telusuri langkah Query-Key-Value dengan tombol Selanjutnya.</li>
+<li><strong>Perhitungan:</strong> Hitung satu baris attention: skor QKᵀ dibagi √d_k, lalu softmax, dan cocokkan dengan baris matriks.</li>
 <li><strong>Refleksi dan transfer:</strong> Tukar urutan token tanpa positional encoding dan amati permutasinya.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/self-attention" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>

@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Na&iuml;ve Bayes - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/ml/naive-bayes/">
+  <meta name="description" content="Menghitung probabilitas suatu kelas dengan Teorema Bayes, dengan asumsi “naif” bahwa fitur saling independen bersyarat pada kelas.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Naïve Bayes - KupasAI">
+  <meta property="og:description" content="Menghitung probabilitas suatu kelas dengan Teorema Bayes, dengan asumsi “naif” bahwa fitur saling independen bersyarat pada kelas.">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/ml/naive-bayes/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Naïve Bayes - KupasAI">
+  <meta name="twitter:description" content="Menghitung probabilitas suatu kelas dengan Teorema Bayes, dengan asumsi “naif” bahwa fitur saling independen bersyarat pada kelas.">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -44,6 +61,8 @@
     </svg>
   </button>
 </nav>
+
+<main id="main-content" tabindex="-1">
 
 <div class="page-header">
   <div class="page-header-content">
@@ -90,7 +109,7 @@
       <div class="verdict-box" id="verdict-box"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Contoh Email Spam</h3>
+      <h2>Contoh Email Spam</h2>
       <p>
         Dataset mainan 4 email persis dari Modul 7.2. Ganti kombinasi Diskon/Hadiah
         dan lihat bagaimana posterior berubah &mdash; termasuk kasus khusus saat
@@ -117,7 +136,7 @@
       <div id="titanic-confusion"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Data Nyata: RMS Titanic</h3>
+      <h2>Data Nyata: RMS Titanic</h2>
       <p>Model GaussianNB menggunakan pembagian berstrata 80% latih dan 20% uji dari train.csv yang memiliki label Survived. Median usia, median tarif, dan modus pelabuhan dipelajari dari data latih saja. Label aktual berasal dari data berlabel, bukan contoh berkas pengiriman prediksi. GaussianNB di sini merupakan model dasar dengan penyederhanaan distribusi fitur campuran.</p>
       <p>
         Hitung akurasi dari jumlah diagonal matriks dibagi seluruh kasus. Bandingkan dengan F1 yang mempertimbangkan precision dan recall kelas selamat.
@@ -132,18 +151,24 @@
 <script src="/kupasai/assets/js/theme.js"></script>
 <script src="../../assets/js/enhancements.js"></script>
 
+
+
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Probabilitas bersyarat. <strong>Durasi:</strong> sekitar 30 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Contoh email sintetis dan Titanic berlabel dengan pembagian berstrata 80/20, benih 42.</p><p>Independensi yang diasumsikan bersyarat pada kelas. GaussianNB adalah baseline sederhana untuk fitur campuran.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Apa yang terjadi jika likelihood satu fitur nol?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Ubah pilihan Diskon dan Hadiah, lalu aktifkan dan nonaktifkan Laplace Smoothing.</li>
+<li><strong>Perhitungan:</strong> Kalikan prior dengan setiap likelihood untuk satu kelas, lalu normalisasikan kedua skor dan cocokkan dengan posterior di panel.</li>
 <li><strong>Refleksi dan transfer:</strong> Bandingkan GaussianNB dengan model yang menangani fitur kategorikal.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://scikit-learn.org/stable/modules/naive_bayes.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml/naive-bayes" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 </body>
 </html>
