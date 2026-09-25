@@ -17,7 +17,7 @@ class Tags(HTMLParser):
     def handle_starttag(self,tag,attrs):self.tags.append((tag,dict(attrs)))
 class Site(unittest.TestCase):
     def test_pages_and_assets(self):
-        pages=[p for p in ROOT.glob('**/index.html') if 'node_modules' not in p.parts];self.assertEqual(len(pages),41)
+        pages=[p for p in ROOT.glob('**/index.html') if 'node_modules' not in p.parts];self.assertEqual(len(pages),len(json.loads((ROOT/"assets/lessons.json").read_text()))+7)
         for p in pages:
             s=p.read_text();tags=Tags(s).tags
             ids=[a['id'] for t,a in tags if 'id' in a]

@@ -62,18 +62,22 @@
 
   function renderSubwords() {
     var S = D.subword_example;
-    var html = '';
+    var row = document.getElementById('subword-row');
+    row.replaceChildren();
     var seenWordIds = {};
     S.subword_tokens.forEach(function (tok, i) {
       var wid = S.subword_word_ids[i];
-      var isFirst = wid !== null && !seenWordIds[wid];
-      var isIgnored = wid !== null && seenWordIds[wid];
+      var ignored = wid !== null && !!seenWordIds[wid];
       if (wid !== null) seenWordIds[wid] = true;
-      var cls = wid === null ? '' : (isFirst ? 'first-subword' : (isIgnored ? 'ignored' : ''));
-      var label = wid === null ? 'special' : ('word_id=' + wid + (isIgnored ? ' &rarr; IGN' : ' &rarr; ' + S.word_labels[wid]));
-      html += '<div class="subword-chip ' + cls + '">' + tok + '<div class="sc-wid">' + label + '</div></div>';
+      var chip = document.createElement('div');
+      chip.className = 'subword-chip ' + (wid === null ? '' : ignored ? 'ignored' : 'first-subword');
+      chip.appendChild(document.createTextNode(tok));
+      var label = document.createElement('div');
+      label.className = 'sc-wid';
+      label.textContent = wid === null ? 'special' : 'word_id=' + wid + ' → ' + (ignored ? 'IGN' : S.word_labels[wid]);
+      chip.appendChild(label);
+      row.appendChild(chip);
     });
-    document.getElementById('subword-row').innerHTML = html;
   }
 
   // ============================================================
@@ -140,13 +144,18 @@
         var curIdx = tagset.indexOf(arr[i]);
         arr[i] = tagset[(curIdx + 1) % tagset.length];
         renderAll();
+        var next=document.querySelector('#'+containerId+' .pred-chip[data-i="'+i+'"]');
+        next.setAttribute('tabindex','0');next.focus({preventScroll:true});
       });
     });
   }
 
   function renderMetrics() {
     var m = computeMetrics();
+    var actual=D.seqeval_example.true1.concat(D.seqeval_example.true2), predicted=pred1.concat(pred2);
+    var correct=actual.filter(function(t,i){return t===predicted[i];}).length;
     document.getElementById('seq-metrics').innerHTML =
+      '<div class="metric-chip">Token accuracy<strong>'+ (correct/actual.length).toFixed(3) +'</strong></div>' +
       '<div class="metric-chip">Precision<strong>' + m.precision.toFixed(3) + '</strong></div>' +
       '<div class="metric-chip">Recall<strong>' + m.recall.toFixed(3) + '</strong></div>' +
       '<div class="metric-chip">F1-score<strong>' + m.f1.toFixed(3) + '</strong></div>' +
@@ -167,7 +176,6 @@
         '<div class="lang-val">' + l.pct + '%</div></div>';
     });
     document.getElementById('lang-dist').innerHTML = html;
-    document.getElementById('f1-approx').textContent = (D.facts.f1_de_approx * 100).toFixed(0) + '%';
     document.getElementById('num-labels').textContent = D.facts.num_labels;
   }
 

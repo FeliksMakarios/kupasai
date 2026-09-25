@@ -47,7 +47,7 @@ STEPS = {
 'ml/decision-tree':('Klik ketiga kandidat pemisah (Mesin Bensin?, Penggerak Depan?, Bangku > 5?) dan bandingkan entropi anak yang dihasilkan.','Hitung information gain satu pemisah: entropi induk dikurangi rata-rata tertimbang entropi anak, lalu cocokkan dengan angka pada panel.'),
 'ml/random-forest':('Ganti baris data uji pada tab Ensemble Voting dan catat pohon mana yang berubah suara.','Hitung suara mayoritas dari tujuh pohon untuk satu baris uji, lalu bandingkan dengan prediksi akhir yang ditampilkan.'),
 'ml/naive-bayes':('Ubah pilihan Diskon dan Hadiah, lalu aktifkan dan nonaktifkan Laplace Smoothing.','Kalikan prior dengan setiap likelihood untuk satu kelas, lalu normalisasikan kedua skor dan cocokkan dengan posterior di panel.'),
-'ml/churn-prediction':('Bandingkan model pada tab Perbandingan Model, lalu geser jumlah kasus pada tab Coba Prediksi.','Dari confusion matrix satu model, hitung precision dan recall kelas churn secara manual.'),
+'ml/churn-prediction':('Bandingkan model pada tab Perbandingan Model, lalu geser jumlah kasus pada tab Evaluasi Agregat.','Dari confusion matrix satu model, hitung precision dan recall kelas churn secara manual.'),
 'ml/clustering':('Klik K = 2 sampai 5 dan amati bentuk kelompok serta posisi titik pada kurva siku SSE.','Pilih satu rute pada tab Detail Cluster dan jelaskan mengapa rute itu masuk ke centroid terdekatnya.'),
 'ml/market-basket':('Ganti produk pada tab Jelajahi Produk dan bandingkan aturan yang muncul.','Untuk satu aturan A→B, hitung support, confidence = support(A∪B)/support(A), dan lift = confidence/support(B).'),
 'ml-lanjut/forward-propagation':('Klik skenario Input Tunggal sampai Jaringan 2 Lapis dan amati bentuk matriks bobot pada tiap skenario.','Hitung satu keluaran sebagai dot product baris bobot dengan vektor input, lalu cocokkan dengan hasil NumPy.'),
@@ -76,3 +76,9 @@ STEPS = {
 'kecerdasan-komputasional/algoritma-genetika':('Buka tab dari Penyandian Kromosom sampai Eksperimen Parameter dan perhatikan perubahan fitness terbaik tiap generasi.','Dekodekan satu kromosom biner menjadi nilai x, hitung fitness-nya, lalu hitung peluang terpilihnya pada roulette wheel.'),
 'kecerdasan-komputasional/kecerdasan-kawanan-fuzzy':('Bandingkan Metode Tsukamoto dan Metode Mamdani pada tab Sistem Fuzzy, lalu amati feromon ACO setelah kedua semut lewat.','Hitung derajat keanggotaan satu nilai pada fungsi segitiga, lalu terapkan operator MIN untuk satu aturan.'),
 }
+
+# Supplementary labs share the same metadata and learning-aid pipeline.
+from new_lessons import NEW
+for slug, lesson in NEW.items():
+    LESSONS[slug]=(lesson['prereq'],25,'Simulasi sintetis deterministik; tidak menjalankan model pretrained.',lesson['note'],'Prediksi perubahan keluaran sebelum mengubah satu kontrol.','Jelaskan kapan hasil eksperimen kecil ini tidak berlaku pada data nyata.',lesson['source'])
+    STEPS[slug]=('Ubah satu kontrol, amati hasil tabel, lalu reset untuk membandingkan.','Hitung satu baris hasil secara manual dan bandingkan dengan penjelasan algoritma.')

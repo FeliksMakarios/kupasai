@@ -15,7 +15,7 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
  });
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const base=`http://127.0.0.1:${server.address().port}/kupasai/`;
- const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH||undefined,args:['--no-sandbox']});
+ const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH||undefined,args:['--no-sandbox']}).catch(error=>{server.close();throw error;});
  const page=await browser.newPage();
  // Theme switches must not reload the page: a marker on window survives only without a reload.
  async function toggleTheme(){
@@ -31,7 +31,7 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
  try {
   for(const file of pages(root)){
    current=file;await page.setViewportSize({width:1280,height:900});await page.goto(base+file);
-   for(const width of [1280,390]){
+   for(const width of [1280,768,390,320]){
     await page.setViewportSize({width,height:844});
     const tabs=await page.locator('.tab-btn').all();
     for(const tab of tabs){await tab.click({force:true});assert.equal(await tab.getAttribute('aria-selected'),'true',file);checks++;assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),`Overflow: ${file} / ${await tab.getAttribute('data-tab')} / ${width}`);}
@@ -44,6 +44,17 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
    if(active)assert.equal(await page.locator('.tab-btn.active').getAttribute('data-tab'),active,file);
    if(await reflection.count())assert.equal(await reflection.inputValue(),'Catatan uji tema',file);
   }
+  current='audit regressions';await page.goto(base+'ml-lanjut/object-detection/');
+  const expectedIoU=['0.829','0.354','0.000'];
+  for(let i=0;i<3;i++){await page.locator('.iou-preset-btn').nth(i).click();assert((await page.locator('#iou-verdict').innerText()).includes(expectedIoU[i]));}
+  await page.goto(base+'nlp/ner/');assert((await page.locator('#subword-row').innerText()).includes('<s>'));
+  await page.goto(base+'nlp/transformer/');const block=page.locator('#full-plot rect[role="button"]').nth(2);await block.focus();await page.keyboard.press('Enter');
+  const hint=await page.locator('#full-hint').innerText();await toggleTheme();assert.equal(await page.locator('#full-hint').innerText(),hint);
+  assert.equal(await page.locator('#concept-checks fieldset').count(),2);
+  await page.goto(base+'ml-lanjut/regularization/');await page.locator('[data-tab="dropout"]').click();await page.locator('#dropout-regenerate').click();
+  const mask=await page.locator('#dropout-mask-demo circle').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('stroke-dasharray')));await toggleTheme();assert.deepEqual(await page.locator('#dropout-mask-demo circle').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('stroke-dasharray'))),mask);
+  await page.goto(base+'ml/evaluasi-model/');await page.locator('input[name="concept-0"][value="false"]').check();await page.locator('input[name="concept-1"][value="true"]').check();assert((await page.locator('#quiz-status').innerText()).includes('selesai'));
+  await page.goto(base+'nlp/rag-berbukti/');await page.locator('#lab-evidence').uncheck();assert((await page.locator('#lab-result').innerText()).includes('tidak dapat menjawab'));
   // Empty and object-key strings must be finite, never a perfect empty BLEU score.
   await page.goto(base+'nlp/summarization/');
   await page.locator('[data-tab="metrics"]').click();

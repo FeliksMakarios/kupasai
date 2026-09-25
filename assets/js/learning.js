@@ -17,7 +17,7 @@
   }
   ['click','input','change'].forEach(function (type) {
     document.addEventListener(type, function (event) {
-      if (replaying || !event.isTrusted) return;
+      if (replaying || (!event.isTrusted && !event.kupasKeyboard)) return;
       var el = event.target.closest('button,input,select,textarea,[role="button"]');
       if (!el || el.id === 'theme-toggle') return;
       var entry = {type:type, selector:selector(el)};
@@ -46,7 +46,7 @@
       return 'Diagram '+parts.join(': ');
     }
     // On phones, keep diagram text at a readable size and let the diagram scroll sideways.
-    var MIN_TEXT=9,MAX_WIDTH=820;
+    var MIN_TEXT=12,MAX_WIDTH=1200;
     function fitWidth(svg){
       var vb=svg.viewBox&&svg.viewBox.baseVal;if(!vb||!vb.width)return 0;
       var sizes=[];svg.querySelectorAll('text').forEach(function(t){if(t.textContent.trim())sizes.push(parseFloat(getComputedStyle(t).fontSize)||0);});
@@ -99,8 +99,8 @@
         var clickable=(el.__on || []).some(function(x){return x.type==='click';}) || el.matches('.token-chip,.pred-chip,.qa-token');
         if (!clickable || el.hasAttribute('tabindex')) return;
         el.setAttribute('tabindex','0');el.setAttribute('role','button');
-        el.setAttribute('aria-label',el.textContent.trim() || (el.__data__ && (el.__data__.word || el.__data__.label)) || 'Tampilkan detail titik');
-        el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();el.dispatchEvent(new MouseEvent('click',{bubbles:true}));}});
+        if (!el.hasAttribute('aria-label')) el.setAttribute('aria-label',el.textContent.trim() || (el.__data__ && (el.__data__.word || el.__data__.label)) || 'Tampilkan detail titik');
+        el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();var click=new MouseEvent('click',{bubbles:true});click.kupasKeyboard=true;el.dispatchEvent(click);}});
       });
     }
     // Everything below can run again after the main content is rebuilt for a theme switch.
@@ -142,7 +142,7 @@
       replaying=true;
       saved.history.forEach(function(e){var el=document.querySelector(e.selector);if(!el)return;if(e.type==='click')el.dispatchEvent(new MouseEvent('click',{bubbles:true}));else{el.value=e.value;if(e.checked!==undefined)el.checked=e.checked;el.dispatchEvent(new Event(e.type,{bubbles:true}));}});
       history=saved.history;replaying=false;
-      requestAnimationFrame(function(){window.scrollTo(0,saved.scroll);});
+      requestAnimationFrame(function(){window.scrollTo(0,saved.scroll);if(saved.focus){var focus=document.querySelector(saved.focus);if(focus)focus.focus({preventScroll:true});}});
     }
     var saved;
     try {saved=JSON.parse(sessionStorage.getItem(key));sessionStorage.removeItem(key);} catch(e) {}
@@ -152,7 +152,7 @@
     window.KupasLearning.rerender=function(){
       var main=document.querySelector('main');
       if(!main||!window.fetch||!window.DOMParser||location.protocol==='file:')return Promise.reject(new Error('unsupported'));
-      var state={history:history.slice(),scroll:scrollY};
+      var state={history:history.slice(),scroll:scrollY,focus:selector(document.activeElement)};
       return fetch(location.pathname+location.search,{credentials:'same-origin'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.text();}).then(function(html){
         var doc=new DOMParser().parseFromString(html,'text/html'),fresh=doc.querySelector('main');
         if(!fresh)throw new Error('no main');
@@ -161,6 +161,7 @@
         main.replaceWith(node);
         // Imported <script> elements stay inert; page scripts run again as fresh copies.
         var sources=[].slice.call(doc.body.querySelectorAll('script[src]')).map(function(x){return x.getAttribute('src');})
+          .concat(['/kupasai/assets/js/catalog.js'])
           .filter(function(src){return !/vendor\/|data\.js$|theme\.js$|learning\.js$/.test(src);});
         return sources.reduce(function(chain,src){return chain.then(function(){return new Promise(function(resolve,reject){
           var s=document.createElement('script');s.src=src;s.onload=function(){s.remove();resolve();};s.onerror=reject;document.body.appendChild(s);

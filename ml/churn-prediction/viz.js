@@ -90,4 +90,20 @@
   renderAggregate();
 
   document.getElementById('churn-n-test').textContent = D.n_test.toLocaleString('id-ID');
+
+  function renderMatrices(){
+    var index=+document.getElementById('churn-threshold').value;
+    var fpCost=Math.max(0,Math.min(1000000,+document.getElementById('churn-fp-cost').value||0));
+    var fnCost=Math.max(0,Math.min(1000000,+document.getElementById('churn-fn-cost').value||0));
+    var host=document.getElementById('churn-matrices');host.replaceChildren();
+    [['lr','Regresi Logistik'],['rf','Random Forest']].forEach(function(pair){
+      var row=D.evaluation[pair[0]][index],m=row.matrix,tn=m[0][0],fp=m[0][1],fn=m[1][0],tp=m[1][1];
+      var title=document.createElement('h3');title.textContent=pair[1]+' · ambang '+row.threshold.toFixed(2);host.appendChild(title);
+      var table=document.createElement('table');table.className='topic-table';
+      [['Aktual / Prediksi','Aktif','Churn'],['Aktif',tn,fp],['Churn',fn,tp]].forEach(function(values,i){var tr=table.insertRow();values.forEach(function(v,j){var cell=document.createElement(i===0||j===0?'th':'td');cell.textContent=v;tr.appendChild(cell);});});host.appendChild(table);
+      var p=document.createElement('p');p.textContent='Precision '+(tp/(tp+fp)||0).toFixed(3)+' · Recall '+(tp/(tp+fn)||0).toFixed(3)+' · Biaya total '+(fp*fpCost+fn*fnCost).toLocaleString('id-ID');host.appendChild(p);
+    });
+  }
+  ['churn-threshold','churn-fp-cost','churn-fn-cost'].forEach(function(id){document.getElementById(id).addEventListener('input',renderMatrices);});
+  renderMatrices();
 })();

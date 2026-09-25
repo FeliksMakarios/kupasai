@@ -8,8 +8,12 @@
     tabBtns.forEach(function (b) { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); b.setAttribute('tabindex', '-1'); });
     tabContents.forEach(function (c) { c.classList.remove('active'); });
     btn.classList.add('active'); btn.setAttribute('aria-selected', 'true'); btn.setAttribute('tabindex', '0');
-    document.getElementById('tab-' + target).classList.add('active');
+    var panel=document.getElementById('tab-' + target);
+    if(panel)panel.classList.add('active');
+    var url=new URL(location.href);url.searchParams.set('tab',target);history.replaceState(null,'',url);
   }
+  var initial=new URLSearchParams(location.search).get('tab');
+  tabBtns.forEach(function(btn){if(btn.getAttribute('data-tab')===initial)activateTab(btn);});
   tabBtns.forEach(function (btn, i) {
     btn.addEventListener('click', function () { activateTab(btn); btn.focus(); });
     btn.addEventListener('keydown', function (e) {

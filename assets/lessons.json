@@ -1,0 +1,899 @@
+[
+  {
+    "slug": "ml/pandas",
+    "title": "Pengenalan Pandas",
+    "prerequisite": "Tabel dan indeks",
+    "minutes": 20,
+    "provenance": "Simulasi operasi pada data gudang kecil. Tidak menjalankan Python di peramban.",
+    "limits": "Pengisian nol pada kolom turunan adalah keputusan eksplisit. dropna menghapus baris, sedangkan isnull hanya menandainya.",
+    "source": "https://pandas.pydata.org/docs/user_guide/missing_data.html",
+    "order": 0,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "isnull() menghapus baris kosong.",
+        false,
+        "isnull() menghasilkan mask boolean; dropna() yang menghapus baris."
+      ],
+      [
+        "Mengisi nilai kosong dengan nol adalah keputusan pemodelan.",
+        true,
+        "Nol dapat bermakna pengukuran nyata; pilih imputasi sesuai arti kolom."
+      ]
+    ]
+  },
+  {
+    "slug": "ml/linear-regression",
+    "title": "Linear Regression",
+    "prerequisite": "Persamaan garis dan rata-rata",
+    "minutes": 25,
+    "provenance": "Regresi dilatih pada bensin.csv dan MLG_data.csv.",
+    "limits": "R² uji dapat turun saat fitur ditambah. Residual adalah nilai aktual dikurangi prediksi. Korelasi tidak membuktikan sebab-akibat.",
+    "source": "https://scikit-learn.org/stable/modules/linear_model.html#ordinary-least-squares",
+    "order": 1,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "R² pada data uji selalu antara 0 dan 1.",
+        false,
+        "R² dapat negatif ketika galat model lebih besar daripada baseline rata-rata data evaluasi."
+      ],
+      [
+        "Residual sama dengan aktual dikurangi prediksi.",
+        true,
+        "Tanda residual menunjukkan arah galat; kuadratnya menghilangkan tanda."
+      ]
+    ]
+  },
+  {
+    "slug": "ml/logistic-regression",
+    "title": "Logistic Regression",
+    "prerequisite": "Fungsi sigmoid dan probabilitas",
+    "minutes": 25,
+    "provenance": "Model dilatih pada dua kelas Iris. Penanda uji mengikuti indeks baris asli.",
+    "limits": "Ambang mengubah label keputusan, bukan probabilitas model. Hasil pada dua kelas yang mudah dipisahkan tidak berlaku untuk semua data.",
+    "source": "https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression",
+    "order": 2,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Mengubah threshold mengubah probabilitas model.",
+        false,
+        "Threshold hanya mengubah keputusan kelas dari probabilitas yang sama."
+      ],
+      [
+        "Menurunkan threshold tidak dapat menurunkan recall pada data tetap.",
+        true,
+        "Himpunan prediksi positif bertambah atau tetap, sehingga TP tidak berkurang."
+      ]
+    ]
+  },
+  {
+    "slug": "ml/decision-tree",
+    "title": "Decision Tree",
+    "prerequisite": "Probabilitas kelas",
+    "minutes": 25,
+    "provenance": "Contoh 15 baris dan model pada decisiontree_ch6.csv memakai data berbeda.",
+    "limits": "Entropi maksimum log₂ K untuk K kelas. Akurasi uji dengan sampel kecil dapat berubah besar bila satu prediksi berubah.",
+    "source": "https://scikit-learn.org/stable/modules/tree.html",
+    "order": 3,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Entropi anak dijumlahkan tanpa bobot untuk menghitung gain.",
+        false,
+        "Gunakan proporsi jumlah sampel tiap anak sebagai bobot."
+      ],
+      [
+        "Pohon yang lebih dalam dapat overfit.",
+        true,
+        "Pohon dapat mempelajari noise; bandingkan metrik train dan validasi."
+      ]
+    ]
+  },
+  {
+    "slug": "ml/random-forest",
+    "title": "Random Forest",
+    "prerequisite": "Pohon keputusan",
+    "minutes": 30,
+    "provenance": "Tujuh pohon bagging ilustratif dan Random Forest 100 pohon merupakan dua model terpisah.",
+    "limits": "Pada Random Forest, kandidat fitur dipilih per pemisahan. Importance berbasis impurity bukan frekuensi fitur atau pengaruh kausal.",
+    "source": "https://scikit-learn.org/stable/modules/ensemble.html#random-forests-and-other-randomized-tree-ensembles",
+    "order": 4,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Demo tujuh pohon dengan fitur tetap identik dengan semua Random Forest.",
+        false,
+        "Demo menyederhanakan ensemble; Random Forest juga mengambil kandidat fitur per split."
+      ],
+      [
+        "scikit-learn mengagregasi probabilitas pohon untuk klasifikasi forest.",
+        true,
+        "Rata-rata probabilitas dapat berbeda dari mayoritas label keras tiap pohon."
+      ]
+    ]
+  },
+  {
+    "slug": "ml/naive-bayes",
+    "title": "Naïve Bayes",
+    "prerequisite": "Probabilitas bersyarat",
+    "minutes": 30,
+    "provenance": "Contoh email sintetis dan Titanic berlabel dengan pembagian berstrata 80/20, benih 42.",
+    "limits": "Independensi yang diasumsikan bersyarat pada kelas. GaussianNB adalah baseline sederhana untuk fitur campuran.",
+    "source": "https://scikit-learn.org/stable/modules/naive_bayes.html",
+    "order": 5,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Naive Bayes mengasumsikan fitur independen bersyarat pada kelas.",
+        true,
+        "Asumsi ini memungkinkan likelihood gabungan difaktorkan."
+      ],
+      [
+        "GaussianNB dan MultinomialNB memakai model likelihood yang sama.",
+        false,
+        "Gaussian memakai distribusi kontinu Gaussian; Multinomial memodelkan hitungan nonnegatif."
+      ]
+    ]
+  },
+  {
+    "slug": "ml/churn-prediction",
+    "title": "Studi Kasus: Churn Prediction",
+    "prerequisite": "Klasifikasi dan metrik evaluasi",
+    "minutes": 35,
+    "provenance": "Dataset churn contoh kuliah. AUC memakai probabilitas, pembagian berstrata, dan validasi silang pada data latih.",
+    "limits": "Pilih metrik berdasarkan biaya keputusan. Pentingnya fitur bukan hubungan sebab-akibat.",
+    "source": "https://scikit-learn.org/stable/modules/model_evaluation.html#roc-metrics",
+    "order": 6,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Biaya false negative boleh berbeda dari false positive.",
+        true,
+        "Biaya pelanggan terlewat dan promosi yang sia-sia biasanya berbeda."
+      ],
+      [
+        "Threshold terbaik boleh dipilih dari test lalu diklaim evaluasi final yang bebas bias.",
+        false,
+        "Pilih threshold pada validation; penggunaan test untuk memilih parameter membocorkan evaluasi."
+      ]
+    ]
+  },
+  {
+    "slug": "ml/clustering",
+    "title": "Clustering",
+    "prerequisite": "Jarak Euclidean dan standardisasi",
+    "minutes": 25,
+    "provenance": "K-Means dilatih pada durasi dan jarak penerbangan yang distandardisasi.",
+    "limits": "Siku SSE adalah petunjuk. Validasi kelompok dengan konteks dan kestabilan, bukan label benar-salah yang tidak tersedia.",
+    "source": "https://scikit-learn.org/stable/modules/clustering.html#k-means",
+    "order": 7,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Nama cluster membuktikan penyebab perilaku anggotanya.",
+        false,
+        "Cluster mengelompokkan kemiripan; interpretasi sebab perlu bukti lain."
+      ],
+      [
+        "Mengubah skala fitur dapat mengubah hasil K-means.",
+        true,
+        "Jarak Euclidean lebih dipengaruhi fitur berskala besar."
+      ]
+    ]
+  },
+  {
+    "slug": "ml/market-basket",
+    "title": "Market Basket Analysis",
+    "prerequisite": "Frekuensi dan probabilitas",
+    "minutes": 25,
+    "provenance": "Aturan dihitung dari transaksi kedai kopi menggunakan Apriori.",
+    "limits": "Lift bukan jumlah transaksi. Hubungan langka dapat memiliki lift tinggi. Asosiasi tidak membuktikan pembelian satu produk menyebabkan pembelian lain.",
+    "source": "https://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/",
+    "order": 8,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Confidence tinggi selalu berarti asosiasi kuat.",
+        false,
+        "Produk konsekuen yang sudah sangat umum dapat menghasilkan confidence tinggi dengan lift mendekati 1."
+      ],
+      [
+        "Lift 1 berarti frekuensi gabungan sesuai independensi.",
+        true,
+        "Lift membandingkan confidence terhadap support konsekuen."
+      ]
+    ]
+  },
+  {
+    "slug": "ml/evaluasi-model",
+    "title": "Evaluasi Model dan Data Leakage",
+    "prerequisite": "Klasifikasi dan probabilitas",
+    "minutes": 25,
+    "provenance": "Simulasi sintetis deterministik; tidak menjalankan model pretrained.",
+    "limits": "Accuracy tinggi dapat menyembunyikan kegagalan mendeteksi kelas minoritas. Probabilitas terkalibrasi berarti frekuensi kejadian mendekati probabilitas yang diprediksi pada banyak contoh, bukan setiap prediksi pasti benar.",
+    "source": "https://scikit-learn.org/stable/common_pitfalls.html",
+    "order": 9,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Imputasi boleh dipelajari dari seluruh data sebelum split.",
+        false,
+        "Statistik uji ikut memengaruhi model; fit hanya pada train tiap fold."
+      ],
+      [
+        "Model selalu negatif dapat berakurasi tinggi pada data tidak seimbang.",
+        true,
+        "Periksa recall kelas minoritas dan biaya kesalahan."
+      ]
+    ]
+  },
+  {
+    "slug": "ml-lanjut/forward-propagation",
+    "title": "Forward Propagation",
+    "prerequisite": "Vektor dan perkalian matriks",
+    "minutes": 25,
+    "provenance": "Bobot dan input contoh manual, keluaran dihitung ulang oleh generator.",
+    "limits": "Di halaman ini W berbentuk output×input. Bias dan aktivasi dihilangkan untuk isolasi operasi linear. Pada jaringan umum, gunakan aktivasi(Wx+b).",
+    "source": "https://numpy.org/doc/stable/reference/generated/numpy.matmul.html",
+    "order": 10,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Layer linear dengan bias menghitung Wx+b atau xW+b menurut konvensi orientasi.",
+        true,
+        "Dimensi input, bobot, dan bias harus cocok dengan konvensi."
+      ],
+      [
+        "Dua layer linear tanpa aktivasi selalu lebih ekspresif daripada satu layer linear.",
+        false,
+        "Komposisi transformasi affine tetap transformasi affine."
+      ]
+    ]
+  },
+  {
+    "slug": "ml-lanjut/gradient-descent",
+    "title": "Gradient Descent",
+    "prerequisite": "Turunan fungsi kuadrat",
+    "minutes": 25,
+    "provenance": "Simulasi numerik dengan objektif ½(ŷ−t)². MSE ditampilkan sebagai ukuran galat.",
+    "limits": "Kurva perbandingan mencatat galat setelah pembaruan. Alpha kedua metode berbeda, sehingga bukan uji kecepatan terkontrol.",
+    "source": "https://docs.pytorch.org/docs/stable/generated/torch.optim.SGD.html",
+    "order": 11,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Learning rate besar selalu mempercepat konvergensi.",
+        false,
+        "Langkah besar dapat berosilasi atau divergen."
+      ],
+      [
+        "Untuk loss ½(wx−y)², gradien terhadap w adalah (wx−y)x.",
+        true,
+        "Aturan rantai mengalikan residual dengan turunan prediksi terhadap bobot."
+      ]
+    ]
+  },
+  {
+    "slug": "ml-lanjut/generalizing-gd",
+    "title": "Generalizing Gradient Descent",
+    "prerequisite": "Outer product dan penurunan gradien",
+    "minutes": 30,
+    "provenance": "Perhitungan manual pada satu sampel. Perbandingan pembekuan memakai alpha yang sama.",
+    "limits": "Bobot yang dibekukan adalah satu koneksi menuju neuron yang sama. Galat tabel dihitung sebelum pembaruan, kolom bobot menampilkan keadaan sesudahnya.",
+    "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Linear.html",
+    "order": 12,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Membekukan bobot berarti mengabaikan gradien bobot itu saat pembaruan.",
+        true,
+        "Bobot tersebut tetap walaupun gradien matematisnya tidak nol."
+      ],
+      [
+        "Outer product input dan delta boleh ditransposisikan tanpa memeriksa dimensi.",
+        false,
+        "Orientasi bobot harus konsisten dengan forward pass."
+      ]
+    ]
+  },
+  {
+    "slug": "ml-lanjut/streetlight-backprop",
+    "title": "Studi Kasus: Streetlight Problem",
+    "prerequisite": "Dot product dan galat kuadrat",
+    "minutes": 25,
+    "provenance": "Enam baris pola lampu sintetis untuk latihan aritmetika.",
+    "limits": "Prediksi adalah jumlah kontribusi bobot, bukan selisih. Galat online dijumlahkan selama pembaruan, bukan evaluasi satu snapshot akhir.",
+    "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Linear.html",
+    "order": 13,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Menghafal satu pola lampu membuktikan generalisasi.",
+        false,
+        "Evaluasi perlu pola yang tidak digunakan saat melatih."
+      ],
+      [
+        "Loss online per contoh dan loss seluruh dataset pada bobot akhir bisa berbeda.",
+        true,
+        "Dalam online training bobot berubah antar contoh."
+      ]
+    ]
+  },
+  {
+    "slug": "ml-lanjut/nonlinearity-activation",
+    "title": "Non-Linearitas & Fungsi Aktivasi",
+    "prerequisite": "Transformasi afin dan turunan",
+    "minutes": 30,
+    "provenance": "Data cincin sintetis, Logistic Regression dan jaringan ReLU 8 neuron benar-benar dilatih.",
+    "limits": "Panel delta menunjukkan gradien terhadap aktivasi h. Kalikan turunan aktivasi untuk gradien terhadap z. Akurasi yang ditampilkan adalah akurasi latih.",
+    "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.ReLU.html",
+    "order": 14,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "ReLU bernilai nol untuk semua input negatif.",
+        true,
+        "ReLU(x)=max(0,x); turunan pada x<0 nol."
+      ],
+      [
+        "Sigmoid pada input sangat besar mempunyai gradien besar.",
+        false,
+        "Sigmoid jenuh mendekati 0 atau 1, turunannya mendekati nol."
+      ]
+    ]
+  },
+  {
+    "slug": "ml-lanjut/backprop-visualizer",
+    "title": "Visualisasi Backpropagation Langkah-demi-Langkah",
+    "prerequisite": "Aturan rantai dan ReLU",
+    "minutes": 35,
+    "provenance": "Satu jaringan manual. Semua angka dihitung ulang dari input dan bobot awal.",
+    "limits": "Objektif L=½(ŷ−t)² memiliki delta=ŷ−t. Semua gradien dihitung dari bobot lama sebelum pembaruan serentak.",
+    "source": "https://docs.pytorch.org/docs/stable/notes/autograd.html",
+    "order": 15,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Finite difference dapat memeriksa gradien analitik.",
+        true,
+        "Bandingkan (L(w+ε)−L(w−ε))/(2ε), dengan toleransi numerik."
+      ],
+      [
+        "Turunan ReLU di nol selalu terdefinisi secara klasik.",
+        false,
+        "ReLU tidak terdiferensiasi di nol; implementasi memilih konvensi subgradien."
+      ]
+    ]
+  },
+  {
+    "slug": "ml-lanjut/regularization",
+    "title": "Regularisasi: Sinyal vs Noise",
+    "prerequisite": "Data latih, validasi, dan uji",
+    "minutes": 35,
+    "provenance": "Digits 8×8, jaringan 64→40→10. Pembanding dropout berukuran sama, diulang pada benih 42,43,44.",
+    "limits": "Validasi memilih checkpoint. Data uji dipakai pada checkpoint terpilih dan akhir, bukan sebagai panduan setiap epoch. Hasil satu benih tidak menjamin keunggulan dropout.",
+    "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Dropout.html",
+    "order": 16,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Checkpoint loss validasi minimum pasti memiliki accuracy test tertinggi.",
+        false,
+        "Validasi memilih checkpoint; test memberikan evaluasi terpisah tanpa jaminan peringkat."
+      ],
+      [
+        "Dropout dapat menghasilkan skor lebih rendah dari baseline pada suatu seed.",
+        true,
+        "Regularisasi tidak otomatis unggul; laporkan variasi antar seed."
+      ]
+    ]
+  },
+  {
+    "slug": "ml-lanjut/cnn-basics",
+    "title": "CNN Dasar: Konvolusi & Pooling",
+    "prerequisite": "Perkalian dan penjumlahan matriks",
+    "minutes": 25,
+    "provenance": "Piksel dan kernel sintetis. Feature map dan pooling dihitung ulang.",
+    "limits": "Operasi yang lazim disebut konvolusi pada CNN adalah korelasi silang tanpa pembalikan kernel. Pooling membuang informasi selain maksimum lokal.",
+    "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html",
+    "order": 17,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Stride menentukan jarak perpindahan kernel.",
+        true,
+        "Stride lebih besar biasanya mengurangi ukuran keluaran."
+      ],
+      [
+        "Operasi Conv2d di banyak library membalik kernel seperti konvolusi matematis.",
+        false,
+        "Umumnya digunakan cross-correlation tanpa membalik kernel."
+      ]
+    ]
+  },
+  {
+    "slug": "ml-lanjut/object-detection",
+    "title": "Deteksi Objek: IoU, NMS & YOLO",
+    "prerequisite": "Luas persegi panjang dan probabilitas",
+    "minutes": 30,
+    "provenance": "Kotak ilustratif dengan IoU dan NMS yang dihitung dari koordinat.",
+    "limits": "Grid dan anchor adalah penyederhanaan keluarga YOLO berbasis anchor, bukan semua versi YOLO. Normalisasi ukuran kotak harus menyebut acuannya. NMS contoh ini satu kelas.",
+    "source": "https://arxiv.org/abs/1612.08242",
+    "order": 18,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "IoU nol berarti tidak ada luas irisan positif.",
+        true,
+        "Sentuhan tepi saja tetap mempunyai luas irisan nol."
+      ],
+      [
+        "IoU ≥ 0.5 sendiri membuktikan kelas objek benar.",
+        false,
+        "Kecocokan kelas dan aturan matching satu-ke-satu juga diperlukan."
+      ]
+    ]
+  },
+  {
+    "slug": "ml-lanjut/optimizer",
+    "title": "Optimizer dan Skala Fitur",
+    "prerequisite": "Gradien dan pembaruan bobot",
+    "minutes": 25,
+    "provenance": "Simulasi sintetis deterministik; tidak menjalankan model pretrained.",
+    "limits": "Ini gradien batch penuh deterministik, bukan eksperimen jaringan saraf. SGD memakai estimasi gradien dari sampel/minibatch; ukuran batch mengubah variasi dan biaya tiap pembaruan. Adam memakai koreksi bias m dan v, β₁=0.9, β₂=0.999, ε=10⁻⁸.",
+    "source": "https://arxiv.org/abs/1412.6980",
+    "order": 19,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Adam mengoreksi bias estimasi m dan v pada awal training.",
+        true,
+        "Estimasi awal nol dikoreksi dengan faktor 1−β^t."
+      ],
+      [
+        "Batas α<2/k berlaku universal untuk semua jaringan.",
+        false,
+        "Batas itu diturunkan khusus untuk kuadratik diagonal dalam demo."
+      ]
+    ]
+  },
+  {
+    "slug": "nlp/word-embeddings",
+    "title": "Word Embeddings & Vector Space",
+    "prerequisite": "Vektor, sudut, dan dot product",
+    "minutes": 25,
+    "provenance": "Vektor semantik manual 10 dimensi, diproyeksikan dengan PCA. Bukan hasil pelatihan embedding.",
+    "limits": "Dimensi berlabel merupakan rancangan ilustrasi. Tidak ada ambang cosine universal. Analogi dan stereotip dalam nilai manual tidak menjadi fakta bahasa atau sosial.",
+    "source": "https://arxiv.org/abs/1301.3781",
+    "order": 20,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Jarak pada proyeksi PCA dua dimensi selalu sama dengan jarak embedding asli.",
+        false,
+        "Proyeksi dapat membuang komponen dan mengubah jarak."
+      ],
+      [
+        "Token embedding dapat mewakili subkata, bukan hanya kata utuh.",
+        true,
+        "Unit embedding mengikuti tokenizer dan vocabulary model."
+      ]
+    ]
+  },
+  {
+    "slug": "nlp/rnn",
+    "title": "RNN & Backpropagation",
+    "prerequisite": "Perkalian matriks dan tanh",
+    "minutes": 30,
+    "provenance": "Forward pass memakai bobot manual. Gradien dihitung pada jaringan skalar dengan parameter tetap.",
+    "limits": "RNN melibatkan turunan aktivasi. LSTM membandingkan jalur cell state dengan gerbang konstan, bukan jaringan terlatih penuh.",
+    "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.RNN.html",
+    "order": 21,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Gradien RNN lintas waktu melibatkan perkalian Jacobian.",
+        true,
+        "Perkalian berulang dapat menyebabkan vanishing atau exploding gradients."
+      ],
+      [
+        "LSTM menjamin semua gradien selalu stabil.",
+        false,
+        "Gate dan lintasan membantu, tetapi tidak menjamin stabilitas dalam semua keadaan."
+      ]
+    ]
+  },
+  {
+    "slug": "nlp/autograd",
+    "title": "Tensor & Autograd",
+    "prerequisite": "Aturan rantai",
+    "minutes": 25,
+    "provenance": "Graf tensor kecil dengan perhitungan gradien manual.",
+    "limits": "Dalam PyTorch, backward mengakumulasi gradien pada tensor leaf. Kosongkan gradien sebelum langkah baru bila tidak menghendaki akumulasi lintas batch.",
+    "source": "https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html",
+    "order": 22,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Gradien dari cabang yang bertemu dijumlahkan.",
+        true,
+        "Aturan rantai menjumlahkan semua lintasan yang memengaruhi loss."
+      ],
+      [
+        "Memanggil backward berulang selalu mengganti gradien lama.",
+        false,
+        "Framework seperti PyTorch mengakumulasi gradien leaf kecuali dikosongkan."
+      ]
+    ]
+  },
+  {
+    "slug": "nlp/lstm-attention",
+    "title": "LSTM, GRU & Classical Attention",
+    "prerequisite": "RNN dan sigmoid",
+    "minutes": 30,
+    "provenance": "Gerbang skalar dan hidden state ilustratif dengan bobot yang dipilih manual.",
+    "limits": "LSTM memiliki tiga gerbang dan satu kandidat pembaruan sel. Gerbang tidak selalu merespons x dengan arah seperti contoh. Konteks dot-product attention berada dalam convex hull value.",
+    "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.LSTM.html",
+    "order": 23,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "LSTM standar memiliki tiga gate dan satu kandidat sel.",
+        true,
+        "Gate input, forget, output; kandidat sel bukan gate sigmoid keempat."
+      ],
+      [
+        "Weighted sum value dengan bobot softmax dapat berada di luar convex hull value.",
+        false,
+        "Bobot nonnegatif berjumlah satu membentuk kombinasi konveks."
+      ]
+    ]
+  },
+  {
+    "slug": "nlp/self-attention",
+    "title": "Self-Attention Mechanism",
+    "prerequisite": "Dot product, softmax, dan matriks",
+    "minutes": 35,
+    "provenance": "Embedding manual, dua proyeksi dirancang, satu proyeksi acak.",
+    "limits": "Nama kepala bukan fungsi linguistik yang terbukti. Self-attention memerlukan informasi posisi untuk menyandikan urutan. Kompleksitas kuadratik berlaku untuk full attention.",
+    "source": "https://arxiv.org/abs/1706.03762",
+    "order": 24,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Causal mask melarang posisi melihat token masa depan.",
+        true,
+        "Skor posisi terlarang dikeluarkan sebelum softmax."
+      ],
+      [
+        "Full attention tanpa informasi posisi mengetahui urutan token secara intrinsik.",
+        false,
+        "Tanpa posisi, self-attention bersifat permutation equivariant."
+      ]
+    ]
+  },
+  {
+    "slug": "nlp/transformer",
+    "title": "Transformer Architecture",
+    "prerequisite": "Self-attention dan jaringan saraf",
+    "minutes": 35,
+    "provenance": "Diagram arsitektur encoder-decoder klasik. Angka dan teks demonstrasi bersifat ilustratif.",
+    "limits": "BERT encoder-only, GPT decoder-only tanpa cross-attention encoder, T5 encoder-decoder. Pelatihan paralel berbeda dari generasi autoregresif.",
+    "source": "https://arxiv.org/abs/1706.03762",
+    "order": 25,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Q cross-attention berasal dari decoder, K/V dari encoder.",
+        true,
+        "Decoder menggunakan representasi target untuk memilih informasi encoder."
+      ],
+      [
+        "Memilih token probabilitas tertinggi adalah satu-satunya cara decoding.",
+        false,
+        "Itu greedy decoding; sampling dan beam search adalah pilihan lain."
+      ]
+    ]
+  },
+  {
+    "slug": "nlp/text-classification",
+    "title": "Text Classification Pipeline",
+    "prerequisite": "Representasi teks dan klasifikasi",
+    "minutes": 30,
+    "provenance": "Batas keputusan, skor, dan confusion matrix dirancang sebagai ilustrasi, bukan pelatihan IndoBERT.",
+    "limits": "Pipeline klasik dapat memakai TF-IDF. BERT memakai tokenizer checkpoint, attention mask, dan token khusus. Jangan otomatis membuang negasi atau stopword sebelum BERT.",
+    "source": "https://huggingface.co/docs/transformers/tasks/sequence_classification",
+    "order": 26,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Menghapus kata tidak aman untuk semua model sentimen.",
+        false,
+        "Negasi dapat membalik makna; preprocessing harus sesuai model."
+      ],
+      [
+        "Tokenizer sebaiknya cocok dengan checkpoint model.",
+        true,
+        "Kosakata, token khusus, normalisasi, dan ID token harus konsisten."
+      ]
+    ]
+  },
+  {
+    "slug": "nlp/ner",
+    "title": "Named Entity Recognition",
+    "prerequisite": "Tokenisasi dan klasifikasi",
+    "minutes": 30,
+    "provenance": "Contoh IOB2 dan evaluator JavaScript ilustratif. Angka model diwarisi dari materi sumber, bukan eksperimen baru.",
+    "limits": "Pelabelan hanya subkata pertama adalah pilihan pelatihan. Evaluator panel memakai aturan permisif seperti seqeval default, bukan strict IOB2. Entitas cocok bila tipe dan rentang sama.",
+    "source": "https://github.com/chakki-works/seqeval",
+    "order": 27,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Entity F1 membandingkan tipe dan span hasil parsing.",
+        true,
+        "Token accuracy mengukur kesamaan tag per token; maknanya berbeda."
+      ],
+      [
+        "I-PER di awal diterima sama oleh parser permisif dan strict IOB2.",
+        false,
+        "Parser permisif dapat membuka entitas; strict IOB2 memerlukan B- yang sah."
+      ]
+    ]
+  },
+  {
+    "slug": "nlp/summarization",
+    "title": "Text Summarization",
+    "prerequisite": "Generasi teks dan n-gram",
+    "minutes": 30,
+    "provenance": "Keluaran contoh tersimpan dari materi kuliah. Belum menjadi benchmark lintas dataset.",
+    "limits": "Satu artikel dan checkpoint berbeda tidak cukup untuk memeringkat model. BLEU panel adalah sentence BLEU-4 dengan tokenizer spasi dan add-one opsional. ROUGE menampilkan P/R/F1.",
+    "source": "https://aclanthology.org/P02-1040/",
+    "order": 28,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "ROUGE tinggi menjamin ringkasan benar secara faktual.",
+        false,
+        "Overlap kata dapat tinggi meski angka atau negasi salah."
+      ],
+      [
+        "Parafrasa dapat mendapat skor n-gram lebih rendah.",
+        true,
+        "Metrik leksikal tidak sepenuhnya menangkap kesetaraan makna."
+      ]
+    ]
+  },
+  {
+    "slug": "nlp/question-answering",
+    "title": "Question Answering",
+    "prerequisite": "Tokenisasi dan Transformer",
+    "minutes": 30,
+    "provenance": "Skor span manual, contoh jawaban tersimpan, serta ilustrasi sliding window dan RAG.",
+    "limits": "Span harus berada pada konteks, awal≤akhir, dan memenuhi batas panjang. Argmax independen tidak menjamin span sah. RAG tidak menjamin jawaban benar.",
+    "source": "https://huggingface.co/docs/transformers/tasks/question_answering",
+    "order": 29,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Argmax start dan end terpisah selalu membentuk span sah.",
+        false,
+        "Start dapat berada setelah end; perlu pembatasan span."
+      ],
+      [
+        "RAG tetap memerlukan evaluasi dukungan bukti.",
+        true,
+        "Retrieval atau generasi dapat salah meskipun konteks disediakan."
+      ]
+    ]
+  },
+  {
+    "slug": "nlp/tokenisasi-indonesia",
+    "title": "Tokenisasi Bahasa Indonesia",
+    "prerequisite": "Teks dan representasi token",
+    "minutes": 25,
+    "provenance": "Simulasi sintetis deterministik; tidak menjalankan model pretrained.",
+    "limits": "Demo WordPiece ini memakai kosakata buatan kecil dan lowercasing, bukan tokenizer IndoBERT. Gunakan tokenizer dan normalisasi checkpoint yang tepat dalam aplikasi. Tanda ## menunjukkan kelanjutan kata.",
+    "source": "https://huggingface.co/docs/transformers/tokenizer_summary",
+    "order": 30,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "SentencePiece hanya mendukung satu algoritma segmentasi.",
+        false,
+        "SentencePiece mendukung antara lain BPE dan unigram."
+      ],
+      [
+        "Menghapus negasi dapat mengubah makna kalimat.",
+        true,
+        "Tidak enak dan enak memiliki makna berbeda."
+      ]
+    ]
+  },
+  {
+    "slug": "nlp/rag-berbukti",
+    "title": "RAG dengan Bukti dan Abstensi",
+    "prerequisite": "Pencarian informasi dan question answering",
+    "minutes": 25,
+    "provenance": "Simulasi sintetis deterministik; tidak menjalankan model pretrained.",
+    "limits": "Demo lokal ini memakai overlap kata, tanpa embedding, reranker neural, atau LLM. Jawaban berupa kutipan sumber. Skor overlap bukan probabilitas kebenaran. Tidak ada data yang dikirim ke layanan AI.",
+    "source": "https://arxiv.org/abs/2005.11401",
+    "order": 31,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Dokumen relevan menjamin jawaban yang dihasilkan benar.",
+        false,
+        "Periksa mutu sumber, dukungan klaim, dan proses generasi."
+      ],
+      [
+        "Abstensi dapat tepat jika sumber tidak memuat jawaban.",
+        true,
+        "Sistem sebaiknya menyatakan keterbatasan bukti, bukan mengarang."
+      ]
+    ]
+  },
+  {
+    "slug": "nlp/evaluasi-generatif",
+    "title": "Evaluasi Teks Generatif",
+    "prerequisite": "Ringkasan dan metrik teks",
+    "minutes": 25,
+    "provenance": "Simulasi sintetis deterministik; tidak menjalankan model pretrained.",
+    "limits": "Penilaian fakta di contoh tersimpan dibuat manual dari sumber. Untuk teks bebas, demo hanya menghitung metrik leksikal; jangan menganggapnya pemeriksa fakta otomatis. Uji negasi, angka, parafrasa, konteks kosong, dan sumber yang bertentangan.",
+    "source": "https://aclanthology.org/2020.acl-main.173/",
+    "order": 32,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Mengganti 10 dengan 100 bisa tetap menghasilkan ROUGE tinggi.",
+        true,
+        "Hanya sedikit token berubah walaupun fakta salah."
+      ],
+      [
+        "Metrik otomatis cukup sebagai satu-satunya evaluasi faktualitas.",
+        false,
+        "Evaluasi dukungan sumber dan penilaian manusia tetap dibutuhkan."
+      ]
+    ]
+  },
+  {
+    "slug": "kecerdasan-komputasional/pemodelan-pencarian",
+    "title": "Pemodelan Ruang Keadaan dan Algoritma Pencarian",
+    "prerequisite": "Graf dan keadaan",
+    "minutes": 35,
+    "provenance": "Graf kecil dan algoritma pencarian diimplementasikan langsung dalam Python.",
+    "limits": "BFS minimum ruas, UCS minimum biaya nonnegatif. Greedy tidak menjamin biaya optimal. Hitungan kunjungan berarti node dikeluarkan dan diproses.",
+    "source": "https://aima.cs.berkeley.edu/",
+    "order": 33,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "BFS meminimalkan jumlah ruas pada graf tak berbobot.",
+        true,
+        "BFS bukan penjamin biaya minimum ketika bobot berbeda."
+      ],
+      [
+        "Heuristik admissible tidak pernah melebihkan biaya sisa optimal.",
+        true,
+        "Untuk graph search, konsistensi atau reopening yang tepat juga penting."
+      ]
+    ]
+  },
+  {
+    "slug": "kecerdasan-komputasional/teknik-pemecahan",
+    "title": "Teknik Pemecahan Permasalahan",
+    "prerequisite": "Graf, logika, dan batasan",
+    "minutes": 40,
+    "provenance": "Graf AND-OR, pewarnaan, SEND+MORE, dan aturan keluarga ditetapkan dalam kode.",
+    "limits": "Simpul pengelompokan AND bukan aksi tambahan. Biaya dihitung pada ruas aksi asli. Rujukan nomor buku lama belum diverifikasi terhadap edisi dan halaman.",
+    "source": "https://aima.cs.berkeley.edu/",
+    "order": 34,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Constraint propagation selalu menyelesaikan semua CSP tanpa pencarian.",
+        false,
+        "Propagasi mengurangi domain tetapi backtracking mungkin tetap diperlukan."
+      ],
+      [
+        "Backward chaining memulai dari tujuan yang ingin dibuktikan.",
+        true,
+        "Aturan ditelusuri mundur menuju premis atau fakta pendukung."
+      ]
+    ]
+  },
+  {
+    "slug": "kecerdasan-komputasional/penalaran-ketidakpastian",
+    "title": "Penalaran Ketidakpastian dan Kesamaan Dokumen",
+    "prerequisite": "Probabilitas bersyarat dan himpunan",
+    "minutes": 35,
+    "provenance": "Probabilitas dan massa kepercayaan merupakan contoh pedagogis, bukan data diagnosis klinis.",
+    "limits": "Probabilitas, faktor kepastian, dan massa Dempster-Shafer memiliki makna berbeda. Massa pada himpunan bukan probabilitas satu anggota. Konflik total membuat normalisasi tidak terdefinisi.",
+    "source": "https://aima.cs.berkeley.edu/",
+    "order": 35,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Jumlah pembilang Bayes 0.28+0.12+0.18 adalah 0.58.",
+        true,
+        "Bagi setiap pembilang dengan 0.58 untuk posterior yang berjumlah satu."
+      ],
+      [
+        "Normalisasi Dempster tersedia ketika konflik total K=1.",
+        false,
+        "Penyebut 1−K nol; kombinasi tidak terdefinisi."
+      ]
+    ]
+  },
+  {
+    "slug": "kecerdasan-komputasional/jaringan-syaraf-tiruan",
+    "title": "Jaringan Saraf Tiruan",
+    "prerequisite": "Vektor dan fungsi aktivasi",
+    "minutes": 40,
+    "provenance": "Perceptron, jaringan huruf sintetis, pembelajaran kompetitif tanpa label, dan SOM.",
+    "limits": "Contoh prototipe tanpa label bukan LVQ terawasi. Jarak yang dipakai L1. Akurasi huruf dihitung pada data latih dan tidak mengukur generalisasi.",
+    "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Linear.html",
+    "order": 36,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Akurasi huruf pada data latih mengukur generalisasi ke huruf baru.",
+        false,
+        "Data uji terpisah diperlukan untuk menilai generalisasi."
+      ],
+      [
+        "LVQ terawasi menggunakan label kelas prototipe.",
+        true,
+        "Pembaruan kompetitif tanpa label tidak boleh dilabeli LVQ terawasi."
+      ]
+    ]
+  },
+  {
+    "slug": "kecerdasan-komputasional/algoritma-genetika",
+    "title": "Algoritma Genetika",
+    "prerequisite": "Biner, probabilitas, dan optimasi",
+    "minutes": 35,
+    "provenance": "Kromosom 18 bit dan fungsi sinus sintetis. Enam pengulangan per kombinasi parameter.",
+    "limits": "Generasi pertama dapat sudah memenuhi target. Bandingkan jumlah evaluasi fitness serta variasi, bukan generasi saja. Bedakan terbaik saat ini dan terbaik sepanjang proses.",
+    "source": "https://deap.readthedocs.io/en/master/tutorials/basic/part2.html",
+    "order": 37,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Populasi besar selalu lebih murah karena butuh sedikit generasi.",
+        false,
+        "Biaya juga bergantung jumlah evaluasi fitness per generasi."
+      ],
+      [
+        "Best-so-far tidak dapat menurun pada masalah maksimisasi.",
+        true,
+        "Ini maksimum historis, berbeda dari terbaik pada populasi saat ini."
+      ]
+    ]
+  },
+  {
+    "slug": "kecerdasan-komputasional/kecerdasan-kawanan-fuzzy",
+    "title": "Kecerdasan Kawanan dan Sistem Fuzzy",
+    "prerequisite": "Probabilitas, optimasi, dan himpunan",
+    "minutes": 40,
+    "provenance": "Contoh ACO, varian ABC maksimisasi, dan fungsi keanggotaan manual.",
+    "limits": "ABC memaksimumkan fungsi pada domain terbatas. Tsukamoto dan Mamdani berbeda dalam konsekuen dan inferensi. Kelayakan satu hasil tidak membuktikan keunggulan umum metode.",
+    "source": "https://www.scholarpedia.org/article/Ant_colony_optimization",
+    "order": 38,
+    "reviewed": "2026-09-26",
+    "questions": [
+      [
+        "Keanggotaan fuzzy 0.8 selalu berarti peluang kejadian 80%.",
+        false,
+        "Derajat keanggotaan dan probabilitas memiliki makna berbeda."
+      ],
+      [
+        "Pada ACO, feromon sama dan η=1/L dengan β=2 memberi bobot lebih besar pada jalur pendek.",
+        true,
+        "Peluang ternormalisasi sebanding η² ketika feromon sama."
+      ]
+    ]
+  }
+]

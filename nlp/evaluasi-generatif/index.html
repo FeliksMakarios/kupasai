@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluasi Teks Generatif — KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/nlp/evaluasi-generatif/">
+  <meta name="description" content="Pisahkan kesamaan teks, cakupan informasi, dan dukungan faktual. ROUGE-L memakai longest common subsequence. Skor tinggi dapat muncul pada teks yang salah…">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Evaluasi Teks Generatif — KupasAI">
+  <meta property="og:description" content="Pisahkan kesamaan teks, cakupan informasi, dan dukungan faktual. ROUGE-L memakai longest common subsequence. Skor tinggi dapat muncul pada teks yang salah…">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/nlp/evaluasi-generatif/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Evaluasi Teks Generatif — KupasAI">
+  <meta name="twitter:description" content="Pisahkan kesamaan teks, cakupan informasi, dan dukungan faktual. ROUGE-L memakai longest common subsequence. Skor tinggi dapat muncul pada teks yang salah…">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <!-- seo:end -->
+  
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+  
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+<link rel="stylesheet" href="/kupasai/assets/css/learning.css">
+<script src="/kupasai/assets/js/learning.js" defer></script>
+<link rel="stylesheet" href="/kupasai/assets/css/laboratory.css">
+<script src="/kupasai/assets/js/catalog-data.js" defer></script>
+<script src="/kupasai/assets/js/catalog.js" defer></script>
+<link rel="stylesheet" href="/kupasai/assets/css/catalog.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/tentang/">Tentang</a></li>
+    <li><a href="/kupasai/kontak/">Kontak</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">Laboratorium pendamping</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<main id="main-content" tabindex="-1"><div class="content-wrapper laboratory" data-lab="generation">
+ <header class="page-header-content"><a class="back-link" href="/kupasai/nlp/">Kembali ke Daftar Topik</a><h1>Evaluasi Teks Generatif</h1><p>Pisahkan kesamaan teks, cakupan informasi, dan dukungan faktual. ROUGE-L memakai longest common subsequence. Skor tinggi dapat muncul pada teks yang salah fakta; sinonim dapat menghasilkan skor lebih rendah walaupun maknanya benar.</p></header>
+ <section aria-label="Eksperimen"><h2>Coba dan bandingkan</h2><label for="lab-candidate">Kandidat ringkasan</label><select id="lab-candidate"><option value="faithful">Ringkasan setia</option><option value="false">Angka salah</option><option value="paraphrase">Parafrasa setia</option><option value="abstain">Tidak menjawab</option></select><button id="lab-reset" type="button">Reset eksperimen</button><div id="lab-result" aria-live="polite"></div></section>
+ <aside><h2>Batas interpretasi</h2><p>Penilaian fakta di contoh tersimpan dibuat manual dari sumber. Untuk teks bebas, demo hanya menghitung metrik leksikal; jangan menganggapnya pemeriksa fakta otomatis. Uji negasi, angka, parafrasa, konteks kosong, dan sumber yang bertentangan.</p><p><a href="https://aclanthology.org/2020.acl-main.173/">Rujukan primer</a></p></aside>
+ </div><script src="/kupasai/assets/js/laboratory.js"></script>
+
+<!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Ringkasan dan metrik teks. <strong>Durasi:</strong> sekitar 25 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Simulasi sintetis deterministik; tidak menjalankan model pretrained.</p><p>Penilaian fakta di contoh tersimpan dibuat manual dari sumber. Untuk teks bebas, demo hanya menghitung metrik leksikal; jangan menganggapnya pemeriksa fakta otomatis. Uji negasi, angka, parafrasa, konteks kosong, dan sumber yang bertentangan.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Prediksi perubahan keluaran sebelum mengubah satu kontrol.</li>
+<li><strong>Eksplorasi:</strong> Ubah satu kontrol, amati hasil tabel, lalu reset untuk membandingkan.</li>
+<li><strong>Perhitungan:</strong> Hitung satu baris hasil secara manual dan bandingkan dengan penjelasan algoritma.</li>
+<li><strong>Refleksi dan transfer:</strong> Jelaskan kapan hasil eksperimen kecil ini tidak berlaku pada data nyata.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
+<p><a href="https://aclanthology.org/2020.acl-main.173/" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/evaluasi-generatif" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
+</section><!-- learning-aid:end -->
+<!-- catalog:start --><section class="learning-aid topic-tools" data-topic="nlp/evaluasi-generatif"><h2>Uji Pemahaman</h2><p>Dua latihan dengan penjelasan. Progres dihitung setelah semua jawaban benar; membuka halaman saja tidak menandai selesai.</p><div id="concept-checks"></div><p id="quiz-status" role="status"></p><div class="learning-actions"><button id="export-notes" type="button">Ekspor catatan dan progres</button><label for="import-notes">Impor cadangan JSON</label><input id="import-notes" type="file" accept="application/json"><button id="share-controls" type="button">Salin tautan eksperimen</button><button id="reset-controls" type="button">Reset kontrol</button></div><p id="learning-status" role="status"></p><p>Prasyarat: Ringkasan dan metrik teks. Ditinjau: 2026-09-26. <a href="https://aclanthology.org/2020.acl-main.173/">Rujukan konsep</a>. Lihat panduan asal data; tanggal tinjauan tidak menyatakan semua hasil berasal dari publikasi itu.</p><nav class="lesson-sequence" aria-label="Urutan belajar"><a href="/kupasai/nlp/rag-berbukti/">← Sebelumnya: RAG dengan Bukti dan Abstensi</a></nav></section><!-- catalog:end -->
+</main>
+ <script src="/kupasai/assets/js/theme.js"></script></body></html>

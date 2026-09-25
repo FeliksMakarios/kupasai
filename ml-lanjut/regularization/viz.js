@@ -105,13 +105,16 @@
   // dropout mask mini-demo (illustrative, regenerates on click)
   var maskSvg = d3.select('#dropout-mask-demo');
   var maskBtn = document.getElementById('dropout-regenerate');
+  // Deterministic mask sequence survives input replay and has a reproducible seed.
+  var maskSeed=42;
+  function randomMask(){maskSeed=(Math.imul(1664525,maskSeed)+1013904223)>>>0;return maskSeed/4294967296;}
   function renderMask() {
     maskSvg.selectAll('*').remove();
     var nodes = 8;
     var W = 400, H = 90;
     maskSvg.attr('viewBox', '0 0 ' + W + ' ' + H);
     for (var i = 0; i < nodes; i++) {
-      var dropped = Math.random() < 0.5;
+      var dropped = randomMask() < 0.5;
       var cx = 30 + i * ((W - 60) / (nodes - 1));
       maskSvg.append('circle').attr('cx', cx).attr('cy', H / 2).attr('r', 18)
         .attr('fill', dropped ? 'none' : C.accent).attr('stroke', dropped ? C.text_muted : C.accent)

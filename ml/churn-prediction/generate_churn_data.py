@@ -11,7 +11,7 @@ import pandas as pd
 import sklearn.ensemble as ens
 import sklearn.linear_model as lm
 import sklearn.preprocessing as pp
-from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, roc_auc_score
 from sklearn.model_selection import GridSearchCV, train_test_split
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -95,7 +95,16 @@ corr_cols = list(korelasi.columns)
 corr_matrix = [[round(float(v), 3) for v in row] for row in korelasi.values]
 
 # Publish aggregate evaluation only, without customer-level records.
+def thresholds(model, x):
+    probabilities = model.predict_proba(x)[:, 1]
+    return [{"threshold": i / 100, "matrix": confusion_matrix(y_test, probabilities >= i / 100, labels=[0, 1]).tolist()} for i in range(101)]
+
+
 data = {
+    "evaluation": {"lr": thresholds(model_lr, X_test_s), "rf": thresholds(best_model_rf, X_test)},
+    "dataset_commit": "41db3dc8c328eab6e7fa5f5604194ab5e49c4d05",
+    "split": "stratified 80/20, seed 42; RF search uses train-only 5-fold CV",
+
     "seed": 42,
     "auc_input": "positive class probability",
     "n_total": n_total,

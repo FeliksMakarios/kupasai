@@ -30,7 +30,6 @@ const NER_DATA = {
   // Fakta kuantitatif nyata dari Modul 9.8-9.10 (dilaporkan notebook, bukan hasil eksekusi ulang di sini
   // karena fine-tuning XLM-R butuh GPU/berjam-jam - dilaporkan sebagai kisaran seperti disebutkan notebook)
   facts: {
-    f1_de_approx: 0.85,
     num_labels: 7,
     confused_pair: ['B-ORG', 'I-ORG'],
     lang_dist: [

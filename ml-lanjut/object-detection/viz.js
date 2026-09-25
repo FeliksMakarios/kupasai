@@ -58,15 +58,16 @@
   var offXSlider = document.getElementById('iou-offx');
   var offYSlider = document.getElementById('iou-offy');
   var scaleSlider = document.getElementById('iou-scale');
+  var heightSlider = document.getElementById('iou-scale-y');
 
   function renderIoU() {
     var gt = D.iou.groundTruth;
-    var offX = parseInt(offXSlider.value, 10);
-    var offY = parseInt(offYSlider.value, 10);
+    var offX = parseFloat(offXSlider.value);
+    var offY = parseFloat(offYSlider.value);
     var scale = parseFloat(scaleSlider.value);
     var w = gt[2] - gt[0], h = gt[3] - gt[1];
     var cx = (gt[0] + gt[2]) / 2 + offX, cy = (gt[1] + gt[3]) / 2 + offY;
-    var pw = w * scale, ph = h * scale;
+    var pw = w * scale, ph = h * parseFloat(heightSlider.value);
     var pred = [cx - pw / 2, cy - ph / 2, cx + pw / 2, cy + ph / 2];
     var iou = computeIoU(gt, pred);
 
@@ -84,11 +85,11 @@
     drawBox(pred, C.accent, 'Prediksi');
 
     var verdict = document.getElementById('iou-verdict');
-    verdict.textContent = 'IoU = ' + iou.toFixed(3) + ' → ' + (iou >= 0.5 ? 'BENAR (≥ 0.5)' : 'SALAH (< 0.5)');
+    verdict.textContent = 'IoU = ' + iou.toFixed(3) + ' → ' + (iou >= 0.5 ? 'Lokalisasi memenuhi ambang ≥ 0.5' : 'Lokalisasi di bawah ambang 0.5');
     verdict.className = 'iou-verdict ' + (iou >= 0.5 ? 'correct' : 'incorrect');
   }
 
-  [offXSlider, offYSlider, scaleSlider].forEach(function (el) {
+  [offXSlider, offYSlider, scaleSlider, heightSlider].forEach(function (el) {
     if (el) el.addEventListener('input', renderIoU);
   });
   var presetBtns = document.querySelectorAll('.iou-preset-btn');
@@ -102,7 +103,8 @@
       var pcx = (p.box[0] + p.box[2]) / 2, pcy = (p.box[1] + p.box[3]) / 2;
       offXSlider.value = pcx - cx0;
       offYSlider.value = pcy - cy0;
-      scaleSlider.value = (pw / w).toFixed(2);
+      scaleSlider.value = pw / w;
+      heightSlider.value = ph / h;
       renderIoU();
     });
   });

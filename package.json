@@ -1,1 +1,11 @@
-{"private":true,"scripts":{"test":"node tests/browser.cjs"},"devDependencies":{"playwright":"1.62.1"}}
+{
+  "private": true,
+  "scripts": {
+    "test": "node tests/learning.cjs && node tests/browser.cjs",
+    "test:learning": "node tests/learning.cjs"
+  },
+  "devDependencies": {
+    "jsdom": "26.1.0",
+    "playwright": "1.62.1"
+  }
+}
