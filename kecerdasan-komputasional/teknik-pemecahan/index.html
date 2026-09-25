@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Teknik Pemecahan Permasalahan - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/teknik-pemecahan/">
+  <meta name="description" content="Empat pendekatan berbeda memecah persoalan besar: pengurangan masalah lewat graf AND-OR, batasan yang mempersempit ruang pencarian, dan penelusuran mundur ala…">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Teknik Pemecahan Permasalahan - KupasAI">
+  <meta property="og:description" content="Empat pendekatan berbeda memecah persoalan besar: pengurangan masalah lewat graf AND-OR, batasan yang mempersempit ruang pencarian, dan penelusuran mundur ala…">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/teknik-pemecahan/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-komp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Teknik Pemecahan Permasalahan - KupasAI">
+  <meta name="twitter:description" content="Empat pendekatan berbeda memecah persoalan besar: pengurangan masalah lewat graf AND-OR, batasan yang mempersempit ruang pencarian, dan penelusuran mundur ala…">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-komp.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -44,6 +61,8 @@
     </svg>
   </button>
 </nav>
+
+<main id="main-content" tabindex="-1">
 
 <div class="page-header">
   <div class="page-header-content">
@@ -96,7 +115,7 @@
       <p class="result-highlight" id="andor-result-buku"></p>
     </div>
     <div class="viz-sidebar">
-      <h3>Membagi untuk Menyelesaikan</h3>
+      <h2>Membagi untuk Menyelesaikan</h2>
       <p>
         Graf ini punya struktur <code>OR( AND(3,4), OR( AND(2,2,2), 9 ) )</code>.
         Simpul AND pertama berbiaya 3+4=7. Simpul AND kedua berbiaya
@@ -138,7 +157,7 @@
       <p class="result-highlight" id="peta-result"></p>
     </div>
     <div class="viz-sidebar">
-      <h3>Mengapa 3 Warna, Bukan 2?</h3>
+      <h2>Mengapa 3 Warna, Bukan 2?</h2>
       <p>
         SA bertetangga dengan 5 daerah lain (WA, NT, Q, NSW, V), dan di
         antara para tetangga SA sendiri ada pasangan yang juga bertetangga
@@ -172,7 +191,7 @@
       <svg id="kripto-bar" viewBox="0 0 640 180"></svg>
     </div>
     <div class="viz-sidebar">
-      <h3>Batasan Mempersempit Ruang Pencarian</h3>
+      <h2>Batasan Mempersempit Ruang Pencarian</h2>
       <p>
         Pencarian menyeluruh atas seluruh permutasi 8 huruf berbeda
         memeriksa jutaan kandidat penugasan sebelum menemukan solusi.
@@ -212,7 +231,7 @@
       </table>
     </div>
     <div class="viz-sidebar">
-      <h3>Reduksi Batasan</h3>
+      <h2>Reduksi Batasan</h2>
       <p>
         Kelima batasan &mdash; total 16 orang, PP+PW &gt; DP+DW, DP &gt; PP,
         PP &gt; PW, dan DW &ge; 1 &mdash; secara bersama-sama hanya
@@ -247,7 +266,7 @@
       </table>
     </div>
     <div class="viz-sidebar">
-      <h3>Penelusuran Mundur</h3>
+      <h2>Penelusuran Mundur</h2>
       <p>
         Mesin inferensi (backward chaining dengan unifikasi peubah dan
         penggantian nama otomatis tiap aturan dipanggil) menjawab keenam
@@ -273,19 +292,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Graf, logika, dan batasan. <strong>Durasi:</strong> sekitar 40 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Graf AND-OR, pewarnaan, SEND+MORE, dan aturan keluarga ditetapkan dalam kode.</p><p>Simpul pengelompokan AND bukan aksi tambahan. Biaya dihitung pada ruas aksi asli. Rujukan nomor buku lama belum diverifikasi terhadap edisi dan halaman.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Mengapa carry terakhir SEND+MORE harus 1?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Buka tab Problem Reduction, Pewarnaan Peta, Kriptaritmatika, Penalaran Batasan, dan Logic Programming secara berurutan.</li>
+<li><strong>Perhitungan:</strong> Pada Problem Reduction, hitung biaya minimum dari akar dengan menjumlahkan biaya ruas simpul AND dan memilih minimum simpul OR.</li>
 <li><strong>Refleksi dan transfer:</strong> Turunkan O=0 dari kolom ribuan dan keunikan digit, lalu jelaskan pengurangan kandidat.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://aima.cs.berkeley.edu/" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/kecerdasan-komputasional/teknik-pemecahan" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; Kecerdasan Komputasional INF20052</span>
 </footer>

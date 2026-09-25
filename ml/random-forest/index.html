@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Random Forest - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/ml/random-forest/">
+  <meta name="description" content="Daripada bertanya pada satu ahli, tanyakan pada banyak ahli lalu ambil suara mayoritas — itulah inti ensemble learning.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Random Forest - KupasAI">
+  <meta property="og:description" content="Daripada bertanya pada satu ahli, tanyakan pada banyak ahli lalu ambil suara mayoritas — itulah inti ensemble learning.">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/ml/random-forest/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Random Forest - KupasAI">
+  <meta name="twitter:description" content="Daripada bertanya pada satu ahli, tanyakan pada banyak ahli lalu ambil suara mayoritas — itulah inti ensemble learning.">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -45,6 +62,8 @@
   </button>
 </nav>
 
+<main id="main-content" tabindex="-1">
+
 <div class="page-header">
   <div class="page-header-content">
     <a href="/kupasai/ml/" class="back-link">&larr; Kembali ke Daftar Topik</a>
@@ -79,7 +98,7 @@
       <div class="final-verdict" id="vote-verdict"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>7 Pohon, 7 Sudut Pandang</h3>
+      <h2>7 Pohon, 7 Sudut Pandang</h2>
       <p>Tujuh kartu ini adalah ilustrasi bagging dengan dua fitur tetap per pohon. Random Forest standar memilih kandidat fitur acak pada setiap pemisahan simpul. Akurasi Random Forest yang ditampilkan berasal dari model 100 pohon yang terpisah, bukan otomatis akurasi tujuh kartu ini.</p>
       <p>
         Akurasi test set: <strong id="rf-vs-single">-</strong>. Dataset
@@ -99,13 +118,13 @@
         <strong style="color:var(--accent)" id="adult-nrows">-</strong> baris data sensus AS &middot;
         akurasi Random Forest: <strong style="color:var(--accent)" id="adult-accuracy">-</strong>
       </p>
-      <h3 style="font-size:0.95rem;margin-bottom:0.75rem">Feature Importance</h3>
+      <h2 style="font-size:0.95rem;margin-bottom:0.75rem">Feature Importance</h2>
       <div id="fi-chart"></div>
-      <h3 style="font-size:0.95rem;margin:1.5rem 0 0.5rem">Classification Report</h3>
+      <h2 style="font-size:0.95rem;margin:1.5rem 0 0.5rem">Classification Report</h2>
       <div id="metrics-table"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Data Nyata: UCI Adult Census</h3>
+      <h2>Data Nyata: UCI Adult Census</h2>
       <p>
         &sim;32.000 baris data sensus penduduk AS 1994, memprediksi apakah
         penghasilan seseorang &gt;$50K atau &le;$50K per tahun.
@@ -127,18 +146,24 @@
 <script src="/kupasai/assets/js/theme.js"></script>
 <script src="../../assets/js/enhancements.js"></script>
 
+
+
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Pohon keputusan. <strong>Durasi:</strong> sekitar 30 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Tujuh pohon bagging ilustratif dan Random Forest 100 pohon merupakan dua model terpisah.</p><p>Pada Random Forest, kandidat fitur dipilih per pemisahan. Importance berbasis impurity bukan frekuensi fitur atau pengaruh kausal.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Apakah tujuh pohon selalu menghasilkan prediksi lebih baik?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Ganti baris data uji pada tab Ensemble Voting dan catat pohon mana yang berubah suara.</li>
+<li><strong>Perhitungan:</strong> Hitung suara mayoritas dari tujuh pohon untuk satu baris uji, lalu bandingkan dengan prediksi akhir yang ditampilkan.</li>
 <li><strong>Refleksi dan transfer:</strong> Bandingkan suara mayoritas dan rata-rata probabilitas.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://scikit-learn.org/stable/modules/ensemble.html#random-forests-and-other-randomized-tree-ensembles" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml/random-forest" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 </body>
 </html>

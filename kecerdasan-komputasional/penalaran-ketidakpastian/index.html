@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Penalaran Ketidakpastian dan Kesamaan Dokumen - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/penalaran-ketidakpastian/">
+  <meta name="description" content="Tiga cara menalar dengan informasi yang tidak pasti — teorema Bayes, faktor kepastian, teori Dempster-Shafer — ditutup dengan mengukur kemiripan dua dokumen…">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Penalaran Ketidakpastian dan Kesamaan Dokumen - KupasAI">
+  <meta property="og:description" content="Tiga cara menalar dengan informasi yang tidak pasti — teorema Bayes, faktor kepastian, teori Dempster-Shafer — ditutup dengan mengukur kemiripan dua dokumen…">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/penalaran-ketidakpastian/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-komp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Penalaran Ketidakpastian dan Kesamaan Dokumen - KupasAI">
+  <meta name="twitter:description" content="Tiga cara menalar dengan informasi yang tidak pasti — teorema Bayes, faktor kepastian, teori Dempster-Shafer — ditutup dengan mengukur kemiripan dua dokumen…">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-komp.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -44,6 +61,8 @@
     </svg>
   </button>
 </nav>
+
+<main id="main-content" tabindex="-1">
 
 <div class="page-header">
   <div class="page-header-content">
@@ -87,7 +106,7 @@
       <p class="section-note" id="bayes-fakta-note"></p>
     </div>
     <div class="viz-sidebar">
-      <h3>Normalisasi Bayes</h3>
+      <h2>Normalisasi Bayes</h2>
       <p>
         Pembilang <code>P(H)&times;P(E|H)</code> untuk cacar dan alergi
         masing-masing <strong>0.28</strong> dan <strong>0.12</strong> &mdash;
@@ -123,7 +142,7 @@
       <svg id="cf-gauge" viewBox="0 0 500 140"></svg>
     </div>
     <div class="viz-sidebar">
-      <h3>Gabungan Dua Fakta</h3>
+      <h2>Gabungan Dua Fakta</h2>
       <p>
         <code>MB(cacar,bintik)=0.8</code> dan <code>MB(cacar,panas)=0.7</code>
         digabung dengan rumus <code>MB1 + MB2&times;(1&minus;MB1)</code>,
@@ -163,7 +182,7 @@
       </table>
     </div>
     <div class="viz-sidebar">
-      <h3>Normalisasi Terhadap Konflik</h3>
+      <h2>Normalisasi Terhadap Konflik</h2>
       <p>
         Menggabungkan m1 (F,D,B=0.8) dengan m2 (A,F,D=0.9) tidak
         menghasilkan irisan kosong sama sekali, sehingga
@@ -198,7 +217,7 @@
       <p class="result-highlight" id="vsm-result"></p>
     </div>
     <div class="viz-sidebar">
-      <h3>Praproses &amp; Perhitungan</h3>
+      <h2>Praproses &amp; Perhitungan</h2>
       <p>
         Praproses meliputi case folding, penghapusan tanda baca, tokenisasi,
         dan pemetaan bentuk berimbuhan ke bentuk dasar
@@ -224,19 +243,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Probabilitas bersyarat dan himpunan. <strong>Durasi:</strong> sekitar 35 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Probabilitas dan massa kepercayaan merupakan contoh pedagogis, bukan data diagnosis klinis.</p><p>Probabilitas, faktor kepastian, dan massa Dempster-Shafer memiliki makna berbeda. Massa pada himpunan bukan probabilitas satu anggota. Konflik total membuat normalisasi tidak terdefinisi.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Mengapa posterior harus dinormalisasi?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Bandingkan Dua Gejala dengan Tiga Gejala pada tab Dempster-Shafer, lalu buka Faktor Kepastian dan Vector Space Model.</li>
+<li><strong>Perhitungan:</strong> Hitung satu sel Tabel Kombinasi (m1 × m2) dan normalisasikan dengan 1 − konflik.</li>
 <li><strong>Refleksi dan transfer:</strong> Bandingkan konflik tinggi dengan bukti yang benar-benar tidak informatif.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://aima.cs.berkeley.edu/" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/kecerdasan-komputasional/penalaran-ketidakpastian" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; Kecerdasan Komputasional INF20052</span>
 </footer>

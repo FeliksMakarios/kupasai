@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Decision Tree - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/ml/decision-tree/">
+  <meta name="description" content="Membagi data lewat serangkaian pertanyaan ya/tidak, sampai setiap cabang berisi kelas yang (hampir) murni.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Decision Tree - KupasAI">
+  <meta property="og:description" content="Membagi data lewat serangkaian pertanyaan ya/tidak, sampai setiap cabang berisi kelas yang (hampir) murni.">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/ml/decision-tree/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Decision Tree - KupasAI">
+  <meta name="twitter:description" content="Membagi data lewat serangkaian pertanyaan ya/tidak, sampai setiap cabang berisi kelas yang (hampir) murni.">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -45,6 +62,8 @@
   </button>
 </nav>
 
+<main id="main-content" tabindex="-1">
+
 <div class="page-header">
   <div class="page-header-content">
     <a href="/kupasai/ml/" class="back-link">&larr; Kembali ke Daftar Topik</a>
@@ -78,7 +97,7 @@
       <div id="entropy-viz"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Dataset Kendaraan (15 baris)</h3>
+      <h2>Dataset Kendaraan (15 baris)</h2>
       <p>
         Contoh persis dari Modul 5.1: mengklasifikasi <strong>sedan</strong> vs
         <strong>minibus</strong> berdasarkan mesin, jumlah bangku, dan penggerak.
@@ -109,7 +128,7 @@
       <svg id="tree-plot" viewBox="0 0 700 380"></svg>
     </div>
     <div class="viz-sidebar">
-      <h3>Pohon Sungguhan</h3>
+      <h2>Pohon Sungguhan</h2>
       <p>
         Ini bukan diagram rekaan &mdash; struktur, ambang batas (threshold),
         dan jumlah sampel di tiap node diambil langsung dari
@@ -137,18 +156,24 @@
 <script src="/kupasai/assets/js/theme.js"></script>
 <script src="../../assets/js/enhancements.js"></script>
 
+
+
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Probabilitas kelas. <strong>Durasi:</strong> sekitar 25 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Contoh 15 baris dan model pada decisiontree_ch6.csv memakai data berbeda.</p><p>Entropi maksimum log₂ K untuk K kelas. Akurasi uji dengan sampel kecil dapat berubah besar bila satu prediksi berubah.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Fitur mana yang memberi penurunan entropi terbesar?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Klik ketiga kandidat pemisah (Mesin Bensin?, Penggerak Depan?, Bangku &gt; 5?) dan bandingkan entropi anak yang dihasilkan.</li>
+<li><strong>Perhitungan:</strong> Hitung information gain satu pemisah: entropi induk dikurangi rata-rata tertimbang entropi anak, lalu cocokkan dengan angka pada panel.</li>
 <li><strong>Refleksi dan transfer:</strong> Buat satu contoh ketika pohon terlalu dalam menghafal data.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://scikit-learn.org/stable/modules/tree.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml/decision-tree" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 </body>
 </html>

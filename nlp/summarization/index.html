@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Text Summarization - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/nlp/summarization/">
+  <meta name="description" content="Tugas pertama kita di ranah natural language generation: model tidak lagi memberi label, tapi menulis teks baru. Bandingkan lima model peringkasan dan hitung…">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Text Summarization - KupasAI">
+  <meta property="og:description" content="Tugas pertama kita di ranah natural language generation: model tidak lagi memberi label, tapi menulis teks baru. Bandingkan lima model peringkasan dan hitung…">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/nlp/summarization/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Text Summarization - KupasAI">
+  <meta name="twitter:description" content="Tugas pertama kita di ranah natural language generation: model tidak lagi memberi label, tapi menulis teks baru. Bandingkan lima model peringkasan dan hitung…">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -45,6 +62,8 @@
   </button>
 </nav>
 
+<main id="main-content" tabindex="-1">
+
 <div class="page-header">
   <div class="page-header-content">
     <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke Daftar Topik</a>
@@ -75,7 +94,7 @@
       <div id="model-card"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Artikel yang Sama untuk Semua Model</h3>
+      <h2>Artikel yang Sama untuk Semua Model</h2>
       <p>
         Kelima ringkasan ini dihasilkan dari artikel nyata (kecelakaan
         jembatan Minneapolis, CNN/DailyMail dataset), dipotong ke 2.000
@@ -102,7 +121,7 @@
 <div class="tab-content" id="tab-metrics" role="tabpanel" aria-labelledby="tabbtn-metrics" tabindex="0">
   <div class="viz-layout">
     <div class="viz-main">
-      <h3 class="section-title">BLEU (fokus precision n-gram)</h3>
+      <h2 class="section-title">BLEU (fokus precision n-gram)</h2>
       <div class="calc-inputs">
         <div>
           <label for="bleu-candidate">Kalimat terjemahan/kandidat</label>
@@ -119,7 +138,7 @@
       <div id="bleu-table"></div>
       <div class="metric-row" id="bleu-metrics"></div>
 
-      <h3 class="section-title">ROUGE (fokus recall n-gram)</h3>
+      <h2 class="section-title">ROUGE (fokus recall n-gram)</h2>
       <div class="calc-inputs">
         <div>
           <label for="rouge-candidate">Ringkasan kandidat</label>
@@ -133,7 +152,7 @@
       <div class="metric-row" id="rouge-metrics"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Precision vs Recall</h3>
+      <h2>Precision vs Recall</h2>
       <p>
         <strong>BLEU</strong> menghitung berapa persen n-gram pada
         kandidat yang juga muncul di referensi (precision), lalu
@@ -164,19 +183,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Generasi teks dan n-gram. <strong>Durasi:</strong> sekitar 30 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Keluaran contoh tersimpan dari materi kuliah. Belum menjadi benchmark lintas dataset.</p><p>Satu artikel dan checkpoint berbeda tidak cukup untuk memeringkat model. BLEU panel adalah sentence BLEU-4 dengan tokenizer spasi dan add-one opsional. ROUGE menampilkan P/R/F1.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Bisakah sinonim menurunkan skor tanpa menurunkan kualitas makna?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Ganti kalimat kandidat dan referensi pada tab BLEU dan ROUGE, lalu aktifkan smoothing.</li>
+<li><strong>Perhitungan:</strong> Hitung presisi unigram dan bigram yang terpotong (clipped) untuk kalimat kandidat, lalu cocokkan dengan panel BLEU.</li>
 <li><strong>Refleksi dan transfer:</strong> Nilai faktualitas ringkasan secara terpisah dari kemiripan n-gram.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://aclanthology.org/P02-1040/" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/summarization" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>

@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Linear Regression - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/ml/linear-regression/">
+  <meta name="description" content="Mencari garis lurus terbaik yang mewakili hubungan antar variabel numerik, lalu memakainya untuk memprediksi nilai baru.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Linear Regression - KupasAI">
+  <meta property="og:description" content="Mencari garis lurus terbaik yang mewakili hubungan antar variabel numerik, lalu memakainya untuk memprediksi nilai baru.">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/ml/linear-regression/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Linear Regression - KupasAI">
+  <meta name="twitter:description" content="Mencari garis lurus terbaik yang mewakili hubungan antar variabel numerik, lalu memakainya untuk memprediksi nilai baru.">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -45,6 +62,8 @@
   </button>
 </nav>
 
+<main id="main-content" tabindex="-1">
+
 <div class="page-header">
   <div class="page-header-content">
     <a href="/kupasai/ml/" class="back-link">&larr; Kembali ke Daftar Topik</a>
@@ -84,7 +103,7 @@
       <svg id="simple-plot" viewBox="0 0 700 420"></svg>
     </div>
     <div class="viz-sidebar">
-      <h3>Data Nyata: Konsumsi BBM</h3>
+      <h2>Data Nyata: Konsumsi BBM</h2>
       <p>
         65 titik data pengukuran nyata dari <code>bensin.csv</code> (Modul 3):
         berapa liter bensin diisi, dan berapa kilometer yang berhasil ditempuh.
@@ -108,7 +127,7 @@
 <div class="tab-content" id="tab-multi" role="tabpanel" aria-labelledby="tabbtn-multi" tabindex="0">
   <div class="viz-layout">
     <div class="viz-main">
-      <h3 style="font-size:0.95rem;margin-bottom:0.75rem">Model dengan berapa predictor?</h3>
+      <h2 style="font-size:0.95rem;margin-bottom:0.75rem">Model dengan berapa predictor?</h2>
       <div class="model-buttons">
         <button class="model-btn" data-model="1" type="button">1 fitur</button>
         <button class="model-btn" data-model="2" type="button">2 fitur</button>
@@ -117,11 +136,11 @@
       <div class="model-formula" id="model-formula"></div>
       <p class="model-r2" id="model-r2"></p>
 
-      <h3 style="font-size:0.95rem;margin:1.5rem 0 0.75rem">Korelasi Pearson Antar-Fitur</h3>
+      <h2 style="font-size:0.95rem;margin:1.5rem 0 0.75rem">Korelasi Pearson Antar-Fitur</h2>
       <div class="corr-table-wrap" id="corr-table"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Data Nyata: MLG_data.csv</h3>
+      <h2>Data Nyata: MLG_data.csv</h2>
       <p>
         Dataset yang sama, ditambah kolom <code>Penumpang</code>,
         <code>Bagasi</code>, <code>Kecepatan</code>, RPM, dan <code>Suhu</code>.
@@ -146,18 +165,24 @@
 <script src="/kupasai/assets/js/theme.js"></script>
 <script src="../../assets/js/enhancements.js"></script>
 
+
+
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Persamaan garis dan rata-rata. <strong>Durasi:</strong> sekitar 25 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Regresi dilatih pada bensin.csv dan MLG_data.csv.</p><p>R² uji dapat turun saat fitur ditambah. Residual adalah nilai aktual dikurangi prediksi. Korelasi tidak membuktikan sebab-akibat.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Bagaimana garis berubah bila satu pengamatan jauh dari pola umum?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Geser slider prediksi pada Regresi Sederhana, lalu di tab kedua bandingkan model 1 fitur, 2 fitur, dan 4 fitur.</li>
+<li><strong>Perhitungan:</strong> Ambil satu nilai liter, hitung prediksi dengan persamaan garis yang ditampilkan, lalu hitung residualnya dari nilai aktual.</li>
 <li><strong>Refleksi dan transfer:</strong> Bandingkan residual pada rentang liter rendah dan tinggi.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://scikit-learn.org/stable/modules/linear_model.html#ordinary-least-squares" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml/linear-regression" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 </body>
 </html>

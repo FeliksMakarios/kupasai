@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Studi Kasus: Streetlight Problem - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/ml-lanjut/streetlight-backprop/">
+  <meta name="description" content="Kapan aman menyeberang jalan? Sebuah jaringan satu-layer belajar menemukan korelasi tersembunyi dari pola tiga lampu jalan — dan hasilnya mengungkap lampu…">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Studi Kasus: Streetlight Problem - KupasAI">
+  <meta property="og:description" content="Kapan aman menyeberang jalan? Sebuah jaringan satu-layer belajar menemukan korelasi tersembunyi dari pola tiga lampu jalan — dan hasilnya mengungkap lampu…">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/ml-lanjut/streetlight-backprop/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-lanjut.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Studi Kasus: Streetlight Problem - KupasAI">
+  <meta name="twitter:description" content="Kapan aman menyeberang jalan? Sebuah jaringan satu-layer belajar menemukan korelasi tersembunyi dari pola tiga lampu jalan — dan hasilnya mengungkap lampu…">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-lanjut.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -44,6 +61,8 @@
     </svg>
   </button>
 </nav>
+
+<main id="main-content" tabindex="-1">
 
 <div class="page-header">
   <div class="page-header-content">
@@ -87,7 +106,7 @@
       </table>
     </div>
     <div class="viz-sidebar">
-      <h3>Menghafal Satu Baris</h3>
+      <h2>Menghafal Satu Baris</h2>
       <p>
         Karena hanya dilatih dengan satu baris <code>[1,0,1]</code>, bobot
         untuk <strong>lampu tengah</strong> (indeks 1) tidak pernah
@@ -119,7 +138,7 @@
       <svg id="sl-final-weights" viewBox="0 0 400 200" style="max-width:400px"></svg>
     </div>
     <div class="viz-sidebar">
-      <h3>Korelasi Ditemukan</h3>
+      <h2>Korelasi Ditemukan</h2>
       <p>
         Setelah 40 epoch melihat <strong>seluruh</strong> dataset, bobot
         konvergen ke <code>[0.014, 1.014, &minus;0.016]</code>. Bobot
@@ -142,19 +161,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Dot product dan galat kuadrat. <strong>Durasi:</strong> sekitar 25 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Enam baris pola lampu sintetis untuk latihan aritmetika.</p><p>Prediksi adalah jumlah kontribusi bobot, bukan selisih. Galat online dijumlahkan selama pembaruan, bukan evaluasi satu snapshot akhir.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Mengapa bobot tengah tidak berubah jika dilatih hanya pada [1,0,1]?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Bandingkan tab Belajar dari Satu Contoh dengan Belajar dari Seluruh Dataset, terutama bobot lampu tengah.</li>
+<li><strong>Perhitungan:</strong> Hitung prediksi satu pola lampu sebagai jumlah input × bobot, lalu hitung galat kuadratnya terhadap target.</li>
 <li><strong>Refleksi dan transfer:</strong> Uji bobot akhir pada kombinasi lampu yang tidak ada dalam data.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Linear.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml-lanjut/streetlight-backprop" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; ML Lanjut INF24141</span>
 </footer>

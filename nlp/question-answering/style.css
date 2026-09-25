@@ -20,13 +20,13 @@
 
 .viz-layout { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start; }
 .viz-main { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; box-shadow: var(--shadow-sm); }
-.viz-sidebar h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.viz-sidebar h2 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
 .viz-sidebar p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem; }
 .viz-sidebar strong { color: var(--text-primary); }
 .viz-sidebar code { font-family: var(--font-mono); background: var(--bg-tertiary); padding: 1px 4px; border-radius: 3px; font-size: 0.85em; }
 
-h3.section-title { font-size: 0.95rem; margin: 1.5rem 0 0.75rem; }
-h3.section-title:first-child { margin-top: 0; }
+h2.section-title { font-size: 0.95rem; margin: 1.5rem 0 0.75rem; }
+h2.section-title:first-child { margin-top: 0; }
 
 /* ==================== SPAN CLASSIFICATION ==================== */
 
@@ -36,16 +36,16 @@ h3.section-title:first-child { margin-top: 0; }
 .token-row { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 1rem; }
 .qtoken { cursor: pointer; border: 2px solid transparent; border-radius: 6px; padding: 0.35rem 0.5rem; background: var(--bg-secondary); font-size: 0.82rem; color: var(--text-secondary); transition: all 0.15s; }
 .qtoken:hover { border-color: var(--accent); }
-.qtoken.is-start { background: var(--accent); color: white; }
-.qtoken.is-end { background: var(--success); color: white; }
+.qtoken.is-start { background: var(--accent); color: var(--on-accent); }
+.qtoken.is-end { background: var(--success); color: var(--on-accent); }
 .qtoken.is-span { background: var(--accent-light); color: var(--accent); }
 .qtoken.is-question { opacity: 0.55; }
 
 .pick-row { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center; }
 .pick-row .pick-label { font-size: 0.8rem; color: var(--text-muted); }
 .pick-row .pick-btn { background: var(--bg-tertiary); border: 1px solid var(--border); color: var(--text-secondary); padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.78rem; cursor: pointer; font-family: var(--font-sans); }
-.pick-row .pick-btn.mode-start.active { background: var(--accent); color: white; border-color: var(--accent); }
-.pick-row .pick-btn.mode-end.active { background: var(--success); color: white; border-color: var(--success); }
+.pick-row .pick-btn.mode-start.active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.pick-row .pick-btn.mode-end.active { background: var(--success); color: var(--on-accent); border-color: var(--success); }
 
 .answer-box { background: var(--accent-light); border-radius: 8px; padding: 0.85rem 1rem; font-size: 0.9rem; color: var(--text-primary); text-align: center; margin-bottom: 1.5rem; }
 .answer-box strong { color: var(--accent); font-family: var(--font-mono); }
@@ -71,7 +71,7 @@ h3.section-title:first-child { margin-top: 0; }
 
 .window-select-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
 .window-btn { background: var(--bg-tertiary); border: 1px solid var(--border); color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; font-family: var(--font-sans); }
-.window-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+.window-btn.active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 
 .window-text { font-size: 0.85rem; color: var(--text-secondary); background: var(--bg-secondary); border-radius: 8px; padding: 0.85rem 1rem; line-height: 1.7; margin-bottom: 1rem; }
 .window-text mark { background: rgba(210,153,34,0.35); color: var(--text-primary); border-radius: 3px; padding: 0 2px; }

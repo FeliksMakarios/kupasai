@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RNN &amp; Backpropagation - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/nlp/rnn/">
+  <meta name="description" content="Bagaimana neural network memproses urutan kata? Recurrent Neural Network membaca kata demi kata, menyimpan informasi di hidden state, dan melupakan atau…">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="RNN &amp; Backpropagation - KupasAI">
+  <meta property="og:description" content="Bagaimana neural network memproses urutan kata? Recurrent Neural Network membaca kata demi kata, menyimpan informasi di hidden state, dan melupakan atau…">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/nlp/rnn/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="RNN &amp; Backpropagation - KupasAI">
+  <meta name="twitter:description" content="Bagaimana neural network memproses urutan kata? Recurrent Neural Network membaca kata demi kata, menyimpan informasi di hidden state, dan melupakan atau…">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -44,6 +61,8 @@
     </svg>
   </button>
 </nav>
+
+<main id="main-content" tabindex="-1">
 
 <div class="page-header">
   <div class="page-header-content">
@@ -87,7 +106,7 @@
       <div class="step-detail" id="step-detail"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Cara Kerja RNN</h3>
+      <h2>Cara Kerja RNN</h2>
       <p>
         RNN memproses kalimat satu kata pada satu waktu. Pada setiap
         <strong>timestep</strong>, jaringan menerima input kata baru dan
@@ -126,7 +145,7 @@
       </div>
     </div>
     <div class="viz-sidebar">
-      <h3>Masalah Vanishing Gradient</h3>
+      <h2>Masalah Vanishing Gradient</h2>
       <p>Saat melatih RNN, turunan aktivasi dan bobot rekuren membentuk rantai Jacobian. Demo membandingkan dua jaringan skalar dengan masukan dan parameter tetap. Kurva RNN menunjukkan ∂h_T/∂h_(T−k). Kurva LSTM menunjukkan ∂h_T/∂c_(T−k) melalui jalur sel memori, dengan gerbang konstan dan bobot rekuren gerbang nol. Ini ilustrasi mekanisme, bukan perbandingan kinerja dua model terlatih. LSTM dapat memperlambat peluruhan, tetapi tidak menjamin gradien selalu stabil.</p>
       <p>
         Pada setiap langkah mundur, gradien dikalikan dengan Jacobian yang mencakup bobot rekuren dan turunan aktivasi. Hasil kali ini dapat mengecil atau membesar. Peluruhan gradien menyulitkan pembelajaran dependensi panjang.
@@ -151,7 +170,7 @@
       <svg id="rep-plot" viewBox="0 0 600 400"></svg>
     </div>
     <div class="viz-sidebar">
-      <h3>Tiga Cara Merepresentasikan Kalimat</h3>
+      <h2>Tiga Cara Merepresentasikan Kalimat</h2>
       <p>
         <strong>Bag-of-Words:</strong> hanya mencatat kata apa saja yang
         muncul, mengabaikan urutan. "saya suka belajar" dan "belajar suka
@@ -179,19 +198,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Perkalian matriks dan tanh. <strong>Durasi:</strong> sekitar 30 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Forward pass memakai bobot manual. Gradien dihitung pada jaringan skalar dengan parameter tetap.</p><p>RNN melibatkan turunan aktivasi. LSTM membandingkan jalur cell state dengan gerbang konstan, bukan jaringan terlatih penuh.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Bagaimana perubahan urutan kata memengaruhi hidden state?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Ganti kalimat pada Forward Pass, lalu geser panjang sequence pada tab Vanishing Gradient.</li>
+<li><strong>Perhitungan:</strong> Hitung satu hidden state h_t = tanh(W_x x_t + W_h h_(t−1)) untuk satu dimensi dan cocokkan dengan angka pada langkah itu.</li>
 <li><strong>Refleksi dan transfer:</strong> Ubah bobot rekuren dan telusuri hasil kali turunannya.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.RNN.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/rnn" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>

@@ -163,8 +163,8 @@
     predHtml += '</div>';
 
     document.getElementById(containerId).innerHTML =
-      '<div class="seq-block"><h4>Label sebenarnya (y_true)</h4>' + trueHtml +
-      '<h4>Prediksi model (y_pred) &mdash; klik untuk ubah</h4>' + predHtml + '</div>';
+      '<div class="seq-block"><h3>Label sebenarnya (y_true)</h3>' + trueHtml +
+      '<h3>Prediksi model (y_pred) &mdash; klik untuk ubah</h3>' + predHtml + '</div>';
 
     document.querySelectorAll('#' + containerId + ' .pred-chip').forEach(function (chip) {
       chip.addEventListener('click', function () {

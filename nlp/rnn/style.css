@@ -119,7 +119,7 @@
   display: block;
 }
 
-.viz-sidebar h3 {
+.viz-sidebar h2 {
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -187,7 +187,7 @@
 
 .step-btn {
   background: var(--accent);
-  color: white;
+  color: var(--on-accent);
   border: none;
   border-radius: 6px;
   padding: 0.5rem 1.25rem;
@@ -340,7 +340,7 @@
 
 .rep-btn.active {
   background: var(--accent);
-  color: white;
+  color: var(--on-accent);
   border-color: var(--accent);
 }
 

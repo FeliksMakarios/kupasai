@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Algoritma Genetika - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/algoritma-genetika/">
+  <meta name="description" content="Meniru evolusi biologis untuk mencari x yang memaksimumkan f(x)=sin(πx/256): penyandian kromosom, seleksi roulette wheel, crossover, mutasi, dan pengaruh…">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Algoritma Genetika - KupasAI">
+  <meta property="og:description" content="Meniru evolusi biologis untuk mencari x yang memaksimumkan f(x)=sin(πx/256): penyandian kromosom, seleksi roulette wheel, crossover, mutasi, dan pengaruh…">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/algoritma-genetika/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-komp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Algoritma Genetika - KupasAI">
+  <meta name="twitter:description" content="Meniru evolusi biologis untuk mencari x yang memaksimumkan f(x)=sin(πx/256): penyandian kromosom, seleksi roulette wheel, crossover, mutasi, dan pengaruh…">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-komp.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -44,6 +61,8 @@
     </svg>
   </button>
 </nav>
+
+<main id="main-content" tabindex="-1">
 
 <div class="page-header">
   <div class="page-header-content">
@@ -88,7 +107,7 @@
       </table>
     </div>
     <div class="viz-sidebar">
-      <h3>Verifikasi Angka Contoh</h3>
+      <h2>Verifikasi Angka Contoh</h2>
       <p>
         Kromosom <code>100000110011100000</code> jika dikonversi biner ke
         desimal secara benar menghasilkan <strong>134368</strong>, bukan
@@ -115,7 +134,7 @@
       </table>
     </div>
     <div class="viz-sidebar">
-      <h3>Sebaran Fitness Awal</h3>
+      <h2>Sebaran Fitness Awal</h2>
       <p>
         Total fitness populasi awal (20 kromosom acak, benih tetap)
         adalah <strong id="populasi-total"></strong>. Titik-titik pada
@@ -141,7 +160,7 @@
       </table>
     </div>
     <div class="viz-sidebar">
-      <h3>Bertahan Berdasarkan Fitness</h3>
+      <h2>Bertahan Berdasarkan Fitness</h2>
       <p>
         Kromosom dengan fitness lebih tinggi menempati "irisan" roda yang
         lebih besar, sehingga lebih sering terpilih &mdash; bahkan bisa
@@ -164,7 +183,7 @@
       <p class="result-highlight" id="ga-result"></p>
     </div>
     <div class="viz-sidebar">
-      <h3>Konvergensi ke Solusi Optimal</h3>
+      <h2>Konvergensi ke Solusi Optimal</h2>
       <p>
         Fitness terbaik dengan cepat mendekati 1 (x&asymp;128), sementara
         fitness rata-rata populasi ikut naik seiring generasi &mdash; bukti
@@ -187,7 +206,7 @@
       <svg id="eksperimen-heatmap" viewBox="0 0 640 300"></svg>
     </div>
     <div class="viz-sidebar">
-      <h3>Membandingkan Generasi dan Biaya Evaluasi</h3>
+      <h2>Membandingkan Generasi dan Biaya Evaluasi</h2>
       <p>
         Pada konfigurasi ini, populasi besar lebih sering memuat individu awal yang mendekati target. Generasi yang lebih sedikit tidak otomatis berarti biaya komputasi lebih rendah. Tabel tambahan menampilkan simpangan baku, keberhasilan, dan jumlah pemanggilan fitness, termasuk evaluasi ulang pada seleksi roulette.
       </p>
@@ -203,19 +222,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Biner, probabilitas, dan optimasi. <strong>Durasi:</strong> sekitar 35 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Kromosom 18 bit dan fungsi sinus sintetis. Enam pengulangan per kombinasi parameter.</p><p>Generasi pertama dapat sudah memenuhi target. Bandingkan jumlah evaluasi fitness serta variasi, bukan generasi saja. Bedakan terbaik saat ini dan terbaik sepanjang proses.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Mengapa populasi besar mungkin lebih cepat dalam generasi namun lebih mahal?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Buka tab dari Penyandian Kromosom sampai Eksperimen Parameter dan perhatikan perubahan fitness terbaik tiap generasi.</li>
+<li><strong>Perhitungan:</strong> Dekodekan satu kromosom biner menjadi nilai x, hitung fitness-nya, lalu hitung peluang terpilihnya pada roulette wheel.</li>
 <li><strong>Refleksi dan transfer:</strong> Bandingkan keberhasilan beberapa benih pada batas evaluasi yang sama.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://deap.readthedocs.io/en/master/tutorials/basic/part2.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/kecerdasan-komputasional/algoritma-genetika" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; Kecerdasan Komputasional INF20052</span>
 </footer>

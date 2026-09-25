@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Non-Linearitas &amp; Fungsi Aktivasi - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/ml-lanjut/nonlinearity-activation/">
+  <meta name="description" content="Kenapa deep network butuh fungsi aktivasi? Lihat kegagalan model linear pada data yang “berkelok”, telusuri bagaimana delta mengalir mundur lewat…">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Non-Linearitas &amp; Fungsi Aktivasi - KupasAI">
+  <meta property="og:description" content="Kenapa deep network butuh fungsi aktivasi? Lihat kegagalan model linear pada data yang “berkelok”, telusuri bagaimana delta mengalir mundur lewat…">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/ml-lanjut/nonlinearity-activation/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-lanjut.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Non-Linearitas &amp; Fungsi Aktivasi - KupasAI">
+  <meta name="twitter:description" content="Kenapa deep network butuh fungsi aktivasi? Lihat kegagalan model linear pada data yang “berkelok”, telusuri bagaimana delta mengalir mundur lewat…">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-lanjut.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -44,6 +61,8 @@
     </svg>
   </button>
 </nav>
+
+<main id="main-content" tabindex="-1">
 
 <div class="page-header">
   <div class="page-header-content">
@@ -94,7 +113,7 @@
       </div>
     </div>
     <div class="viz-sidebar">
-      <h3>Kenapa Linear Gagal?</h3>
+      <h2>Kenapa Linear Gagal?</h2>
       <p>Nilai akurasi latih aktual muncul di atas grafik. Dua transformasi afin tanpa aktivasi tetap setara dengan satu transformasi afin. Jaringan dengan ReLU dapat membentuk batas keputusan non-linear. Akurasi latih ini tidak mengukur generalisasi.</p>
       <p>
         Menumpuk layer <em>linear</em> tanpa aktivasi tidak menolong
@@ -128,7 +147,7 @@
       <div class="trace-log" id="delta-prop-trace" style="font-family:var(--font-mono);font-size:0.8rem;color:var(--text-secondary);background:var(--bg-secondary);border-radius:8px;padding:0.75rem 1rem;margin-top:1rem;line-height:1.8"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Error Mengalir Mundur</h3>
+      <h2>Error Mengalir Mundur</h2>
       <p>Panel ini menunjukkan gradien terhadap aktivasi tersembunyi: ∂L/∂h_i = delta_out × w_i, sebelum dikalikan turunan aktivasi. Untuk memperoleh delta terhadap pra-aktivasi z_i, kalikan lagi dengan f′(z_i). Bobot negatif membalik tanda kontribusi gradien.</p>
       <p>
         Node dengan bobot 0 tidak menerima error sama sekali (delta=0),
@@ -152,7 +171,7 @@
       <svg id="activation-plot" viewBox="0 0 640 320"></svg>
     </div>
     <div class="viz-sidebar">
-      <h3>Tiga Aktivasi Umum</h3>
+      <h2>Tiga Aktivasi Umum</h2>
       <p>
         <strong>ReLU</strong> mematikan nilai negatif (jadi 0) dan
         meloloskan nilai positif apa adanya &mdash; murah dihitung,
@@ -174,19 +193,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Transformasi afin dan turunan. <strong>Durasi:</strong> sekitar 30 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Data cincin sintetis, Logistic Regression dan jaringan ReLU 8 neuron benar-benar dilatih.</p><p>Panel delta menunjukkan gradien terhadap aktivasi h. Kalikan turunan aktivasi untuk gradien terhadap z. Akurasi yang ditampilkan adalah akurasi latih.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Apakah menambah lapisan linear tanpa aktivasi dapat memisahkan cincin?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Geser slider δ(2) pada tab Delta Propagation, lalu bandingkan batas keputusan linear dan non-linear.</li>
+<li><strong>Perhitungan:</strong> Hitung δ(1) satu node sebagai δ(2) × bobot, lalu cocokkan dengan jejak perhitungan di bawah grafik.</li>
 <li><strong>Refleksi dan transfer:</strong> Hitung turunan ReLU, sigmoid, dan tanh pada nilai dekat saturasi.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.ReLU.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml-lanjut/nonlinearity-activation" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; ML Lanjut INF24141</span>
 </footer>

@@ -286,7 +286,7 @@ print("Contoh2 Simple HC:", jejak_s2, "berhenti h=", h_salah_tempat(akhir_s2))
 print("Contoh2 Steepest:", jejak_t2, "berhenti h=", h_salah_tempat(akhir_t2))
 
 # ============================================================
-# TUGAS 5 -- MINIMAX & ALPHA-BETA PRUNING (Gambar 3.23)
+# TUGAS 5 -- MINIMAX & ALPHA-BETA PRUNING (pohon modul lab; Gambar 3.23 buku ada di bawah)
 # ============================================================
 POHON = [[[3, 5], [6, 9]], [[1, 2], [0, -1]], [[5, 4], [7, 8]]]
 

@@ -138,7 +138,7 @@ Data numerik dibuat ulang menggunakan skrip Python. Jalankan `python scripts/reg
 
 Sembilan topik ML Lanjut dibuat oleh `scripts/generate_advanced.py`, berdasarkan masukan di `scripts/advanced_inputs.json`. Eksperimen regularisasi memakai dataset digits, pembagian data tetap, arsitektur sama, dan tiga benih. Hasilnya merupakan eksperimen pendamping, bukan keluaran notebook asli yang belum tersedia di repositori. Tata letak diagram, skor ilustratif, dan metadata pembelajaran dibedakan dari hasil pelatihan pada panduan setiap topik.
 
-Jalankan `python scripts/build_lessons.py` untuk memperbarui panduan 34 topik. Rujukan buku yang belum memiliki judul, edisi, dan halaman terverifikasi tidak diperlakukan sebagai bukti salah cetak. Kode komputasional merupakan implementasi pengajaran mandiri. Demo pembelajaran kompetitif tidak dilabeli sebagai LVQ tersupervisi.
+Jalankan `python scripts/build_lessons.py` untuk memperbarui panduan 34 topik (langkah Eksplorasi dan Perhitungan tiap topik ada di `STEPS` pada `scripts/lessons.py`). Jalankan `python scripts/build_seo.py` setelah menambah atau mengganti judul halaman untuk memperbarui meta deskripsi, Open Graph, dan `sitemap.xml`. Gambar pratinjau berbagi dibuat ulang dengan `python scripts/build_og_images.py`. Rujukan buku yang belum memiliki judul, edisi, dan halaman terverifikasi tidak diperlakukan sebagai bukti salah cetak. Kode komputasional merupakan implementasi pengajaran mandiri. Demo pembelajaran kompetitif tidak dilabeli sebagai LVQ tersupervisi.
 
 ## Pemeriksaan
 

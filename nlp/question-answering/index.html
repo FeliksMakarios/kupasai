@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Question Answering - KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/nlp/question-answering/">
+  <meta name="description" content="Menggabungkan pemahaman (memahami pertanyaan &amp; konteks) dengan ekstraksi atau generasi jawaban. Dari span classification ekstraktif hingga Retrieval-Augmented…">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Question Answering - KupasAI">
+  <meta property="og:description" content="Menggabungkan pemahaman (memahami pertanyaan &amp; konteks) dengan ekstraksi atau generasi jawaban. Dari span classification ekstraktif hingga Retrieval-Augmented…">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/nlp/question-answering/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Question Answering - KupasAI">
+  <meta name="twitter:description" content="Menggabungkan pemahaman (memahami pertanyaan &amp; konteks) dengan ekstraksi atau generasi jawaban. Dari span classification ekstraktif hingga Retrieval-Augmented…">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
@@ -45,6 +62,8 @@
   </button>
 </nav>
 
+<main id="main-content" tabindex="-1">
+
 <div class="page-header">
   <div class="page-header-content">
     <a href="/kupasai/nlp/" class="back-link">&larr; Kembali ke Daftar Topik</a>
@@ -71,7 +90,7 @@
 <div class="tab-content active" id="tab-span" role="tabpanel" aria-labelledby="tabbtn-span" tabindex="0">
   <div class="viz-layout">
     <div class="viz-main">
-      <h3 class="section-title">Span Classification (Modul 11.2)</h3>
+      <h2 class="section-title">Span Classification (Modul 11.2)</h2>
       <p class="qa-text-block">Format input: <code>[CLS] pertanyaan [SEP] konteks [SEP]</code> &mdash; token abu-abu adalah pertanyaan (tidak bisa dipilih), token lain adalah konteks.</p>
       <div class="token-row" id="qa-token-row"></div>
 
@@ -85,14 +104,14 @@
       </div>
       <div class="answer-box" id="qa-answer-box"></div>
 
-      <h3 class="section-title">Contoh Nyata: ExtractedAnswer (Haystack)</h3>
+      <h2 class="section-title">Contoh Nyata: ExtractedAnswer (Haystack)</h2>
       <div class="ref-card-row" id="ref-answers"></div>
 
-      <h3 class="section-title">Membandingkan Model pada SQuAD 2.0</h3>
+      <h2 class="section-title">Membandingkan Model pada SQuAD 2.0</h2>
       <div id="f1-table"></div>
     </div>
     <div class="viz-sidebar">
-      <h3>Bagaimana Model Menemukan Jawaban</h3>
+      <h2>Bagaimana Model Menemukan Jawaban</h2>
       <p>
         Model tidak memilih satu label, melainkan memprediksi <strong>dua
         posisi</strong>: token awal dan token akhir jawaban. Sebuah
@@ -114,7 +133,7 @@
 <div class="tab-content" id="tab-rag" role="tabpanel" aria-labelledby="tabbtn-rag" tabindex="0">
   <div class="viz-layout">
     <div class="viz-main">
-      <h3 class="section-title">Sliding Window untuk Konteks Panjang</h3>
+      <h2 class="section-title">Sliding Window untuk Konteks Panjang</h2>
       <p class="qa-text-block">
         Pertanyaan: "<span id="window-question"></span>" &middot;
         max_length=<span id="window-maxlen"></span>, stride=<span id="window-stride"></span>
@@ -126,7 +145,7 @@
         (overlap) antar window &mdash; contoh nyata dari ulasan headphone Koss di Modul 11.2.
       </p>
 
-      <h3 class="section-title">Contoh Nyata: Generative QA dengan RAG</h3>
+      <h2 class="section-title">Contoh Nyata: Generative QA dengan RAG</h2>
       <div class="rag-qa-card">
         <div class="rq-question">Q: <span id="rag-question"></span></div>
         <div class="rq-answer" id="rag-answer"></div>
@@ -135,7 +154,7 @@
       <ul class="example-q-list" id="other-questions"></ul>
     </div>
     <div class="viz-sidebar">
-      <h3>Dua Cara Mengatasi Keterbatasan</h3>
+      <h2>Dua Cara Mengatasi Keterbatasan</h2>
       <p>
         <strong>Sliding window</strong> mengatasi konteks yang melebihi
         batas token model: teks dipecah jadi beberapa window yang saling
@@ -159,19 +178,23 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Tokenisasi dan Transformer. <strong>Durasi:</strong> sekitar 30 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Skor span manual, contoh jawaban tersimpan, serta ilustrasi sliding window dan RAG.</p><p>Span harus berada pada konteks, awal≤akhir, dan memenuhi batas panjang. Argmax independen tidak menjamin span sah. RAG tidak menjamin jawaban benar.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Apa yang terjadi bila start tertinggi berada setelah end tertinggi?</li>
-<li><strong>Eksplorasi:</strong> ubah satu pilihan atau parameter, lalu catat perubahan hasil.</li>
-<li><strong>Perhitungan:</strong> pilih satu hasil numerik atau keputusan algoritma dan telusuri langkah yang menghasilkannya.</li>
+<li><strong>Eksplorasi:</strong> Pilih mode Token Awal atau Token Akhir, lalu klik token konteks untuk membentuk span jawaban.</li>
+<li><strong>Perhitungan:</strong> Jumlahkan skor start dan end untuk span pilihan Anda, lalu periksa apakah span itu sah (awal ≤ akhir dan di dalam konteks).</li>
 <li><strong>Refleksi dan transfer:</strong> Rancang kasus konteks tidak memiliki jawaban dan bukti yang dibutuhkan.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda"></textarea>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
 <p><a href="https://huggingface.co/docs/transformers/tasks/question_answering" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/question-answering" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah. Notebook sumber belum ditautkan karena berkas asli yang tepat belum tersedia di repositori ini.</p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+</main>
+
 <footer class="footer">
   <span>KupasAI &copy; 2026 &middot; NLP INF20161</span>
 </footer>

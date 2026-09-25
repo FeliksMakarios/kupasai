@@ -168,7 +168,7 @@
     var cols = D.corr.columns;
     var vals = D.corr.values;
     var wrap = document.getElementById('corr-table');
-    var html = '<table class="corr-table"><thead><tr><th></th>';
+    var html = '<table class="corr-table"><thead><tr><th scope="col"><span class="visually-hidden">Variabel</span></th>';
     cols.forEach(function (c) { html += '<th>' + c + '</th>'; });
     html += '</tr></thead><tbody>';
     cols.forEach(function (rowName, i) {
@@ -177,13 +177,22 @@
         var mag = Math.abs(v);
         var color = v >= 0 ? C.accent : C.neg;
         var bg = colorMix(color, mag);
-        var textColor = mag > 0.55 ? '#ffffff' : C.text_primary;
+        var textColor = readableOn(color, Math.max(0.08, mag));
         html += '<td style="background:' + bg + ';color:' + textColor + '">' + v.toFixed(2) + '</td>';
       });
       html += '</tr>';
     });
     html += '</tbody></table>';
     wrap.innerHTML = html;
+  }
+
+  // Text colour with the higher contrast against the tinted cell over the page background.
+  function readableOn(hex, alpha) {
+    var page = IS_DARK ? [13, 17, 23] : [255, 255, 255];
+    var rgb = [1, 3, 5].map(function (i, k) { return parseInt(hex.slice(i, i + 2), 16) * alpha + page[k] * (1 - alpha); });
+    function lum(c) { c = c.map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
+    var L = lum(rgb);
+    return (1.05 / (L + 0.05)) >= ((L + 0.05) / 0.05) ? '#ffffff' : '#000000';
   }
 
   function colorMix(hex, alpha) {
