@@ -106,3 +106,4 @@
   .viz-layout { grid-template-columns: 1fr; }
   .tab-nav { overflow-x: auto; }
 }
+@media(max-width:600px){.enc-dec-wrapper{flex-direction:column}.text-demo{width:100%;min-height:0}.diagram-area{width:100%}.step-detail{overflow-wrap:anywhere}}

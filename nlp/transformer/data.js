@@ -60,7 +60,7 @@ var TRANSFORMER_DATA = {
       },
       {
         title: "Residual Connection + Layer Norm",
-        desc: "Output attention ditambahkan ke input asli (residual), lalu dinormalisasi. Ini mencegah vanishing gradient dan menstabilkan training pada jaringan yang dalam.",
+        desc: "Output attention ditambahkan ke input asli (residual), lalu dinormalisasi. Residual menyediakan lintasan gradien tambahan dan normalisasi membantu kestabilan; keduanya tidak menjamin gradien selalu stabil.",
         formula: "output = LayerNorm(x + Sublayer(x))",
       },
       {
@@ -101,7 +101,7 @@ var TRANSFORMER_DATA = {
       },
       {
         title: "Linear + Softmax (Output)",
-        desc: "Output decoder terakhir diproyeksikan ke dimensi vocab melalui lapis linear, lalu softmax menghasilkan distribusi probabilitas atas seluruh kosakata. Token dengan probabilitas tertinggi dipilih sebagai output.",
+        desc: "Output decoder terakhir diproyeksikan ke dimensi vocab melalui lapis linear, lalu softmax menghasilkan distribusi probabilitas atas seluruh kosakata. Pada greedy decoding, token berprobabilitas tertinggi dipilih. Sampling dan beam search memakai aturan pemilihan berbeda.",
         formula: "P(y_t) = softmax(y W_vocab + b)",
       },
     ],

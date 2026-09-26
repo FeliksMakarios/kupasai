@@ -85,6 +85,15 @@
       .attr('stroke-width', 1.5)
       .attr('opacity', 0.9);
 
+    var boundary=g.append('path').attr('fill','none').attr('stroke',C.text_primary).attr('stroke-width',2).attr('stroke-dasharray','6,3');
+    window.KupasLogisticThreshold=function(threshold){
+      var z=Math.log(threshold/(1-threshold)),pts=[];
+      D.x_range.forEach(function(xv){if(D.w[1]!==0){var yv=(z-D.b-D.w[0]*xv)/D.w[1];if(yv>=D.y_range[0]&&yv<=D.y_range[1])pts.push([x(xv),y(yv)]);}});
+      D.y_range.forEach(function(yv){if(D.w[0]!==0){var xv=(z-D.b-D.w[1]*yv)/D.w[0];if(xv>=D.x_range[0]&&xv<=D.x_range[1])pts.push([x(xv),y(yv)]);}});
+      boundary.attr('d',pts.length>=2?d3.line()(pts.slice(0,2)):null);
+      g.selectAll('.pt').attr('stroke',function(d){var p=1/(1+Math.exp(-(D.b+D.w[0]*d.x+D.w[1]*d.y)));return p>=threshold?C.c1:C.c0;}).attr('stroke-width',2);
+    };
+    window.KupasLogisticThreshold(.5);
     document.getElementById('lr-accuracy').textContent = (D.accuracy * 100).toFixed(1) + '%';
     var cm = D.confusion_matrix;
     document.getElementById('lr-cm').textContent =

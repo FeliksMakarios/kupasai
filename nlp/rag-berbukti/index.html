@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAG dengan Bukti dan Abstensi — KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/nlp/rag-berbukti/">
+  <meta name="description" content="JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="RAG dengan Bukti dan Abstensi — KupasAI">
+  <meta property="og:description" content="JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/nlp/rag-berbukti/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp-rag-berbukti.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="RAG dengan Bukti dan Abstensi — KupasAI">
+  <meta name="twitter:description" content="JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp-rag-berbukti.png">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "RAG dengan Bukti dan Abstensi — KupasAI", "description": "JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.", "url": "https://feliksmakarios.github.io/kupasai/nlp/rag-berbukti/", "inLanguage": "id", "learningResourceType": "Interactive lesson", "timeRequired": "PT25M", "isAccessibleForFree": true, "citation": "https://arxiv.org/abs/2005.11401"}</script>
+  <!-- seo:end -->
+
+  <link rel="stylesheet" href="/kupasai/assets/css/main.css">
+
+  <link rel="icon" href="/kupasai/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/kupasai/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/kupasai/site.webmanifest">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+<link rel="stylesheet" href="/kupasai/assets/css/learning.css">
+<script src="/kupasai/assets/js/learning.js" defer></script>
+<script src="/kupasai/assets/js/experiments.js" defer></script>
+<script src="/kupasai/assets/js/catalog-data.js" defer></script>
+<script src="/kupasai/assets/js/catalog.js" defer></script>
+<link rel="stylesheet" href="/kupasai/assets/css/catalog.css">
+<script src="/kupasai/assets/js/state.js"></script>
+<script src="/kupasai/assets/js/offline.js" defer></script>
+<link rel="stylesheet" href="/kupasai/assets/css/laboratory.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/tentang/">Tentang</a></li>
+    <li><a href="/kupasai/kontak/">Kontak</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <span class="navbar-meta">Laboratorium pendamping</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+
+<main id="main-content" tabindex="-1"><noscript><p class="noscript-note">JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.</p></noscript><div class="content-wrapper laboratory" data-lab="rag">
+ <header class="page-header-content"><a class="back-link" href="/kupasai/nlp/">Kembali ke Daftar Topik</a><h1>RAG dengan Bukti dan Abstensi</h1><p>Pipeline RAG memecah sumber menjadi chunk, mengambil kandidat, dapat melakukan reranking, lalu menyusun jawaban dengan sitasi. Retrieval dan jawaban perlu dievaluasi terpisah. Sumber yang relevan belum tentu benar atau mutakhir.</p></header>
+ <section aria-label="Eksperimen"><h2>Coba dan bandingkan</h2><label for="lab-rerank"><input id="lab-rerank" type="checkbox"> Rerank kandidat dengan kecocokan maksud sederhana</label><label for="lab-query">Pertanyaan</label><input id="lab-query" maxlength="300" value="Kapan kunjungan observatorium Aruna?"><label for="lab-topk">Jumlah chunk diambil</label><input id="lab-topk" type="range" min="1" max="3" value="2"><label for="lab-evidence"><input id="lab-evidence" type="checkbox" checked> Sertakan sumber yang menjawab pertanyaan contoh</label><button id="lab-reset" type="button">Reset eksperimen</button><div id="lab-result" aria-live="polite"></div></section>
+ <aside><h2>Batas interpretasi</h2><p>Demo lokal ini memakai overlap kata, tanpa embedding, reranker neural, atau LLM. Jawaban berupa kutipan sumber. Skor overlap bukan probabilitas kebenaran. Tidak ada data yang dikirim ke layanan AI.</p><p><a href="https://arxiv.org/abs/2005.11401">Rujukan primer</a></p></aside>
+ </div><script src="/kupasai/assets/js/laboratory.js"></script><!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Pencarian informasi dan question answering. <strong>Durasi:</strong> sekitar 25 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Simulasi sintetis deterministik; tidak menjalankan model pretrained.</p><p>Demo lokal ini memakai overlap kata, tanpa embedding, reranker neural, atau LLM. Jawaban berupa kutipan sumber. Skor overlap bukan probabilitas kebenaran. Tidak ada data yang dikirim ke layanan AI.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Prediksi perubahan keluaran sebelum mengubah satu kontrol.</li>
+<li><strong>Eksplorasi:</strong> Ubah satu kontrol, amati hasil tabel, lalu reset untuk membandingkan.</li>
+<li><strong>Perhitungan:</strong> Hitung satu baris hasil secara manual dan bandingkan dengan penjelasan algoritma.</li>
+<li><strong>Refleksi dan transfer:</strong> Jelaskan kapan hasil eksperimen kecil ini tidak berlaku pada data nyata.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
+<p><a href="https://arxiv.org/abs/2005.11401" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/rag-berbukti" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
+</section><!-- learning-aid:end -->
+<!-- catalog:start --><section class="learning-aid topic-tools" data-topic="nlp/rag-berbukti"><h2>Uji Pemahaman</h2><p>Dua latihan dengan penjelasan. Progres dihitung setelah semua jawaban benar; membuka halaman saja tidak menandai selesai.</p><div id="concept-checks"></div><p id="quiz-status" role="status"></p><div class="learning-actions"><button id="export-notes" type="button">Ekspor catatan dan progres</button><label for="import-notes">Impor cadangan JSON</label><input id="import-notes" type="file" accept="application/json"><button id="share-controls" type="button">Salin tautan eksperimen</button><button id="reset-controls" type="button">Reset kontrol</button></div><p id="learning-status" role="status"></p><p>Prasyarat: Pencarian informasi dan question answering. Ditinjau: 2026-09-26. <a href="https://arxiv.org/abs/2005.11401">Rujukan konsep</a>. Lihat panduan asal data; tanggal tinjauan tidak menyatakan semua hasil berasal dari publikasi itu.</p><nav class="lesson-sequence" aria-label="Urutan belajar"><a href="/kupasai/nlp/tokenisasi-indonesia/">← Sebelumnya: Tokenisasi Bahasa Indonesia</a> <a href="/kupasai/nlp/evaluasi-generatif/">Berikutnya →: Evaluasi Teks Generatif</a></nav></section><!-- catalog:end -->
+</main>
+ <script src="/kupasai/assets/js/theme.js"></script></body></html>

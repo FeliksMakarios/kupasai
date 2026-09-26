@@ -134,7 +134,14 @@ def export_node(i):
 
 tree_export = export_node(0)
 
+depth_comparison=[]
+for depth in [1,2,3,4,5,None]:
+    candidate=DecisionTreeClassifier(criterion='entropy', max_depth=depth, random_state=42).fit(X_train,y_train)
+    depth_comparison.append({"depth": depth, "train_accuracy": candidate.score(X_train,y_train), "test_accuracy": candidate.score(X_test,y_test), "nodes": candidate.tree_.node_count})
+
 data = {
+    "depth_comparison": depth_comparison,
+    "n_train": len(X_train), "n_test": len(X_test),
     "toy": toy_out,
     "real": {
         "n_rows": int(len(df1)),

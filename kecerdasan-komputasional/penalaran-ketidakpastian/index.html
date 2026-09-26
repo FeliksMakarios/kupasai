@@ -13,13 +13,14 @@
   <meta property="og:title" content="Penalaran Ketidakpastian dan Kesamaan Dokumen - KupasAI">
   <meta property="og:description" content="Tiga cara menalar dengan informasi yang tidak pasti — teorema Bayes, faktor kepastian, teori Dempster-Shafer — ditutup dengan mengukur kemiripan dua dokumen…">
   <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/penalaran-ketidakpastian/">
-  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-komp.png">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-kecerdasan-komputasional-penalaran-ketidakpastian.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Penalaran Ketidakpastian dan Kesamaan Dokumen - KupasAI">
   <meta name="twitter:description" content="Tiga cara menalar dengan informasi yang tidak pasti — teorema Bayes, faktor kepastian, teori Dempster-Shafer — ditutup dengan mengukur kemiripan dua dokumen…">
-  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-komp.png">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-kecerdasan-komputasional-penalaran-ketidakpastian.png">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Penalaran Ketidakpastian dan Kesamaan Dokumen - KupasAI", "description": "Tiga cara menalar dengan informasi yang tidak pasti — teorema Bayes, faktor kepastian, teori Dempster-Shafer — ditutup dengan mengukur kemiripan dua dokumen…", "url": "https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/penalaran-ketidakpastian/", "inLanguage": "id", "learningResourceType": "Interactive lesson", "timeRequired": "PT35M", "isAccessibleForFree": true, "citation": "https://aima.cs.berkeley.edu/"}</script>
   <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
@@ -40,6 +41,12 @@
   </script>
 <link rel="stylesheet" href="/kupasai/assets/css/learning.css">
 <script src="/kupasai/assets/js/learning.js" defer></script>
+<script src="/kupasai/assets/js/experiments.js" defer></script>
+<script src="/kupasai/assets/js/catalog-data.js" defer></script>
+<script src="/kupasai/assets/js/catalog.js" defer></script>
+<link rel="stylesheet" href="/kupasai/assets/css/catalog.css">
+<script src="/kupasai/assets/js/state.js"></script>
+<script src="/kupasai/assets/js/offline.js" defer></script>
 </head>
 <body>
 
@@ -111,8 +118,8 @@
       <p>
         Pembilang <code>P(H)&times;P(E|H)</code> untuk cacar dan alergi
         masing-masing <strong>0.28</strong> dan <strong>0.12</strong> &mdash;
-        angka inilah yang sama dengan yang tercantum pada buku (0.28, 0.12,
-        0.27), sebelum dibagi total 0.58 untuk normalisasi.
+        pembilang ketiga adalah <strong>0.18</strong> (= 0.2 × 0.9).
+        Jumlah ketiganya 0.58; setiap pembilang dibagi jumlah ini untuk normalisasi.
       </p>
       <p>
         Setelah dinormalisasi, posterior sebenarnya adalah <strong>0.4828,
@@ -232,15 +239,16 @@
       </p>
       <p>
         Kesamaan kosinus = 13 &divide; (4&times;&radic;19) &asymp;
-        <strong>0.7456</strong> atau <strong>74.56%</strong>. Jika memakai
-        panjang vektor versi buku (12 dan 13), hasilnya justru berbeda
-        (&asymp;0.083) &mdash; bukti bahwa angka panjang vektor yang
-        tercetak pada buku tidak konsisten dengan nilai kosinus 0.7456
-        yang juga tercantum di sana.
+        <strong>0.7456</strong> atau <strong>74.56%</strong>. Ini perhitungan ulang dari vektor
+        frekuensi pada contoh; bukan verifikasi kesalahan buku yang edisi dan halamannya belum tersedia.
       </p>
     </div>
   </div>
 </div>
+
+
+
+
 
 
 
@@ -259,6 +267,7 @@
 <p><a href="https://aima.cs.berkeley.edu/" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/kecerdasan-komputasional/penalaran-ketidakpastian" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
 <p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+<!-- catalog:start --><section class="learning-aid topic-tools" data-topic="kecerdasan-komputasional/penalaran-ketidakpastian"><h2>Uji Pemahaman</h2><p>Dua latihan dengan penjelasan. Progres dihitung setelah semua jawaban benar; membuka halaman saja tidak menandai selesai.</p><div id="concept-checks"></div><p id="quiz-status" role="status"></p><div class="learning-actions"><button id="export-notes" type="button">Ekspor catatan dan progres</button><label for="import-notes">Impor cadangan JSON</label><input id="import-notes" type="file" accept="application/json"><button id="share-controls" type="button">Salin tautan eksperimen</button><button id="reset-controls" type="button">Reset kontrol</button></div><p id="learning-status" role="status"></p><p>Prasyarat: Probabilitas bersyarat dan himpunan. Ditinjau: 2026-09-26. <a href="https://aima.cs.berkeley.edu/">Rujukan konsep</a>. Lihat panduan asal data; tanggal tinjauan tidak menyatakan semua hasil berasal dari publikasi itu.</p><nav class="lesson-sequence" aria-label="Urutan belajar"><a href="/kupasai/kecerdasan-komputasional/teknik-pemecahan/">← Sebelumnya: Teknik Pemecahan Permasalahan</a> <a href="/kupasai/kecerdasan-komputasional/jaringan-syaraf-tiruan/">Berikutnya →: Jaringan Saraf Tiruan</a></nav></section><!-- catalog:end -->
 </main>
 
 <footer class="footer">

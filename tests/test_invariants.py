@@ -17,7 +17,7 @@ class Tags(HTMLParser):
     def handle_starttag(self,tag,attrs):self.tags.append((tag,dict(attrs)))
 class Site(unittest.TestCase):
     def test_pages_and_assets(self):
-        pages=[p for p in ROOT.glob('**/index.html') if 'node_modules' not in p.parts];self.assertEqual(len(pages),41)
+        pages=[p for p in ROOT.glob('**/index.html') if 'node_modules' not in p.parts];self.assertEqual(len(pages),len(json.loads((ROOT/"assets/lessons.json").read_text()))+7)
         for p in pages:
             s=p.read_text();tags=Tags(s).tags
             ids=[a['id'] for t,a in tags if 'id' in a]
@@ -113,3 +113,56 @@ class Maintenance(unittest.TestCase):
                 if 'class="tab-btn' in s:self.assertLess(s.index('assets/js/tabs.js'),s.index('src="viz.js"'),str(rel))
                 themed='data-theme' in (p.parent/'viz.js').read_text()
                 self.assertEqual(themed,'data-theme-aware' in s,str(rel))
+
+class AuditRegressions(unittest.TestCase):
+    def test_churn_threshold_confusion_matrices(self):
+        d=data('ml/churn-prediction')
+        for model in ['lr','rf']:
+            previous=None
+            for row in d['evaluation'][model]:
+                matrix=np.array(row['matrix'])
+                self.assertEqual(matrix.sum(),d['n_test'])
+                self.assertTrue((matrix>=0).all())
+                self.assertEqual(matrix[1].sum(),400)
+                predicted=matrix[:,1].sum()
+                if previous is not None:self.assertLessEqual(predicted,previous)
+                previous=predicted
+            tn,fp,fn,tp=np.array(d['evaluation'][model][50]['matrix']).ravel()
+            self.assertAlmostEqual(tp/(tp+fp),d['metrics_'+model]['precision'],places=4)
+            self.assertAlmostEqual(tp/(tp+fn),d['metrics_'+model]['recall'],places=4)
+    def test_catalogue_complete(self):
+        catalogue=json.loads((ROOT/'assets/lessons.json').read_text())
+        self.assertEqual(len(catalogue),39)
+        self.assertEqual(len({d['slug'] for d in catalogue}),39)
+        for item in catalogue:
+            self.assertTrue((ROOT/item['slug']/'index.html').exists())
+            self.assertEqual(len(item['questions']),2)
+            for question,answer,explanation in item['questions']:
+                self.assertIsInstance(answer,bool)
+                self.assertTrue(question and explanation)
+
+class ExtendedExperiments(unittest.TestCase):
+    def test_kmeans_centroids_and_inertia(self):
+        d=data('ml/clustering');points=np.array([[f['durasi'],f['jarak']] for f in d['flights']],dtype=float)
+        self.assertEqual(len(d['experiments']),24)
+        for experiment in d['experiments']:
+            x=(points-np.array(d['scaler']['mean']))/np.array(d['scaler']['scale']) if experiment['scaled'] else points
+            centers=np.array(experiment['centers']);dist=((x[:,None,:]-centers[None,:,:])**2).sum(axis=2)
+            labels=np.array(experiment['labels']);chosen=dist[np.arange(len(x)),labels]
+            np.testing.assert_allclose(chosen,dist.min(axis=1),atol=1e-6)
+            self.assertAlmostEqual(chosen.sum(),experiment['inertia'],places=5)
+            self.assertTrue(-1<=experiment['silhouette']<=1)
+    def test_heldout_glyph_metrics(self):
+        d=data('kecerdasan-komputasional/jaringan-syaraf-tiruan')['backprop']
+        self.assertEqual(d['nTrain'],20);self.assertEqual(d['nTest'],200)
+        self.assertEqual(d['testSeed'],2026)
+        for score in d['akurasiTest'].values():self.assertTrue(0<=score<=1)
+    def test_structured_learning_resources(self):
+        from PIL import Image
+        catalogue=json.loads((ROOT/'assets/lessons.json').read_text())
+        for entry in catalogue:
+            slug=entry['slug'];html=(ROOT/slug/'index.html').read_text()
+            blocks=re.findall(r'<script type="application/ld\+json">(.*?)</script>',html)
+            self.assertEqual(len(blocks),1)
+            self.assertEqual(json.loads(blocks[0])['@type'],'LearningResource')
+            with Image.open(ROOT/'assets/img'/('og-'+slug.replace('/','-')+'.png')) as image:self.assertEqual(image.size,(1200,630))

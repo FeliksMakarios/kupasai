@@ -13,13 +13,14 @@
   <meta property="og:title" content="Tensor &amp; Autograd - KupasAI">
   <meta property="og:description" content="Apa yang sebenarnya terjadi di balik .backward()? Membangun mini deep learning framework dari nol untuk memahami computational graph dan gradien otomatis.">
   <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/nlp/autograd/">
-  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp-autograd.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Tensor &amp; Autograd - KupasAI">
   <meta name="twitter:description" content="Apa yang sebenarnya terjadi di balik .backward()? Membangun mini deep learning framework dari nol untuk memahami computational graph dan gradien otomatis.">
-  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp-autograd.png">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Tensor & Autograd - KupasAI", "description": "Apa yang sebenarnya terjadi di balik .backward()? Membangun mini deep learning framework dari nol untuk memahami computational graph dan gradien otomatis.", "url": "https://feliksmakarios.github.io/kupasai/nlp/autograd/", "inLanguage": "id", "learningResourceType": "Interactive lesson", "timeRequired": "PT25M", "isAccessibleForFree": true, "citation": "https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html"}</script>
   <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
@@ -40,6 +41,12 @@
   </script>
 <link rel="stylesheet" href="/kupasai/assets/css/learning.css">
 <script src="/kupasai/assets/js/learning.js" defer></script>
+<script src="/kupasai/assets/js/experiments.js" defer></script>
+<script src="/kupasai/assets/js/catalog-data.js" defer></script>
+<script src="/kupasai/assets/js/catalog.js" defer></script>
+<link rel="stylesheet" href="/kupasai/assets/css/catalog.css">
+<script src="/kupasai/assets/js/state.js"></script>
+<script src="/kupasai/assets/js/offline.js" defer></script>
 </head>
 <body>
 
@@ -107,7 +114,7 @@
     <div class="viz-sidebar">
       <h2>Bug Akumulasi Gradien (Modul 3.2)</h2>
       <p>
-        Graf ini persis dari notebook: <code>a=[1,2,3,4,5]</code>,
+        Graf contoh ini menggunakan: <code>a=[1,2,3,4,5]</code>,
         <code>b=[2,2,2,2,2]</code>, <code>c=[5,4,3,2,1]</code>,
         <code>d=a+b</code>, <code>e=b+c</code>, <code>f=d+e</code>, lalu
         <code>f.backward([1,1,1,1,1])</code>.
@@ -178,6 +185,10 @@
 
 
 
+
+
+
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
@@ -192,6 +203,7 @@
 <p><a href="https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/autograd" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
 <p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+<!-- catalog:start --><section class="learning-aid topic-tools" data-topic="nlp/autograd"><h2>Uji Pemahaman</h2><p>Dua latihan dengan penjelasan. Progres dihitung setelah semua jawaban benar; membuka halaman saja tidak menandai selesai.</p><div id="concept-checks"></div><p id="quiz-status" role="status"></p><div class="learning-actions"><button id="export-notes" type="button">Ekspor catatan dan progres</button><label for="import-notes">Impor cadangan JSON</label><input id="import-notes" type="file" accept="application/json"><button id="share-controls" type="button">Salin tautan eksperimen</button><button id="reset-controls" type="button">Reset kontrol</button></div><p id="learning-status" role="status"></p><p>Prasyarat: Aturan rantai. Ditinjau: 2026-09-26. <a href="https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html">Rujukan konsep</a>. Lihat panduan asal data; tanggal tinjauan tidak menyatakan semua hasil berasal dari publikasi itu.</p><nav class="lesson-sequence" aria-label="Urutan belajar"><a href="/kupasai/nlp/rnn/">← Sebelumnya: RNN &amp; Backpropagation</a> <a href="/kupasai/nlp/lstm-attention/">Berikutnya →: LSTM, GRU &amp; Classical Attention</a></nav></section><!-- catalog:end -->
 </main>
 
 <footer class="footer">

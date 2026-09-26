@@ -58,15 +58,16 @@
   var offXSlider = document.getElementById('iou-offx');
   var offYSlider = document.getElementById('iou-offy');
   var scaleSlider = document.getElementById('iou-scale');
+  var heightSlider = document.getElementById('iou-scale-y');
 
   function renderIoU() {
     var gt = D.iou.groundTruth;
-    var offX = parseInt(offXSlider.value, 10);
-    var offY = parseInt(offYSlider.value, 10);
+    var offX = parseFloat(offXSlider.value);
+    var offY = parseFloat(offYSlider.value);
     var scale = parseFloat(scaleSlider.value);
     var w = gt[2] - gt[0], h = gt[3] - gt[1];
     var cx = (gt[0] + gt[2]) / 2 + offX, cy = (gt[1] + gt[3]) / 2 + offY;
-    var pw = w * scale, ph = h * scale;
+    var pw = w * scale, ph = h * parseFloat(heightSlider.value);
     var pred = [cx - pw / 2, cy - ph / 2, cx + pw / 2, cy + ph / 2];
     var iou = computeIoU(gt, pred);
 
@@ -84,11 +85,11 @@
     drawBox(pred, C.accent, 'Prediksi');
 
     var verdict = document.getElementById('iou-verdict');
-    verdict.textContent = 'IoU = ' + iou.toFixed(3) + ' → ' + (iou >= 0.5 ? 'BENAR (≥ 0.5)' : 'SALAH (< 0.5)');
+    verdict.textContent = 'IoU = ' + iou.toFixed(3) + ' → ' + (iou >= 0.5 ? 'Lokalisasi memenuhi ambang ≥ 0.5' : 'Lokalisasi di bawah ambang 0.5');
     verdict.className = 'iou-verdict ' + (iou >= 0.5 ? 'correct' : 'incorrect');
   }
 
-  [offXSlider, offYSlider, scaleSlider].forEach(function (el) {
+  [offXSlider, offYSlider, scaleSlider, heightSlider].forEach(function (el) {
     if (el) el.addEventListener('input', renderIoU);
   });
   var presetBtns = document.querySelectorAll('.iou-preset-btn');
@@ -102,7 +103,8 @@
       var pcx = (p.box[0] + p.box[2]) / 2, pcy = (p.box[1] + p.box[3]) / 2;
       offXSlider.value = pcx - cx0;
       offYSlider.value = pcy - cy0;
-      scaleSlider.value = (pw / w).toFixed(2);
+      scaleSlider.value = pw / w;
+      heightSlider.value = ph / h;
       renderIoU();
     });
   });
@@ -119,13 +121,25 @@
     svg.selectAll('*').remove();
     svg.attr('viewBox', '0 -85 ' + D.nms.canvasW + ' ' + (D.nms.canvasH + 85));
     svg.append('rect').attr('x', 0).attr('y', -85).attr('width', D.nms.canvasW).attr('height', D.nms.canvasH + 85).attr('fill', C.bg2);
-    var boxesToShow = nmsMode === 'before' ? D.nms.boxes : D.nms.boxes.filter(function (b) { return D.nms.keep.indexOf(b.id) !== -1; });
+    var threshold=+document.getElementById('nms-threshold').value;
+    var perClass=document.getElementById('nms-class-aware').checked,mixed=document.getElementById('nms-mixed').checked;
+    var candidates=D.nms.boxes.map(function(b,i){return Object.assign({},b,{className:mixed&&i===1?'truk':'mobil'});});
+    var ordered=candidates.slice().sort(function(a,b){return b.score-a.score;}),kept=[],steps=[];
+    ordered.forEach(function(box){
+      var suppressor=kept.find(function(other){return (!perClass||other.className===box.className)&&computeIoU(other.box,box.box)>threshold;});
+      if(!suppressor)kept.push(box);
+      steps.push('Kandidat '+box.id+' ('+box.className+', skor '+box.score.toFixed(2)+'): '+(suppressor?'dihapus oleh '+suppressor.id+'; IoU '+computeIoU(suppressor.box,box.box).toFixed(3):'dipertahankan'));
+    });
+    var stepHost=document.getElementById('nms-steps');stepHost.replaceChildren();
+    steps.forEach(function(text){var row=document.createElement('p');row.textContent=text;stepHost.appendChild(row);});
+    var summary=document.createElement('p');summary.textContent='Ambang '+threshold.toFixed(2)+': '+kept.length+' kotak dipertahankan. Supresi jika IoU > ambang'+(perClass?' dan kelas sama.':', termasuk lintas kelas.');stepHost.appendChild(summary);
+    var boxesToShow = nmsMode === 'before' ? candidates : kept;
     var placedNms = [];
     boxesToShow.forEach(function (b) {
       var color = C.palette[b.id % C.palette.length];
       svg.append('rect').attr('x', b.box[0]).attr('y', b.box[1]).attr('width', b.box[2] - b.box[0]).attr('height', b.box[3] - b.box[1])
         .attr('fill', color).attr('fill-opacity', 0.12).attr('stroke', color).attr('stroke-width', nmsMode === 'after' ? 3 : 2);
-      placeLabel(svg, b.box[0], b.box[1] - 6, b.label + ' (pc=' + b.score.toFixed(2) + ')', color, placedNms);
+      placeLabel(svg, b.box[0], b.box[1] - 6, b.className + ' '+b.label + ' (skor=' + b.score.toFixed(2) + ')', color, placedNms);
     });
   }
   nmsBtns.forEach(function (btn) {
@@ -138,10 +152,7 @@
   });
   renderNms();
 
-  var nmsSteps = document.getElementById('nms-steps');
-  if (nmsSteps) {
-    nmsSteps.innerHTML = D.nms.steps.map(function (s) { return '<div>' + s + '</div>'; }).join('');
-  }
+  ['nms-threshold','nms-class-aware','nms-mixed'].forEach(function(id){var input=document.getElementById(id);input.addEventListener(input.type==='checkbox'?'change':'input',renderNms);});
 
   // ============================================================
   // TAB 3: YOLO GRID

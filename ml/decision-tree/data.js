@@ -2,6 +2,46 @@
 // Decision Tree data for KupasAI ML Week 5 - toy 15-row example (Modul 5.1) + real decisiontree_ch6.csv
 
 const DT_DATA = {
+  "depth_comparison": [
+    {
+      "depth": 1,
+      "train_accuracy": 0.90625,
+      "test_accuracy": 1.0,
+      "nodes": 3
+    },
+    {
+      "depth": 2,
+      "train_accuracy": 0.9375,
+      "test_accuracy": 1.0,
+      "nodes": 5
+    },
+    {
+      "depth": 3,
+      "train_accuracy": 0.9375,
+      "test_accuracy": 1.0,
+      "nodes": 7
+    },
+    {
+      "depth": 4,
+      "train_accuracy": 0.9375,
+      "test_accuracy": 1.0,
+      "nodes": 7
+    },
+    {
+      "depth": 5,
+      "train_accuracy": 0.9375,
+      "test_accuracy": 1.0,
+      "nodes": 7
+    },
+    {
+      "depth": null,
+      "train_accuracy": 0.9375,
+      "test_accuracy": 1.0,
+      "nodes": 7
+    }
+  ],
+  "n_train": 32,
+  "n_test": 8,
   "toy": {
     "rows": [
       {

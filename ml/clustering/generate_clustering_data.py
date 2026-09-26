@@ -10,6 +10,7 @@ import os
 import pandas as pd
 import sklearn.cluster as cls
 from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import silhouette_score
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -59,7 +60,16 @@ for _, row in df1.iterrows():
         "jarak": int(row["jarak"]),
     })
 
+experiments = []
+for scaled in [False, True]:
+    values = df2_scaled if scaled else df2.to_numpy()
+    for seed in [42, 43, 44]:
+        for k in [2, 3, 4, 5]:
+            model = cls.KMeans(n_clusters=k, random_state=seed, n_init=10).fit(values)
+            experiments.append({"scaled": scaled, "seed": seed, "k": k, "inertia": float(model.inertia_), "silhouette": float(silhouette_score(values, model.labels_)), "labels": model.labels_.tolist(), "centers": model.cluster_centers_.tolist()})
 data = {
+    "experiments": experiments,
+    "scaler": {"mean": scaler.mean_.tolist(), "scale": scaler.scale_.tolist()},
     "n_flights": int(len(df1)),
     "elbow": elbow,
     "clusterings": clusterings,

@@ -13,13 +13,14 @@
   <meta property="og:title" content="Named Entity Recognition - KupasAI">
   <meta property="og:description" content="Naik satu tingkat dari klasifikasi teks: memberi label pada setiap token, bukan satu label untuk seluruh kalimat. Multibahasa dengan XLM-RoBERTa dan skema tag…">
   <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/nlp/ner/">
-  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp-ner.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Named Entity Recognition - KupasAI">
   <meta name="twitter:description" content="Naik satu tingkat dari klasifikasi teks: memberi label pada setiap token, bukan satu label untuk seluruh kalimat. Multibahasa dengan XLM-RoBERTa dan skema tag…">
-  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp.png">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp-ner.png">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Named Entity Recognition - KupasAI", "description": "Naik satu tingkat dari klasifikasi teks: memberi label pada setiap token, bukan satu label untuk seluruh kalimat. Multibahasa dengan XLM-RoBERTa dan skema tag…", "url": "https://feliksmakarios.github.io/kupasai/nlp/ner/", "inLanguage": "id", "learningResourceType": "Interactive lesson", "timeRequired": "PT30M", "isAccessibleForFree": true, "citation": "https://github.com/chakki-works/seqeval"}</script>
   <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
@@ -40,6 +41,12 @@
   </script>
 <link rel="stylesheet" href="/kupasai/assets/css/learning.css">
 <script src="/kupasai/assets/js/learning.js" defer></script>
+<script src="/kupasai/assets/js/experiments.js" defer></script>
+<script src="/kupasai/assets/js/catalog-data.js" defer></script>
+<script src="/kupasai/assets/js/catalog.js" defer></script>
+<link rel="stylesheet" href="/kupasai/assets/css/catalog.css">
+<script src="/kupasai/assets/js/state.js"></script>
+<script src="/kupasai/assets/js/offline.js" defer></script>
 </head>
 <body>
 
@@ -130,7 +137,7 @@
 <div class="tab-content" id="tab-eval" role="tabpanel" aria-labelledby="tabbtn-eval" tabindex="0">
   <div class="viz-layout">
     <div class="viz-main">
-      <h2 class="section-title">Kalkulator seqeval (persis contoh Modul 9.7)</h2>
+      <h2 class="section-title">Kalkulator entity F1 (contoh IOB2)</h2>
       <div id="seq1-container"></div>
       <div id="seq2-container"></div>
       <div class="metric-row" id="seq-metrics"></div>
@@ -142,8 +149,9 @@
       <h2>Evaluasi Level-Entitas, Bukan Level-Token</h2>
       <p>
         Sebuah entitas hanya dianggap <strong>benar</strong> jika
-        <strong>seluruh</strong> token penyusunnya cocok persis dengan label
-        sebenarnya &mdash; satu token salah, seluruh entitas dianggap salah.
+        <strong>tipe dan rentang entitas</strong> hasil parsing sama dengan acuan.
+        Parser permisif dapat menerima I- di awal sebagai entitas baru, sehingga
+        perbedaan tag token belum tentu mengubah entity F1. Mode strict IOB2 menolak awal itu.
       </p>
       <p>
         Klik tag prediksi manapun di atas untuk mengubahnya, dan lihat
@@ -152,16 +160,18 @@
         dengan label sebenarnya &mdash; F1 akan naik ke 1,0.
       </p>
       <p>
-        Model XLM-R yang di-fine-tune pada data German mencapai F1
-        &asymp; <strong id="f1-approx">-</strong> pada test set German
-        (<strong id="num-labels">-</strong> label NER total). Saat
-        ditransfer zero-shot ke French/Italian/English, performa menurun.
-        Model juga paling sering tertukar antara
-        <code>B-ORG</code> dan <code>I-ORG</code>.
+        Contoh ini memakai <strong id="num-labels">-</strong> label NER.
+        Skor eksperimen model lintas bahasa tidak ditampilkan karena checkpoint,
+        versi data, dan hasil evaluasinya belum dapat diverifikasi. Evaluasi di
+        atas dihitung langsung dari dua urutan tag contoh.
       </p>
     </div>
   </div>
 </div>
+
+
+
+
 
 
 
@@ -180,6 +190,7 @@
 <p><a href="https://github.com/chakki-works/seqeval" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/ner" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
 <p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->
+<!-- catalog:start --><section class="learning-aid topic-tools" data-topic="nlp/ner"><h2>Uji Pemahaman</h2><p>Dua latihan dengan penjelasan. Progres dihitung setelah semua jawaban benar; membuka halaman saja tidak menandai selesai.</p><div id="concept-checks"></div><p id="quiz-status" role="status"></p><div class="learning-actions"><button id="export-notes" type="button">Ekspor catatan dan progres</button><label for="import-notes">Impor cadangan JSON</label><input id="import-notes" type="file" accept="application/json"><button id="share-controls" type="button">Salin tautan eksperimen</button><button id="reset-controls" type="button">Reset kontrol</button></div><p id="learning-status" role="status"></p><p>Prasyarat: Tokenisasi dan klasifikasi. Ditinjau: 2026-09-26. <a href="https://github.com/chakki-works/seqeval">Rujukan konsep</a>. Lihat panduan asal data; tanggal tinjauan tidak menyatakan semua hasil berasal dari publikasi itu.</p><nav class="lesson-sequence" aria-label="Urutan belajar"><a href="/kupasai/nlp/text-classification/">← Sebelumnya: Text Classification Pipeline</a> <a href="/kupasai/nlp/summarization/">Berikutnya →: Text Summarization</a></nav></section><!-- catalog:end -->
 </main>
 
 <footer class="footer">

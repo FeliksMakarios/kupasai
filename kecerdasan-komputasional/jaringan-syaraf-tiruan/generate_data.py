@@ -194,6 +194,19 @@ assert X_h.shape == (20, 25) and T_h.shape == (20, 4)
 WH_h, WO_h, jejak_bp = latih_backprop(X_h, T_h, epoch=1500)
 assert jejak_bp[-1] < jejak_bp[0]
 akurasi = akurasi_per_huruf(WH_h, WO_h, X_h, T_h)
+# Hold out pixel patterns: reject examples identical to train or earlier test examples.
+# This evaluates unseen corruptions of the same four templates, not human handwriting.
+test_rng=np.random.default_rng(2026)
+seen_patterns={tuple(row) for row in X_h}
+test_x,test_t=[],[]
+while len(test_x)<200:
+    candidates,targets=buat_data_huruf(n_varian=1,rng=test_rng)
+    for row,target in zip(candidates,targets):
+        key=tuple(row)
+        if key not in seen_patterns and len(test_x)<200:
+            seen_patterns.add(key);test_x.append(row);test_t.append(target)
+X_test_h,T_test_h=np.array(test_x),np.array(test_t)
+akurasi_test = akurasi_per_huruf(WH_h, WO_h, X_test_h, T_test_h)
 print("Tugas3b galat awal:", round(jejak_bp[0], 4), "galat akhir:", round(jejak_bp[-1], 6))
 print("Tugas3b akurasi per huruf:", akurasi)
 
@@ -296,7 +309,7 @@ data = {
         "huruf": HURUF, "hurufList": HURUF_LIST,
         "jejakGalat": jejak_bp[::30],
         "galatAwal": jejak_bp[0], "galatAkhir": jejak_bp[-1],
-        "akurasi": akurasi,
+        "akurasi": akurasi, "akurasiTest": akurasi_test, "nTrain": len(X_h), "nTest": len(X_test_h), "testSeed": 2026,
     },
     "lvq": {
         "data": DATA_LVQ.tolist(),

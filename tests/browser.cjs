@@ -3,6 +3,8 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {chromium}=require(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES?process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES+'/playwright':'playwright');
 const root=path.resolve(__dirname,'..');
+const AxeBuilder=require('@axe-core/playwright').default;
+const reports=path.join(root,'test-results');fs.mkdirSync(reports,{recursive:true});const accessibility=[];
 function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.name.startsWith('.')||e.name==='node_modules'?[]:e.isDirectory()?pages(path.join(p,e.name)):e.name==='index.html'?[path.relative(root,path.join(p,e.name))]:[])}
 (async()=>{
  const server=http.createServer((req,res)=>{
@@ -11,12 +13,13 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   if(!file.startsWith(root+path.sep)){res.writeHead(403);res.end();return;}
   if(fs.existsSync(file)&&fs.statSync(file).isDirectory())file=path.join(file,'index.html');
   if(!fs.existsSync(file)){res.writeHead(404,{'Content-Type':'text/html'});fs.createReadStream(path.join(root,'404.html')).pipe(res);return;}
-  res.setHeader('Content-Type',file.endsWith('.js')?'application/javascript':file.endsWith('.css')?'text/css':file.endsWith('.html')?'text/html':'application/octet-stream');fs.createReadStream(file).pipe(res);
+  res.setHeader('Content-Type',file.endsWith('.js')?'application/javascript':file.endsWith('.css')?'text/css':file.endsWith('.html')?'text/html':file.endsWith('.svg')?'image/svg+xml':file.endsWith('.png')?'image/png':file.endsWith('.json')?'application/json':'application/octet-stream');fs.createReadStream(file).pipe(res);
  });
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const base=`http://127.0.0.1:${server.address().port}/kupasai/`;
- const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH||undefined,args:['--no-sandbox']});
- const page=await browser.newPage();
+ const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH||undefined,args:['--no-sandbox']}).catch(error=>{server.close();throw error;});
+ const context=await browser.newContext();
+ const page=await context.newPage();
  // Theme switches must not reload the page: a marker on window survives only without a reload.
  async function toggleTheme(){
   const before=await page.locator('html').getAttribute('data-theme');
@@ -31,11 +34,11 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
  try {
   for(const file of pages(root)){
    current=file;await page.setViewportSize({width:1280,height:900});await page.goto(base+file);
-   for(const width of [1280,390]){
+   for(const width of [1280,768,390,320]){
     await page.setViewportSize({width,height:844});
     const tabs=await page.locator('.tab-btn').all();
-    for(const tab of tabs){await tab.click({force:true});assert.equal(await tab.getAttribute('aria-selected'),'true',file);checks++;assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),`Overflow: ${file} / ${await tab.getAttribute('data-tab')} / ${width}`);}
-    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),`Horizontal page overflow: ${file} at ${width}`);
+    for(const tab of tabs){await tab.click({force:true});assert.equal(await tab.getAttribute('aria-selected'),'true',file);checks++;if(!await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2)) errors.push(`Overflow: ${file} / ${await tab.getAttribute('data-tab')} / ${width}`);}
+    if(!await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2)) errors.push(`Horizontal page overflow: ${file} at ${width}`);
    }
    const reflection=page.locator('#reflection');if(await reflection.count())await reflection.fill('Catatan uji tema');
    const active=(await page.locator('.tab-btn.active').count())?await page.locator('.tab-btn.active').getAttribute('data-tab'):null;
@@ -44,6 +47,17 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
    if(active)assert.equal(await page.locator('.tab-btn.active').getAttribute('data-tab'),active,file);
    if(await reflection.count())assert.equal(await reflection.inputValue(),'Catatan uji tema',file);
   }
+  current='audit regressions';await page.goto(base+'ml-lanjut/object-detection/');
+  const expectedIoU=['0.829','0.354','0.000'];
+  for(let i=0;i<3;i++){await page.locator('.iou-preset-btn').nth(i).click();assert((await page.locator('#iou-verdict').innerText()).includes(expectedIoU[i]));}
+  await page.goto(base+'nlp/ner/');assert((await page.locator('#subword-row').innerText()).includes('<s>'));
+  await page.goto(base+'nlp/transformer/');const block=page.locator('#full-plot rect[role="button"]').nth(2);await block.focus();await page.keyboard.press('Enter');
+  const hint=await page.locator('#full-hint').innerText();await toggleTheme();assert.equal(await page.locator('#full-hint').innerText(),hint);
+  assert.equal(await page.locator('#concept-checks fieldset').count(),2);
+  await page.goto(base+'ml-lanjut/regularization/');await page.locator('[data-tab="dropout"]').click();await page.locator('#dropout-regenerate').click();
+  const mask=await page.locator('#dropout-mask-demo circle').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('stroke-dasharray')));await toggleTheme();assert.deepEqual(await page.locator('#dropout-mask-demo circle').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('stroke-dasharray'))),mask);
+  await page.goto(base+'ml/evaluasi-model/');await page.locator('input[name="concept-0"][value="false"]').check();await page.locator('input[name="concept-1"][value="true"]').check();assert((await page.locator('#quiz-status').innerText()).includes('selesai'));
+  await page.goto(base+'nlp/rag-berbukti/');await page.locator('#lab-evidence').uncheck();assert((await page.locator('#lab-result').innerText()).includes('tidak dapat menjawab'));
   // Empty and object-key strings must be finite, never a perfect empty BLEU score.
   await page.goto(base+'nlp/summarization/');
   await page.locator('[data-tab="metrics"]').click();
@@ -75,6 +89,23 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   current='navbar mobile';await page.goto(base+'kecerdasan-komputasional/pemodelan-pencarian/');
   assert((await page.evaluate(()=>document.querySelector('.navbar').getBoundingClientRect().height))<=64);
   assert(await page.locator('.page-meta-mobile').isVisible());
+  for(const topic of ['','nlp/transformer/','ml/evaluasi-model/','ml-lanjut/object-detection/']){
+   await page.goto(base+topic);await page.setViewportSize({width:1280,height:900});
+   const name=topic.replaceAll('/','-')||'home';
+   await page.screenshot({path:path.join(reports,name+'desktop.png'),fullPage:true});
+   assert(await page.locator('img').evaluateAll(images=>images.every(img=>img.complete&&img.naturalWidth>0)),`Broken image: ${topic}`);
+   const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+   accessibility.push({topic,violations:result.violations.map(v=>({id:v.id,impact:v.impact,description:v.description,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}))});
+   await page.setViewportSize({width:320,height:844});await page.screenshot({path:path.join(reports,name+'mobile.png'),fullPage:true});
+  }
+  fs.writeFileSync(path.join(reports,'accessibility.json'),JSON.stringify(accessibility,null,2));
+  for(const report of accessibility)assert.deepEqual(report.violations,[],`WCAG findings: ${report.topic}`);
+  current='offline persistence';await page.goto(base+'ml/evaluasi-model/');
+  await page.getByRole('button',{name:'Simpan halaman untuk offline'}).click();
+  await page.waitForFunction(()=>document.getElementById('learning-status').textContent.includes('siap dibuka offline'));
+  await context.setOffline(true);await page.reload();assert(await page.locator('#lab-result').isVisible());
+  await page.locator('#lab-threshold').fill('0.9');assert((await page.locator('#lab-result').innerText()).includes('0.9'));
+  await page.locator('#theme-toggle').click();assert(await page.locator('#lab-result').isVisible());await context.setOffline(false);
   current='expected-404';const missing=await page.goto(base+'halaman-yang-tidak-ada/');assert.equal(missing.status(),404);
   assert((await page.locator('h1').innerText()).includes('tidak ditemukan'));
   errors.splice(0,errors.length,...errors.filter(e=>!e.startsWith('expected-404:')));
