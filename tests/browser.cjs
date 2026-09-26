@@ -80,7 +80,7 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   await page.goto(base+'ml/pandas/laboratorium/?tab=panduan');assert.equal(await page.locator('#reflection').inputValue(),'Catatan tersimpan');
   await page.locator('#reflection').fill('');
   // Notes from the previous single-page URLs remain available in the new companion space.
-  await page.evaluate(()=>localStorage.setItem('kupasai-reflection:/kupasai/nlp/ner/index.html','Catatan sebelum pemisahan'));
+  await page.evaluate(()=>{localStorage.removeItem('kupasai-reflection:/kupasai/nlp/ner/');localStorage.setItem('kupasai-reflection:/kupasai/nlp/ner/index.html','Catatan sebelum pemisahan');});
   await page.goto(base+'nlp/ner/laboratorium/?tab=panduan');assert.equal(await page.locator('#reflection').inputValue(),'Catatan sebelum pemisahan');
   await page.setViewportSize({width:320,height:844});
   assert.equal(await page.locator('#reflection').evaluate(el=>getComputedStyle(el).resize),'vertical');
@@ -135,5 +135,5 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   if(process.env.REVIEW_SCREENSHOT){await page.goto(base+'nlp/transformer/');await page.setViewportSize({width:1280,height:1000});await page.screenshot({path:process.env.REVIEW_SCREENSHOT});}
   console.log(`Visited ${pages(root).length} pages, ${checks} tab transitions, desktop/mobile and theme restoration.`);
   if(errors.length)console.error(errors.join('\n'));assert.deepEqual(errors,[]);
- } finally {await browser.close();server.close();}
+ } catch(error) {console.error('Failed page:',current);if(errors.length)console.error(errors.join('\n'));await page.screenshot({path:path.join(reports,'failure.png'),fullPage:true}).catch(()=>{});throw error;} finally {await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

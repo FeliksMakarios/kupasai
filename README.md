@@ -149,7 +149,7 @@ Jalankan `python scripts/build_lessons.py` untuk memperbarui panduan 39 topik (l
 
 GitHub Actions menjalankan pemeriksaan tersebut untuk setiap pull request. Situs tetap berupa HTML, CSS, dan D3 tanpa proses kompilasi aplikasi.
 
-Navigasi situs hanya berisi **Tentang** dan **Kontak** (statis, dua bahasa untuk judul mata kuliah di beranda: Indonesia + Inggris dalam kurung). Kartu mata kuliah di beranda ditampilkan grid 2 kolom (`.course-grid` di `main.css`). Setiap halaman visualisasi punya link "Kembali ke Daftar Topik" yang mengarah ke `index.html` mata kuliahnya masing-masing.
+Navigasi situs berisi **Trek Belajar**, **Tentang**, dan **Kontak** (statis, dua bahasa untuk judul mata kuliah di beranda: Indonesia + Inggris dalam kurung). Kartu mata kuliah di beranda ditampilkan grid 2 kolom (`.course-grid` di `main.css`). Setiap halaman visualisasi punya link "Kembali ke Daftar Topik" yang mengarah ke `index.html` mata kuliahnya masing-masing.
 
 ## Lisensi
 
@@ -157,7 +157,7 @@ MIT
 
 ## Pengembangan pembelajaran September 2026
 
-Katalog sekarang memuat **39 topik**: 34 modul semula dan lima laboratorium pendamping untuk evaluasi model, tokenisasi Indonesia, optimizer, RAG berbukti, serta evaluasi generatif. Halaman baru adalah simulasi lokal berukuran kecil; tidak memanggil API model dan tidak memerlukan kunci API.
+Katalog sekarang memuat **39 topik**: 34 modul semula dan lima topik pengayaan untuk evaluasi model, tokenisasi Indonesia, optimizer, RAG berbukti, serta evaluasi generatif. Halaman baru adalah simulasi lokal berukuran kecil; tidak memanggil API model dan tidak memerlukan kunci API.
 
 - Katalog dan indeks pencarian dihasilkan dari `scripts/lessons.py`, `scripts/new_lessons.py`, dan `scripts/quizzes.py`. `assets/lessons.json` adalah keluaran terstruktur; jangan menyunting keluarannya secara manual.
 - Setiap topik memiliki dua latihan dengan penjelasan. Penyelesaian ditandai setelah jawaban benar, bukan dari kunjungan. Catatan dan progres tersimpan di browser, dapat diekspor/impor tanpa akun. Impor tidak menimpa catatan lokal yang berbeda.
@@ -178,7 +178,7 @@ python scripts/build_seo.py
 
 `python scripts/regenerate.py` juga menjalankan generator data dan memerlukan akses ke dataset sumber. Pelatihan churn memakai grid search 5-fold dan dapat memakan waktu lebih lama. Snapshot embedding pendamping dibuat dengan `python scripts/generate_embedding_companion.py`: PPMI/SVD atas 30 kalimat sintetis yang disertakan, bukan benchmark embedding umum. Evaluasi huruf tambahan menolak pola piksel yang sama dengan train/test sebelumnya; hasilnya tetap terbatas pada korupsi empat template yang sama.
 
-`npm run test:learning` menjalankan pemeriksaan DOM dan numerik JavaScript tanpa browser. `npm test` menambahkan Playwright untuk seluruh 46 halaman, 364 perpindahan tab, lebar 320/390/768/1280, pemulihan tema, dan penyimpanan offline. Empat halaman representatif juga diperiksa dengan axe-core WCAG 2 A/AA dan 2.1 AA; ini bukan sertifikasi aksesibilitas menyeluruh. GitHub Actions menyimpan tangkapan layar dan hasil axe selama tujuh hari.
+`npm run test:learning` menjalankan pemeriksaan DOM dan numerik JavaScript tanpa browser. `npm test` menambahkan Playwright untuk seluruh 86 halaman, termasuk tab visualisasi dan laboratorium, lebar 320/390/768/1280, pemulihan tema, dan penyimpanan offline. Delapan halaman representatif juga diperiksa dengan axe-core WCAG 2 A/AA dan 2.1 AA; ini bukan sertifikasi aksesibilitas menyeluruh. GitHub Actions menyimpan tangkapan layar dan hasil axe selama tujuh hari.
 
 Lihat [CHANGELOG.md](CHANGELOG.md), [THIRD_PARTY.md](THIRD_PARTY.md), dan [AUDIT_IMPLEMENTATION.md](AUDIT_IMPLEMENTATION.md) untuk perubahan, atribusi, dan batas cakupan.
 
