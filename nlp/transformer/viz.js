@@ -58,7 +58,7 @@
       var labels=[decoder?'Embedding target digeser + posisi':'Embedding masukan + posisi'].concat(layers.map(function(l){return l.label;}));
       labels.forEach(function(label,i){
         var y=45+i*58;
-        svg.append('rect').attr('x',x).attr('y',y).attr('width',200).attr('height',38).attr('rx',5).attr('fill',C.bg).attr('stroke',i?layers[i-1].color:C.enc_color).attr('aria-label',name + ': ' + label).on('click',function(){hintEl.textContent=i?layers[i-1].detail:label;});
+        svg.append('rect').attr('x',x).attr('y',y).attr('width',200).attr('height',38).attr('rx',5).attr('fill',C.bg).attr('stroke',i?layers[i-1].color:C.enc_color).attr('aria-label',name + ': ' + label).on('click',function(){svg.selectAll('[data-selected]').attr('data-selected',null);d3.select(this).attr('data-selected','true');hintEl.textContent=i?layers[i-1].detail:label;});
         svg.append('text').attr('x',x+100).attr('y',y+23).attr('text-anchor','middle').attr('font-size',10).attr('fill',C.text_primary).style('pointer-events','none').text(label);
         if(i)arrow([[x+100,y-20],[x+100,y]]);
         if(label==='Add & Norm')arrow([[x+200,y-78],[x+220,y-78],[x+220,y+19],[x+200,y+19]],C.res_color);
@@ -223,6 +223,7 @@
     });
 
     draw();
+    if(window.KupasState)window.KupasState.register('transformer:encoder',{getState:function(){return {step:currentStep};},setState:function(s){currentStep=Math.max(1,Math.min(TOTAL,Math.round(s.step)||1));draw();}});
   }
 
   // ============================================================
@@ -404,6 +405,7 @@
     });
 
     draw();
+    if(window.KupasState)window.KupasState.register('transformer:decoder',{getState:function(){return {step:currentStep};},setState:function(s){currentStep=Math.max(1,Math.min(TOTAL,Math.round(s.step)||1));draw();}});
   }
 
   // ============================================================
@@ -411,6 +413,10 @@
   // ============================================================
 
   initFull();
+  if(window.KupasState)window.KupasState.register('transformer:selection',{
+    getState:function(){return {key:document.querySelector('#full-plot [data-selected="true"]')?.getAttribute('aria-label')||null};},
+    setState:function(s){document.querySelectorAll('#full-plot rect[aria-label]').forEach(function(el){if(el.getAttribute('aria-label')===s.key)el.dispatchEvent(new MouseEvent('click',{bubbles:true}));});}
+  });
   initEncoder();
   initDecoder();
 

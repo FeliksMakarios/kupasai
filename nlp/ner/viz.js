@@ -187,4 +187,13 @@
   renderSubwords();
   renderAll();
   renderLangDist();
+  if(window.KupasState)window.KupasState.register('ner',{
+    getState:function(){return {pred1:pred1.slice(),pred2:pred2.slice(),strict:strictMode};},
+    setState:function(s){
+      if(!Array.isArray(s.pred1)||s.pred1.length!==pred1.length||!Array.isArray(s.pred2)||s.pred2.length!==pred2.length)return;
+      if(!s.pred1.every(function(t){return TAGSET1.indexOf(t)>=0;})||!s.pred2.every(function(t){return TAGSET2.indexOf(t)>=0;}))return;
+      pred1=s.pred1.slice();pred2=s.pred2.slice();strictMode=s.strict===true;
+      document.getElementById('strict-iob2').checked=strictMode;renderAll();
+    }
+  });
 })();

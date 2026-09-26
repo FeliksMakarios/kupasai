@@ -99,9 +99,20 @@
         var clickable=(el.__on || []).some(function(x){return x.type==='click';}) || el.matches('.token-chip,.pred-chip,.qa-token');
         if (!clickable || el.hasAttribute('tabindex')) return;
         el.setAttribute('tabindex','0');el.setAttribute('role','button');
-        if (!el.hasAttribute('aria-label')) el.setAttribute('aria-label',el.textContent.trim() || (el.__data__ && (el.__data__.word || el.__data__.label)) || 'Tampilkan detail titik');
-        el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();var click=new MouseEvent('click',{bubbles:true});click.kupasKeyboard=true;el.dispatchEvent(click);}});
+        if (!el.hasAttribute('aria-label')) el.setAttribute('aria-label',el.textContent.trim() || (el.__data__ && (el.__data__.word || el.__data__.label)) || ('Tampilkan detail '+describe(el.closest('svg'))+' pada x '+(el.getAttribute('x')||el.getAttribute('cx')||'?')+', y '+(el.getAttribute('y')||el.getAttribute('cy')||'?')));
+        el.addEventListener('keydown',function(e){
+          if(e.target!==el)return;
+          var svg=el.closest('svg');
+          if(svg&&['ArrowRight','ArrowLeft','ArrowDown','ArrowUp','Home','End'].indexOf(e.key)>=0){
+            e.preventDefault();var marks=Array.from(svg.querySelectorAll('[role="button"]')),index=marks.indexOf(el);
+            var next=e.key==='Home'?0:e.key==='End'?marks.length-1:(index+(['ArrowLeft','ArrowUp'].indexOf(e.key)>=0?-1:1)+marks.length)%marks.length;
+            marks.forEach(function(m,i){m.setAttribute('tabindex',i===next?'0':'-1');});marks[next].focus();return;
+          }
+          if(e.key==='Enter'||e.key===' '){e.preventDefault();var click=new MouseEvent('click',{bubbles:true});click.kupasKeyboard=true;el.dispatchEvent(click);}});
       });
+      var svgs=Array.from(root.querySelectorAll('svg'));
+      if(root.closest){var owner=root.closest('svg');if(owner)svgs.push(owner);}
+      svgs.forEach(function(svg){var marks=Array.from(svg.querySelectorAll('[role="button"]'));var current=marks.find(function(m){return m===document.activeElement;})||marks.find(function(m){return m.getAttribute('tabindex')==='0';});marks.forEach(function(m,i){m.setAttribute('tabindex',m===(current||marks[0])?'0':'-1');});});
     }
     // Everything below can run again after the main content is rebuilt for a theme switch.
     function enhance(){
@@ -152,7 +163,7 @@
     window.KupasLearning.rerender=function(){
       var main=document.querySelector('main');
       if(!main||!window.fetch||!window.DOMParser||location.protocol==='file:')return Promise.reject(new Error('unsupported'));
-      var state={history:history.slice(),scroll:scrollY,focus:selector(document.activeElement)};
+      var state={history:history.slice(),scroll:scrollY,focus:selector(document.activeElement),modules:window.KupasState?window.KupasState.capture():{}};
       return fetch(location.pathname+location.search,{credentials:'same-origin'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.text();}).then(function(html){
         var doc=new DOMParser().parseFromString(html,'text/html'),fresh=doc.querySelector('main');
         if(!fresh)throw new Error('no main');
@@ -161,12 +172,12 @@
         main.replaceWith(node);
         // Imported <script> elements stay inert; page scripts run again as fresh copies.
         var sources=[].slice.call(doc.body.querySelectorAll('script[src]')).map(function(x){return x.getAttribute('src');})
-          .concat(['/kupasai/assets/js/experiments.js','/kupasai/assets/js/catalog.js'])
+          .concat(['/kupasai/assets/js/experiments.js','/kupasai/assets/js/catalog.js','/kupasai/assets/js/offline.js'])
           .filter(function(src){return !/vendor\/|data\.js$|theme\.js$|learning\.js$/.test(src);});
         return sources.reduce(function(chain,src){return chain.then(function(){return new Promise(function(resolve,reject){
           var s=document.createElement('script');s.src=src;s.onload=function(){s.remove();resolve();};s.onerror=reject;document.body.appendChild(s);
         });});},Promise.resolve()).then(function(){
-          enhance();replay(state);
+          enhance();replay(state);if(window.KupasState)window.KupasState.restore(state.modules);
           requestAnimationFrame(function(){node.style.minHeight='';});
         });
       });

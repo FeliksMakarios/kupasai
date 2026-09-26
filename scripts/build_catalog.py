@@ -29,9 +29,10 @@ for d in items:
 for p in ROOT.glob('**/index.html'):
  if 'node_modules' in p.parts:continue
  s=p.read_text()
- for src in ['experiments','catalog-data','catalog']:
+ for src in ['experiments','catalog-data','catalog','offline']:
   tag=f'<script src="/kupasai/assets/js/{src}.js" defer></script>'
   if tag not in s:s=s.replace('</head>',tag+'\n</head>')
+ if '/assets/js/state.js' not in s:s=s.replace('</head>','<script src="/kupasai/assets/js/state.js"></script>\n</head>')
  css='<link rel="stylesheet" href="/kupasai/assets/css/catalog.css">'
  if css not in s:s=s.replace('</head>',css+'\n</head>')
  p.write_text(s)

@@ -18,7 +18,8 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const base=`http://127.0.0.1:${server.address().port}/kupasai/`;
  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH||undefined,args:['--no-sandbox']}).catch(error=>{server.close();throw error;});
- const page=await browser.newPage();
+ const context=await browser.newContext();
+ const page=await context.newPage();
  // Theme switches must not reload the page: a marker on window survives only without a reload.
  async function toggleTheme(){
   const before=await page.locator('html').getAttribute('data-theme');

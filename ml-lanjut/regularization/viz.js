@@ -106,15 +106,16 @@
   var maskSvg = d3.select('#dropout-mask-demo');
   var maskBtn = document.getElementById('dropout-regenerate');
   // Deterministic mask sequence survives input replay and has a reproducible seed.
-  var maskSeed=42;
+  var maskSeed=42,maskCurrent=[];
   function randomMask(){maskSeed=(Math.imul(1664525,maskSeed)+1013904223)>>>0;return maskSeed/4294967296;}
-  function renderMask() {
+  function renderMask(saved) {
+    maskCurrent=Array.isArray(saved)?saved.slice():Array.from({length:8},function(){return randomMask()<0.5;});
     maskSvg.selectAll('*').remove();
     var nodes = 8;
     var W = 400, H = 90;
     maskSvg.attr('viewBox', '0 0 ' + W + ' ' + H);
     for (var i = 0; i < nodes; i++) {
-      var dropped = randomMask() < 0.5;
+      var dropped = maskCurrent[i];
       var cx = 30 + i * ((W - 60) / (nodes - 1));
       maskSvg.append('circle').attr('cx', cx).attr('cy', H / 2).attr('r', 18)
         .attr('fill', dropped ? 'none' : C.accent).attr('stroke', dropped ? C.text_muted : C.accent)
@@ -128,4 +129,8 @@
   renderMask();
   if (maskBtn) maskBtn.addEventListener('click', renderMask);
 
+  if(window.KupasState)window.KupasState.register('regularization:mask',{
+    getState:function(){return {mask:maskCurrent.slice(),seed:maskSeed};},
+    setState:function(s){if(Array.isArray(s.mask)&&s.mask.length===8&&s.mask.every(function(x){return typeof x==='boolean';})){maskSeed=s.seed>>>0;renderMask(s.mask);}}
+  });
 })();
