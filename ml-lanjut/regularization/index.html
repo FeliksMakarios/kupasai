@@ -53,6 +53,7 @@
 <nav class="navbar">
   <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
   <ul class="navbar-links">
+    <li><a href="/kupasai/trek-belajar/">Trek Belajar</a></li>
     <li><a href="/kupasai/tentang/">Tentang</a></li>
     <li><a href="/kupasai/kontak/">Kontak</a></li>
   </ul>
@@ -69,7 +70,7 @@
   </button>
 </nav>
 
-<main id="main-content" tabindex="-1">
+<main id="main-content" tabindex="-1" data-topic="ml-lanjut/regularization">
 <noscript><p class="noscript-note">Visualisasi interaktif di halaman ini memerlukan JavaScript. Aktifkan JavaScript di peramban Anda untuk mencobanya.</p></noscript>
 
 <div class="page-header">
@@ -197,21 +198,7 @@
 
 
 
-<!-- learning-aid:start -->
-<section class="learning-aid" aria-label="Panduan belajar mandiri">
-<h2>Panduan Belajar Mandiri</h2>
-<p><strong>Prasyarat:</strong> Data latih, validasi, dan uji. <strong>Durasi:</strong> sekitar 35 menit.</p>
-<details><summary>Asal data dan batas contoh</summary><p>Digits 8×8, jaringan 64→40→10. Pembanding dropout berukuran sama, diulang pada benih 42,43,44.</p><p>Validasi memilih checkpoint. Data uji dipakai pada checkpoint terpilih dan akhir, bukan sebagai panduan setiap epoch. Hasil satu benih tidak menjamin keunggulan dropout.</p></details>
-<ol><li><strong>Prediksi sebelum mencoba:</strong> Apakah galat latih yang terus turun selalu diikuti galat validasi?</li>
-<li><strong>Eksplorasi:</strong> Bandingkan kurva pada tab Overfitting, Early Stopping, dan Dropout, lalu klik Acak Ulang Mask.</li>
-<li><strong>Perhitungan:</strong> Baca epoch checkpoint terpilih pada Early Stopping dan jelaskan mengapa galat validasi, bukan galat uji, yang menentukannya.</li>
-<li><strong>Refleksi dan transfer:</strong> Bandingkan variasi hasil tiga benih sebelum menyimpulkan efek dropout.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
-<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
-<p><a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Dropout.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml-lanjut/regularization" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
-</section><!-- learning-aid:end -->
-<!-- catalog:start --><section class="learning-aid topic-tools" data-topic="ml-lanjut/regularization"><h2>Uji Pemahaman</h2><p>Dua latihan dengan penjelasan. Progres dihitung setelah semua jawaban benar; membuka halaman saja tidak menandai selesai.</p><div id="concept-checks"></div><p id="quiz-status" role="status"></p><div class="learning-actions"><button id="export-notes" type="button">Ekspor catatan dan progres</button><label for="import-notes">Impor cadangan JSON</label><input id="import-notes" type="file" accept="application/json"><button id="share-controls" type="button">Salin tautan eksperimen</button><button id="reset-controls" type="button">Reset kontrol</button></div><p id="learning-status" role="status"></p><p>Prasyarat: Data latih, validasi, dan uji. Ditinjau: 2026-09-26. <a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Dropout.html">Rujukan konsep</a>. Lihat panduan asal data; tanggal tinjauan tidak menyatakan semua hasil berasal dari publikasi itu.</p><nav class="lesson-sequence" aria-label="Urutan belajar"><a href="/kupasai/ml-lanjut/backprop-visualizer/">← Sebelumnya: Visualisasi Backpropagation Langkah-demi-Langkah</a> <a href="/kupasai/ml-lanjut/cnn-basics/">Berikutnya →: CNN Dasar: Konvolusi &amp; Pooling</a></nav></section><!-- catalog:end -->
+<!-- lesson-links:start --><section class="lesson-next" aria-label="Lanjutkan belajar"><h2>Lanjutkan eksplorasi</h2><p>Hitung hasilnya, tulis refleksi, lalu uji pemahaman Anda.</p><a class="topic-button" href="/kupasai/ml-lanjut/regularization/laboratorium/">Ke Laboratorium Pendamping →</a><div class="learning-actions"><button id="share-controls" type="button">Salin tautan eksperimen</button><button id="reset-controls" type="button">Reset kontrol</button></div><p id="learning-status" role="status"></p></section><!-- lesson-links:end -->
 </main>
 
 <footer class="footer">

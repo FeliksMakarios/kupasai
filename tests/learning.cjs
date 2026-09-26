@@ -20,7 +20,7 @@ function load(slug,query=''){
  d.querySelector('#seq2-container .pred-chip').click();assert(d.activeElement.matches('.pred-chip'));assert(d.querySelector('#seq-metrics').textContent.includes('Token accuracy'));dom.window.close();
 }
 {
- const {dom,d,w}=load('ml/evaluasi-model');const m=w.KupasMath;
+ const {dom,d,w}=load('ml/evaluasi-model/laboratorium');const m=w.KupasMath;
  assert.equal(JSON.stringify(m.confusion([0,1,1],[.1,.5,.2],.5)),JSON.stringify([[1,0],[1,1]]));
  assert.equal(m.rougeL('a b c','a c').lcs,2);assert.equal(m.rougeL('','').f1,0);assert.equal(m.rougeL('a b','a b').f1,1);
  assert.equal(m.bpe('makanan')[0][1].join(''),'makanan');assert.equal(m.unigram('makanan ini').join(''),'▁makanan▁ini');
@@ -36,5 +36,13 @@ function load(slug,query=''){
  assert.equal(d.querySelector('#lab-candidate').value,'faithful');assert.deepEqual(errors,[]);dom.window.close();
 }
 const catalogue=JSON.parse(fs.readFileSync(path.join(root,'assets/lessons.json'),'utf8'));
-for(const {slug}of catalogue){const {dom,d,w,errors}=load(slug);for(const e of d.querySelectorAll('input[type=range],input[type=number]')){for(const value of [e.min,e.max]){e.value=value;e.dispatchEvent(new w.Event('input',{bubbles:true}));}}for(const select of d.querySelectorAll('select')){for(let i=0;i<select.options.length;i++){select.selectedIndex=i;select.dispatchEvent(new w.Event('change',{bubbles:true}));}}assert.deepEqual(errors,[],slug);assert.equal(d.querySelectorAll('#concept-checks fieldset').length,2,slug);dom.window.close();}
-console.log('39 modules: control boundaries, IoU DOM presets, NER literal tokens, quizzes, and lab numerical invariants passed.');
+for(const {slug:topicSlug}of catalogue)for(const slug of [topicSlug,topicSlug+'/laboratorium']){const {dom,d,w,errors}=load(slug);for(const e of d.querySelectorAll('input[type=range],input[type=number]')){for(const value of [e.min,e.max]){e.value=value;e.dispatchEvent(new w.Event('input',{bubbles:true}));}}for(const select of d.querySelectorAll('select')){for(let i=0;i<select.options.length;i++){select.selectedIndex=i;select.dispatchEvent(new w.Event('change',{bubbles:true}));}}assert.deepEqual(errors,[],slug);assert.equal(d.querySelectorAll('#concept-checks fieldset').length,slug.endsWith('/laboratorium')?2:0,slug);if(!slug.endsWith('/laboratorium'))assert.equal(d.querySelector('#reflection'),null,slug);dom.window.close();}
+console.log('39 visualizations and 39 companion labs: control boundaries, IoU DOM presets, NER literal tokens, quizzes, and lab numerical invariants passed.');
+
+// Lab links share state independently of visualization tabs.
+{
+ const {dom,d}=load('nlp/ner/laboratorium','?tab=panduan');
+ assert.equal(d.querySelector('.tab-btn.active').dataset.tab,'panduan');assert.equal(d.querySelector('#tab-uji').hidden,true);
+ d.querySelector('#tabbtn-panduan').dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'End',bubbles:true}));
+ assert.equal(d.activeElement.id,'tabbtn-uji');assert.equal(d.querySelector('#tab-uji').hidden,false);dom.window.close();
+}

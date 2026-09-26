@@ -40,7 +40,7 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
     for(const tab of tabs){await tab.click({force:true});assert.equal(await tab.getAttribute('aria-selected'),'true',file);checks++;if(!await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2)) errors.push(`Overflow: ${file} / ${await tab.getAttribute('data-tab')} / ${width}`);}
     if(!await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2)) errors.push(`Horizontal page overflow: ${file} at ${width}`);
    }
-   const reflection=page.locator('#reflection');if(await reflection.count())await reflection.fill('Catatan uji tema');
+   const reflection=page.locator('#reflection');if(await reflection.count()){await page.locator('[data-tab="panduan"]').click();await reflection.fill('Catatan uji tema');}
    const active=(await page.locator('.tab-btn.active').count())?await page.locator('.tab-btn.active').getAttribute('data-tab'):null;
    const before=await toggleTheme();
    assert.notEqual(await page.locator('html').getAttribute('data-theme'),before,file);
@@ -53,10 +53,10 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   await page.goto(base+'nlp/ner/');assert((await page.locator('#subword-row').innerText()).includes('<s>'));
   await page.goto(base+'nlp/transformer/');const block=page.locator('#full-plot rect[role="button"]').nth(2);await block.focus();await page.keyboard.press('Enter');
   const hint=await page.locator('#full-hint').innerText();await toggleTheme();assert.equal(await page.locator('#full-hint').innerText(),hint);
-  assert.equal(await page.locator('#concept-checks fieldset').count(),2);
+  assert.equal(await page.locator('#concept-checks fieldset').count(),0);
   await page.goto(base+'ml-lanjut/regularization/');await page.locator('[data-tab="dropout"]').click();await page.locator('#dropout-regenerate').click();
   const mask=await page.locator('#dropout-mask-demo circle').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('stroke-dasharray')));await toggleTheme();assert.deepEqual(await page.locator('#dropout-mask-demo circle').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('stroke-dasharray'))),mask);
-  await page.goto(base+'ml/evaluasi-model/');await page.locator('input[name="concept-0"][value="false"]').check();await page.locator('input[name="concept-1"][value="true"]').check();assert((await page.locator('#quiz-status').innerText()).includes('selesai'));
+  await page.goto(base+'ml/evaluasi-model/laboratorium/?tab=uji');await page.locator('input[name="concept-0"][value="false"]').check();await page.locator('input[name="concept-1"][value="true"]').check();assert((await page.locator('#quiz-status').innerText()).includes('selesai'));
   await page.goto(base+'nlp/rag-berbukti/');await page.locator('#lab-evidence').uncheck();assert((await page.locator('#lab-result').innerText()).includes('tidak dapat menjawab'));
   // Empty and object-key strings must be finite, never a perfect empty BLEU score.
   await page.goto(base+'nlp/summarization/');
@@ -76,9 +76,32 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   assert((await page.locator('#qa-answer-box').innerText()).includes('6000 hours'));
   await page.locator('#qa-no-answer').click();assert((await page.locator('#qa-answer-box').innerText()).includes('Who manufactured'));
   // Learning notes survive a fresh visit, not only a theme switch.
-  current='ml/pandas';await page.goto(base+'ml/pandas/');await page.locator('#reflection').fill('Catatan tersimpan');
-  await page.goto(base+'ml/pandas/');assert.equal(await page.locator('#reflection').inputValue(),'Catatan tersimpan');
+  current='ml/pandas';await page.goto(base+'ml/pandas/laboratorium/?tab=panduan');await page.locator('#reflection').fill('Catatan tersimpan');
+  await page.goto(base+'ml/pandas/laboratorium/?tab=panduan');assert.equal(await page.locator('#reflection').inputValue(),'Catatan tersimpan');
   await page.locator('#reflection').fill('');
+  // Notes from the previous single-page URLs remain available in the new companion space.
+  await page.evaluate(()=>{localStorage.removeItem('kupasai-reflection:/kupasai/nlp/ner/');localStorage.setItem('kupasai-reflection:/kupasai/nlp/ner/index.html','Catatan sebelum pemisahan');});
+  await page.goto(base+'nlp/ner/laboratorium/?tab=panduan');assert.equal(await page.locator('#reflection').inputValue(),'Catatan sebelum pemisahan');
+  await page.setViewportSize({width:320,height:844});
+  assert.equal(await page.locator('#reflection').evaluate(el=>getComputedStyle(el).resize),'vertical');
+  await page.locator('#reflection').evaluate(el=>{el.style.width='2000px';el.style.height='2000px';});
+  assert(await page.locator('#reflection').evaluate(el=>{const box=el.getBoundingClientRect(),panel=el.closest('.learning-aid').getBoundingClientRect();return box.right<=panel.right&&box.bottom<=panel.bottom&&box.height<=384;}));
+  await page.setViewportSize({width:1280,height:900});
+  await page.goto(base+'trek-belajar/');assert.equal(await page.locator('#track-plan').isVisible(),false);
+  await page.screenshot({path:path.join(reports,'trek-belajar-pilih-profil.png'),fullPage:true});
+  for(const role of ['mahasiswa','pemula','praktisi']){
+   await page.locator('input[value="'+role+'"]').check();assert(await page.locator('#track-plan').isVisible());
+   assert((await page.locator('#track-topics .topic-entry').count())>0);
+   assert.equal(await page.locator('#course-picker').isVisible(),role==='mahasiswa');
+   await toggleTheme();assert(await page.locator('input[value="'+role+'"]').isChecked());
+  }
+  await page.locator('input[value="mahasiswa"]').check();await page.locator('#track-course').selectOption('nlp');
+  assert.equal(await page.locator('#track-topics .topic-entry').count(),13);
+  await page.reload();assert.equal(await page.locator('#track-course').inputValue(),'nlp');
+  await page.locator('#topic-search').fill('tidak-ada-topik-ini');assert.equal(await page.locator('#topic-results .topic-entry').count(),0);
+  await page.locator('#topic-search').fill('attention');assert((await page.locator('#topic-results .topic-entry').count())>0);
+  await page.goto(base+'nlp/');await page.getByRole('link',{name:'Laboratorium Pendamping',exact:true}).first().click();assert(page.url().includes('/laboratorium/'));
+  await page.getByRole('link',{name:'Kembali ke Visualisasi'}).click();assert(!page.url().includes('/laboratorium/'));assert.equal(await page.locator('#reflection').count(),0);
   // Phone-width diagrams keep their text readable and scroll inside their own box.
   await page.setViewportSize({width:390,height:844});current='pemodelan-pencarian mobile';
   await page.goto(base+'kecerdasan-komputasional/pemodelan-pencarian/');await page.locator('[data-tab="peta"]').click();
@@ -89,18 +112,22 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   current='navbar mobile';await page.goto(base+'kecerdasan-komputasional/pemodelan-pencarian/');
   assert((await page.evaluate(()=>document.querySelector('.navbar').getBoundingClientRect().height))<=64);
   assert(await page.locator('.page-meta-mobile').isVisible());
-  for(const topic of ['','nlp/transformer/','ml/evaluasi-model/','ml-lanjut/object-detection/']){
-   await page.goto(base+topic);await page.setViewportSize({width:1280,height:900});
-   const name=topic.replaceAll('/','-')||'home';
-   await page.screenshot({path:path.join(reports,name+'desktop.png'),fullPage:true});
-   assert(await page.locator('img').evaluateAll(images=>images.every(img=>img.complete&&img.naturalWidth>0)),`Broken image: ${topic}`);
-   const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
-   accessibility.push({topic,violations:result.violations.map(v=>({id:v.id,impact:v.impact,description:v.description,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}))});
-   await page.setViewportSize({width:320,height:844});await page.screenshot({path:path.join(reports,name+'mobile.png'),fullPage:true});
+  for(const topic of ['','nlp/','trek-belajar/?profil=mahasiswa&kuliah=nlp','nlp/transformer/','nlp/transformer/laboratorium/','nlp/ner/laboratorium/?tab=panduan','ml/evaluasi-model/','ml-lanjut/object-detection/']){
+   current='accessibility '+topic;await page.goto(base+topic);
+   const name=topic.replace(/[^a-z0-9-]/gi,'-')||'home';
+   for(const theme of ['light','dark']){
+    if(await page.locator('html').getAttribute('data-theme')!==theme)await toggleTheme();
+    await page.setViewportSize({width:1280,height:900});
+    await page.screenshot({path:path.join(reports,name+'-'+theme+'-desktop.png'),fullPage:true});
+    assert(await page.locator('img').evaluateAll(images=>images.every(img=>img.complete&&img.naturalWidth>0)),`Broken image: ${topic}`);
+    const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+    accessibility.push({topic,theme,violations:result.violations.map(v=>({id:v.id,impact:v.impact,description:v.description,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}))});
+    await page.setViewportSize({width:320,height:844});await page.screenshot({path:path.join(reports,name+'-'+theme+'-mobile.png'),fullPage:true});
+   }
   }
   fs.writeFileSync(path.join(reports,'accessibility.json'),JSON.stringify(accessibility,null,2));
   for(const report of accessibility)assert.deepEqual(report.violations,[],`WCAG findings: ${report.topic}`);
-  current='offline persistence';await page.goto(base+'ml/evaluasi-model/');
+  current='offline persistence';await page.goto(base+'ml/evaluasi-model/laboratorium/');
   await page.getByRole('button',{name:'Simpan halaman untuk offline'}).click();
   await page.waitForFunction(()=>document.getElementById('learning-status').textContent.includes('siap dibuka offline'));
   await context.setOffline(true);await page.reload();assert(await page.locator('#lab-result').isVisible());
@@ -113,5 +140,5 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   if(process.env.REVIEW_SCREENSHOT){await page.goto(base+'nlp/transformer/');await page.setViewportSize({width:1280,height:1000});await page.screenshot({path:process.env.REVIEW_SCREENSHOT});}
   console.log(`Visited ${pages(root).length} pages, ${checks} tab transitions, desktop/mobile and theme restoration.`);
   if(errors.length)console.error(errors.join('\n'));assert.deepEqual(errors,[]);
- } finally {await browser.close();server.close();}
+ } catch(error) {console.error('Failed page:',current);if(errors.length)console.error(errors.join('\n'));await page.screenshot({path:path.join(reports,'failure.png'),fullPage:true}).catch(()=>{});throw error;} finally {await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

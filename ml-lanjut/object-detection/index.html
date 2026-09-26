@@ -53,6 +53,7 @@
 <nav class="navbar">
   <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
   <ul class="navbar-links">
+    <li><a href="/kupasai/trek-belajar/">Trek Belajar</a></li>
     <li><a href="/kupasai/tentang/">Tentang</a></li>
     <li><a href="/kupasai/kontak/">Kontak</a></li>
   </ul>
@@ -69,7 +70,7 @@
   </button>
 </nav>
 
-<main id="main-content" tabindex="-1">
+<main id="main-content" tabindex="-1" data-topic="ml-lanjut/object-detection">
 <noscript><p class="noscript-note">Visualisasi interaktif di halaman ini memerlukan JavaScript. Aktifkan JavaScript di peramban Anda untuk mencobanya.</p></noscript>
 
 <div class="page-header">
@@ -213,21 +214,7 @@
 
 
 
-<!-- learning-aid:start -->
-<section class="learning-aid" aria-label="Panduan belajar mandiri">
-<h2>Panduan Belajar Mandiri</h2>
-<p><strong>Prasyarat:</strong> Luas persegi panjang dan probabilitas. <strong>Durasi:</strong> sekitar 30 menit.</p>
-<details><summary>Asal data dan batas contoh</summary><p>Kotak ilustratif dengan IoU dan NMS yang dihitung dari koordinat.</p><p>Grid dan anchor adalah penyederhanaan keluarga YOLO berbasis anchor, bukan semua versi YOLO. Normalisasi ukuran kotak harus menyebut acuannya. NMS contoh ini satu kelas.</p></details>
-<ol><li><strong>Prediksi sebelum mencoba:</strong> Apakah dua kotak dengan IoU tinggi selalu mewakili objek yang sama?</li>
-<li><strong>Eksplorasi:</strong> Geser kotak prediksi secara horizontal, vertikal, dan skala, lalu bandingkan Sebelum NMS dan Sesudah NMS.</li>
-<li><strong>Perhitungan:</strong> Hitung IoU = luas irisan / luas gabungan dari koordinat kedua kotak dan cocokkan dengan nilai di panel.</li>
-<li><strong>Refleksi dan transfer:</strong> Jelaskan mengapa evaluasi deteksi memerlukan kelas dan pencocokan unik.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
-<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
-<p><a href="https://arxiv.org/abs/1612.08242" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/ml-lanjut/object-detection" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
-</section><!-- learning-aid:end -->
-<!-- catalog:start --><section class="learning-aid topic-tools" data-topic="ml-lanjut/object-detection"><h2>Uji Pemahaman</h2><p>Dua latihan dengan penjelasan. Progres dihitung setelah semua jawaban benar; membuka halaman saja tidak menandai selesai.</p><div id="concept-checks"></div><p id="quiz-status" role="status"></p><div class="learning-actions"><button id="export-notes" type="button">Ekspor catatan dan progres</button><label for="import-notes">Impor cadangan JSON</label><input id="import-notes" type="file" accept="application/json"><button id="share-controls" type="button">Salin tautan eksperimen</button><button id="reset-controls" type="button">Reset kontrol</button></div><p id="learning-status" role="status"></p><p>Prasyarat: Luas persegi panjang dan probabilitas. Ditinjau: 2026-09-26. <a href="https://arxiv.org/abs/1612.08242">Rujukan konsep</a>. Lihat panduan asal data; tanggal tinjauan tidak menyatakan semua hasil berasal dari publikasi itu.</p><nav class="lesson-sequence" aria-label="Urutan belajar"><a href="/kupasai/ml-lanjut/cnn-basics/">← Sebelumnya: CNN Dasar: Konvolusi &amp; Pooling</a> <a href="/kupasai/ml-lanjut/optimizer/">Berikutnya →: Optimizer dan Skala Fitur</a></nav></section><!-- catalog:end -->
+<!-- lesson-links:start --><section class="lesson-next" aria-label="Lanjutkan belajar"><h2>Lanjutkan eksplorasi</h2><p>Hitung hasilnya, tulis refleksi, lalu uji pemahaman Anda.</p><a class="topic-button" href="/kupasai/ml-lanjut/object-detection/laboratorium/">Ke Laboratorium Pendamping →</a><div class="learning-actions"><button id="share-controls" type="button">Salin tautan eksperimen</button><button id="reset-controls" type="button">Reset kontrol</button></div><p id="learning-status" role="status"></p></section><!-- lesson-links:end -->
 </main>
 
 <footer class="footer">

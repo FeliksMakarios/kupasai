@@ -2,48 +2,88 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://feliksmakarios.github.io/kupasai/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/algoritma-genetika/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/algoritma-genetika/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/jaringan-syaraf-tiruan/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/jaringan-syaraf-tiruan/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/kecerdasan-kawanan-fuzzy/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/kecerdasan-kawanan-fuzzy/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/pemodelan-pencarian/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/pemodelan-pencarian/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/penalaran-ketidakpastian/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/penalaran-ketidakpastian/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/teknik-pemecahan/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/teknik-pemecahan/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/kontak/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/churn-prediction/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml/churn-prediction/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/clustering/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml/clustering/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/decision-tree/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml/decision-tree/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/evaluasi-model/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml/evaluasi-model/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/linear-regression/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml/linear-regression/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/logistic-regression/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml/logistic-regression/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/market-basket/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml/market-basket/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/naive-bayes/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml/naive-bayes/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/pandas/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml/pandas/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/random-forest/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml/random-forest/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/backprop-visualizer/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/backprop-visualizer/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/cnn-basics/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/cnn-basics/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/forward-propagation/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/forward-propagation/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/generalizing-gd/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/generalizing-gd/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/gradient-descent/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/gradient-descent/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/nonlinearity-activation/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/nonlinearity-activation/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/object-detection/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/object-detection/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/optimizer/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/optimizer/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/regularization/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/regularization/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/streetlight-backprop/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/streetlight-backprop/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/autograd/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/nlp/autograd/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/evaluasi-generatif/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/nlp/evaluasi-generatif/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/lstm-attention/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/nlp/lstm-attention/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/ner/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/nlp/ner/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/question-answering/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/nlp/question-answering/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/rag-berbukti/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/nlp/rag-berbukti/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/rnn/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/nlp/rnn/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/self-attention/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/nlp/self-attention/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/summarization/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/nlp/summarization/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/text-classification/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/nlp/text-classification/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/tokenisasi-indonesia/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/nlp/tokenisasi-indonesia/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/transformer/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/nlp/transformer/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/word-embeddings/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/nlp/word-embeddings/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/tentang/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/trek-belajar/</loc><lastmod>2026-09-26</lastmod></url>
 </urlset>

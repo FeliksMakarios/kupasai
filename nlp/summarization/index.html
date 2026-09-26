@@ -53,6 +53,7 @@
 <nav class="navbar">
   <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
   <ul class="navbar-links">
+    <li><a href="/kupasai/trek-belajar/">Trek Belajar</a></li>
     <li><a href="/kupasai/tentang/">Tentang</a></li>
     <li><a href="/kupasai/kontak/">Kontak</a></li>
   </ul>
@@ -69,7 +70,7 @@
   </button>
 </nav>
 
-<main id="main-content" tabindex="-1">
+<main id="main-content" tabindex="-1" data-topic="nlp/summarization">
 <noscript><p class="noscript-note">Visualisasi interaktif di halaman ini memerlukan JavaScript. Aktifkan JavaScript di peramban Anda untuk mencobanya.</p></noscript>
 
 <div class="page-header">
@@ -196,21 +197,7 @@
 
 
 
-<!-- learning-aid:start -->
-<section class="learning-aid" aria-label="Panduan belajar mandiri">
-<h2>Panduan Belajar Mandiri</h2>
-<p><strong>Prasyarat:</strong> Generasi teks dan n-gram. <strong>Durasi:</strong> sekitar 30 menit.</p>
-<details><summary>Asal data dan batas contoh</summary><p>Keluaran contoh tersimpan dari materi kuliah. Belum menjadi benchmark lintas dataset.</p><p>Satu artikel dan checkpoint berbeda tidak cukup untuk memeringkat model. BLEU panel adalah sentence BLEU-4 dengan tokenizer spasi dan add-one opsional. ROUGE menampilkan P/R/F1.</p></details>
-<ol><li><strong>Prediksi sebelum mencoba:</strong> Bisakah sinonim menurunkan skor tanpa menurunkan kualitas makna?</li>
-<li><strong>Eksplorasi:</strong> Ganti kalimat kandidat dan referensi pada tab BLEU dan ROUGE, lalu aktifkan smoothing.</li>
-<li><strong>Perhitungan:</strong> Hitung presisi unigram dan bigram yang terpotong (clipped) untuk kalimat kandidat, lalu cocokkan dengan panel BLEU.</li>
-<li><strong>Refleksi dan transfer:</strong> Nilai faktualitas ringkasan secara terpisah dari kemiripan n-gram.</li></ol>
-<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
-<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
-<p><a href="https://aclanthology.org/P02-1040/" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/nlp/summarization" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
-<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
-</section><!-- learning-aid:end -->
-<!-- catalog:start --><section class="learning-aid topic-tools" data-topic="nlp/summarization"><h2>Uji Pemahaman</h2><p>Dua latihan dengan penjelasan. Progres dihitung setelah semua jawaban benar; membuka halaman saja tidak menandai selesai.</p><div id="concept-checks"></div><p id="quiz-status" role="status"></p><div class="learning-actions"><button id="export-notes" type="button">Ekspor catatan dan progres</button><label for="import-notes">Impor cadangan JSON</label><input id="import-notes" type="file" accept="application/json"><button id="share-controls" type="button">Salin tautan eksperimen</button><button id="reset-controls" type="button">Reset kontrol</button></div><p id="learning-status" role="status"></p><p>Prasyarat: Generasi teks dan n-gram. Ditinjau: 2026-09-26. <a href="https://aclanthology.org/P02-1040/">Rujukan konsep</a>. Lihat panduan asal data; tanggal tinjauan tidak menyatakan semua hasil berasal dari publikasi itu.</p><nav class="lesson-sequence" aria-label="Urutan belajar"><a href="/kupasai/nlp/ner/">← Sebelumnya: Named Entity Recognition</a> <a href="/kupasai/nlp/question-answering/">Berikutnya →: Question Answering</a></nav></section><!-- catalog:end -->
+<!-- lesson-links:start --><section class="lesson-next" aria-label="Lanjutkan belajar"><h2>Lanjutkan eksplorasi</h2><p>Hitung hasilnya, tulis refleksi, lalu uji pemahaman Anda.</p><a class="topic-button" href="/kupasai/nlp/summarization/laboratorium/">Ke Laboratorium Pendamping →</a><div class="learning-actions"><button id="share-controls" type="button">Salin tautan eksperimen</button><button id="reset-controls" type="button">Reset kontrol</button></div><p id="learning-status" role="status"></p></section><!-- lesson-links:end -->
 </main>
 
 <footer class="footer">

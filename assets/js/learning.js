@@ -138,12 +138,12 @@
     });}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['viewBox']});
     // Learning notes persist per page in this browser only.
     function bindNote(){
-      var note=document.getElementById('reflection'),noteKey='kupasai-reflection:'+location.pathname,status=document.getElementById('reflection-status');
+      var note=document.getElementById('reflection'),topic=document.querySelector('main[data-topic]')?.dataset.topic,notePath=topic?'/kupasai/'+topic+'/':location.pathname,noteKey='kupasai-reflection:'+notePath,status=document.getElementById('reflection-status');
       if(!note||note.hasAttribute('data-bound'))return;
       note.setAttribute('data-bound','');
-      try{var stored=localStorage.getItem(noteKey);if(stored&&!note.value)note.value=stored;}catch(e){}
+      try{var stored=localStorage.getItem(noteKey) || localStorage.getItem(noteKey+'index.html');if(stored&&!note.value)note.value=stored;}catch(e){}
       note.addEventListener('input',function(){
-        try{if(note.value)localStorage.setItem(noteKey,note.value);else localStorage.removeItem(noteKey);
+        try{if(note.value)localStorage.setItem(noteKey,note.value);else {localStorage.removeItem(noteKey);localStorage.removeItem(noteKey+'index.html');}
           if(status)status.textContent='Tersimpan di peramban ini pukul '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})+'.';}
         catch(e){if(status)status.textContent='Catatan tidak dapat disimpan di peramban ini.';}
       });
