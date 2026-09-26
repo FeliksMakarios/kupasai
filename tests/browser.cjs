@@ -34,8 +34,8 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
    for(const width of [1280,768,390,320]){
     await page.setViewportSize({width,height:844});
     const tabs=await page.locator('.tab-btn').all();
-    for(const tab of tabs){await tab.click({force:true});assert.equal(await tab.getAttribute('aria-selected'),'true',file);checks++;assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),`Overflow: ${file} / ${await tab.getAttribute('data-tab')} / ${width}`);}
-    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),`Horizontal page overflow: ${file} at ${width}`);
+    for(const tab of tabs){await tab.click({force:true});assert.equal(await tab.getAttribute('aria-selected'),'true',file);checks++;if(!await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2)) errors.push(`Overflow: ${file} / ${await tab.getAttribute('data-tab')} / ${width}`);}
+    if(!await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2)) errors.push(`Horizontal page overflow: ${file} at ${width}`);
    }
    const reflection=page.locator('#reflection');if(await reflection.count())await reflection.fill('Catatan uji tema');
    const active=(await page.locator('.tab-btn.active').count())?await page.locator('.tab-btn.active').getAttribute('data-tab'):null;
