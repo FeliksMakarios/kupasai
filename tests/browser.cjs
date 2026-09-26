@@ -13,7 +13,7 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   if(!file.startsWith(root+path.sep)){res.writeHead(403);res.end();return;}
   if(fs.existsSync(file)&&fs.statSync(file).isDirectory())file=path.join(file,'index.html');
   if(!fs.existsSync(file)){res.writeHead(404,{'Content-Type':'text/html'});fs.createReadStream(path.join(root,'404.html')).pipe(res);return;}
-  res.setHeader('Content-Type',file.endsWith('.js')?'application/javascript':file.endsWith('.css')?'text/css':file.endsWith('.html')?'text/html':'application/octet-stream');fs.createReadStream(file).pipe(res);
+  res.setHeader('Content-Type',file.endsWith('.js')?'application/javascript':file.endsWith('.css')?'text/css':file.endsWith('.html')?'text/html':file.endsWith('.svg')?'image/svg+xml':file.endsWith('.png')?'image/png':file.endsWith('.json')?'application/json':'application/octet-stream');fs.createReadStream(file).pipe(res);
  });
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const base=`http://127.0.0.1:${server.address().port}/kupasai/`;
@@ -93,11 +93,19 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
    await page.goto(base+topic);await page.setViewportSize({width:1280,height:900});
    const name=topic.replaceAll('/','-')||'home';
    await page.screenshot({path:path.join(reports,name+'desktop.png'),fullPage:true});
+   assert(await page.locator('img').evaluateAll(images=>images.every(img=>img.complete&&img.naturalWidth>0)),`Broken image: ${topic}`);
    const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
    accessibility.push({topic,violations:result.violations.map(v=>({id:v.id,impact:v.impact,description:v.description,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}))});
    await page.setViewportSize({width:320,height:844});await page.screenshot({path:path.join(reports,name+'mobile.png'),fullPage:true});
   }
   fs.writeFileSync(path.join(reports,'accessibility.json'),JSON.stringify(accessibility,null,2));
+  for(const report of accessibility)assert.deepEqual(report.violations,[],`WCAG findings: ${report.topic}`);
+  current='offline persistence';await page.goto(base+'ml/evaluasi-model/');
+  await page.getByRole('button',{name:'Simpan halaman untuk offline'}).click();
+  await page.waitForFunction(()=>document.getElementById('learning-status').textContent.includes('siap dibuka offline'));
+  await context.setOffline(true);await page.reload();assert(await page.locator('#lab-result').isVisible());
+  await page.locator('#lab-threshold').fill('0.9');assert((await page.locator('#lab-result').innerText()).includes('0.9'));
+  await page.locator('#theme-toggle').click();assert(await page.locator('#lab-result').isVisible());await context.setOffline(false);
   current='expected-404';const missing=await page.goto(base+'halaman-yang-tidak-ada/');assert.equal(missing.status(),404);
   assert((await page.locator('h1').innerText()).includes('tidak ditemukan'));
   errors.splice(0,errors.length,...errors.filter(e=>!e.startsWith('expected-404:')));

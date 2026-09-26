@@ -41,13 +41,13 @@
   </script>
 <link rel="stylesheet" href="/kupasai/assets/css/learning.css">
 <script src="/kupasai/assets/js/learning.js" defer></script>
-<link rel="stylesheet" href="/kupasai/assets/css/laboratory.css">
 <script src="/kupasai/assets/js/experiments.js" defer></script>
 <script src="/kupasai/assets/js/catalog-data.js" defer></script>
 <script src="/kupasai/assets/js/catalog.js" defer></script>
 <link rel="stylesheet" href="/kupasai/assets/css/catalog.css">
 <script src="/kupasai/assets/js/state.js"></script>
 <script src="/kupasai/assets/js/offline.js" defer></script>
+<link rel="stylesheet" href="/kupasai/assets/css/laboratory.css">
 </head>
 <body>
 
@@ -74,9 +74,7 @@
  <header class="page-header-content"><a class="back-link" href="/kupasai/nlp/">Kembali ke Daftar Topik</a><h1>Tokenisasi Bahasa Indonesia</h1><p>Amati imbuhan, kata tidak, serta kata informal. WordPiece mencari subkata terpanjang dari kosakata. BPE menggabungkan pasangan menurut urutan merge yang dipelajari. SentencePiece adalah perangkat tokenisasi yang dapat melatih BPE atau unigram; bukan nama satu algoritma segmentasi.</p></header>
  <section aria-label="Eksperimen"><h2>Coba dan bandingkan</h2><label for="lab-text">Kalimat (maksimum 300 karakter)</label><input id="lab-text" maxlength="300" value="makanan ini tidak enak"><label for="lab-negation"><input id="lab-negation" type="checkbox"> Hapus kata tidak (contoh preprocessing yang mengubah makna)</label><button id="lab-reset" type="button">Reset eksperimen</button><div id="lab-result" aria-live="polite"></div></section>
  <aside><h2>Batas interpretasi</h2><p>Demo WordPiece ini memakai kosakata buatan kecil dan lowercasing, bukan tokenizer IndoBERT. Gunakan tokenizer dan normalisasi checkpoint yang tepat dalam aplikasi. Tanda ## menunjukkan kelanjutan kata.</p><p><a href="https://huggingface.co/docs/transformers/tokenizer_summary">Rujukan primer</a></p></aside>
- </div><script src="/kupasai/assets/js/laboratory.js"></script>
-
-<!-- learning-aid:start -->
+ </div><script src="/kupasai/assets/js/laboratory.js"></script><!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Teks dan representasi token. <strong>Durasi:</strong> sekitar 25 menit.</p>

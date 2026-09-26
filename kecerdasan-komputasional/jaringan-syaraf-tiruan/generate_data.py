@@ -194,6 +194,9 @@ assert X_h.shape == (20, 25) and T_h.shape == (20, 4)
 WH_h, WO_h, jejak_bp = latih_backprop(X_h, T_h, epoch=1500)
 assert jejak_bp[-1] < jejak_bp[0]
 akurasi = akurasi_per_huruf(WH_h, WO_h, X_h, T_h)
+# Independent noisy examples, fixed seed, same synthetic glyph family; no tuning on test.
+X_test_h, T_test_h = buat_data_huruf(n_varian=50, rng=np.random.default_rng(2026))
+akurasi_test = akurasi_per_huruf(WH_h, WO_h, X_test_h, T_test_h)
 print("Tugas3b galat awal:", round(jejak_bp[0], 4), "galat akhir:", round(jejak_bp[-1], 6))
 print("Tugas3b akurasi per huruf:", akurasi)
 
@@ -296,7 +299,7 @@ data = {
         "huruf": HURUF, "hurufList": HURUF_LIST,
         "jejakGalat": jejak_bp[::30],
         "galatAwal": jejak_bp[0], "galatAkhir": jejak_bp[-1],
-        "akurasi": akurasi,
+        "akurasi": akurasi, "akurasiTest": akurasi_test, "nTrain": len(X_h), "nTest": len(X_test_h), "testSeed": 2026,
     },
     "lvq": {
         "data": DATA_LVQ.tolist(),

@@ -29,6 +29,7 @@ for d in items:
 for p in ROOT.glob('**/index.html'):
  if 'node_modules' in p.parts:continue
  s=p.read_text()
+ if p.parent.name=='word-embeddings' and 'src="companion.js"' not in s:s=s.replace('</head>','<script src="companion.js" defer></script>\n</head>')
  for src in ['experiments','catalog-data','catalog','offline']:
   tag=f'<script src="/kupasai/assets/js/{src}.js" defer></script>'
   if tag not in s:s=s.replace('</head>',tag+'\n</head>')

@@ -8,7 +8,7 @@
     var p=panel(parent,'Ambang keputusan pada data uji');
     p.insertAdjacentHTML('beforeend','<label for="classification-threshold">Ambang kelas versicolor</label><input id="classification-threshold" type="range" min="0.01" max="0.99" step="0.01" value="0.5"><output id="threshold-metrics" aria-live="polite"></output>');
     var slider=p.querySelector('input');
-    function update(){var tp=0,fp=0,tn=0,fn=0;D.points.filter(function(d){return d.test;}).forEach(function(d){var probability=1/(1+Math.exp(-(D.b+D.w[0]*d.x+D.w[1]*d.y)));var pred=probability>=+slider.value;if(d.label===1){if(pred)tp++;else fn++;}else{if(pred)fp++;else tn++;}});p.querySelector('output').textContent='Ambang '+slider.value+' · TP '+tp+' · FP '+fp+' · TN '+tn+' · FN '+fn+' · Precision '+(tp/(tp+fp)||0).toFixed(3)+' · Recall '+(tp/(tp+fn)||0).toFixed(3);}
+    function update(){if(window.KupasLogisticThreshold)window.KupasLogisticThreshold(+slider.value);var tp=0,fp=0,tn=0,fn=0;D.points.filter(function(d){return d.test;}).forEach(function(d){var probability=1/(1+Math.exp(-(D.b+D.w[0]*d.x+D.w[1]*d.y)));var pred=probability>=+slider.value;if(d.label===1){if(pred)tp++;else fn++;}else{if(pred)fp++;else tn++;}});p.querySelector('output').textContent='Ambang '+slider.value+' · TP '+tp+' · FP '+fp+' · TN '+tn+' · FN '+fn+' · Precision '+(tp/(tp+fp)||0).toFixed(3)+' · Recall '+(tp/(tp+fn)||0).toFixed(3);}
     slider.addEventListener('input',update);update();
   }
   if(typeof LR_DATA!=='undefined'){

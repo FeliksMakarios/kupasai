@@ -129,7 +129,7 @@
     var predHtml = '<div class="seq-tag-row">';
     predArr.forEach(function (p, i) {
       var match = p === trueArr[i];
-      predHtml += '<div class="seq-tag-chip pred-chip ' + (match ? 'match' : 'mismatch') + '" data-i="' + i + '">' + p + '</div>';
+      predHtml += '<button type="button" class="seq-tag-chip pred-chip ' + (match ? 'match' : 'mismatch') + '" data-i="' + i + '">' + p + '</button>';
     });
     predHtml += '</div>';
 
