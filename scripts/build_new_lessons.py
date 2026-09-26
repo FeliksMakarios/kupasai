@@ -20,5 +20,5 @@ for slug,d in NEW.items():
  <aside><h2>Batas interpretasi</h2><p>{escape(d['note'])}</p><p><a href="{d['source']}">Rujukan primer</a></p></aside>
  </div><script src="/kupasai/assets/js/laboratory.js"></script></main>
  <script src="/kupasai/assets/js/theme.js"></script></body></html>'''
- (p/'index.html').write_text(h)
+ (p/'index.html').write_text('\n'.join(line.rstrip() for line in h.splitlines())+'\n')
 print('Built',len(NEW),'labs')
