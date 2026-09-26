@@ -3,6 +3,8 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {chromium}=require(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES?process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES+'/playwright':'playwright');
 const root=path.resolve(__dirname,'..');
+const AxeBuilder=require('@axe-core/playwright').default;
+const reports=path.join(root,'test-results');fs.mkdirSync(reports,{recursive:true});const accessibility=[];
 function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.name.startsWith('.')||e.name==='node_modules'?[]:e.isDirectory()?pages(path.join(p,e.name)):e.name==='index.html'?[path.relative(root,path.join(p,e.name))]:[])}
 (async()=>{
  const server=http.createServer((req,res)=>{
@@ -86,6 +88,15 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   current='navbar mobile';await page.goto(base+'kecerdasan-komputasional/pemodelan-pencarian/');
   assert((await page.evaluate(()=>document.querySelector('.navbar').getBoundingClientRect().height))<=64);
   assert(await page.locator('.page-meta-mobile').isVisible());
+  for(const topic of ['','nlp/transformer/','ml/evaluasi-model/','ml-lanjut/object-detection/']){
+   await page.goto(base+topic);await page.setViewportSize({width:1280,height:900});
+   const name=topic.replaceAll('/','-')||'home';
+   await page.screenshot({path:path.join(reports,name+'desktop.png'),fullPage:true});
+   const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+   accessibility.push({topic,violations:result.violations.map(v=>({id:v.id,impact:v.impact,description:v.description,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}))});
+   await page.setViewportSize({width:320,height:844});await page.screenshot({path:path.join(reports,name+'mobile.png'),fullPage:true});
+  }
+  fs.writeFileSync(path.join(reports,'accessibility.json'),JSON.stringify(accessibility,null,2));
   current='expected-404';const missing=await page.goto(base+'halaman-yang-tidak-ada/');assert.equal(missing.status(),404);
   assert((await page.locator('h1').innerText()).includes('tidak ditemukan'));
   errors.splice(0,errors.length,...errors.filter(e=>!e.startsWith('expected-404:')));

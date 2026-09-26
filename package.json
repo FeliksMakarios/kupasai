@@ -5,6 +5,7 @@
     "test:learning": "node tests/learning.cjs"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
     "jsdom": "26.1.0",
     "playwright": "1.62.1"
   }
