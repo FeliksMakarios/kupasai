@@ -28,8 +28,12 @@
   }
   const vocab=new Set(['makan','##an','makan','##kan','me','##makan','enak','tidak','ini','saya','suka','baik','bagus','nggak','di','##beli','beli','##nya','buku']);
   function wordpiece(text){return tokens(text).map(word=>{let start=0,pieces=[];while(start<word.length){let end=word.length,found=null;while(end>start){const p=(start?'##':'')+word.slice(start,end);if(vocab.has(p)){found=p;break;}end--;}if(!found)return [word,['[UNK]']];pieces.push(found);start=end;}return [word,pieces];});}
+  const merges=[['m','a'],['ma','k'],['mak','a'],['maka','n'],['a','n'],['t','i'],['ti','d'],['tid','a'],['tida','k'],['e','n'],['en','a'],['ena','k']];
+  function bpe(text){return tokens(text).map(word=>{let parts=Array.from(word);for(const[a,b]of merges){const next=[];for(let i=0;i<parts.length;i++){if(parts[i]===a&&parts[i+1]===b){next.push(a+b);i++;}else next.push(parts[i]);}parts=next;}return[word,parts];});}
+  function unigram(text){const vocabulary={'▁':8,'makan':9,'an':3,'makanan':1,'tidak':7,'enak':7,'ini':5,'saya':4,'bagus':4,'buku':3,'nya':2},total=Object.values(vocabulary).reduce((a,b)=>a+b,0),input='▁'+text.trim().toLowerCase().replace(/\s+/g,'▁'),best=Array(input.length+1).fill(-Infinity),paths=Array(input.length+1);best[0]=0;paths[0]=[];for(let i=0;i<input.length;i++){if(!paths[i])continue;const candidates=Object.keys(vocabulary).filter(w=>input.startsWith(w,i));candidates.push(input[i]);for(const piece of new Set(candidates)){const score=best[i]+(vocabulary[piece]?Math.log(vocabulary[piece]/total):-12),j=i+piece.length;if(score>best[j]){best[j]=score;paths[j]=paths[i].concat(piece);}}}return paths[input.length]||[];}
+  function batchRegression(method,alpha,batch){let w=0,m=0,v=0,velocity=0;const x=[-2,-1,1,2],target=[-3.5,-2.5,2.5,3.5],rows=[];for(let t=1;t<=20;t++){let g=0;for(let j=0;j<batch;j++){const i=((t-1)*batch+j)%4;g+=(w*x[i]-target[i])*x[i]/batch;}if(method==='adam'){m=.9*m+.1*g;v=.999*v+.001*g*g;w-=alpha*(m/(1-.9**t))/(Math.sqrt(v/(1-.999**t))+1e-8);}else if(method==='momentum'){velocity=.9*velocity+g;w-=alpha*velocity;}else w-=alpha*g;const loss=x.reduce((s,value,i)=>s+.5*(w*value-target[i])**2,0)/x.length;rows.push([t,w,g,loss,t*batch]);}return rows;}
   // Exposed pure functions allow independent numerical tests, not DOM snapshots.
-  window.KupasMath={confusion,rougeL,optimize,wordpiece};
+  window.KupasMath={confusion,rougeL,optimize,wordpiece,bpe,unigram,batchRegression};
   const root=document.querySelector('[data-lab]');if(!root)return;
   const result=document.getElementById('lab-result'),kind=root.dataset.lab;
   function paragraph(text){const p=document.createElement('p');p.textContent=text;result.appendChild(p);}
@@ -49,14 +53,19 @@
       paragraph('Brier score = '+fmt(y.reduce((s,v,i)=>s+(p[i]-v)**2,0)/y.length)+'. Ini ukuran galat probabilitas; 10 contoh belum cukup untuk menyimpulkan kalibrasi.');
     }else if(kind==='tokenization'){
       let text=el('text').value;if(el('negation').checked)text=text.replace(/\btidak\b/gi,'');
-      table(['Kata','Subkata'],wordpiece(text).map(([w,parts])=>[w,parts.join(' | ')]));
-      paragraph('Kosakata demo: '+[...vocab].join(', ')+'. Kata yang tidak dapat disegmentasi seluruhnya menjadi [UNK].');
+      const algorithm=el('tokenizer').value;
+      if(algorithm==='unigram'){paragraph('Segmentasi unigram: '+unigram(text).join(' | '));paragraph('Dynamic programming memaksimalkan jumlah log probabilitas kosakata mini; karakter tak dikenal diberi penalti fallback. Tanda ▁ mewakili batas spasi. Ini bukan checkpoint SentencePiece.');}
+      else table(['Kata','Subkata'],(algorithm==='bpe'?bpe(text):wordpiece(text)).map(([w,parts])=>[w,parts.join(' | ')]));
+      if(algorithm==='bpe')paragraph('Urutan merge buatan: '+merges.map(pair=>pair.join('+')).join(', ')+'. Encoding mengikuti urutan merge ini; tidak menghitung ulang pasangan terpopuler dari satu kalimat.');
+      if(algorithm==='wordpiece')paragraph('Kosakata WordPiece demo: '+[...vocab].join(', ')+'. Kata yang tidak dapat disegmentasi seluruhnya menjadi [UNK].');
       paragraph(el('negation').checked?'Kata tidak dihapus: “tidak enak” menjadi “enak”. Tokenisasi tidak membenarkan perubahan makna ini.':'Negasi dipertahankan. Jumlah token bukan jumlah kata.');
     }else if(kind==='optimizer'){
       const k=+el('condition').value,alpha=+el('alpha').value,rows=optimize(el('method').value,alpha,k);
       paragraph('α='+alpha+', k='+k+'. Untuk gradient descent pada kuadratik ini, konvergensi membutuhkan 0 < α < 2/k = '+fmt(2/k)+'. Batas ini bukan rumus umum semua jaringan.');
       paragraph('Loss awal '+fmt(rows[0][3])+' → loss akhir '+fmt(rows.at(-1)[3])+'. '+(rows.at(-1)[3]>1e20?'Simulasi dihentikan karena divergensi.':''));
       table(['Langkah','w₁','w₂','Loss'],rows.map(r=>[r[0],...r.slice(1).map(fmt)]));
+      paragraph('Eksperimen regresi pendamping: x=[−2,−1,1,2], target=[−3.5,−2.5,2.5,3.5]. Batch diambil siklis, tanpa shuffle, agar dapat direproduksi. Gradien memakai rata-rata batch; loss dilaporkan pada seluruh empat contoh setelah update. Bandingkan juga jumlah evaluasi, bukan langkah saja.');
+      table(['Langkah','Bobot','Gradien batch','Loss seluruh data','Evaluasi contoh'],batchRegression(el('method').value,alpha,+el('batch').value).map(r=>[r[0],fmt(r[1]),fmt(r[2]),fmt(r[3]),r[4]]));
     }else if(kind==='rag'){
       const docs=[{id:'A',text:'Observatorium Aruna membuka kunjungan setiap Sabtu pukul 19.00.',answers:['kapan','jam','buka','kunjungan']},{id:'B',text:'Observatorium Aruna memakai teleskop reflektor untuk melihat bintang.',answers:['alat','teleskop']},{id:'C',text:'Perpustakaan Aruna menyediakan buku astronomi pada hari Senin.',answers:['perpustakaan','buku']}];
       const query=tokens(el('query').value),q=new Set(query),available=docs.filter(d=>d.id!=='A'||el('evidence').checked);

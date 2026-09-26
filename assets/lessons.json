@@ -695,7 +695,7 @@
     "prerequisite": "Teks dan representasi token",
     "minutes": 25,
     "provenance": "Simulasi sintetis deterministik; tidak menjalankan model pretrained.",
-    "limits": "Demo WordPiece ini memakai kosakata buatan kecil dan lowercasing, bukan tokenizer IndoBERT. Gunakan tokenizer dan normalisasi checkpoint yang tepat dalam aplikasi. Tanda ## menunjukkan kelanjutan kata.",
+    "limits": "Ketiga demo memakai kosakata/merge buatan kecil dan lowercasing, bukan tokenizer IndoBERT. Gunakan tokenizer dan normalisasi checkpoint yang tepat dalam aplikasi. Tanda ## menunjukkan kelanjutan kata.",
     "source": "https://huggingface.co/docs/transformers/tokenizer_summary",
     "order": 30,
     "reviewed": "2026-09-26",
