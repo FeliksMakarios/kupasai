@@ -75,7 +75,8 @@
  <header class="page-header-content"><a class="back-link" href="/kupasai/ml-lanjut/">Kembali ke Daftar Topik</a><h1>Optimizer dan Skala Fitur</h1><p>Bandingkan gradient descent, momentum, dan Adam pada loss kuadratik L = ½(w₁² + k w₂²). k besar menggambarkan kurvatur yang tidak seimbang. Standardisasi dapat memperbaiki conditioning, tetapi tidak menjamin kurvatur selalu sama.</p></header>
  <section aria-label="Eksperimen"><h2>Coba dan bandingkan</h2><label for="lab-method">Metode</label><select id="lab-method"><option value="gd">Gradient descent</option><option value="momentum">Momentum</option><option value="adam">Adam</option></select><label for="lab-alpha">Learning rate</label><input id="lab-alpha" type="range" min="0.001" max="0.3" step="0.001" value="0.05"><label for="lab-condition">Kurvatur k</label><input id="lab-condition" type="range" min="1" max="100" value="20"><button id="lab-reset" type="button">Reset eksperimen</button><div id="lab-result" aria-live="polite"></div></section>
  <aside><h2>Batas interpretasi</h2><p>Ini gradien batch penuh deterministik, bukan eksperimen jaringan saraf. SGD memakai estimasi gradien dari sampel/minibatch; ukuran batch mengubah variasi dan biaya tiap pembaruan. Adam memakai koreksi bias m dan v, β₁=0.9, β₂=0.999, ε=10⁻⁸.</p><p><a href="https://arxiv.org/abs/1412.6980">Rujukan primer</a></p></aside>
- </div><script src="/kupasai/assets/js/laboratory.js"></script><!-- learning-aid:start -->
+ </div><script src="/kupasai/assets/js/laboratory.js"></script>
+<!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Gradien dan pembaruan bobot. <strong>Durasi:</strong> sekitar 25 menit.</p>

@@ -75,7 +75,8 @@
  <header class="page-header-content"><a class="back-link" href="/kupasai/nlp/">Kembali ke Daftar Topik</a><h1>RAG dengan Bukti dan Abstensi</h1><p>Pipeline RAG memecah sumber menjadi chunk, mengambil kandidat, dapat melakukan reranking, lalu menyusun jawaban dengan sitasi. Retrieval dan jawaban perlu dievaluasi terpisah. Sumber yang relevan belum tentu benar atau mutakhir.</p></header>
  <section aria-label="Eksperimen"><h2>Coba dan bandingkan</h2><label for="lab-query">Pertanyaan</label><input id="lab-query" maxlength="300" value="Kapan kunjungan observatorium Aruna?"><label for="lab-topk">Jumlah chunk diambil</label><input id="lab-topk" type="range" min="1" max="3" value="2"><label for="lab-evidence"><input id="lab-evidence" type="checkbox" checked> Sertakan sumber yang menjawab pertanyaan contoh</label><button id="lab-reset" type="button">Reset eksperimen</button><div id="lab-result" aria-live="polite"></div></section>
  <aside><h2>Batas interpretasi</h2><p>Demo lokal ini memakai overlap kata, tanpa embedding, reranker neural, atau LLM. Jawaban berupa kutipan sumber. Skor overlap bukan probabilitas kebenaran. Tidak ada data yang dikirim ke layanan AI.</p><p><a href="https://arxiv.org/abs/2005.11401">Rujukan primer</a></p></aside>
- </div><script src="/kupasai/assets/js/laboratory.js"></script><!-- learning-aid:start -->
+ </div><script src="/kupasai/assets/js/laboratory.js"></script>
+<!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Pencarian informasi dan question answering. <strong>Durasi:</strong> sekitar 25 menit.</p>

@@ -251,11 +251,12 @@
 
 
 
+
 <!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Vektor dan fungsi aktivasi. <strong>Durasi:</strong> sekitar 40 menit.</p>
-<details><summary>Asal data dan batas contoh</summary><p>Perceptron, jaringan huruf sintetis, pembelajaran kompetitif tanpa label, dan SOM.</p><p>Contoh prototipe tanpa label bukan LVQ terawasi. Jarak yang dipakai L1. Akurasi huruf dihitung pada data latih dan tidak mengukur generalisasi.</p></details>
+<details><summary>Asal data dan batas contoh</summary><p>Perceptron, jaringan huruf sintetis, pembelajaran kompetitif tanpa label, dan SOM.</p><p>Contoh prototipe tanpa label bukan LVQ terawasi. Pembelajaran kompetitif memakai L1; SOM memakai Euclidean. Panel pendamping membandingkan train dan test huruf sintetis yang pola pikselnya terpisah; belum mengevaluasi tulisan tangan manusia.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Mengapa bobot prototipe menjadi kontinu setelah pembaruan?</li>
 <li><strong>Eksplorasi:</strong> Bandingkan Aturan Perceptron: AND &amp; OR dengan Back Propagation: Kenali Huruf, lalu buka tab Kohonen Network.</li>
 <li><strong>Perhitungan:</strong> Hitung satu pembaruan perceptron w_baru = w + α(target − y)x untuk satu contoh input.</li>

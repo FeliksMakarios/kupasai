@@ -75,7 +75,8 @@
  <header class="page-header-content"><a class="back-link" href="/kupasai/ml/">Kembali ke Daftar Topik</a><h1>Evaluasi Model dan Data Leakage</h1><p>Bedakan training, validation, dan test. Ambang dipilih pada validasi; preprocessing dipelajari hanya pada train di setiap fold. Data sintetis di bawah sengaja tidak seimbang.</p></header>
  <section aria-label="Eksperimen"><h2>Coba dan bandingkan</h2><label for="lab-threshold">Ambang klasifikasi</label><input id="lab-threshold" type="range" min="0" max="1" step="0.05" value="0.5"><label for="lab-leak">Data yang dipakai menghitung rata-rata imputasi</label><select id="lab-leak"><option value="train">Hanya train (benar)</option><option value="all">Train + test (bocor)</option></select><button id="lab-reset" type="button">Reset eksperimen</button><div id="lab-result" aria-live="polite"></div></section>
  <aside><h2>Batas interpretasi</h2><p>Accuracy tinggi dapat menyembunyikan kegagalan mendeteksi kelas minoritas. Probabilitas terkalibrasi berarti frekuensi kejadian mendekati probabilitas yang diprediksi pada banyak contoh, bukan setiap prediksi pasti benar.</p><p><a href="https://scikit-learn.org/stable/common_pitfalls.html">Rujukan primer</a></p></aside>
- </div><script src="/kupasai/assets/js/laboratory.js"></script><!-- learning-aid:start -->
+ </div><script src="/kupasai/assets/js/laboratory.js"></script>
+<!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Klasifikasi dan probabilitas. <strong>Durasi:</strong> sekitar 25 menit.</p>

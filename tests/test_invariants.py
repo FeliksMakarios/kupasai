@@ -140,3 +140,29 @@ class AuditRegressions(unittest.TestCase):
             for question,answer,explanation in item['questions']:
                 self.assertIsInstance(answer,bool)
                 self.assertTrue(question and explanation)
+
+class ExtendedExperiments(unittest.TestCase):
+    def test_kmeans_centroids_and_inertia(self):
+        d=data('ml/clustering');points=np.array([[f['durasi'],f['jarak']] for f in d['flights']],dtype=float)
+        self.assertEqual(len(d['experiments']),24)
+        for experiment in d['experiments']:
+            x=(points-np.array(d['scaler']['mean']))/np.array(d['scaler']['scale']) if experiment['scaled'] else points
+            centers=np.array(experiment['centers']);dist=((x[:,None,:]-centers[None,:,:])**2).sum(axis=2)
+            labels=np.array(experiment['labels']);chosen=dist[np.arange(len(x)),labels]
+            np.testing.assert_allclose(chosen,dist.min(axis=1),atol=1e-6)
+            self.assertAlmostEqual(chosen.sum(),experiment['inertia'],places=5)
+            self.assertTrue(-1<=experiment['silhouette']<=1)
+    def test_heldout_glyph_metrics(self):
+        d=data('kecerdasan-komputasional/jaringan-syaraf-tiruan')['backprop']
+        self.assertEqual(d['nTrain'],20);self.assertEqual(d['nTest'],200)
+        self.assertEqual(d['testSeed'],2026)
+        for score in d['akurasiTest'].values():self.assertTrue(0<=score<=1)
+    def test_structured_learning_resources(self):
+        from PIL import Image
+        catalogue=json.loads((ROOT/'assets/lessons.json').read_text())
+        for entry in catalogue:
+            slug=entry['slug'];html=(ROOT/slug/'index.html').read_text()
+            blocks=re.findall(r'<script type="application/ld\+json">(.*?)</script>',html)
+            self.assertEqual(len(blocks),1)
+            self.assertEqual(json.loads(blocks[0])['@type'],'LearningResource')
+            with Image.open(ROOT/'assets/img'/('og-'+slug.replace('/','-')+'.png')) as image:self.assertEqual(image.size,(1200,630))

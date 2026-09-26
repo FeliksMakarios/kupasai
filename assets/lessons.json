@@ -833,7 +833,7 @@
     "prerequisite": "Vektor dan fungsi aktivasi",
     "minutes": 40,
     "provenance": "Perceptron, jaringan huruf sintetis, pembelajaran kompetitif tanpa label, dan SOM.",
-    "limits": "Contoh prototipe tanpa label bukan LVQ terawasi. Jarak yang dipakai L1. Akurasi huruf dihitung pada data latih dan tidak mengukur generalisasi.",
+    "limits": "Contoh prototipe tanpa label bukan LVQ terawasi. Pembelajaran kompetitif memakai L1; SOM memakai Euclidean. Panel pendamping membandingkan train dan test huruf sintetis yang pola pikselnya terpisah; belum mengevaluasi tulisan tangan manusia.",
     "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Linear.html",
     "order": 36,
     "reviewed": "2026-09-26",

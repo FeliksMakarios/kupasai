@@ -138,7 +138,7 @@ Data numerik dibuat ulang menggunakan skrip Python. Jalankan `python scripts/reg
 
 Sembilan topik ML Lanjut dibuat oleh `scripts/generate_advanced.py`, berdasarkan masukan di `scripts/advanced_inputs.json`. Eksperimen regularisasi memakai dataset digits, pembagian data tetap, arsitektur sama, dan tiga benih. Hasilnya merupakan eksperimen pendamping, bukan keluaran notebook asli yang belum tersedia di repositori. Tata letak diagram, skor ilustratif, dan metadata pembelajaran dibedakan dari hasil pelatihan pada panduan setiap topik.
 
-Jalankan `python scripts/build_lessons.py` untuk memperbarui panduan 34 topik (langkah Eksplorasi dan Perhitungan tiap topik ada di `STEPS` pada `scripts/lessons.py`). Jalankan `python scripts/build_seo.py` setelah menambah atau mengganti judul halaman untuk memperbarui meta deskripsi, Open Graph, dan `sitemap.xml`. Gambar pratinjau berbagi dibuat ulang dengan `python scripts/build_og_images.py`. Perilaku tab dipusatkan di `assets/js/tabs.js`. Visualisasi yang memilih warna di JavaScript diberi atribut `data-theme-aware` pada tag `viz.js`; saat tema diganti, `learning.js` membangun ulang isi `<main>` dan menjalankan ulang skripnya tanpa memuat ulang halaman. Rujukan buku yang belum memiliki judul, edisi, dan halaman terverifikasi tidak diperlakukan sebagai bukti salah cetak. Kode komputasional merupakan implementasi pengajaran mandiri. Demo pembelajaran kompetitif tidak dilabeli sebagai LVQ tersupervisi.
+Jalankan `python scripts/build_lessons.py` untuk memperbarui panduan 39 topik (langkah Eksplorasi dan Perhitungan tiap topik ada di `STEPS` pada `scripts/lessons.py`). Jalankan `python scripts/build_seo.py` setelah menambah atau mengganti judul halaman untuk memperbarui meta deskripsi, Open Graph, dan `sitemap.xml`. Gambar pratinjau berbagi dibuat ulang dengan `python scripts/build_og_images.py`. Perilaku tab dipusatkan di `assets/js/tabs.js`. Visualisasi yang memilih warna di JavaScript diberi atribut `data-theme-aware` pada tag `viz.js`; saat tema diganti, `learning.js` membangun ulang isi `<main>` dan menjalankan ulang skripnya tanpa memuat ulang halaman. Rujukan buku yang belum memiliki judul, edisi, dan halaman terverifikasi tidak diperlakukan sebagai bukti salah cetak. Kode komputasional merupakan implementasi pengajaran mandiri. Demo pembelajaran kompetitif tidak dilabeli sebagai LVQ tersupervisi.
 
 ## Pemeriksaan
 
@@ -154,3 +154,30 @@ Navigasi situs hanya berisi **Tentang** dan **Kontak** (statis, dua bahasa untuk
 ## Lisensi
 
 MIT
+
+## Pengembangan pembelajaran September 2026
+
+Katalog sekarang memuat **39 topik**: 34 modul semula dan lima laboratorium pendamping untuk evaluasi model, tokenisasi Indonesia, optimizer, RAG berbukti, serta evaluasi generatif. Halaman baru adalah simulasi lokal berukuran kecil; tidak memanggil API model dan tidak memerlukan kunci API.
+
+- Katalog dan indeks pencarian dihasilkan dari `scripts/lessons.py`, `scripts/new_lessons.py`, dan `scripts/quizzes.py`. `assets/lessons.json` adalah keluaran terstruktur; jangan menyunting keluarannya secara manual.
+- Setiap topik memiliki dua latihan dengan penjelasan. Penyelesaian ditandai setelah jawaban benar, bukan dari kunjungan. Catatan dan progres tersimpan di browser, dapat diekspor/impor tanpa akun. Impor tidak menimpa catatan lokal yang berbeda.
+- Tautan eksperimen menyertakan tab dan kontrol bernama. Catatan, jawaban kuis, dan pilihan diagram tanpa kontrol bernama tidak disertakan.
+- Tombol offline menyimpan halaman yang dipilih beserta aset lokalnya. Simpan ulang setelah pembaruan; tautan halaman lain perlu disimpan tersendiri. Data browser dapat dihapus oleh pengguna/peramban, sehingga cadangan catatan tetap diperlukan.
+- Pergantian tema mempertahankan input melalui kompatibilitas replay. NER, langkah/seleksi Transformer, dan mask dropout juga memiliki adapter `KupasState.getState/setState` yang memulihkan keadaan eksplisit. Modul baru dengan keadaan tersembunyi sebaiknya mendaftarkan adapter ini.
+- `assets/js/experiments.js` menyediakan eksperimen hitung pendamping: contoh sintetis ditandai berbeda dari hasil pelatihan ulang. Tabel memuat hasil numerik yang dapat dibaca tanpa menafsirkan warna grafik.
+
+Untuk membangun halaman dan metadata setelah menyunting konten:
+
+```sh
+python scripts/build_new_lessons.py
+python scripts/build_lessons.py
+python scripts/build_catalog.py
+python scripts/build_topic_previews.py
+python scripts/build_seo.py
+```
+
+`python scripts/regenerate.py` juga menjalankan generator data dan memerlukan akses ke dataset sumber. Pelatihan churn memakai grid search 5-fold dan dapat memakan waktu lebih lama. Snapshot embedding pendamping dibuat dengan `python scripts/generate_embedding_companion.py`: PPMI/SVD atas 30 kalimat sintetis yang disertakan, bukan benchmark embedding umum. Evaluasi huruf tambahan menolak pola piksel yang sama dengan train/test sebelumnya; hasilnya tetap terbatas pada korupsi empat template yang sama.
+
+`npm run test:learning` menjalankan pemeriksaan DOM dan numerik JavaScript tanpa browser. `npm test` menambahkan Playwright untuk seluruh 46 halaman, 364 perpindahan tab, lebar 320/390/768/1280, pemulihan tema, dan penyimpanan offline. Empat halaman representatif juga diperiksa dengan axe-core WCAG 2 A/AA dan 2.1 AA; ini bukan sertifikasi aksesibilitas menyeluruh. GitHub Actions menyimpan tangkapan layar dan hasil axe selama tujuh hari.
+
+Lihat [CHANGELOG.md](CHANGELOG.md), [THIRD_PARTY.md](THIRD_PARTY.md), dan [AUDIT_IMPLEMENTATION.md](AUDIT_IMPLEMENTATION.md) untuk perubahan, atribusi, dan batas cakupan.
