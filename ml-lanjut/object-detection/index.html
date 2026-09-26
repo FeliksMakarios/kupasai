@@ -13,13 +13,14 @@
   <meta property="og:title" content="Deteksi Objek: IoU, NMS &amp; YOLO - KupasAI">
   <meta property="og:description" content="Dari lokalisasi satu objek ke deteksi banyak objek sekaligus. Jelajahi metrik IoU, algoritma Non-Max Suppression, dan konsep grid di balik YOLO (You Only Look…">
   <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/ml-lanjut/object-detection/">
-  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-lanjut.png">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-lanjut-object-detection.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Deteksi Objek: IoU, NMS &amp; YOLO - KupasAI">
   <meta name="twitter:description" content="Dari lokalisasi satu objek ke deteksi banyak objek sekaligus. Jelajahi metrik IoU, algoritma Non-Max Suppression, dan konsep grid di balik YOLO (You Only Look…">
-  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-lanjut.png">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-lanjut-object-detection.png">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Deteksi Objek: IoU, NMS & YOLO - KupasAI", "description": "Dari lokalisasi satu objek ke deteksi banyak objek sekaligus. Jelajahi metrik IoU, algoritma Non-Max Suppression, dan konsep grid di balik YOLO (You Only Look…", "url": "https://feliksmakarios.github.io/kupasai/ml-lanjut/object-detection/", "inLanguage": "id", "learningResourceType": "Interactive lesson", "timeRequired": "PT30M", "isAccessibleForFree": true, "citation": "https://arxiv.org/abs/1612.08242"}</script>
   <!-- seo:end -->
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
   <link rel="stylesheet" href="style.css">
@@ -144,13 +145,14 @@
 <div class="tab-content" id="tab-nms" role="tabpanel" aria-labelledby="tabbtn-nms" tabindex="0">
   <div class="viz-layout">
     <div class="viz-main">
-      <p class="section-note">5 kandidat bounding box terdeteksi untuk 2 mobil berbeda. Threshold IoU untuk NMS = 0.5.</p>
+      <p class="section-note">5 kandidat bounding box terdeteksi untuk 2 mobil berbeda. Ubah ambang dan aturan kelas untuk melihat kotak yang dipertahankan.</p>
       <div class="nms-toggle-buttons">
         <button class="preset-btn nms-mode-btn active" data-mode="before" type="button">Sebelum NMS (5 box)</button>
-        <button class="preset-btn nms-mode-btn" data-mode="after" type="button">Sesudah NMS (2 box)</button>
+        <button class="preset-btn nms-mode-btn" data-mode="after" type="button">Sesudah NMS</button>
       </div>
       <div class="box-canvas-wrap">
-        <svg id="nms-canvas" style="max-width:600px"></svg>
+        <label for="nms-threshold">Ambang IoU NMS</label><input id="nms-threshold" type="range" min="0" max="1" step="0.05" value="0.5"><label><input id="nms-class-aware" type="checkbox" checked> NMS per kelas</label><label><input id="nms-mixed" type="checkbox"> Contoh tandingan: kandidat kedua berbeda kelas</label>
+      <svg id="nms-canvas" style="max-width:600px"></svg>
       </div>
       <div class="section-label">Proses Non-Max Suppression</div>
       <div class="nms-steps" id="nms-steps"></div>
@@ -160,14 +162,13 @@
       <p>
         Banyak sel grid sering mendeteksi objek yang sama, menghasilkan
         beberapa bounding box tumpang tindih. NMS memilih box dengan skor
-        (pc) tertinggi, lalu menghapus box lain yang IoU-nya &ge;
-        threshold dengan box terpilih.
+        deteksi tertinggi, lalu menghapus box lain yang IoU-nya &gt;
+        threshold dengan box terpilih; pada NMS per kelas, hanya kandidat sekelas yang saling menekan.
       </p>
       <p>
         Box 4 (mobil kedua) tidak overlap sama sekali dengan Box 0
         (IoU=0.000), sehingga tetap dipertahankan sebagai deteksi
-        terpisah &mdash; hasil akhirnya dua mobil, masing-masing terdeteksi
-        tepat satu kali.
+        terpisah. Pada konfigurasi awal tersisa dua mobil. Mengubah ambang atau kelas dapat mengubah jumlahnya; NMS tidak menjamin satu kotak per objek pada semua situasi.
       </p>
     </div>
   </div>

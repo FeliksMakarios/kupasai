@@ -7,7 +7,7 @@ function load(slug){
  w.addEventListener('error',e=>{errors.push(e.message);e.preventDefault();});
  // Defer scripts run after non-deferred scripts, matching browser ordering.
  const scripts=[...w.document.querySelectorAll('script')].sort((a,b)=>Number(a.defer)-Number(b.defer));
- for(const script of scripts){const src=script.getAttribute('src');if(src&&/theme\.js|learning\.js/.test(src))continue;const code=src?fs.readFileSync(src.startsWith('/kupasai/')?path.join(root,src.slice(9)):path.join(root,slug,src),'utf8'):script.textContent;vm.runInContext(code,dom.getInternalVMContext(),{filename:src||'inline'});}
+ for(const script of scripts){if(script.type&&script.type!=='text/javascript')continue;const src=script.getAttribute('src');if(src&&/theme\.js|learning\.js/.test(src))continue;const code=src?fs.readFileSync(src.startsWith('/kupasai/')?path.join(root,src.slice(9)):path.join(root,slug,src),'utf8'):script.textContent;vm.runInContext(code,dom.getInternalVMContext(),{filename:src||'inline'});}
  return {dom,w,d:w.document,errors};
 }
 {

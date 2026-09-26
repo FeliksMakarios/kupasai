@@ -1,5 +1,6 @@
 """Insert canonical, description, Open Graph and Twitter tags, then write sitemap.xml. Idempotent."""
 import re
+import json
 import subprocess
 from html import escape, unescape
 from pathlib import Path
@@ -41,13 +42,14 @@ def lastmod(path):
 
 pages = sorted(p for p in ROOT.glob('**/index.html') if 'node_modules' not in p.parts)
 urls = []
+catalog={d['slug']:d for d in json.loads((ROOT/'assets/lessons.json').read_text())}
 for page in pages:
     rel = page.parent.relative_to(ROOT).as_posix()
     url = BASE if rel == '.' else BASE + rel + '/'
     html = BLOCK.sub('', page.read_text())
     title = clean(re.search(r'<title>([\s\S]*?)</title>', html)[1])
     desc = describe(html, title)
-    image = BASE + 'assets/img/' + IMAGES.get(rel.split('/')[0], 'og-home.png')
+    image = BASE + 'assets/img/' + ('og-'+rel.replace('/','-')+'.png' if rel in catalog else IMAGES.get(rel.split('/')[0], 'og-home.png'))
     has_desc = '<meta name="description"' in html
     tags = [f'<link rel="canonical" href="{url}">']
     if not has_desc:
@@ -67,6 +69,10 @@ for page in pages:
         f'<meta name="twitter:description" content="{escape(desc)}">',
         f'<meta name="twitter:image" content="{image}">',
     ]
+    if rel in catalog:
+        item=catalog[rel]
+        structured={"@context":"https://schema.org","@type":"LearningResource","name":title,"description":desc,"url":url,"inLanguage":"id","learningResourceType":"Interactive lesson","timeRequired":"PT"+str(item['minutes'])+"M","isAccessibleForFree":True,"citation":item['source']}
+        tags.append('<script type="application/ld+json">'+json.dumps(structured,ensure_ascii=False).replace('<','\\u003c')+'</script>')
     block = '\n  <!-- seo:start -->\n' + '\n'.join('  ' + t for t in tags) + '\n  <!-- seo:end -->'
     html = re.sub(r'(</title>)', lambda m: m[1] + block, html, count=1)
     page.write_text(html)

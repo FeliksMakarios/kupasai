@@ -6,7 +6,7 @@ import sys
 ROOT=Path(__file__).resolve().parents[1]
 env=dict(os.environ, OMP_NUM_THREADS="2", OPENBLAS_NUM_THREADS="2")
 paths=sorted(p for course in ["ml","nlp","kecerdasan-komputasional"] for p in (ROOT/course).glob("*/generate*.py"))
-paths += [ROOT/"scripts/generate_advanced.py",ROOT/"scripts/generate_embedding_companion.py",ROOT/"scripts/build_new_lessons.py",ROOT/"scripts/build_lessons.py",ROOT/"scripts/build_catalog.py",ROOT/"scripts/build_seo.py"]
+paths += [ROOT/"scripts/generate_advanced.py",ROOT/"scripts/generate_embedding_companion.py",ROOT/"scripts/build_new_lessons.py",ROOT/"scripts/build_lessons.py",ROOT/"scripts/build_catalog.py",ROOT/"scripts/build_topic_previews.py",ROOT/"scripts/build_seo.py"]
 for path in paths:
     print(f"Rebuilding {path.relative_to(ROOT)}",flush=True)
     subprocess.run([sys.executable,str(path)],cwd=path.parent,env=env,check=True)
