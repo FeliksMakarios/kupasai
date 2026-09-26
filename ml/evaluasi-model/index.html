@@ -6,21 +6,21 @@
   <title>Evaluasi Model dan Data Leakage — KupasAI</title>
   <!-- seo:start -->
   <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/ml/evaluasi-model/">
-  <meta name="description" content="Bedakan training, validation, dan test. Ambang dipilih pada validasi; preprocessing dipelajari hanya pada train di setiap fold. Data sintetis di bawah sengaja…">
+  <meta name="description" content="JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="KupasAI">
   <meta property="og:locale" content="id_ID">
   <meta property="og:title" content="Evaluasi Model dan Data Leakage — KupasAI">
-  <meta property="og:description" content="Bedakan training, validation, dan test. Ambang dipilih pada validasi; preprocessing dipelajari hanya pada train di setiap fold. Data sintetis di bawah sengaja…">
+  <meta property="og:description" content="JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.">
   <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/ml/evaluasi-model/">
   <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-evaluasi-model.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Evaluasi Model dan Data Leakage — KupasAI">
-  <meta name="twitter:description" content="Bedakan training, validation, dan test. Ambang dipilih pada validasi; preprocessing dipelajari hanya pada train di setiap fold. Data sintetis di bawah sengaja…">
+  <meta name="twitter:description" content="JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.">
   <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-ml-evaluasi-model.png">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Evaluasi Model dan Data Leakage — KupasAI", "description": "Bedakan training, validation, dan test. Ambang dipilih pada validasi; preprocessing dipelajari hanya pada train di setiap fold. Data sintetis di bawah sengaja…", "url": "https://feliksmakarios.github.io/kupasai/ml/evaluasi-model/", "inLanguage": "id", "learningResourceType": "Interactive lesson", "timeRequired": "PT25M", "isAccessibleForFree": true, "citation": "https://scikit-learn.org/stable/common_pitfalls.html"}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Evaluasi Model dan Data Leakage — KupasAI", "description": "JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.", "url": "https://feliksmakarios.github.io/kupasai/ml/evaluasi-model/", "inLanguage": "id", "learningResourceType": "Interactive lesson", "timeRequired": "PT25M", "isAccessibleForFree": true, "citation": "https://scikit-learn.org/stable/common_pitfalls.html"}</script>
   <!-- seo:end -->
   
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
@@ -71,12 +71,11 @@
   </button>
 </nav>
 
-<main id="main-content" tabindex="-1"><div class="content-wrapper laboratory" data-lab="evaluation">
+<main id="main-content" tabindex="-1"><noscript><p class="noscript-note">JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.</p></noscript><div class="content-wrapper laboratory" data-lab="evaluation">
  <header class="page-header-content"><a class="back-link" href="/kupasai/ml/">Kembali ke Daftar Topik</a><h1>Evaluasi Model dan Data Leakage</h1><p>Bedakan training, validation, dan test. Ambang dipilih pada validasi; preprocessing dipelajari hanya pada train di setiap fold. Data sintetis di bawah sengaja tidak seimbang.</p></header>
  <section aria-label="Eksperimen"><h2>Coba dan bandingkan</h2><label for="lab-threshold">Ambang klasifikasi</label><input id="lab-threshold" type="range" min="0" max="1" step="0.05" value="0.5"><label for="lab-leak">Data yang dipakai menghitung rata-rata imputasi</label><select id="lab-leak"><option value="train">Hanya train (benar)</option><option value="all">Train + test (bocor)</option></select><button id="lab-reset" type="button">Reset eksperimen</button><div id="lab-result" aria-live="polite"></div></section>
  <aside><h2>Batas interpretasi</h2><p>Accuracy tinggi dapat menyembunyikan kegagalan mendeteksi kelas minoritas. Probabilitas terkalibrasi berarti frekuensi kejadian mendekati probabilitas yang diprediksi pada banyak contoh, bukan setiap prediksi pasti benar.</p><p><a href="https://scikit-learn.org/stable/common_pitfalls.html">Rujukan primer</a></p></aside>
- </div><script src="/kupasai/assets/js/laboratory.js"></script>
-<!-- learning-aid:start -->
+ </div><script src="/kupasai/assets/js/laboratory.js"></script><!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Klasifikasi dan probabilitas. <strong>Durasi:</strong> sekitar 25 menit.</p>

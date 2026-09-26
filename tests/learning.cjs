@@ -1,8 +1,8 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const {JSDOM}=require('jsdom');
 const root=path.resolve(__dirname,'..');
-function load(slug){
- const dom=new JSDOM(fs.readFileSync(path.join(root,slug,'index.html'),'utf8'),{runScripts:'outside-only',url:'https://example.org/kupasai/'+slug+'/',pretendToBeVisual:true}),w=dom.window,errors=[];
+function load(slug,query=''){
+ const dom=new JSDOM(fs.readFileSync(path.join(root,slug,'index.html'),'utf8'),{runScripts:'outside-only',url:'https://example.org/kupasai/'+slug+'/'+query,pretendToBeVisual:true}),w=dom.window,errors=[];
  w.matchMedia=()=>({matches:false});w.CSS={escape:s=>s};w.URL.createObjectURL=()=> 'blob:test';w.URL.revokeObjectURL=()=>{};
  w.addEventListener('error',e=>{errors.push(e.message);e.preventDefault();});
  // Defer scripts run after non-deferred scripts, matching browser ordering.
@@ -28,6 +28,10 @@ function load(slug){
  const first=m.optimize('adam',.1,20,1);assert(Math.abs(first[1][1]-1.9)<1e-7);assert(Math.abs(first[1][2]-1.9)<1e-7);
  assert.equal(w.localStorage.getItem('kupasai-progress:ml/evaluasi-model'),null);
  d.querySelector('input[name="concept-0"][value="false"]').click();d.querySelector('input[name="concept-1"][value="true"]').click();assert.equal(w.localStorage.getItem('kupasai-progress:ml/evaluasi-model'),'complete');dom.window.close();
+}
+{
+ const {dom,d,errors}=load('nlp/evaluasi-generatif','?state='+encodeURIComponent(JSON.stringify([{id:'lab-candidate',value:'does-not-exist'}])));
+ assert.equal(d.querySelector('#lab-candidate').value,'faithful');assert.deepEqual(errors,[]);dom.window.close();
 }
 const catalogue=JSON.parse(fs.readFileSync(path.join(root,'assets/lessons.json'),'utf8'));
 for(const {slug}of catalogue){const {dom,d,w,errors}=load(slug);for(const e of d.querySelectorAll('input[type=range]')){for(const value of [e.min,e.max]){e.value=value;e.dispatchEvent(new w.Event('input',{bubbles:true}));}}for(const select of d.querySelectorAll('select')){for(let i=0;i<select.options.length;i++){select.selectedIndex=i;select.dispatchEvent(new w.Event('change',{bubbles:true}));}}assert.deepEqual(errors,[],slug);assert.equal(d.querySelectorAll('#concept-checks fieldset').length,2,slug);dom.window.close();}

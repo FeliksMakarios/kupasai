@@ -6,21 +6,21 @@
   <title>Evaluasi Teks Generatif — KupasAI</title>
   <!-- seo:start -->
   <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/nlp/evaluasi-generatif/">
-  <meta name="description" content="Pisahkan kesamaan teks, cakupan informasi, dan dukungan faktual. ROUGE-L memakai longest common subsequence. Skor tinggi dapat muncul pada teks yang salah…">
+  <meta name="description" content="JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="KupasAI">
   <meta property="og:locale" content="id_ID">
   <meta property="og:title" content="Evaluasi Teks Generatif — KupasAI">
-  <meta property="og:description" content="Pisahkan kesamaan teks, cakupan informasi, dan dukungan faktual. ROUGE-L memakai longest common subsequence. Skor tinggi dapat muncul pada teks yang salah…">
+  <meta property="og:description" content="JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.">
   <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/nlp/evaluasi-generatif/">
   <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp-evaluasi-generatif.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Evaluasi Teks Generatif — KupasAI">
-  <meta name="twitter:description" content="Pisahkan kesamaan teks, cakupan informasi, dan dukungan faktual. ROUGE-L memakai longest common subsequence. Skor tinggi dapat muncul pada teks yang salah…">
+  <meta name="twitter:description" content="JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.">
   <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-nlp-evaluasi-generatif.png">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Evaluasi Teks Generatif — KupasAI", "description": "Pisahkan kesamaan teks, cakupan informasi, dan dukungan faktual. ROUGE-L memakai longest common subsequence. Skor tinggi dapat muncul pada teks yang salah…", "url": "https://feliksmakarios.github.io/kupasai/nlp/evaluasi-generatif/", "inLanguage": "id", "learningResourceType": "Interactive lesson", "timeRequired": "PT25M", "isAccessibleForFree": true, "citation": "https://aclanthology.org/2020.acl-main.173/"}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Evaluasi Teks Generatif — KupasAI", "description": "JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.", "url": "https://feliksmakarios.github.io/kupasai/nlp/evaluasi-generatif/", "inLanguage": "id", "learningResourceType": "Interactive lesson", "timeRequired": "PT25M", "isAccessibleForFree": true, "citation": "https://aclanthology.org/2020.acl-main.173/"}</script>
   <!-- seo:end -->
   
   <link rel="stylesheet" href="/kupasai/assets/css/main.css">
@@ -71,12 +71,11 @@
   </button>
 </nav>
 
-<main id="main-content" tabindex="-1"><div class="content-wrapper laboratory" data-lab="generation">
+<main id="main-content" tabindex="-1"><noscript><p class="noscript-note">JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.</p></noscript><div class="content-wrapper laboratory" data-lab="generation">
  <header class="page-header-content"><a class="back-link" href="/kupasai/nlp/">Kembali ke Daftar Topik</a><h1>Evaluasi Teks Generatif</h1><p>Pisahkan kesamaan teks, cakupan informasi, dan dukungan faktual. ROUGE-L memakai longest common subsequence. Skor tinggi dapat muncul pada teks yang salah fakta; sinonim dapat menghasilkan skor lebih rendah walaupun maknanya benar.</p></header>
  <section aria-label="Eksperimen"><h2>Coba dan bandingkan</h2><label for="lab-candidate">Kandidat ringkasan</label><select id="lab-candidate"><option value="faithful">Ringkasan setia</option><option value="false">Angka salah</option><option value="paraphrase">Parafrasa setia</option><option value="abstain">Tidak menjawab</option></select><button id="lab-reset" type="button">Reset eksperimen</button><div id="lab-result" aria-live="polite"></div></section>
  <aside><h2>Batas interpretasi</h2><p>Penilaian fakta di contoh tersimpan dibuat manual dari sumber. Untuk teks bebas, demo hanya menghitung metrik leksikal; jangan menganggapnya pemeriksa fakta otomatis. Uji negasi, angka, parafrasa, konteks kosong, dan sumber yang bertentangan.</p><p><a href="https://aclanthology.org/2020.acl-main.173/">Rujukan primer</a></p></aside>
- </div><script src="/kupasai/assets/js/laboratory.js"></script>
-<!-- learning-aid:start -->
+ </div><script src="/kupasai/assets/js/laboratory.js"></script><!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
 <p><strong>Prasyarat:</strong> Ringkasan dan metrik teks. <strong>Durasi:</strong> sekitar 25 menit.</p>

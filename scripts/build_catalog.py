@@ -18,7 +18,7 @@ for order,d in enumerate(items):d.update(order=order,reviewed='2026-09-26',quest
 (ROOT/'assets/lessons.json').write_text(json.dumps(items,ensure_ascii=False,indent=2)+'\n')
 (ROOT/'assets/js/catalog-data.js').write_text('window.KupasCatalog='+json.dumps(items,ensure_ascii=False)+';\n')
 for d in items:
- p=ROOT/d['slug']/'index.html';s=p.read_text();s=re.sub(r'<!-- catalog:start -->[\s\S]*?<!-- catalog:end -->','',s)
+ p=ROOT/d['slug']/'index.html';s=p.read_text();s=re.sub(r'<!-- catalog:start -->[\s\S]*?<!-- catalog:end -->\n?','',s)
  siblings=[x for x in items if x['slug'].split('/')[0]==d['slug'].split('/')[0]];i=siblings.index(d)
  links=[]
  for label,ix in [('← Sebelumnya',i-1),('Berikutnya →',i+1)]:
@@ -39,7 +39,7 @@ for p in ROOT.glob('**/index.html'):
  p.write_text(s)
 # Static links remain useful without JS and expose all new modules to crawlers.
 for course in ['ml','ml-lanjut','nlp','kecerdasan-komputasional']:
- p=ROOT/course/'index.html';s=p.read_text();s=re.sub(r'<!-- extras:start -->[\s\S]*?<!-- extras:end -->','',s)
+ p=ROOT/course/'index.html';s=p.read_text();s=re.sub(r'<!-- extras:start -->[\s\S]*?<!-- extras:end -->\n?','',s)
  additions=[d for d in items if d['slug'] in NEW and d['slug'].startswith(course+'/')]
  if additions:s=s.replace('</main>','<!-- extras:start --><section class="content-wrapper"><h2>Laboratorium Pendamping</h2><ul>'+''.join(f'<li><a href="/kupasai/{d["slug"]}/">{escape(d["title"])}</a> — {d["minutes"]} menit</li>' for d in additions)+'</ul></section><!-- extras:end -->\n</main>')
  p.write_text(s)
