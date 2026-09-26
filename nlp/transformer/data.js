@@ -60,7 +60,7 @@ var TRANSFORMER_DATA = {
       },
       {
         title: "Residual Connection + Layer Norm",
-        desc: "Output attention ditambahkan ke input asli (residual), lalu dinormalisasi. Ini mencegah vanishing gradient dan menstabilkan training pada jaringan yang dalam.",
+        desc: "Output attention ditambahkan ke input asli (residual), lalu dinormalisasi. Residual menyediakan lintasan gradien tambahan dan normalisasi membantu kestabilan; keduanya tidak menjamin gradien selalu stabil.",
         formula: "output = LayerNorm(x + Sublayer(x))",
       },
       {

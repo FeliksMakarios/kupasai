@@ -113,3 +113,30 @@ class Maintenance(unittest.TestCase):
                 if 'class="tab-btn' in s:self.assertLess(s.index('assets/js/tabs.js'),s.index('src="viz.js"'),str(rel))
                 themed='data-theme' in (p.parent/'viz.js').read_text()
                 self.assertEqual(themed,'data-theme-aware' in s,str(rel))
+
+class AuditRegressions(unittest.TestCase):
+    def test_churn_threshold_confusion_matrices(self):
+        d=data('ml/churn-prediction')
+        for model in ['lr','rf']:
+            previous=None
+            for row in d['evaluation'][model]:
+                matrix=np.array(row['matrix'])
+                self.assertEqual(matrix.sum(),d['n_test'])
+                self.assertTrue((matrix>=0).all())
+                self.assertEqual(matrix[1].sum(),400)
+                predicted=matrix[:,1].sum()
+                if previous is not None:self.assertLessEqual(predicted,previous)
+                previous=predicted
+            tn,fp,fn,tp=np.array(d['evaluation'][model][50]['matrix']).ravel()
+            self.assertAlmostEqual(tp/(tp+fp),d['metrics_'+model]['precision'],places=4)
+            self.assertAlmostEqual(tp/(tp+fn),d['metrics_'+model]['recall'],places=4)
+    def test_catalogue_complete(self):
+        catalogue=json.loads((ROOT/'assets/lessons.json').read_text())
+        self.assertEqual(len(catalogue),39)
+        self.assertEqual(len({d['slug'] for d in catalogue}),39)
+        for item in catalogue:
+            self.assertTrue((ROOT/item['slug']/'index.html').exists())
+            self.assertEqual(len(item['questions']),2)
+            for question,answer,explanation in item['questions']:
+                self.assertIsInstance(answer,bool)
+                self.assertTrue(question and explanation)

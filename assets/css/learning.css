@@ -72,3 +72,5 @@ main p a:not([class]),main li a:not([class]) {text-decoration:underline;text-und
  .learning-aid,.topic-tools{overflow-wrap:anywhere}
  fieldset{min-width:0}
 }
+
+#extra-experiment label{display:block;margin:.6rem 0 .2rem}#extra-experiment input,#extra-experiment select{padding:.4rem;color:var(--text-primary);background:var(--bg-primary);border:1px solid var(--text-muted);border-radius:4px}

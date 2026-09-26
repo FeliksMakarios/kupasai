@@ -161,7 +161,7 @@
         main.replaceWith(node);
         // Imported <script> elements stay inert; page scripts run again as fresh copies.
         var sources=[].slice.call(doc.body.querySelectorAll('script[src]')).map(function(x){return x.getAttribute('src');})
-          .concat(['/kupasai/assets/js/catalog.js'])
+          .concat(['/kupasai/assets/js/experiments.js','/kupasai/assets/js/catalog.js'])
           .filter(function(src){return !/vendor\/|data\.js$|theme\.js$|learning\.js$/.test(src);});
         return sources.reduce(function(chain,src){return chain.then(function(){return new Promise(function(resolve,reject){
           var s=document.createElement('script');s.src=src;s.onload=function(){s.remove();resolve();};s.onerror=reject;document.body.appendChild(s);
