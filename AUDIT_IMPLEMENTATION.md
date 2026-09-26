@@ -28,7 +28,7 @@ Contoh terlatih tambahan mencakup PPMI/SVD dari korpus mini asli, K-means pada 2
 - Tautan parameter mencakup tab dan kontrol HTML bernama. Keadaan lain dipertahankan selama pergantian tema sejauh diuji, tetapi belum diserialisasi ke URL.
 - Adapter keadaan eksplisit baru diterapkan pada modul yang paling rentan. Modul lainnya masih memakai mekanisme kompatibilitas replay; ini pilihan migrasi bertahap, bukan klaim seluruh renderer telah ditulis ulang.
 - Pengujian browser otomatis memeriksa seluruh halaman dan tab. Axe mencakup empat halaman representatif; pemeriksaan manual semua pembaca layar, semua kombinasi zoom, serta pengukuran Lighthouse lapangan belum dilakukan.
-- Beberapa rekomendasi audit tetap arah pengembangan lebih lanjut: demonstrasi bootstrap/per-split tree yang lengkap, penyuntingan graf umum, dan reranking neural. Eksperimen pendamping menyajikan bagian konsep yang dapat diperiksa dalam aplikasi statis; fitur penuh tersebut tidak diklaim selesai.
+- Cakupan laboratorium dibatasi pada contoh pedagogis yang dapat diperiksa: forest mini menggunakan bootstrap dan kandidat fitur per node; graf pencarian memakai tiga simpul berbobot yang dapat diedit; RAG memakai retrieval leksikal. Ketiganya tidak diklaim sebagai sistem produksi atau benchmark neural.
 
 ## Pengujian
 
