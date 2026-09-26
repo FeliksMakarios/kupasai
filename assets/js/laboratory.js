@@ -69,8 +69,10 @@
     }else if(kind==='rag'){
       const docs=[{id:'A',text:'Observatorium Aruna membuka kunjungan setiap Sabtu pukul 19.00.',answers:['kapan','jam','buka','kunjungan']},{id:'B',text:'Observatorium Aruna memakai teleskop reflektor untuk melihat bintang.',answers:['alat','teleskop']},{id:'C',text:'Perpustakaan Aruna menyediakan buku astronomi pada hari Senin.',answers:['perpustakaan','buku']}];
       const query=tokens(el('query').value),q=new Set(query),available=docs.filter(d=>d.id!=='A'||el('evidence').checked);
-      const ranked=available.map(d=>({...d,score:[...new Set(tokens(d.text))].filter(t=>q.has(t)).length})).sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id)).slice(0,+el('topk').value);
-      table(['Chunk','Overlap','Bukti (korpus fiktif)'],ranked.map(d=>[d.id,d.score,d.text]));
+      const candidates=available.map(d=>({...d,score:[...new Set(tokens(d.text))].filter(t=>q.has(t)).length}));
+      const ranked=candidates.map(d=>({...d,rerank:d.score+(el('rerank').checked&&d.answers.some(t=>q.has(t))?2:0)})).sort((a,b)=>b.rerank-a.rerank||a.id.localeCompare(b.id)).slice(0,+el('topk').value);
+      table(['Chunk','Overlap','Skor rerank','Bukti (korpus fiktif)'],ranked.map(d=>[d.id,d.score,d.rerank,d.text]));
+      paragraph('Satu kalimat menjadi satu chunk pada korpus ini. Reranking opsional menambah 2 jika kata maksud pertanyaan cocok dengan daftar aturan per chunk. Ini heuristik transparan, bukan reranker neural; tidak menjamin relevansi.');
       const answer=ranked.find(d=>d.score>0&&d.answers.some(t=>q.has(t)));
       paragraph(answer?'Jawaban ekstraktif ['+answer.id+']: '+answer.text:'Bukti cukup tidak ditemukan oleh aturan demo; saya tidak dapat menjawab dari korpus ini.');
       paragraph('Untuk pertanyaan contoh “Kapan kunjungan observatorium Aruna?”, chunk acuan A. Recall@k pada pertanyaan itu = '+Number(ranked.some(d=>d.id==='A'))+'. Jika pertanyaan diubah, acuan A tidak otomatis berlaku. Kebijakan jawab demo memakai daftar kata kunci terbatas, sehingga dapat abstain walau bukti ada.');
