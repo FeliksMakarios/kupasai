@@ -17,7 +17,7 @@ class Tags(HTMLParser):
     def handle_starttag(self,tag,attrs):self.tags.append((tag,dict(attrs)))
 class Site(unittest.TestCase):
     def test_pages_and_assets(self):
-        pages=[p for p in ROOT.glob('**/index.html') if 'node_modules' not in p.parts];self.assertEqual(len(pages),len(json.loads((ROOT/"assets/lessons.json").read_text()))+7)
+        pages=[p for p in ROOT.glob('**/index.html') if 'node_modules' not in p.parts];self.assertEqual(len(pages),2*len(json.loads((ROOT/"assets/lessons.json").read_text()))+8)
         for p in pages:
             s=p.read_text();tags=Tags(s).tags
             ids=[a['id'] for t,a in tags if 'id' in a]
@@ -28,7 +28,9 @@ class Site(unittest.TestCase):
                     if not url or ':' in url or url.startswith('//'):continue
                     target=ROOT/url.removeprefix('/kupasai/') if url.startswith('/kupasai/') else p.parent/url
                     self.assertTrue(target.exists(),f'{p.relative_to(ROOT)}: {url}')
-            if (p.parent/'viz.js').exists():self.assertEqual(s.count('learning-aid:start'),1,str(p))
+            if (p.parent/'viz.js').exists():
+                self.assertNotIn('id="reflection"',s,str(p))
+                self.assertIn('/laboratorium/',s,str(p))
     def test_backprop_finite_differences(self):
         d=data('ml-lanjut/backprop-visualizer');x=np.array(d['x']);w=np.array(d['W01_initial']);v=np.array(d['W12_initial']);t=d['target'];eps=1e-6
         def loss(w,v):return .5*(np.maximum(x@w,0)@v-t)**2
@@ -166,3 +168,18 @@ class ExtendedExperiments(unittest.TestCase):
             self.assertEqual(len(blocks),1)
             self.assertEqual(json.loads(blocks[0])['@type'],'LearningResource')
             with Image.open(ROOT/'assets/img'/('og-'+slug.replace('/','-')+'.png')) as image:self.assertEqual(image.size,(1200,630))
+
+class LearningSpaces(unittest.TestCase):
+    def test_companion_spaces(self):
+        for topic in json.loads((ROOT/'assets/lessons.json').read_text()):
+            slug=topic['slug'];visual=(ROOT/slug/'index.html').read_text();lab=(ROOT/slug/'laboratorium/index.html').read_text()
+            self.assertNotIn('concept-checks',visual)
+            self.assertNotIn('learning-aid:start',visual)
+            self.assertIn('id="reflection"',lab)
+            self.assertNotIn('src="viz.js"',lab)
+            self.assertEqual(len([a for t,a in Tags(lab).tags if a.get('role')=='tab']),3)
+            self.assertEqual(len([a for t,a in Tags(lab).tags if a.get('role')=='tabpanel']),3)
+    def test_discovery_moved_to_tracks(self):
+        home=(ROOT/'index.html').read_text();track=(ROOT/'trek-belajar/index.html').read_text()
+        self.assertNotIn('Mulai Belajar',home);self.assertNotIn('topic-search',home)
+        for audience in ['mahasiswa','pemula','praktisi']:self.assertIn('value="'+audience+'"',track)

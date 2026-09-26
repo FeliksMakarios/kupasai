@@ -5,8 +5,8 @@ import re
 from lessons import LESSONS, STEPS
 ROOT=Path(__file__).resolve().parents[1]
 SOURCE='https://github.com/FeliksMakarios/kupasai/tree/main/'
-for topic,(prereq,minutes,origin,note,predict,transfer,reference) in LESSONS.items():
-    page=ROOT/topic/'index.html';s=page.read_text()
+def learning_aid(topic):
+    prereq,minutes,origin,note,predict,transfer,reference = LESSONS[topic]
     explore,compute=STEPS[topic]
     section=f'''<!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
@@ -22,20 +22,15 @@ for topic,(prereq,minutes,origin,note,predict,transfer,reference) in LESSONS.ite
 <p><a href="{escape(reference)}" target="_blank" rel="noopener">Rujukan utama</a> · <a href="{SOURCE+topic}" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
 <p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->'''
-    s=re.sub(r'<!-- learning-aid:start -->[\s\S]*?<!-- learning-aid:end -->\n?','',s)
-    pos=s.find('</main>')
-    if pos<0:pos=s.find('<footer')
-    if pos<0:pos=s.find('</body>')
-    s=s[:pos]+section+'\n'+s[pos:]
-    page.write_text(s)
-for course in ['ml','ml-lanjut','nlp','kecerdasan-komputasional']:
-    p=ROOT/course/'index.html';s=p.read_text().replace('Estimasi Effort','Durasi Belajar')
-    def duration(m):
-        row=m.group();link=re.search(r'href="([^"#]+)',row)
-        if not link:return row
-        target=course+'/'+link[1].strip('/').replace('/index.html','')
-        if target not in LESSONS:return row
-        return re.sub(r'(<span class="effort-badge">).*?(</span>)',r'\g<1>'+str(LESSONS[target][1])+' menit'+r'\g<2>',row)
-    s=re.sub(r'<tr>[\s\S]*?</tr>',duration,s)
-    p.write_text(s)
-print(f'Updated learning aids for {len(LESSONS)} topics')
+    return section
+
+if __name__ == '__main__':
+    for topic in LESSONS:
+        lab=ROOT/topic/'laboratorium/index.html'
+        page=lab if lab.exists() else ROOT/topic/'index.html'
+        s=page.read_text()
+        pattern=r'<!-- learning-aid:start -->[\s\S]*?<!-- learning-aid:end -->'
+        if re.search(pattern,s):s=re.sub(pattern,lambda _:learning_aid(topic),s)
+        else:s=s.replace('</main>',learning_aid(topic)+'\n</main>')
+        page.write_text(s)
+    print(f'Updated learning aids for {len(LESSONS)} topics')

@@ -181,3 +181,11 @@ python scripts/build_seo.py
 `npm run test:learning` menjalankan pemeriksaan DOM dan numerik JavaScript tanpa browser. `npm test` menambahkan Playwright untuk seluruh 46 halaman, 364 perpindahan tab, lebar 320/390/768/1280, pemulihan tema, dan penyimpanan offline. Empat halaman representatif juga diperiksa dengan axe-core WCAG 2 A/AA dan 2.1 AA; ini bukan sertifikasi aksesibilitas menyeluruh. GitHub Actions menyimpan tangkapan layar dan hasil axe selama tujuh hari.
 
 Lihat [CHANGELOG.md](CHANGELOG.md), [THIRD_PARTY.md](THIRD_PARTY.md), dan [AUDIT_IMPLEMENTATION.md](AUDIT_IMPLEMENTATION.md) untuk perubahan, atribusi, dan batas cakupan.
+
+### Visualisasi, laboratorium, dan trek belajar
+
+Setiap topik memiliki dua alamat: `/<mata-kuliah>/<topik>/` untuk visualisasi dan `/<mata-kuliah>/<topik>/laboratorium/` untuk eksperimen perhitungan, panduan, dan kuis. Catatan menggunakan identitas topik yang sama dengan versi halaman tunggal, sehingga catatan lama tetap tersedia. Durasi pada daftar merupakan estimasi total kedua bagian, bukan durasi masing-masing tombol.
+
+Menu **Trek Belajar** (`/trek-belajar/`) menyediakan profil Mahasiswa, Pemula, dan Praktisi. Trek Mahasiswa mengikuti urutan mata kuliah; metadata minggu tersimpan dalam `scripts/course_weeks.json`, sedangkan topik pengayaan tidak diberi minggu RPS. Urutan trek umum berada di `assets/js/tracks.js` dan merujuk katalog yang sama.
+
+Untuk membangun ulang halaman tanpa melatih ulang dataset, jalankan berurutan `python scripts/build_new_lessons.py`, `python scripts/build_lessons.py`, `python scripts/build_catalog.py`, dan `python scripts/build_seo.py`. Terdapat 86 halaman index: 39 visualisasi, 39 laboratorium, empat daftar mata kuliah, beranda, tentang, kontak, dan trek belajar.
