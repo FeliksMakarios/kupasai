@@ -1,27 +1,25 @@
-/* Shared tab behaviour: click to switch, Left/Right arrows move between tabs. */
+/* Accessible tabs with shareable selection and keyboard navigation. */
 (function () {
   'use strict';
-  var tabBtns = document.querySelectorAll('.tab-btn');
-  var tabContents = document.querySelectorAll('.tab-content');
-  function activateTab(btn) {
+  var tabBtns = Array.from(document.querySelectorAll('.tab-btn'));
+  if (!tabBtns.length) return;
+  function activateTab(btn, writeUrl) {
     var target = btn.getAttribute('data-tab');
-    tabBtns.forEach(function (b) { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); b.setAttribute('tabindex', '-1'); });
-    tabContents.forEach(function (c) { c.classList.remove('active'); });
-    btn.classList.add('active'); btn.setAttribute('aria-selected', 'true'); btn.setAttribute('tabindex', '0');
-    var panel=document.getElementById('tab-' + target);
-    if(panel)panel.classList.add('active');
-    var url=new URL(location.href);url.searchParams.set('tab',target);history.replaceState(null,'',url);
+    tabBtns.forEach(function (b) {
+      var active = b === btn, panel = document.getElementById(b.getAttribute('aria-controls') || 'tab-' + b.dataset.tab);
+      b.classList.toggle('active', active); b.setAttribute('aria-selected', String(active)); b.tabIndex = active ? 0 : -1;
+      if (panel) { panel.classList.toggle('active', active); panel.hidden = !active; }
+    });
+    if (writeUrl) { var url=new URL(location.href);url.searchParams.set('tab',target);history.replaceState(null,'',url); }
   }
   var initial=new URLSearchParams(location.search).get('tab');
-  tabBtns.forEach(function(btn){if(btn.getAttribute('data-tab')===initial)activateTab(btn);});
+  activateTab(tabBtns.find(function(b){return b.dataset.tab===initial;}) || tabBtns.find(function(b){return b.classList.contains('active');}) || tabBtns[0], false);
   tabBtns.forEach(function (btn, i) {
-    btn.addEventListener('click', function () { activateTab(btn); btn.focus(); });
+    btn.addEventListener('click', function () { activateTab(btn, true); btn.focus(); });
     btn.addEventListener('keydown', function (e) {
-      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      if (!['ArrowRight','ArrowLeft','Home','End'].includes(e.key)) return;
       e.preventDefault();
-      var next = e.key === 'ArrowRight' ? i + 1 : i - 1;
-      if (next < 0) next = tabBtns.length - 1;
-      if (next >= tabBtns.length) next = 0;
+      var next=e.key==='Home'?0:e.key==='End'?tabBtns.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabBtns.length)%tabBtns.length;
       tabBtns[next].click();
     });
   });

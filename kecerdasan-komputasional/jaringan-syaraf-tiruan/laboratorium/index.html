@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laboratorium: Jaringan Saraf Tiruan — KupasAI</title>
+  <!-- seo:start -->
+  <link rel="canonical" href="https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/jaringan-syaraf-tiruan/laboratorium/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KupasAI">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Laboratorium: Jaringan Saraf Tiruan — KupasAI">
+  <meta property="og:description" content="Latihan perhitungan, panduan belajar mandiri, dan uji pemahaman untuk Jaringan Saraf Tiruan.">
+  <meta property="og:url" content="https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/jaringan-syaraf-tiruan/laboratorium/">
+  <meta property="og:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-komp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Laboratorium: Jaringan Saraf Tiruan — KupasAI">
+  <meta name="twitter:description" content="Latihan perhitungan, panduan belajar mandiri, dan uji pemahaman untuk Jaringan Saraf Tiruan.">
+  <meta name="twitter:image" content="https://feliksmakarios.github.io/kupasai/assets/img/og-komp.png">
+  <!-- seo:end --><meta name="description" content="Latihan perhitungan, panduan belajar mandiri, dan uji pemahaman untuk Jaringan Saraf Tiruan.">
+<link rel="stylesheet" href="/kupasai/assets/css/main.css"><link rel="stylesheet" href="/kupasai/assets/css/learning.css"><link rel="stylesheet" href="/kupasai/assets/css/catalog.css">
+<link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
+<script>
+    (function() {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e) {}
+    })();
+  </script>
+<script src="/kupasai/assets/js/state.js"></script><script src="/kupasai/assets/js/learning.js" defer></script>
+<script src="/kupasai/kecerdasan-komputasional/jaringan-syaraf-tiruan/data.js"></script>
+
+<script src="/kupasai/assets/js/experiments.js" defer></script><script src="/kupasai/assets/js/catalog-data.js" defer></script><script src="/kupasai/assets/js/catalog.js" defer></script><script src="/kupasai/assets/js/offline.js" defer></script>
+</head><body><nav class="navbar">
+  <a href="/kupasai/" class="navbar-brand">Kupas<span class="brand-accent">AI</span></a>
+  <ul class="navbar-links">
+    <li><a href="/kupasai/trek-belajar/">Trek Belajar</a></li>
+    <li><a href="/kupasai/tentang/">Tentang</a></li>
+    <li><a href="/kupasai/kontak/">Kontak</a></li>
+  </ul>
+  <div class="navbar-spacer"></div>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema" title="Ganti tema">
+    <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</nav>
+<main id="main-content" tabindex="-1" data-topic="kecerdasan-komputasional/jaringan-syaraf-tiruan" data-space="laboratorium"><div class="companion-layout">
+<header class="companion-header"><a class="back-link" href="/kupasai/kecerdasan-komputasional/jaringan-syaraf-tiruan/">← Kembali ke Visualisasi</a><p class="eyebrow">Laboratorium Pendamping</p><h1>Jaringan Saraf Tiruan</h1><p class="topic-meta">Minggu 9-10 · Estimasi seluruh topik 40 menit</p></header>
+<noscript><p class="noscript-note">Aktifkan JavaScript untuk eksperimen dan kuis. Panduan belajar tetap dapat dibaca di bawah.</p></noscript>
+<div class="companion-tabs" role="tablist" aria-label="Bagian laboratorium"><button class="tab-btn active" role="tab" id="tabbtn-eksperimen" aria-controls="tab-eksperimen" aria-selected="true" tabindex="0" data-tab="eksperimen">Eksperimen Perhitungan</button><button class="tab-btn" role="tab" id="tabbtn-panduan" aria-controls="tab-panduan" aria-selected="false" tabindex="-1" data-tab="panduan">Panduan Belajar Mandiri</button><button class="tab-btn" role="tab" id="tabbtn-uji" aria-controls="tab-uji" aria-selected="false" tabindex="-1" data-tab="uji">Uji Pemahaman</button></div><div class="tab-content active" id="tab-eksperimen" role="tabpanel" aria-labelledby="tabbtn-eksperimen" tabindex="0"><div id="companion-experiment"></div></div><div class="tab-content" id="tab-panduan" role="tabpanel" aria-labelledby="tabbtn-panduan" tabindex="0"><!-- learning-aid:start -->
+<section class="learning-aid" aria-label="Panduan belajar mandiri">
+<h2>Panduan Belajar Mandiri</h2>
+<p><strong>Prasyarat:</strong> Vektor dan fungsi aktivasi. <strong>Estimasi seluruh topik:</strong> sekitar 40 menit.</p>
+<details><summary>Asal data dan batas contoh</summary><p>Perceptron, jaringan huruf sintetis, pembelajaran kompetitif tanpa label, dan SOM.</p><p>Contoh prototipe tanpa label bukan LVQ terawasi. Pembelajaran kompetitif memakai L1; SOM memakai Euclidean. Panel pendamping membandingkan train dan test huruf sintetis yang pola pikselnya terpisah; belum mengevaluasi tulisan tangan manusia.</p></details>
+<ol><li><strong>Prediksi sebelum mencoba:</strong> Mengapa bobot prototipe menjadi kontinu setelah pembaruan?</li>
+<li><strong>Eksplorasi:</strong> Bandingkan Aturan Perceptron: AND &amp; OR dengan Back Propagation: Kenali Huruf, lalu buka tab Kohonen Network.</li>
+<li><strong>Perhitungan:</strong> Hitung satu pembaruan perceptron w_baru = w + α(target − y)x untuk satu contoh input.</li>
+<li><strong>Refleksi dan transfer:</strong> Bandingkan pembaruan prototipe tanpa label dengan LVQ berlabel.</li></ol>
+<label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
+<p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>
+<p><a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.Linear.html" target="_blank" rel="noopener">Rujukan utama</a> · <a href="https://github.com/FeliksMakarios/kupasai/tree/main/kecerdasan-komputasional/jaringan-syaraf-tiruan" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
+<p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
+<details class="note-backup"><summary>Cadangkan catatan dan progres</summary><div class="learning-actions"><button id="export-notes" type="button">Ekspor catatan dan progres</button><label for="import-notes">Impor cadangan JSON</label><input id="import-notes" type="file" accept="application/json"></div><p id="backup-status" role="status"></p></details></section><!-- learning-aid:end --></div><div class="tab-content" id="tab-uji" role="tabpanel" aria-labelledby="tabbtn-uji" tabindex="0"><section class="learning-aid topic-tools"><h2>Uji Pemahaman</h2><p>Dua latihan dengan penjelasan. Progres dihitung setelah semua jawaban benar; membuka halaman saja tidak menandai selesai.</p><div id="concept-checks"></div><p id="quiz-status" role="status"></p></section></div>
+<div class="companion-utilities"><div class="learning-actions"><button id="share-controls" type="button">Salin tautan eksperimen</button><button id="reset-controls" type="button">Reset kontrol</button></div><p id="learning-status" role="status"></p></div><nav class="lesson-sequence" aria-label="Urutan belajar"><a href="/kupasai/kecerdasan-komputasional/penalaran-ketidakpastian/laboratorium/">← Sebelumnya: Penalaran Ketidakpastian dan Kesamaan Dokumen</a> <a href="/kupasai/kecerdasan-komputasional/algoritma-genetika/laboratorium/">Berikutnya →: Algoritma Genetika</a></nav>
+</div></main>
+<script src="/kupasai/assets/js/tabs.js"></script><script src="/kupasai/assets/js/theme.js"></script></body></html>

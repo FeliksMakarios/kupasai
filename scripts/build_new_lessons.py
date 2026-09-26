@@ -12,7 +12,7 @@ head=re.sub(r'<title>.*?</title>','<title>{title} — KupasAI</title>',head)
 for slug,d in NEW.items():
  p=ROOT/slug;p.mkdir(exist_ok=True)
  h=head.replace('{title}',escape(d['title']))
- h=re.sub(r'<span class="navbar-meta">.*?</span>','<span class="navbar-meta">Laboratorium pendamping</span>',h)
+ h=re.sub(r'<span class="navbar-meta">.*?</span>','<span class="navbar-meta">Materi pengayaan</span>',h)
  h=h.replace('</head>','<link rel="stylesheet" href="/kupasai/assets/css/laboratory.css">\n</head>')
  h+=f'''<main id="main-content" tabindex="-1"><noscript><p class="noscript-note">JavaScript diperlukan untuk menjalankan eksperimen. Penjelasan konsep dan tautan rujukan tetap dapat dibaca.</p></noscript><div class="content-wrapper laboratory" data-lab="{d['kind']}">
  <header class="page-header-content"><a class="back-link" href="/kupasai/{slug.split('/')[0]}/">Kembali ke Daftar Topik</a><h1>{escape(d['title'])}</h1><p>{escape(d['intro'])}</p></header>

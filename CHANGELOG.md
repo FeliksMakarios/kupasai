@@ -1,3 +1,11 @@
+## 2026-09-26 — Pemisahan ruang belajar
+
+- Pisahkan 39 halaman visualisasi dari laboratorium pendamping bertab.
+- Ubah daftar topik menjadi judul, minggu RPS, estimasi durasi, dan dua tombol.
+- Pindahkan Mulai Belajar dari beranda ke Trek Belajar untuk Mahasiswa, Pemula, dan Praktisi.
+- Pertahankan catatan dan progres lama; batasi ukuran catatan secara vertikal.
+- Perluas pengujian menjadi 86 halaman, termasuk navigasi lab, trek, dan migrasi catatan.
+
 # Perubahan
 
 ## 2026-09-26
