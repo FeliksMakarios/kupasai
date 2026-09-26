@@ -178,7 +178,7 @@ python scripts/build_seo.py
 
 `python scripts/regenerate.py` juga menjalankan generator data dan memerlukan akses ke dataset sumber. Pelatihan churn memakai grid search 5-fold dan dapat memakan waktu lebih lama. Snapshot embedding pendamping dibuat dengan `python scripts/generate_embedding_companion.py`: PPMI/SVD atas 30 kalimat sintetis yang disertakan, bukan benchmark embedding umum. Evaluasi huruf tambahan menolak pola piksel yang sama dengan train/test sebelumnya; hasilnya tetap terbatas pada korupsi empat template yang sama.
 
-`npm run test:learning` menjalankan pemeriksaan DOM dan numerik JavaScript tanpa browser. `npm test` menambahkan Playwright untuk seluruh 86 halaman, termasuk tab visualisasi dan laboratorium, lebar 320/390/768/1280, pemulihan tema, dan penyimpanan offline. Delapan halaman representatif juga diperiksa dengan axe-core WCAG 2 A/AA dan 2.1 AA; ini bukan sertifikasi aksesibilitas menyeluruh. GitHub Actions menyimpan tangkapan layar dan hasil axe selama tujuh hari.
+`npm run test:learning` menjalankan pemeriksaan DOM dan numerik JavaScript tanpa browser. `npm test` menambahkan Playwright untuk seluruh 86 halaman, termasuk tab visualisasi dan laboratorium, lebar 320/390/768/1280, pemulihan tema, dan penyimpanan offline. Delapan halaman representatif diperiksa pada tema terang dan gelap dengan axe-core WCAG 2 A/AA dan 2.1 AA; ini bukan sertifikasi aksesibilitas menyeluruh. GitHub Actions menyimpan tangkapan layar dan hasil axe selama tujuh hari.
 
 Lihat [CHANGELOG.md](CHANGELOG.md), [THIRD_PARTY.md](THIRD_PARTY.md), dan [AUDIT_IMPLEMENTATION.md](AUDIT_IMPLEMENTATION.md) untuk perubahan, atribusi, dan batas cakupan.
 
