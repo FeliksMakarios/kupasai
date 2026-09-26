@@ -62,8 +62,6 @@ for d in items:
     siblings=[x for x in items if x['slug'].split('/')[0]==slug.split('/')[0]];i=siblings.index(d)
     sequence=' '.join(f'<a href="/kupasai/{siblings[ix]["slug"]}/laboratorium/">{label}: {escape(siblings[ix]["title"])}</a>' for label,ix in [('← Sebelumnya',i-1),('Berikutnya →',i+1)] if 0<=ix<len(siblings))
     guide=learning_aid(slug)
-    backups='<details class="note-backup"><summary>Cadangkan catatan dan progres</summary><div class="learning-actions"><button id="export-notes" type="button">Ekspor catatan dan progres</button><label for="import-notes">Impor cadangan JSON</label><input id="import-notes" type="file" accept="application/json"></div><p id="backup-status" role="status"></p></details>'
-    guide=guide.replace('</section><!-- learning-aid:end -->',backups+'</section><!-- learning-aid:end -->')
     quiz='<section class="learning-aid topic-tools"><h2>Uji Pemahaman</h2><p>Dua latihan dengan penjelasan. Progres dihitung setelah semua jawaban benar; membuka halaman saja tidak menandai selesai.</p><div id="concept-checks"></div><p id="quiz-status" role="status"></p></section>'
     head_extra='';body_extra='<script src="/kupasai/assets/js/tabs.js"></script>'
     # Companion calculations use the same source data, without loading the visualization renderer.

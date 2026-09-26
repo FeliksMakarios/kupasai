@@ -11,7 +11,7 @@ def learning_aid(topic):
     section=f'''<!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
-<p><strong>Prasyarat:</strong> {escape(prereq)}. <strong>Durasi:</strong> sekitar {minutes} menit.</p>
+<p><strong>Prasyarat:</strong> {escape(prereq)}. <strong>Estimasi seluruh topik:</strong> sekitar {minutes} menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>{escape(origin)}</p><p>{escape(note)}</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> {escape(predict)}</li>
 <li><strong>Eksplorasi:</strong> {escape(explore)}</li>
@@ -22,7 +22,8 @@ def learning_aid(topic):
 <p><a href="{escape(reference)}" target="_blank" rel="noopener">Rujukan utama</a> · <a href="{SOURCE+topic}" target="_blank" rel="noopener">Kode dan data pendamping</a></p>
 <p class="source-note">Nomor modul mengacu pada urutan kuliah.</p>
 </section><!-- learning-aid:end -->'''
-    return section
+    backups='<details class="note-backup"><summary>Cadangkan catatan dan progres</summary><div class="learning-actions"><button id="export-notes" type="button">Ekspor catatan dan progres</button><label for="import-notes">Impor cadangan JSON</label><input id="import-notes" type="file" accept="application/json"></div><p id="backup-status" role="status"></p></details>'
+    return section.replace('</section><!-- learning-aid:end -->',backups+'</section><!-- learning-aid:end -->')
 
 if __name__ == '__main__':
     for topic in LESSONS:

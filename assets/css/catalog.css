@@ -56,3 +56,8 @@
  .companion-tabs .tab-btn{font-size:.8rem;padding:.7rem .6rem;flex:1 1 auto}
  .companion-layout .learning-aid{padding:1rem}.lesson-next{padding:1rem;margin:1rem}
 }
+
+.experiment-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.5rem 1.25rem;margin-bottom:1.25rem}
+.experiment-controls>div{min-width:0}
+#extra-experiment .experiment-controls input,#extra-experiment .experiment-controls select{width:100%;max-width:100%;min-height:40px;box-sizing:border-box;font:inherit}
+.companion-layout .topic-table td,.companion-layout .topic-table th{padding:.65rem 1rem}

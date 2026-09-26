@@ -58,7 +58,7 @@
 <div class="companion-tabs" role="tablist" aria-label="Bagian laboratorium"><button class="tab-btn active" role="tab" id="tabbtn-eksperimen" aria-controls="tab-eksperimen" aria-selected="true" tabindex="0" data-tab="eksperimen">Eksperimen Perhitungan</button><button class="tab-btn" role="tab" id="tabbtn-panduan" aria-controls="tab-panduan" aria-selected="false" tabindex="-1" data-tab="panduan">Panduan Belajar Mandiri</button><button class="tab-btn" role="tab" id="tabbtn-uji" aria-controls="tab-uji" aria-selected="false" tabindex="-1" data-tab="uji">Uji Pemahaman</button></div><div class="tab-content active" id="tab-eksperimen" role="tabpanel" aria-labelledby="tabbtn-eksperimen" tabindex="0"><div id="companion-experiment"></div></div><div class="tab-content" id="tab-panduan" role="tabpanel" aria-labelledby="tabbtn-panduan" tabindex="0"><!-- learning-aid:start -->
 <section class="learning-aid" aria-label="Panduan belajar mandiri">
 <h2>Panduan Belajar Mandiri</h2>
-<p><strong>Prasyarat:</strong> Aturan rantai. <strong>Durasi:</strong> sekitar 25 menit.</p>
+<p><strong>Prasyarat:</strong> Aturan rantai. <strong>Estimasi seluruh topik:</strong> sekitar 25 menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>Graf tensor kecil dengan perhitungan gradien manual.</p><p>Dalam PyTorch, backward mengakumulasi gradien pada tensor leaf. Kosongkan gradien sebelum langkah baru bila tidak menghendaki akumulasi lintas batch.</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> Berapa gradien b jika b digunakan pada dua cabang?</li>
 <li><strong>Eksplorasi:</strong> Bandingkan Autograd Naif (Ada Bug) dengan Autograd Diperbaiki, lalu coba preset g=0.9, 1.0, dan 1.1.</li>
