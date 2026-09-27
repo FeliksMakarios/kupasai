@@ -7,11 +7,11 @@ function topicCard(t,index){
  if(index!==undefined){const number=document.createElement('span');number.className='topic-number';number.setAttribute('aria-hidden','true');number.textContent=String(index+1).padStart(2,'0');li.append(number);}
  h.textContent=t.title;meta.className='topic-meta';meta.textContent=(t.week||'Pengayaan · di luar minggu RPS')+' · Estimasi '+t.minutes+' menit';actions.className='topic-actions';
  for(const [label,suffix]of [['Visualisasi',''],['Laboratorium Pendamping','laboratorium/']]){const a=document.createElement('a');a.className='topic-button'+(suffix?' secondary':'');a.href='/kupasai/'+t.slug+'/'+suffix;a.textContent=label;actions.append(a);}
- article.append(h,meta,actions);if(get(prefix+t.slug)==='complete'){const p=document.createElement('p');p.className='topic-complete';p.textContent='✓ Uji pemahaman selesai';article.append(p);}li.append(article);return li;
+ const description=document.createElement('p');description.className='topic-description';description.textContent=t.description;article.append(h,meta,description,actions);if(get(prefix+t.slug)==='complete'){const p=document.createElement('p');p.className='topic-complete';p.textContent='✓ Uji pemahaman selesai';article.append(p);}li.append(article);return li;
 }
 window.KupasTopicCard=topicCard;
 const search=document.getElementById('topic-search');
-if(search){const list=document.getElementById('topic-results');function show(){const q=search.value.trim().toLocaleLowerCase('id-ID');list.replaceChildren();if(!q){document.getElementById('search-status').textContent='Ketik untuk mencari di '+topics.length+' topik.';return;}const found=topics.filter(t=>(t.title+' '+t.slug+' '+t.prerequisite).toLocaleLowerCase('id-ID').includes(q));found.forEach(t=>list.append(topicCard(t)));document.getElementById('search-status').textContent=found.length+' topik ditemukan.';}search.addEventListener('input',show);show();}
+if(search){const list=document.getElementById('topic-results');function show(){const q=search.value.trim().toLocaleLowerCase('id-ID');list.replaceChildren();if(!q){document.getElementById('search-status').textContent='Ketik untuk mencari di '+topics.length+' topik.';return;}const found=topics.filter(t=>(t.title+' '+t.slug+' '+t.prerequisite+' '+t.description).toLocaleLowerCase('id-ID').includes(q));found.forEach(t=>list.append(topicCard(t)));document.getElementById('search-status').textContent=found.length+' topik ditemukan.';}search.addEventListener('input',show);show();}
 const panel=document.querySelector('main[data-topic]');if(!panel)return;
 const topic=topics.find(t=>t.slug===panel.dataset.topic);if(!topic)return;
 const checks=document.getElementById('concept-checks'),status=document.getElementById('quiz-status'),answers=new Map();

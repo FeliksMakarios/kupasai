@@ -159,7 +159,7 @@ MIT
 
 Katalog sekarang memuat **39 topik**: 34 modul semula dan lima topik pengayaan untuk evaluasi model, tokenisasi Indonesia, optimizer, RAG berbukti, serta evaluasi generatif. Halaman baru adalah simulasi lokal berukuran kecil; tidak memanggil API model dan tidak memerlukan kunci API.
 
-- Katalog dan indeks pencarian dihasilkan dari `scripts/lessons.py`, `scripts/new_lessons.py`, dan `scripts/quizzes.py`. `assets/lessons.json` adalah keluaran terstruktur; jangan menyunting keluarannya secara manual.
+- Katalog dan indeks pencarian dihasilkan dari `scripts/lessons.py`, `scripts/new_lessons.py`, dan `scripts/quizzes.py`. `scripts/topic_descriptions.py` menyimpan empat kalimat pengantar tiap topik untuk daftar mata kuliah, trek, dan pencarian. `assets/lessons.json` adalah keluaran terstruktur; jangan menyunting keluarannya secara manual.
 - Setiap topik memiliki dua latihan dengan penjelasan. Penyelesaian ditandai setelah jawaban benar, bukan dari kunjungan. Catatan dan progres tersimpan di browser, dapat diekspor/impor tanpa akun. Impor tidak menimpa catatan lokal yang berbeda.
 - Tautan eksperimen menyertakan tab dan kontrol bernama. Catatan, jawaban kuis, dan pilihan diagram tanpa kontrol bernama tidak disertakan.
 - Tombol offline menyimpan halaman yang dipilih beserta aset lokalnya. Simpan ulang setelah pembaruan; tautan halaman lain perlu disimpan tersendiri. Data browser dapat dihapus oleh pengguna/peramban, sehingga cadangan catatan tetap diperlukan.
