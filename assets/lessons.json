@@ -8,6 +8,7 @@
     "limits": "Pengisian nol pada kolom turunan adalah keputusan eksplisit. dropna menghapus baris, sedangkan isnull hanya menandainya.",
     "source": "https://pandas.pydata.org/docs/user_guide/missing_data.html",
     "week": "Minggu 2",
+    "description": "Topik ini memperkenalkan Pandas untuk membaca dan mengolah data berbentuk tabel. Anda akan mempelajari pemilihan baris dan kolom, penyaringan data, penanganan nilai kosong, serta pengelompokan nilai ke dalam interval. Visualisasi memperlihatkan perubahan tabel setelah setiap operasi, sehingga hasilnya dapat ditelusuri langkah demi langkah. Setelah mempelajarinya, Anda diharapkan mampu memilih operasi pengolahan data yang sesuai dan menjelaskan pengaruhnya terhadap isi tabel.",
     "order": 0,
     "reviewed": "2026-09-26",
     "questions": [
@@ -32,6 +33,7 @@
     "limits": "R² uji dapat turun saat fitur ditambah. Residual adalah nilai aktual dikurangi prediksi. Korelasi tidak membuktikan sebab-akibat.",
     "source": "https://scikit-learn.org/stable/modules/linear_model.html#ordinary-least-squares",
     "week": "Minggu 3",
+    "description": "Regresi linear memodelkan hubungan antara fitur masukan dan target berupa angka. Anda akan mengamati garis prediksi, membandingkan model dengan jumlah fitur berbeda, dan membaca residual serta nilai R². Perhitungan pendamping menghubungkan prediksi dengan ukuran galat seperti MAE dan RMSE. Setelah mempelajarinya, Anda diharapkan mampu menafsirkan hasil regresi dan membedakan kecocokan pada data latih dari kemampuan prediksi pada data uji.",
     "order": 1,
     "reviewed": "2026-09-26",
     "questions": [
@@ -56,6 +58,7 @@
     "limits": "Ambang mengubah label keputusan, bukan probabilitas model. Hasil pada dua kelas yang mudah dipisahkan tidak berlaku untuk semua data.",
     "source": "https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression",
     "week": "Minggu 4",
+    "description": "Regresi logistik menggunakan fungsi sigmoid untuk menghasilkan probabilitas kelas pada masalah klasifikasi biner. Anda akan mempelajari hubungan antara fitur, batas keputusan, probabilitas, dan ambang klasifikasi melalui contoh dua kelas Iris. Eksperimen memperlihatkan bagaimana perubahan ambang memengaruhi confusion matrix, precision, dan recall. Setelah mempelajarinya, Anda diharapkan mampu membedakan probabilitas model dari keputusan kelas serta menjelaskan konsekuensi pemilihan ambang.",
     "order": 2,
     "reviewed": "2026-09-26",
     "questions": [
@@ -80,6 +83,7 @@
     "limits": "Entropi maksimum log₂ K untuk K kelas. Akurasi uji dengan sampel kecil dapat berubah besar bila satu prediksi berubah.",
     "source": "https://scikit-learn.org/stable/modules/tree.html",
     "week": "Minggu 5",
+    "description": "Pohon keputusan membagi data secara bertahap menggunakan kondisi pada fitur. Anda akan membandingkan kandidat pemisah, menghitung entropi dan information gain, serta menelusuri jalur menuju prediksi. Perbandingan kedalaman pohon membantu mengamati hubungan antara kompleksitas model dan hasil pada data latih maupun data uji. Setelah mempelajarinya, Anda diharapkan mampu menjelaskan alasan sebuah pemisahan dipilih dan mengenali risiko pohon yang terlalu menyesuaikan data latih.",
     "order": 3,
     "reviewed": "2026-09-26",
     "questions": [
@@ -104,6 +108,7 @@
     "limits": "Pada Random Forest, kandidat fitur dipilih per pemisahan. Importance berbasis impurity bukan frekuensi fitur atau pengaruh kausal.",
     "source": "https://scikit-learn.org/stable/modules/ensemble.html#random-forests-and-other-randomized-tree-ensembles",
     "week": "Minggu 6",
+    "description": "Random Forest menggabungkan banyak pohon keputusan yang dibangun dengan variasi sampel dan kandidat fitur. Anda akan menelusuri voting antar pohon, membaca hasil model, dan membandingkan suara mayoritas dengan rata-rata probabilitas. Eksperimen kecil memperlihatkan bootstrap serta pemilihan kandidat fitur pada setiap pemisahan. Setelah mempelajarinya, Anda diharapkan mampu menjelaskan sumber keragaman ensemble dan menafsirkan pentingnya fitur tanpa menganggapnya sebagai hubungan sebab-akibat.",
     "order": 4,
     "reviewed": "2026-09-26",
     "questions": [
@@ -128,6 +133,7 @@
     "limits": "Independensi yang diasumsikan bersyarat pada kelas. GaussianNB adalah baseline sederhana untuk fitur campuran.",
     "source": "https://scikit-learn.org/stable/modules/naive_bayes.html",
     "week": "Minggu 7",
+    "description": "Naive Bayes melakukan klasifikasi menggunakan probabilitas bersyarat dengan asumsi independensi fitur setelah kelas diketahui. Anda akan mempelajari prior, likelihood, posterior, dan pengaruh Laplace smoothing melalui contoh email. Contoh Titanic dan eksperimen hitungan fitur memperluas pembahasan ke evaluasi model serta perbedaan jenis likelihood. Setelah mempelajarinya, Anda diharapkan mampu menghitung posterior sederhana dan menjelaskan batas asumsi independensi pada data nyata.",
     "order": 5,
     "reviewed": "2026-09-26",
     "questions": [
@@ -152,6 +158,7 @@
     "limits": "Pilih metrik berdasarkan biaya keputusan. Pentingnya fitur bukan hubungan sebab-akibat.",
     "source": "https://scikit-learn.org/stable/modules/model_evaluation.html#roc-metrics",
     "week": "Minggu 9",
+    "description": "Prediksi churn mempelajari kemungkinan pelanggan berhenti menggunakan suatu layanan. Anda akan menelusuri contoh klasifikasi pelanggan, membandingkan model, dan membaca metrik evaluasinya. Eksperimen ambang dan biaya kesalahan memperlihatkan konsekuensi false positive serta false negative terhadap keputusan retensi. Setelah mempelajarinya, Anda diharapkan mampu menghubungkan evaluasi model dengan tujuan keputusan tanpa menyamakan prediksi dengan kepastian perilaku pelanggan.",
     "order": 6,
     "reviewed": "2026-09-26",
     "questions": [
@@ -176,6 +183,7 @@
     "limits": "Siku SSE adalah petunjuk. Validasi kelompok dengan konteks dan kestabilan, bukan label benar-salah yang tidak tersedia.",
     "source": "https://scikit-learn.org/stable/modules/clustering.html#k-means",
     "week": "Minggu 10",
+    "description": "Clustering mengelompokkan pengamatan berdasarkan kemiripan tanpa membutuhkan label kelas acuan. Anda akan mempelajari K-Means melalui data penerbangan, posisi centroid, dan perubahan kelompok ketika jumlah cluster diganti. Eksperimen membandingkan standardisasi, benih awal, inertia, serta silhouette untuk melihat kestabilan dan kualitas kelompok. Setelah mempelajarinya, Anda diharapkan mampu menjelaskan pengaruh skala fitur dan memilih interpretasi kelompok yang didukung konteks data.",
     "order": 7,
     "reviewed": "2026-09-26",
     "questions": [
@@ -200,6 +208,7 @@
     "limits": "Lift bukan jumlah transaksi. Hubungan langka dapat memiliki lift tinggi. Asosiasi tidak membuktikan pembelian satu produk menyebabkan pembelian lain.",
     "source": "https://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/",
     "week": "Minggu 11",
+    "description": "Market basket analysis mencari pola kemunculan bersama antar produk dalam transaksi. Anda akan menelusuri frequent itemset dan aturan asosiasi yang dihasilkan dari contoh transaksi kedai kopi. Perhitungan support, confidence, dan lift membantu membedakan aturan yang menarik dari hubungan yang terutama muncul karena popularitas produk. Setelah mempelajarinya, Anda diharapkan mampu membaca aturan asosiasi beserta kekuatan buktinya tanpa menyimpulkan hubungan sebab-akibat.",
     "order": 8,
     "reviewed": "2026-09-26",
     "questions": [
@@ -224,6 +233,7 @@
     "limits": "Accuracy tinggi dapat menyembunyikan kegagalan mendeteksi kelas minoritas. Probabilitas terkalibrasi berarti frekuensi kejadian mendekati probabilitas yang diprediksi pada banyak contoh, bukan setiap prediksi pasti benar.",
     "source": "https://scikit-learn.org/stable/common_pitfalls.html",
     "week": null,
+    "description": "Topik ini membahas cara menilai model secara adil dan mengenali kebocoran informasi dari data evaluasi. Anda akan mempelajari peran data latih, validasi, dan uji serta hubungan ambang klasifikasi dengan confusion matrix. Eksperimen pada data tidak seimbang memperlihatkan keterbatasan accuracy dan dampak memakai data uji saat menghitung nilai imputasi. Setelah mempelajarinya, Anda diharapkan mampu menjelaskan alur evaluasi yang benar serta memilih metrik sesuai jenis kesalahan yang perlu diperhatikan.",
     "order": 9,
     "reviewed": "2026-09-26",
     "questions": [
@@ -248,6 +258,7 @@
     "limits": "Di halaman ini W berbentuk output×input. Bias dan aktivasi dihilangkan untuk isolasi operasi linear. Pada jaringan umum, gunakan aktivasi(Wx+b).",
     "source": "https://numpy.org/doc/stable/reference/generated/numpy.matmul.html",
     "week": "Minggu 2",
+    "description": "Forward propagation menghitung keluaran jaringan dari input dan bobot secara berurutan. Anda akan menelusuri perkalian vektor dan matriks dari satu neuron hingga jaringan dua lapis. Perhitungan pendamping memperkenalkan peran bias dan aktivasi setelah operasi linear dasarnya dipahami. Setelah mempelajarinya, Anda diharapkan mampu memeriksa bentuk matriks dan menghitung kontribusi setiap input terhadap keluaran.",
     "order": 10,
     "reviewed": "2026-09-26",
     "questions": [
@@ -272,6 +283,7 @@
     "limits": "Kurva perbandingan mencatat galat setelah pembaruan. Alpha kedua metode berbeda, sehingga bukan uji kecepatan terkontrol.",
     "source": "https://docs.pytorch.org/docs/stable/generated/torch.optim.SGD.html",
     "week": "Minggu 3",
+    "description": "Gradient descent memperbarui parameter mengikuti arah penurunan suatu fungsi kerugian. Anda akan menelusuri prediksi, galat, gradien, dan perubahan bobot pada contoh sederhana. Perubahan learning rate serta skala input memperlihatkan kapan pembaruan mendekati solusi, berosilasi, atau menjauh. Setelah mempelajarinya, Anda diharapkan mampu menghitung satu langkah pembaruan dan menjelaskan mengapa besar langkah memengaruhi kestabilan pelatihan.",
     "order": 11,
     "reviewed": "2026-09-26",
     "questions": [
@@ -296,6 +308,7 @@
     "limits": "Bobot yang dibekukan adalah satu koneksi menuju neuron yang sama. Galat tabel dihitung sebelum pembaruan, kolom bobot menampilkan keadaan sesudahnya.",
     "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Linear.html",
     "week": "Minggu 4",
+    "description": "Topik ini memperluas gradient descent dari satu bobot menjadi jaringan dengan beberapa input dan output. Anda akan menelusuri bentuk matriks, kontribusi tiap koneksi, dan perhitungan gradien menggunakan hasil kali luar. Eksperimen pembekuan bobot memperlihatkan perbedaan antara gradien yang dihitung dan parameter yang benar-benar diperbarui. Setelah mempelajarinya, Anda diharapkan mampu menyusun pembaruan matriks bobot serta memeriksa kesesuaian dimensinya.",
     "order": 12,
     "reviewed": "2026-09-26",
     "questions": [
@@ -320,6 +333,7 @@
     "limits": "Prediksi adalah jumlah kontribusi bobot, bukan selisih. Galat online dijumlahkan selama pembaruan, bukan evaluasi satu snapshot akhir.",
     "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Linear.html",
     "week": "Minggu 5",
+    "description": "Contoh pola lampu digunakan untuk memperkenalkan pembelajaran bobot pada jaringan sederhana. Anda akan membandingkan pelatihan dari satu pola dengan pelatihan dari seluruh dataset sintetis. Perhitungan prediksi dan galat memperlihatkan bagaimana input yang aktif memengaruhi pembaruan setiap bobot. Setelah mempelajarinya, Anda diharapkan mampu menelusuri proses belajar serta membedakan hasil pada pola latihan dari prediksi pada pola yang belum diamati.",
     "order": 13,
     "reviewed": "2026-09-26",
     "questions": [
@@ -344,6 +358,7 @@
     "limits": "Panel delta menunjukkan gradien terhadap aktivasi h. Kalikan turunan aktivasi untuk gradien terhadap z. Akurasi yang ditampilkan adalah akurasi latih.",
     "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.ReLU.html",
     "week": "Minggu 6, 10",
+    "description": "Fungsi aktivasi memberi jaringan saraf kemampuan membentuk hubungan yang tidak linear. Anda akan membandingkan model linear dengan jaringan ReLU pada pola data berbentuk cincin. Penelusuran propagasi galat dan turunan aktivasi membantu menjelaskan peran ReLU, sigmoid, serta tanh dalam pembelajaran. Setelah mempelajarinya, Anda diharapkan mampu menjelaskan kebutuhan akan nonlinieritas dan membedakan gradien terhadap aktivasi dari gradien terhadap masukan aktivasi.",
     "order": 14,
     "reviewed": "2026-09-26",
     "questions": [
@@ -368,6 +383,7 @@
     "limits": "Objektif L=½(ŷ−t)² memiliki delta=ŷ−t. Semua gradien dihitung dari bobot lama sebelum pembaruan serentak.",
     "source": "https://docs.pytorch.org/docs/stable/notes/autograd.html",
     "week": "Minggu 7",
+    "description": "Backpropagation menghitung gradien parameter dengan menerapkan aturan rantai dari keluaran menuju lapisan sebelumnya. Anda akan menelusuri forward pass, perhitungan loss, aliran gradien, dan pembaruan bobot pada satu jaringan kecil. Eksperimen beda hingga memungkinkan Anda membandingkan gradien analitik dengan perkiraan numeriknya. Setelah mempelajarinya, Anda diharapkan mampu memeriksa satu gradien secara mandiri dan menjelaskan mengapa semua gradien dihitung sebelum bobot diperbarui.",
     "order": 15,
     "reviewed": "2026-09-26",
     "questions": [
@@ -392,6 +408,7 @@
     "limits": "Validasi memilih checkpoint. Data uji dipakai pada checkpoint terpilih dan akhir, bukan sebagai panduan setiap epoch. Hasil satu benih tidak menjamin keunggulan dropout.",
     "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Dropout.html",
     "week": "Minggu 9",
+    "description": "Regularisasi membantu mengendalikan kecenderungan model untuk terlalu menyesuaikan data latih. Anda akan membandingkan kurva pembelajaran, pemilihan checkpoint dengan early stopping, dan pengaruh dropout. Hasil beberapa benih pelatihan memperlihatkan bahwa perbandingan metode juga perlu mempertimbangkan variasi percobaan. Setelah mempelajarinya, Anda diharapkan mampu membedakan peran data validasi dan data uji serta menilai hasil regularisasi tanpa bergantung pada satu percobaan.",
     "order": 16,
     "reviewed": "2026-09-26",
     "questions": [
@@ -416,6 +433,7 @@
     "limits": "Operasi yang lazim disebut konvolusi pada CNN adalah korelasi silang tanpa pembalikan kernel. Pooling membuang informasi selain maksimum lokal.",
     "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html",
     "week": "Minggu 11",
+    "description": "Convolutional Neural Network mengolah pola lokal pada citra melalui kernel yang diterapkan berulang. Anda akan menggeser kernel, menelusuri pembentukan feature map, dan mengamati operasi max pooling. Eksperimen stride, padding, serta bobot kernel menghubungkan perhitungan tiap sel dengan ukuran tensor keluaran. Setelah mempelajarinya, Anda diharapkan mampu menghitung satu respons kernel dan menjelaskan perubahan ukuran maupun informasi pada setiap operasi.",
     "order": 17,
     "reviewed": "2026-09-26",
     "questions": [
@@ -440,6 +458,7 @@
     "limits": "Grid dan anchor adalah penyederhanaan keluarga YOLO berbasis anchor, bukan semua versi YOLO. Normalisasi ukuran kotak harus menyebut acuannya. NMS contoh ini satu kelas.",
     "source": "https://arxiv.org/abs/1612.08242",
     "week": "Minggu 11",
+    "description": "Deteksi objek menggabungkan penentuan lokasi objek dengan prediksi kelasnya. Anda akan mempelajari kotak pembatas, Intersection over Union, penyederhanaan grid dan anchor, serta Non-Maximum Suppression. Eksperimen pencocokan prediksi memperlihatkan mengapa kelas dan pasangan unik dengan objek acuan diperlukan dalam evaluasi. Setelah mempelajarinya, Anda diharapkan mampu menghitung IoU dan membedakan penyaringan prediksi dari penilaian benar atau salahnya deteksi.",
     "order": 18,
     "reviewed": "2026-09-26",
     "questions": [
@@ -464,6 +483,7 @@
     "limits": "Ini gradien batch penuh deterministik, bukan eksperimen jaringan saraf. SGD memakai estimasi gradien dari sampel/minibatch; ukuran batch mengubah variasi dan biaya tiap pembaruan. Adam memakai koreksi bias m dan v, β₁=0.9, β₂=0.999, ε=10⁻⁸.",
     "source": "https://arxiv.org/abs/1412.6980",
     "week": null,
+    "description": "Optimizer menentukan cara gradien digunakan untuk memperbarui parameter model. Anda akan membandingkan gradient descent, momentum, dan Adam pada fungsi kuadratik dengan kurvatur yang dapat diubah. Eksperimen tambahan memperlihatkan pengaruh learning rate dan ukuran batch pada lintasan serta biaya pembaruan. Setelah mempelajarinya, Anda diharapkan mampu menjelaskan perbedaan mekanisme optimizer dan mengapa hasil pada contoh kecil tidak menjamin keunggulan pada semua model.",
     "order": 19,
     "reviewed": "2026-09-26",
     "questions": [
@@ -488,6 +508,7 @@
     "limits": "Dimensi berlabel merupakan rancangan ilustrasi. Tidak ada ambang cosine universal. Analogi dan stereotip dalam nilai manual tidak menjadi fakta bahasa atau sosial.",
     "source": "https://arxiv.org/abs/1301.3781",
     "week": "Minggu 1",
+    "description": "Word embedding merepresentasikan kata sebagai vektor agar hubungan antar kata dapat diperiksa secara numerik. Anda akan menjelajahi kemiripan kosinus, analogi kata, dan proyeksi vektor ke bidang dua dimensi. Eksperimen membandingkan vektor ilustratif dengan representasi yang dipelajari dari korpus mini serta jarak sebelum dan sesudah proyeksi. Setelah mempelajarinya, Anda diharapkan mampu menafsirkan kedekatan vektor dengan memperhatikan asal representasi dan keterbatasan visualisasinya.",
     "order": 20,
     "reviewed": "2026-09-26",
     "questions": [
@@ -512,6 +533,7 @@
     "limits": "RNN melibatkan turunan aktivasi. LSTM membandingkan jalur cell state dengan gerbang konstan, bukan jaringan terlatih penuh.",
     "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.RNN.html",
     "week": "Minggu 2",
+    "description": "Recurrent Neural Network memproses urutan dengan membawa keadaan tersembunyi dari satu langkah ke langkah berikutnya. Anda akan menelusuri pengaruh urutan input terhadap hidden state dan keluaran perhitungan. Eksperimen panjang urutan serta bobot rekuren memperlihatkan bagaimana hasil kali turunan dapat mengecil atau membesar. Setelah mempelajarinya, Anda diharapkan mampu menghitung satu langkah rekuren dan menjelaskan sumber persoalan vanishing maupun exploding gradient.",
     "order": 21,
     "reviewed": "2026-09-26",
     "questions": [
@@ -536,6 +558,7 @@
     "limits": "Dalam PyTorch, backward mengakumulasi gradien pada tensor leaf. Kosongkan gradien sebelum langkah baru bila tidak menghendaki akumulasi lintas batch.",
     "source": "https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html",
     "week": "Minggu 3",
+    "description": "Autograd menghitung turunan dengan menelusuri hubungan operasi dalam graf komputasi. Anda akan mempelajari tensor, aturan rantai, dan penjumlahan kontribusi gradien ketika sebuah variabel dipakai pada beberapa cabang. Eksperimen membedakan penggabungan gradien dalam satu backward pass dari akumulasi gradien pada beberapa pemanggilan backward. Setelah mempelajarinya, Anda diharapkan mampu menelusuri turunan pada graf kecil dan menjelaskan kapan gradien perlu dikosongkan.",
     "order": 22,
     "reviewed": "2026-09-26",
     "questions": [
@@ -560,6 +583,7 @@
     "limits": "LSTM memiliki tiga gerbang dan satu kandidat pembaruan sel. Gerbang tidak selalu merespons x dengan arah seperti contoh. Konteks dot-product attention berada dalam convex hull value.",
     "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.LSTM.html",
     "week": "Minggu 4",
+    "description": "LSTM dan GRU menggunakan gerbang untuk mengatur informasi yang diteruskan dalam pemrosesan urutan. Anda akan mengamati pembaruan keadaan serta membandingkannya dengan mekanisme attention klasik. Perhitungan gerbang, skor attention, dan konteks tertimbang membantu menghubungkan diagram dengan operasi numeriknya. Setelah mempelajarinya, Anda diharapkan mampu menjelaskan perbedaan memori rekuren dan attention serta menghitung contoh pembaruan keadaan atau konteks.",
     "order": 23,
     "reviewed": "2026-09-26",
     "questions": [
@@ -584,6 +608,7 @@
     "limits": "Nama kepala bukan fungsi linguistik yang terbukti. Self-attention memerlukan informasi posisi untuk menyandikan urutan. Kompleksitas kuadratik berlaku untuk full attention.",
     "source": "https://arxiv.org/abs/1706.03762",
     "week": "Minggu 5-6",
+    "description": "Self-attention membentuk representasi setiap token dengan memperhatikan token lain dalam urutan. Anda akan menelusuri pembentukan query, key, value, skor kecocokan, dan normalisasi softmax. Eksperimen mask, skala skor, serta informasi posisi memperlihatkan bagaimana pilihan tersebut memengaruhi distribusi perhatian. Setelah mempelajarinya, Anda diharapkan mampu menghitung satu baris attention dan menjelaskan pentingnya posisi serta pembatasan akses ke token tertentu.",
     "order": 24,
     "reviewed": "2026-09-26",
     "questions": [
@@ -608,6 +633,7 @@
     "limits": "BERT encoder-only, GPT decoder-only tanpa cross-attention encoder, T5 encoder-decoder. Pelatihan paralel berbeda dari generasi autoregresif.",
     "source": "https://arxiv.org/abs/1706.03762",
     "week": "Minggu 6",
+    "description": "Transformer menggabungkan attention dan lapisan pemrosesan lain untuk mengolah representasi token. Anda akan menelusuri arsitektur encoder-decoder, sambungan residual, causal mask, dan cross-attention. Perhitungan bentuk tensor serta contoh decoding membantu membedakan alur pelatihan dari pembentukan token keluaran. Setelah mempelajarinya, Anda diharapkan mampu menjelaskan asal query, key, dan value serta membedakan arsitektur encoder-only, decoder-only, dan encoder-decoder.",
     "order": 25,
     "reviewed": "2026-09-26",
     "questions": [
@@ -632,6 +658,7 @@
     "limits": "Pipeline klasik dapat memakai TF-IDF. BERT memakai tokenizer checkpoint, attention mask, dan token khusus. Jangan otomatis membuang negasi atau stopword sebelum BERT.",
     "source": "https://huggingface.co/docs/transformers/tasks/sequence_classification",
     "week": "Minggu 7",
+    "description": "Klasifikasi teks memetakan dokumen atau kalimat ke kategori seperti sentimen. Anda akan menelusuri tahapan pengolahan teks, representasi fitur, klasifikasi, dan ilustrasi fine-tuning BERT. Eksperimen negasi memperlihatkan bahwa keputusan preprocessing dapat mengubah makna, sementara confusion matrix membantu membaca kesalahan klasifikasi. Setelah mempelajarinya, Anda diharapkan mampu menjelaskan alur klasifikasi teks dan mengevaluasi pilihan preprocessing serta metriknya.",
     "order": 26,
     "reviewed": "2026-09-26",
     "questions": [
@@ -656,6 +683,7 @@
     "limits": "Pelabelan hanya subkata pertama adalah pilihan pelatihan. Evaluator panel memakai aturan permisif seperti seqeval default, bukan strict IOB2. Entitas cocok bila tipe dan rentang sama.",
     "source": "https://github.com/chakki-works/seqeval",
     "week": "Minggu 9",
+    "description": "Named Entity Recognition mengenali rentang teks yang merujuk pada entitas seperti orang, organisasi, dan lokasi. Anda akan mempelajari tag IOB2, pemecahan subkata, dan hubungan antara label token dengan batas entitas. Dengan mengubah tag prediksi, Anda dapat membandingkan token accuracy dengan precision, recall, dan F1 pada tingkat entitas. Setelah mempelajarinya, Anda diharapkan mampu membaca anotasi NER dan menjelaskan mengapa kesalahan satu token dapat memengaruhi penilaian sebuah entitas.",
     "order": 27,
     "reviewed": "2026-09-26",
     "questions": [
@@ -680,6 +708,7 @@
     "limits": "Satu artikel dan checkpoint berbeda tidak cukup untuk memeringkat model. BLEU panel adalah sentence BLEU-4 dengan tokenizer spasi dan add-one opsional. ROUGE menampilkan P/R/F1.",
     "source": "https://aclanthology.org/P02-1040/",
     "week": "Minggu 10",
+    "description": "Peringkasan teks bertujuan menyajikan informasi penting dari sumber dalam bentuk yang lebih singkat. Anda akan mempelajari ilustrasi peringkasan dan membandingkan kandidat ringkasan menggunakan BLEU serta ROUGE. Perubahan kandidat, referensi, dan smoothing membantu menelusuri cara kecocokan kata atau urutan memengaruhi skor. Setelah mempelajarinya, Anda diharapkan mampu membaca metrik kemiripan teks sambil menilai dukungan fakta dan kualitas makna secara terpisah.",
     "order": 28,
     "reviewed": "2026-09-26",
     "questions": [
@@ -704,6 +733,7 @@
     "limits": "Span harus berada pada konteks, awal≤akhir, dan memenuhi batas panjang. Argmax independen tidak menjamin span sah. RAG tidak menjamin jawaban benar.",
     "source": "https://huggingface.co/docs/transformers/tasks/question_answering",
     "week": "Minggu 11",
+    "description": "Question answering menghubungkan pertanyaan dengan jawaban yang didukung oleh konteks. Anda akan menelusuri pemilihan token awal dan akhir, pembentukan span yang sah, serta ilustrasi sliding window dan RAG. Percobaan konteks tanpa jawaban memperlihatkan mengapa skor tinggi saja belum cukup untuk menyatakan sebuah jawaban benar. Setelah mempelajarinya, Anda diharapkan mampu memeriksa batas span dan menjelaskan kapan sistem perlu menahan diri untuk tidak menjawab.",
     "order": 29,
     "reviewed": "2026-09-26",
     "questions": [
@@ -728,6 +758,7 @@
     "limits": "Ketiga demo memakai kosakata/merge buatan kecil dan lowercasing, bukan tokenizer IndoBERT. Gunakan tokenizer dan normalisasi checkpoint yang tepat dalam aplikasi. Tanda ## menunjukkan kelanjutan kata.",
     "source": "https://huggingface.co/docs/transformers/tokenizer_summary",
     "week": null,
+    "description": "Tokenisasi mengubah teks menjadi unit yang dapat diproses oleh model bahasa. Anda akan membandingkan contoh kecil WordPiece, BPE, dan unigram pada teks Bahasa Indonesia. Eksperimen kata berimbuhan, kata informal, dan penghapusan negasi memperlihatkan pengaruh kosakata serta preprocessing terhadap hasil tokenisasi. Setelah mempelajarinya, Anda diharapkan mampu menjelaskan perbedaan strategi pemecahan token dan mengenali perubahan makna akibat pengolahan teks.",
     "order": 30,
     "reviewed": "2026-09-26",
     "questions": [
@@ -752,6 +783,7 @@
     "limits": "Demo lokal ini memakai overlap kata, tanpa embedding, reranker neural, atau LLM. Jawaban berupa kutipan sumber. Skor overlap bukan probabilitas kebenaran. Tidak ada data yang dikirim ke layanan AI.",
     "source": "https://arxiv.org/abs/2005.11401",
     "week": null,
+    "description": "Retrieval-Augmented Generation menghubungkan penyusunan jawaban dengan informasi yang diambil dari sumber. Anda akan menelusuri pemecahan dokumen, pengambilan kandidat, pengurutan ulang, dan penyertaan kutipan melalui simulasi lokal berbasis kecocokan kata. Mengubah jumlah potongan sumber atau menghilangkan bukti memperlihatkan kapan contoh sistem ini dapat menjawab dan kapan harus abstain. Setelah mempelajarinya, Anda diharapkan mampu memeriksa dukungan sumber dan membedakan keberhasilan retrieval dari kebenaran jawaban.",
     "order": 31,
     "reviewed": "2026-09-26",
     "questions": [
@@ -776,6 +808,7 @@
     "limits": "Penilaian fakta di contoh tersimpan dibuat manual dari sumber. Untuk teks bebas, demo hanya menghitung metrik leksikal; jangan menganggapnya pemeriksa fakta otomatis. Uji negasi, angka, parafrasa, konteks kosong, dan sumber yang bertentangan.",
     "source": "https://aclanthology.org/2020.acl-main.173/",
     "week": null,
+    "description": "Evaluasi teks generatif menilai hasil seperti ringkasan dari sisi kemiripan, cakupan informasi, dan dukungan fakta. Anda akan membandingkan contoh ringkasan setia, parafrasa, kesalahan angka, dan keputusan tidak menjawab. Perhitungan ROUGE-L menunjukkan bahwa kecocokan urutan kata dapat memberi gambaran yang berbeda dari pemeriksaan fakta. Setelah mempelajarinya, Anda diharapkan mampu menjelaskan keterbatasan metrik leksikal dan menyusun penilaian yang juga memperhatikan sumber.",
     "order": 32,
     "reviewed": "2026-09-26",
     "questions": [
@@ -800,6 +833,7 @@
     "limits": "BFS minimum ruas, UCS minimum biaya nonnegatif. Greedy tidak menjamin biaya optimal. Hitungan kunjungan berarti node dikeluarkan dan diproses.",
     "source": "https://aima.cs.berkeley.edu/",
     "week": "Minggu 2-3",
+    "description": "Pemodelan pencarian menyatakan masalah sebagai keadaan, aksi, dan tujuan yang ingin dicapai. Anda akan menelusuri BFS, DFS, Greedy Best First, serta Uniform Cost Search, kemudian membandingkan minimax dan pemangkasan alpha-beta. Eksperimen biaya ruas dan heuristik memperlihatkan perbedaan antara jalur dengan sedikit langkah dan jalur dengan biaya rendah. Setelah mempelajarinya, Anda diharapkan mampu memilih strategi pencarian berdasarkan sifat masalah dan menjelaskan batas jaminan solusinya.",
     "order": 33,
     "reviewed": "2026-09-26",
     "questions": [
@@ -824,6 +858,7 @@
     "limits": "Simpul pengelompokan AND bukan aksi tambahan. Biaya dihitung pada ruas aksi asli. Rujukan nomor buku lama belum diverifikasi terhadap edisi dan halaman.",
     "source": "https://aima.cs.berkeley.edu/",
     "week": "Minggu 4",
+    "description": "Topik ini membahas pemecahan masalah melalui dekomposisi, batasan, dan aturan logika. Anda akan menelusuri graf AND-OR, pewarnaan peta, kriptaritmatika, serta contoh penalaran berbasis aturan. Perhitungan biaya dan penyaringan kandidat memperlihatkan bagaimana struktur masalah dapat mengurangi ruang pencarian. Setelah mempelajarinya, Anda diharapkan mampu merumuskan batasan serta menjelaskan langkah penalaran yang menghasilkan atau menolak sebuah solusi.",
     "order": 34,
     "reviewed": "2026-09-26",
     "questions": [
@@ -848,6 +883,7 @@
     "limits": "Probabilitas, faktor kepastian, dan massa Dempster-Shafer memiliki makna berbeda. Massa pada himpunan bukan probabilitas satu anggota. Konflik total membuat normalisasi tidak terdefinisi.",
     "source": "https://aima.cs.berkeley.edu/",
     "week": "Minggu 5-6",
+    "description": "Penalaran dalam ketidakpastian membahas cara mengolah bukti yang belum lengkap atau saling bertentangan. Anda akan membandingkan contoh probabilitas Bayes, faktor kepastian, dan massa kepercayaan Dempster-Shafer. Eksperimen normalisasi serta konflik bukti membantu memperjelas perbedaan makna angka pada setiap pendekatan. Setelah mempelajarinya, Anda diharapkan mampu menghitung contoh sederhana dan menafsirkan ketidakpastian tanpa menyamakan probabilitas dengan semua bentuk keyakinan.",
     "order": 35,
     "reviewed": "2026-09-26",
     "questions": [
@@ -872,6 +908,7 @@
     "limits": "Contoh prototipe tanpa label bukan LVQ terawasi. Pembelajaran kompetitif memakai L1; SOM memakai Euclidean. Panel pendamping membandingkan train dan test huruf sintetis yang pola pikselnya terpisah; belum mengevaluasi tulisan tangan manusia.",
     "source": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Linear.html",
     "week": "Minggu 9-10",
+    "description": "Topik ini memperkenalkan beberapa bentuk jaringan saraf dan aturan pembelajarannya. Anda akan menelusuri perceptron untuk fungsi logika, backpropagation pada pola huruf sintetis, pembelajaran kompetitif, serta Self-Organizing Map. Perhitungan pembaruan bobot dan pemilihan prototipe membantu membedakan pembelajaran berlabel dari pembelajaran tanpa label. Setelah mempelajarinya, Anda diharapkan mampu menjelaskan mekanisme dasar setiap jaringan dan menilai batas hasil pengujian pada pola sintetis.",
     "order": 36,
     "reviewed": "2026-09-26",
     "questions": [
@@ -896,6 +933,7 @@
     "limits": "Generasi pertama dapat sudah memenuhi target. Bandingkan jumlah evaluasi fitness serta variasi, bukan generasi saja. Bedakan terbaik saat ini dan terbaik sepanjang proses.",
     "source": "https://deap.readthedocs.io/en/master/tutorials/basic/part2.html",
     "week": "Minggu 11",
+    "description": "Algoritma genetika mencari solusi dengan mengembangkan populasi kandidat melalui seleksi dan variasi. Anda akan menelusuri penyandian kromosom, perhitungan fitness, seleksi, crossover, serta mutasi. Eksperimen parameter memperlihatkan hubungan antara ukuran populasi, jumlah generasi, variasi hasil, dan biaya evaluasi fitness. Setelah mempelajarinya, Anda diharapkan mampu menjelaskan satu siklus evolusi serta membandingkan konfigurasi dengan anggaran evaluasi yang setara.",
     "order": 37,
     "reviewed": "2026-09-26",
     "questions": [
@@ -920,6 +958,7 @@
     "limits": "ABC memaksimumkan fungsi pada domain terbatas. Tsukamoto dan Mamdani berbeda dalam konsekuen dan inferensi. Kelayakan satu hasil tidak membuktikan keunggulan umum metode.",
     "source": "https://www.scholarpedia.org/article/Ant_colony_optimization",
     "week": "Minggu 12-14",
+    "description": "Topik ini memperkenalkan optimasi berbasis kawanan dan penalaran menggunakan himpunan fuzzy. Anda akan menelusuri Ant Colony Optimization, Artificial Bee Colony, serta contoh inferensi Tsukamoto dan Mamdani. Perhitungan peluang pemilihan jalur, derajat keanggotaan, dan keluaran aturan membantu menghubungkan perilaku visual dengan mekanisme setiap metode. Setelah mempelajarinya, Anda diharapkan mampu membedakan proses pencarian solusi dari inferensi fuzzy serta memeriksa kelayakan hasil terhadap batas masalah.",
     "order": 38,
     "reviewed": "2026-09-26",
     "questions": [

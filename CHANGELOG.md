@@ -1,3 +1,9 @@
+## 2026-09-27 — Deskripsi topik dan narasi situs
+
+- Tambahkan empat kalimat deskripsi untuk setiap topik pada daftar mata kuliah, trek, dan pencarian: cakupan, materi, kegiatan, dan capaian belajar.
+- Satukan latar belakang KupasAI dalam sembilan kalimat pada bagian Kenapa Visualisasi Interaktif, dengan rujukan VisuAlgo, Python Tutor, dan TensorFlow Playground serta konteks pengajaran S1 Informatika UPH.
+- Hapus pengantar berulang di beranda dan perbarui dua baris teks pembukanya.
+
 ## 2026-09-26 — Pemisahan ruang belajar
 
 - Pisahkan 39 halaman visualisasi dari laboratorium pendamping bertab.

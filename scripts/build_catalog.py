@@ -5,6 +5,7 @@ import json, re
 from lessons import LESSONS
 from new_lessons import NEW
 from quizzes import CHECKS
+from topic_descriptions import DESCRIPTIONS
 from build_lessons import learning_aid
 ROOT=Path(__file__).resolve().parents[1]
 COURSES={'ml':'Pengantar Pemelajaran Mesin','ml-lanjut':'Pemelajaran Mesin Lanjut','nlp':'Pemrosesan Bahasa Alami','kecerdasan-komputasional':'Kecerdasan Komputasional'}
@@ -13,7 +14,7 @@ items=[]
 for slug,d in LESSONS.items():
     page=(ROOT/slug/'index.html').read_text()
     title=unescape(re.sub('<[^>]+>','',re.search(r'<h1[^>]*>([\s\S]*?)</h1>',page)[1])).strip()
-    items.append(dict(slug=slug,title=title,prerequisite=d[0],minutes=d[1],provenance=d[2],limits=d[3],source=d[6],week=weeks.get(slug)))
+    items.append(dict(slug=slug,title=title,prerequisite=d[0],minutes=d[1],provenance=d[2],limits=d[3],source=d[6],week=weeks.get(slug),description=DESCRIPTIONS[slug]))
 items.sort(key=lambda d:(list(COURSES).index(d['slug'].split('/')[0]),list(LESSONS).index(d['slug'])))
 for order,d in enumerate(items):d.update(order=order,reviewed='2026-09-26',questions=CHECKS[d['slug'].split('/')[-1]])
 (ROOT/'assets/lessons.json').write_text(json.dumps(items,ensure_ascii=False,indent=2)+'\n')
@@ -29,7 +30,7 @@ def actions(d):
 def card(d,number=None):
     week=escape(d['week'] or 'Pengayaan · di luar minggu RPS')
     number=f'<span class="topic-number" aria-hidden="true">{number:02d}</span>' if number else ''
-    return f'<li class="topic-entry" data-slug="{d["slug"]}">{number}<article><h2>{escape(d["title"])}</h2><p class="topic-meta">{week} <span aria-hidden="true">·</span> Estimasi {d["minutes"]} menit</p>{actions(d)}</article></li>'
+    return f'<li class="topic-entry" data-slug="{d["slug"]}">{number}<article><h2>{escape(d["title"])}</h2><p class="topic-meta">{week} <span aria-hidden="true">·</span> Estimasi {d["minutes"]} menit</p><p class="topic-description">{escape(d["description"])}</p>{actions(d)}</article></li>'
 
 def utilities():
     return '<div class="learning-actions"><button id="share-controls" type="button">Salin tautan eksperimen</button><button id="reset-controls" type="button">Reset kontrol</button></div><p id="learning-status" role="status"></p>'

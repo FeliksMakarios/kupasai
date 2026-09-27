@@ -88,7 +88,7 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   assert(await page.locator('#reflection').evaluate(el=>{const box=el.getBoundingClientRect(),panel=el.closest('.learning-aid').getBoundingClientRect();return box.right<=panel.right&&box.bottom<=panel.bottom&&box.height<=384;}));
   await page.setViewportSize({width:1280,height:900});
   await page.goto(base+'trek-belajar/');assert.equal(await page.locator('#track-plan').isVisible(),false);
-  await page.screenshot({path:path.join(reports,'trek-belajar-pilih-profil.png'),fullPage:true});
+  await page.screenshot({animations:'disabled',path:path.join(reports,'trek-belajar-pilih-profil.png'),fullPage:true});
   for(const role of ['mahasiswa','pemula','praktisi']){
    await page.locator('input[value="'+role+'"]').check();assert(await page.locator('#track-plan').isVisible());
    assert((await page.locator('#track-topics .topic-entry').count())>0);
@@ -112,17 +112,17 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   current='navbar mobile';await page.goto(base+'kecerdasan-komputasional/pemodelan-pencarian/');
   assert((await page.evaluate(()=>document.querySelector('.navbar').getBoundingClientRect().height))<=64);
   assert(await page.locator('.page-meta-mobile').isVisible());
-  for(const topic of ['','nlp/','trek-belajar/?profil=mahasiswa&kuliah=nlp','nlp/transformer/','nlp/transformer/laboratorium/','nlp/ner/laboratorium/?tab=panduan','ml/evaluasi-model/','ml-lanjut/object-detection/']){
+  for(const topic of ['','nlp/','trek-belajar/?profil=mahasiswa&kuliah=nlp','nlp/transformer/','nlp/transformer/laboratorium/','tentang/','ml/evaluasi-model/','ml-lanjut/object-detection/']){
    current='accessibility '+topic;await page.goto(base+topic);
    const name=topic.replace(/[^a-z0-9-]/gi,'-')||'home';
    for(const theme of ['light','dark']){
     if(await page.locator('html').getAttribute('data-theme')!==theme)await toggleTheme();
     await page.setViewportSize({width:1280,height:900});
-    await page.screenshot({path:path.join(reports,name+'-'+theme+'-desktop.png'),fullPage:true});
+    await page.screenshot({animations:'disabled',path:path.join(reports,name+'-'+theme+'-desktop.png'),fullPage:true});
     assert(await page.locator('img').evaluateAll(images=>images.every(img=>img.complete&&img.naturalWidth>0)),`Broken image: ${topic}`);
     const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
     accessibility.push({topic,theme,violations:result.violations.map(v=>({id:v.id,impact:v.impact,description:v.description,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}))});
-    await page.setViewportSize({width:320,height:844});await page.screenshot({path:path.join(reports,name+'-'+theme+'-mobile.png'),fullPage:true});
+    await page.setViewportSize({width:320,height:844});await page.screenshot({animations:'disabled',path:path.join(reports,name+'-'+theme+'-mobile.png'),fullPage:true});
    }
   }
   fs.writeFileSync(path.join(reports,'accessibility.json'),JSON.stringify(accessibility,null,2));
@@ -137,8 +137,8 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   assert((await page.locator('h1').innerText()).includes('tidak ditemukan'));
   errors.splice(0,errors.length,...errors.filter(e=>!e.startsWith('expected-404:')));
   current='404';await page.goto(base+'404.html');assert((await page.locator('h1').innerText()).includes('tidak ditemukan'));
-  if(process.env.REVIEW_SCREENSHOT){await page.goto(base+'nlp/transformer/');await page.setViewportSize({width:1280,height:1000});await page.screenshot({path:process.env.REVIEW_SCREENSHOT});}
+  if(process.env.REVIEW_SCREENSHOT){await page.goto(base+'nlp/transformer/');await page.setViewportSize({width:1280,height:1000});await page.screenshot({animations:'disabled',path:process.env.REVIEW_SCREENSHOT});}
   console.log(`Visited ${pages(root).length} pages, ${checks} tab transitions, desktop/mobile and theme restoration.`);
   if(errors.length)console.error(errors.join('\n'));assert.deepEqual(errors,[]);
- } catch(error) {console.error('Failed page:',current);if(errors.length)console.error(errors.join('\n'));await page.screenshot({path:path.join(reports,'failure.png'),fullPage:true}).catch(()=>{});throw error;} finally {await browser.close();server.close();}
+ } catch(error) {console.error('Failed page:',current);if(errors.length)console.error(errors.join('\n'));await page.screenshot({animations:'disabled',path:path.join(reports,'failure.png'),fullPage:true}).catch(()=>{});throw error;} finally {await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
