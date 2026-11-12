@@ -27,6 +27,7 @@ def describe(html, title):
     m = re.search(r'<meta name="description" content="([^"]*)"', html)
     if m:
         return unescape(m[1])
+    html = re.sub(r'<noscript>[\s\S]*?</noscript>', '', html)  # fallback notices are not page summaries
     for pattern in (r'<p class="page-subtitle">([\s\S]*?)</p>', r'<p class="course-description">([\s\S]*?)</p>',
                     r'<p class="hero-subtitle">([\s\S]*?)</p>', r'<main[^>]*>[\s\S]*?<p[^>]*>([\s\S]*?)</p>'):
         m = re.search(pattern, html)

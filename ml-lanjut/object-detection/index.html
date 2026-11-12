@@ -151,9 +151,16 @@
         <button class="preset-btn nms-mode-btn active" data-mode="before" type="button">Sebelum NMS (5 box)</button>
         <button class="preset-btn nms-mode-btn" data-mode="after" type="button">Sesudah NMS</button>
       </div>
+      <div class="alpha-controls nms-controls">
+        <div class="ctrl-group">
+          <label for="nms-threshold">Ambang IoU NMS</label>
+          <input id="nms-threshold" type="range" min="0" max="1" step="0.05" value="0.5">
+        </div>
+        <label class="nms-check"><input id="nms-class-aware" type="checkbox" checked> NMS per kelas</label>
+        <label class="nms-check"><input id="nms-mixed" type="checkbox"> Contoh tandingan: kandidat kedua berbeda kelas</label>
+      </div>
       <div class="box-canvas-wrap">
-        <label for="nms-threshold">Ambang IoU NMS</label><input id="nms-threshold" type="range" min="0" max="1" step="0.05" value="0.5"><label><input id="nms-class-aware" type="checkbox" checked> NMS per kelas</label><label><input id="nms-mixed" type="checkbox"> Contoh tandingan: kandidat kedua berbeda kelas</label>
-      <svg id="nms-canvas" style="max-width:600px"></svg>
+        <svg id="nms-canvas" style="max-width:600px"></svg>
       </div>
       <div class="section-label">Proses Non-Max Suppression</div>
       <div class="nms-steps" id="nms-steps"></div>

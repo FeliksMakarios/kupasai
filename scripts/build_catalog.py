@@ -7,6 +7,7 @@ from new_lessons import NEW
 from quizzes import CHECKS
 from topic_descriptions import DESCRIPTIONS
 from build_lessons import learning_aid
+from site_parts import footer, ensure_footer
 ROOT=Path(__file__).resolve().parents[1]
 COURSES={'ml':'Pengantar Pemelajaran Mesin','ml-lanjut':'Pemelajaran Mesin Lanjut','nlp':'Pemrosesan Bahasa Alami','kecerdasan-komputasional':'Kecerdasan Komputasional'}
 weeks=json.loads((ROOT/'scripts/course_weeks.json').read_text())
@@ -40,7 +41,7 @@ home=(ROOT/'index.html').read_text()
 nav=re.search(r'<nav class="navbar">[\s\S]*?</nav>',home)[0]
 if '/trek-belajar/' not in nav:nav=nav.replace('<ul class="navbar-links">','<ul class="navbar-links">\n    <li><a href="/kupasai/trek-belajar/">Trek Belajar</a></li>')
 bootstrap=re.search(r'<script>[\s\S]*?</script>',home)[0]
-def shell(title,description,content,head_extra='',body_extra=''):
+def shell(title,description,content,head_extra='',body_extra='',rel=''):
     return f'''<!DOCTYPE html>
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{escape(title)} — KupasAI</title><meta name="description" content="{escape(description)}">
@@ -52,6 +53,8 @@ def shell(title,description,content,head_extra='',body_extra=''):
 <script src="/kupasai/assets/js/experiments.js" defer></script><script src="/kupasai/assets/js/catalog-data.js" defer></script><script src="/kupasai/assets/js/catalog.js" defer></script><script src="/kupasai/assets/js/offline.js" defer></script>
 </head><body>{nav}
 {content}
+
+{footer(rel)}
 {body_extra}<script src="/kupasai/assets/js/theme.js"></script></body></html>\n'''
 
 for d in items:
@@ -61,7 +64,7 @@ for d in items:
     links=f'''<!-- lesson-links:start --><section class="lesson-next" aria-label="Poursuivre l'apprentissage"><h2>Lanjutkan eksplorasi</h2><p>Hitung hasilnya, tulis refleksi, lalu uji pemahaman Anda.</p><a class="topic-button" href="/kupasai/{slug}/laboratorium/">Ke Laboratorium Pendamping →</a>{utilities()}</section><!-- lesson-links:end -->'''.replace("Poursuivre l'apprentissage",'Lanjutkan belajar')
     s=s.replace('</main>',links+'\n</main>');p.write_text(s)
     siblings=[x for x in items if x['slug'].split('/')[0]==slug.split('/')[0]];i=siblings.index(d)
-    sequence=' '.join(f'<a href="/kupasai/{siblings[ix]["slug"]}/laboratorium/">{label}: {escape(siblings[ix]["title"])}</a>' for label,ix in [('← Sebelumnya',i-1),('Berikutnya →',i+1)] if 0<=ix<len(siblings))
+    sequence=' '.join(f'<a href="/kupasai/{siblings[ix]["slug"]}/laboratorium/">{before}{escape(siblings[ix]["title"])}{after}</a>' for before,after,ix in [('← Sebelumnya: ','',i-1),('Berikutnya: ',' →',i+1)] if 0<=ix<len(siblings))
     guide=learning_aid(slug)
     quiz='<section class="learning-aid topic-tools"><h2>Uji Pemahaman</h2><p>Dua latihan dengan penjelasan. Progres dihitung setelah semua jawaban benar; membuka halaman saja tidak menandai selesai.</p><div id="concept-checks"></div><p id="quiz-status" role="status"></p></section>'
     head_extra='';body_extra='<script src="/kupasai/assets/js/tabs.js"></script>'
@@ -83,7 +86,7 @@ for d in items:
 <div class="companion-utilities">{utilities()}</div><nav class="lesson-sequence" aria-label="Urutan belajar">{sequence}</nav>
 </div></main>'''
     lab=ROOT/slug/'laboratorium';lab.mkdir(exist_ok=True)
-    (lab/'index.html').write_text(shell('Laboratorium: '+d['title'],'Latihan perhitungan, panduan belajar mandiri, dan uji pemahaman untuk '+d['title']+'.',content,head_extra,body_extra))
+    (lab/'index.html').write_text(shell('Laboratorium: '+d['title'],'Latihan perhitungan, panduan belajar mandiri, dan uji pemahaman untuk '+d['title']+'.',content,head_extra,body_extra,rel=slug))
 
 for course in COURSES:
     p=ROOT/course/'index.html';s=strip_block(p.read_text(),'extras')
@@ -103,11 +106,12 @@ content=f'''<main id="main-content" tabindex="-1"><div class="track-layout"><hea
 <section class="topic-search-section"><h2>Cari topik lain</h2><label for="topic-search">Cari judul atau prasyarat</label><input id="topic-search" type="search" placeholder="Contoh: attention, gradien, evaluasi"><p id="search-status" role="status"></p><ul id="topic-results" class="topic-list"></ul></section>
 </div></main>'''
 track=ROOT/'trek-belajar';track.mkdir(exist_ok=True)
-(track/'index.html').write_text(shell('Trek Belajar','Trek belajar KupasAI untuk mahasiswa, pemula, dan praktisi, dengan urutan topik dan estimasi durasi.',content,body_extra='<script src="/kupasai/assets/js/tracks.js"></script>'))
+(track/'index.html').write_text(shell('Trek Belajar','Trek belajar KupasAI untuk mahasiswa, pemula, dan praktisi, dengan urutan topik dan estimasi durasi.',content,body_extra='<script src="/kupasai/assets/js/tracks.js"></script>',rel='trek-belajar'))
 for p in list(ROOT.glob('**/index.html'))+[ROOT/'404.html']:
     if 'node_modules' in p.parts:continue
     s=p.read_text()
     if '/kupasai/trek-belajar/' not in s.split('</nav>')[0]:s=s.replace('<ul class="navbar-links">','<ul class="navbar-links">\n    <li><a href="/kupasai/trek-belajar/">Trek Belajar</a></li>')
+    if p.name=='index.html':s=ensure_footer(s,p.parent.relative_to(ROOT).as_posix())
     if 'catalog.css' not in s:s=s.replace('</head>','<link rel="stylesheet" href="/kupasai/assets/css/catalog.css">\n</head>')
     p.write_text(s)
 print('Catalogue:',len(items),'topics;',len(items),'companion labs; audience tracks built')

@@ -75,6 +75,7 @@
       updateHint(wrap);
     }
     // Scrolling regions (wide or tall tables) must be reachable by keyboard.
+    var scrollRegionCount=0; // numbered so that several regions on one page have distinct names
     function markScrollRegions(){
       document.querySelectorAll('main div,main table,main pre').forEach(function(el){
         if(el.classList.contains('svg-scroll'))return;
@@ -82,7 +83,7 @@
         var scrolls=((can(cs.overflowX)&&el.scrollWidth>el.clientWidth+2)||(can(cs.overflowY)&&el.scrollHeight>el.clientHeight+2))&&!el.querySelector('a,button,input,select,textarea,[tabindex]');
         if(scrolls&&!el.hasAttribute('tabindex')){
           el.setAttribute('tabindex','0');el.setAttribute('data-scroll-region','');
-          if(el.localName==='div'&&!el.hasAttribute('role')){el.setAttribute('role','region');el.setAttribute('aria-label',(el.querySelector('table')?'Tabel':'Konten')+' yang dapat digeser');}
+          if(el.localName==='div'&&!el.hasAttribute('role')){el.setAttribute('role','region');el.setAttribute('aria-label',(el.querySelector('table')?'Tabel':'Konten')+' '+(++scrollRegionCount)+' yang dapat digeser');}
         } else if(!scrolls&&el.hasAttribute('data-scroll-region')){
           el.removeAttribute('tabindex');el.removeAttribute('data-scroll-region');
           if(el.getAttribute('role')==='region'){el.removeAttribute('role');el.removeAttribute('aria-label');}
