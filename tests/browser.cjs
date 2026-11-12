@@ -108,6 +108,24 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   const smallest=await page.evaluate(()=>{const svg=document.querySelector('.tab-content.active svg');const k=svg.getBoundingClientRect().width/svg.viewBox.baseVal.width;return Math.min(...[...svg.querySelectorAll('text')].filter(t=>t.textContent.trim()).map(t=>parseFloat(getComputedStyle(t).fontSize)*k));});
   assert(smallest>=7.5,`Diagram text too small on phones: ${smallest}px`);
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
+  // Numbers in lab tables are never split across lines on phones; a wide table scrolls in its own box.
+  current='lab table mobile';await page.goto(base+'nlp/rnn/laboratorium/');
+  const split=await page.evaluate(()=>[...document.querySelectorAll('main td,main th')].filter(c=>{const t=c.textContent.trim();if(!t||/\s/.test(t))return false;const r=document.createRange();r.selectNodeContents(c);return new Set([...r.getClientRects()].map(x=>Math.round(x.top))).size>1;}).map(c=>c.textContent.trim()));
+  assert.deepEqual(split,[]);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
+  // Enrichment topics draw a diagram that fits the phone without sideways scrolling.
+  for(const slug of ['ml/evaluasi-model','ml-lanjut/optimizer','nlp/tokenisasi-indonesia','nlp/rag-berbukti','nlp/evaluasi-generatif']){
+   current=slug+' figure';await page.goto(base+slug+'/');
+   const fig=await page.evaluate(()=>{const f=document.getElementById('lab-figure'),svg=f.querySelector('svg');return {marks:f.querySelectorAll('svg circle,svg polyline,.chip,.bar-row').length,caption:!!f.querySelector('figcaption').textContent.trim(),fits:!svg||svg.getBoundingClientRect().width<=f.clientWidth+1};});
+   assert(fig.marks>0&&fig.caption&&fig.fits,`${slug}: ${JSON.stringify(fig)}`);
+  }
+  current='evaluasi-model figure follows the threshold';await page.goto(base+'ml/evaluasi-model/');
+  const wrongBefore=await page.locator('#lab-figure .fig-wrong').count();await page.locator('#lab-threshold').fill('0.9');
+  assert.equal(wrongBefore,3);assert.equal(await page.locator('#lab-figure .fig-wrong').count(),2);
+  // The NMS diagram keeps its full size beside its controls on desktop.
+  await page.setViewportSize({width:1280,height:900});current='object-detection nms';
+  await page.goto(base+'ml-lanjut/object-detection/');await page.locator('[data-tab="nms"]').click();
+  assert((await page.locator('#nms-canvas').boundingBox()).width>=500);await page.locator('[data-tab="iou"]').click();
+  assert((await page.locator('#iou-canvas').boundingBox()).width>=450);await page.setViewportSize({width:390,height:844});
   // The navbar stays on one row on phones; the course code moves into the page header.
   current='navbar mobile';await page.goto(base+'kecerdasan-komputasional/pemodelan-pencarian/');
   assert((await page.evaluate(()=>document.querySelector('.navbar').getBoundingClientRect().height))<=64);

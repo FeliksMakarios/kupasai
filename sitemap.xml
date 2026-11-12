@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://feliksmakarios.github.io/kupasai/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/</loc><lastmod>2026-09-27</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/algoritma-genetika/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/algoritma-genetika/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
-  <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/</loc><lastmod>2026-09-27</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/jaringan-syaraf-tiruan/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/jaringan-syaraf-tiruan/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/kecerdasan-komputasional/kecerdasan-kawanan-fuzzy/</loc><lastmod>2026-09-26</lastmod></url>
@@ -23,7 +23,7 @@
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/decision-tree/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/evaluasi-model/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/evaluasi-model/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
-  <url><loc>https://feliksmakarios.github.io/kupasai/ml/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml/</loc><lastmod>2026-09-27</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/linear-regression/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/linear-regression/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml/logistic-regression/</loc><lastmod>2026-09-26</lastmod></url>
@@ -46,7 +46,7 @@
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/generalizing-gd/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/gradient-descent/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/gradient-descent/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
-  <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/</loc><lastmod>2026-09-27</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/nonlinearity-activation/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/nonlinearity-activation/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/ml-lanjut/object-detection/</loc><lastmod>2026-09-26</lastmod></url>
@@ -61,7 +61,7 @@
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/autograd/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/evaluasi-generatif/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/evaluasi-generatif/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
-  <url><loc>https://feliksmakarios.github.io/kupasai/nlp/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/nlp/</loc><lastmod>2026-09-27</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/lstm-attention/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/lstm-attention/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/ner/</loc><lastmod>2026-09-26</lastmod></url>
@@ -84,6 +84,6 @@
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/transformer/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/word-embeddings/</loc><lastmod>2026-09-26</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/nlp/word-embeddings/laboratorium/</loc><lastmod>2026-09-26</lastmod></url>
-  <url><loc>https://feliksmakarios.github.io/kupasai/tentang/</loc><lastmod>2026-09-26</lastmod></url>
+  <url><loc>https://feliksmakarios.github.io/kupasai/tentang/</loc><lastmod>2026-09-27</lastmod></url>
   <url><loc>https://feliksmakarios.github.io/kupasai/trek-belajar/</loc><lastmod>2026-09-26</lastmod></url>
 </urlset>

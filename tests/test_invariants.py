@@ -183,3 +183,19 @@ class LearningSpaces(unittest.TestCase):
         home=(ROOT/'index.html').read_text();track=(ROOT/'trek-belajar/index.html').read_text()
         self.assertNotIn('Mulai Belajar',home);self.assertNotIn('topic-search',home)
         for audience in ['mahasiswa','pemula','praktisi']:self.assertIn('value="'+audience+'"',track)
+class LayoutConsistency(unittest.TestCase):
+    def test_every_page_has_one_footer(self):
+        for p in [p for p in ROOT.glob('**/index.html') if 'node_modules' not in p.parts]:
+            s=p.read_text();rel=str(p.relative_to(ROOT))
+            self.assertEqual(s.count('<footer class="footer">'),1,rel)
+            self.assertLess(s.index('</main>'),s.index('<footer'),rel)
+    def test_descriptions_are_not_fallback_notices(self):
+        for p in [p for p in ROOT.glob('**/index.html') if 'node_modules' not in p.parts]:
+            for content in re.findall(r'(?:name="description"|property="og:description"|name="twitter:description") content="([^"]*)"',p.read_text()):
+                self.assertNotIn('JavaScript diperlukan',content,str(p.relative_to(ROOT)))
+                self.assertGreaterEqual(len(content),50,str(p.relative_to(ROOT)))
+    def test_enrichment_topics_share_the_topic_layout(self):
+        for slug in ['ml/evaluasi-model','ml-lanjut/optimizer','nlp/tokenisasi-indonesia','nlp/rag-berbukti','nlp/evaluasi-generatif']:
+            s=(ROOT/slug/'index.html').read_text()
+            for marker in ['class="page-header"','class="back-link">&larr; Kembali ke Daftar Topik','class="viz-layout"','id="lab-figure"']:self.assertIn(marker,s,slug)
+            self.assertNotIn('id="lab-figure"',(ROOT/slug/'laboratorium/index.html').read_text(),slug)

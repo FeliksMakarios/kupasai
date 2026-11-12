@@ -1,3 +1,12 @@
+## 2026-11-12 — Konsistensi tata letak
+
+- Perbaiki tab Non-Max Suppression dan IoU pada Deteksi Objek: diagram kembali berukuran penuh dan kontrolnya punya baris sendiri.
+- Tambahkan footer ke semua halaman (laboratorium, topik Pengantar ML, topik pengayaan, dan Trek Belajar) lewat `scripts/site_parts.py`.
+- Samakan lima topik pengayaan dengan topik lain: kepala halaman, tata letak dua kolom, dan diagram yang mengikuti kontrol (sebaran ambang, kurva loss, skor chunk, potongan token, sorotan LCS).
+- Perbaiki deskripsi mesin pencari kelima topik itu; skrip SEO tidak lagi mengambil teks `<noscript>`.
+- Angka dan rumus pada tabel laboratorium tidak lagi terpenggal di ponsel; tabel lebar bergulir di dalam kotaknya dengan petunjuk geser.
+- Simpan ikon halaman pada mode offline dan beri nama unik pada wilayah gulir.
+
 ## 2026-09-27 — Deskripsi topik dan narasi situs
 
 - Tambahkan empat kalimat deskripsi untuk setiap topik pada daftar mata kuliah, trek, dan pencarian: cakupan, materi, kegiatan, dan capaian belajar.
