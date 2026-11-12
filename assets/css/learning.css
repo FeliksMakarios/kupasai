@@ -9,6 +9,23 @@
 .skip-link:focus {top:1rem}
 :focus-visible {outline:3px solid var(--accent);outline-offset:3px}
 button {min-height:36px}
+/* Native controls (tick boxes, selects, scrollbars) follow the chosen theme. */
+:root[data-theme="dark"] {color-scheme:dark}
+:root[data-theme="light"] {color-scheme:light}
+/* Form controls use the site typeface instead of the browser default. */
+button,input,select,textarea {font-family:inherit}
+/* Touch targets: at least 24px tall, with larger tick boxes. */
+.back-link {display:inline-flex!important;align-items:center;min-height:24px}
+input[type=checkbox],input[type=radio] {width:1.15rem;height:1.15rem;accent-color:var(--accent);vertical-align:middle}
+input[type=range] {min-height:24px}
+input[type=number],input[type=text],input[type=search],select {min-height:32px}
+/* Text links on their own line (course lists, lab sequences) get a 24px tall hit area. */
+.lesson-sequence a,.topic-search-section a,#companion-experiment a {display:inline-block;min-height:24px;padding:.1rem 0}
+/* Formulas written as $...$ in the lesson data. */
+.math {font-family:"STIX Two Math","Cambria Math","Latin Modern Math",Georgia,"Times New Roman",serif;font-size:1.05em;white-space:nowrap}
+.math sub,.math sup {font-size:.75em;line-height:0}
+/* Lab table headings hold formulas; upper-casing would turn h into H. */
+.learning-aid .topic-table thead th {text-transform:none;letter-spacing:0;font-size:.85rem}
 .token-chip,.pred-chip {font:inherit;color:inherit;background:var(--bg-secondary)}
 .topic-table-wrap {overflow-x:auto}
 svg {max-width:100%;height:auto}

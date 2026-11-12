@@ -142,6 +142,14 @@ class AuditRegressions(unittest.TestCase):
             for question,answer,explanation in item['questions']:
                 self.assertIsInstance(answer,bool)
                 self.assertTrue(question and explanation)
+            self.assertEqual(len(item['choices']),2)
+            for question,options,correct,explanation in item['choices']:
+                self.assertTrue(question and explanation)
+                self.assertGreaterEqual(len(options),3);self.assertEqual(len(set(options)),len(options))
+                self.assertIn(correct,range(len(options)))
+        # The right answer must not sit in the same position throughout the catalogue.
+        positions={c[2] for item in catalogue for c in item['choices']}
+        self.assertGreaterEqual(len(positions),3)
 
 class ExtendedExperiments(unittest.TestCase):
     def test_kmeans_centroids_and_inertia(self):

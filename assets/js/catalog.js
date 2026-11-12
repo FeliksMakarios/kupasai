@@ -2,20 +2,81 @@
 'use strict';
 const topics=window.KupasCatalog||[],prefix='kupasai-progress:',notePrefix='kupasai-reflection:';
 const get=k=>{try{return localStorage.getItem(k);}catch(_){return null;}},put=(k,v)=>{try{localStorage.setItem(k,v);return true;}catch(_){return false;}};
+const storageAvailable=(()=>{try{localStorage.getItem(prefix);return true;}catch(_){return false;}})();
+const isComplete=slug=>get(prefix+slug)==='complete';
+const element=(name,className,text)=>{const e=document.createElement(name);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;};
+function completeMark(){return element('p','topic-complete','✓ Uji pemahaman selesai');}
+// Same markup as the static course lists: lead sentence, the rest behind "Selengkapnya".
 function topicCard(t,index){
- const li=document.createElement('li'),article=document.createElement('article'),h=document.createElement('h2'),meta=document.createElement('p'),actions=document.createElement('div');li.className='topic-entry';li.dataset.slug=t.slug;
- if(index!==undefined){const number=document.createElement('span');number.className='topic-number';number.setAttribute('aria-hidden','true');number.textContent=String(index+1).padStart(2,'0');li.append(number);}
- h.textContent=t.title;meta.className='topic-meta';meta.textContent=(t.week||'Pengayaan · di luar minggu RPS')+' · Estimasi '+t.minutes+' menit';actions.className='topic-actions';
- for(const [label,suffix]of [['Visualisasi',''],['Laboratorium Pendamping','laboratorium/']]){const a=document.createElement('a');a.className='topic-button'+(suffix?' secondary':'');a.href='/kupasai/'+t.slug+'/'+suffix;a.textContent=label;actions.append(a);}
- const description=document.createElement('p');description.className='topic-description';description.textContent=t.description;article.append(h,meta,description,actions);if(get(prefix+t.slug)==='complete'){const p=document.createElement('p');p.className='topic-complete';p.textContent='✓ Uji pemahaman selesai';article.append(p);}li.append(article);return li;
+ const li=element('li','topic-entry'),article=document.createElement('article'),actions=element('div','topic-actions');li.dataset.slug=t.slug;
+ if(index!==undefined){const number=element('span','topic-number',String(index+1).padStart(2,'0'));number.setAttribute('aria-hidden','true');li.append(number);}
+ for(const [label,suffix]of [['Visualisasi',''],['Laboratorium Pendamping','laboratorium/']]){const a=element('a','topic-button'+(suffix?' secondary':''),label);a.href='/kupasai/'+t.slug+'/'+suffix;actions.append(a);}
+ const cut=t.description.indexOf('. '),lead=cut<0?t.description:t.description.slice(0,cut+1),rest=cut<0?'':t.description.slice(cut+2);
+ article.append(element('h2','',t.title),element('p','topic-meta',(t.week||'Pengayaan · di luar minggu RPS')+' · Estimasi '+t.minutes+' menit'),element('p','topic-description',lead));
+ if(rest){const more=element('details','topic-more'),summary=element('summary','','Selengkapnya');summary.append(element('span','visually-hidden',' tentang '+t.title));more.append(summary,element('p','topic-description',rest));article.append(more);}
+ article.append(actions);if(isComplete(t.slug))article.append(completeMark());
+ li.append(article);return li;
 }
 window.KupasTopicCard=topicCard;
+// Progress summaries: "3 dari 13 topik selesai" with a bar. Slots stay hidden without storage.
+function showProgress(slot,list,compact){
+ const done=list.filter(t=>isComplete(t.slug)).length;
+ if(!storageAvailable){slot.hidden=true;return;}
+ if(compact&&!done){slot.hidden=true;return;}
+ const bar=document.createElement('progress');bar.max=list.length;bar.value=done;bar.setAttribute('aria-label','Progres belajar');
+ slot.replaceChildren(element('span','',done?done+' dari '+list.length+' topik selesai':'Belum ada topik yang selesai. Topik ditandai selesai setelah Uji Pemahaman dijawab benar semua.'),bar);slot.hidden=false;
+}
+window.KupasProgress=showProgress;
+document.querySelectorAll('[data-progress]').forEach(slot=>showProgress(slot,topics.filter(t=>t.slug.startsWith(slot.dataset.progress+'/')),slot.classList.contains('compact')));
+document.querySelectorAll('.topic-list-wrap .topic-entry[data-slug]').forEach(entry=>{if(isComplete(entry.dataset.slug))entry.querySelector('article').append(completeMark());});
+// Home: pick up where the learner left off.
+const resume=document.getElementById('home-continue');
+if(resume){
+ let last=null;try{last=JSON.parse(get('kupasai-last'));}catch(_){}
+ const t=last&&topics.find(x=>x.slug===last.slug),done=topics.filter(x=>isComplete(x.slug)).length;
+ if(t||done){
+  resume.append(element('h2','','Lanjutkan belajar'));
+  if(t){const link=element('a','topic-button',t.title+(last.lab?' · Laboratorium Pendamping':' · Visualisasi')+' →');link.href='/kupasai/'+t.slug+'/'+(last.lab?'laboratorium/':'');resume.append(element('p','','Terakhir Anda membuka:'),link);}
+  const total=element('p','progress-summary');showProgress(total,topics);resume.append(total);resume.hidden=false;
+ }
+}
 const search=document.getElementById('topic-search');
-if(search){const list=document.getElementById('topic-results');function show(){const q=search.value.trim().toLocaleLowerCase('id-ID');list.replaceChildren();if(!q){document.getElementById('search-status').textContent='Ketik untuk mencari di '+topics.length+' topik.';return;}const found=topics.filter(t=>(t.title+' '+t.slug+' '+t.prerequisite+' '+t.description).toLocaleLowerCase('id-ID').includes(q));found.forEach(t=>list.append(topicCard(t)));document.getElementById('search-status').textContent=found.length+' topik ditemukan.';}search.addEventListener('input',show);show();}
+if(search){
+ const list=document.getElementById('topic-results'),searchStatus=document.getElementById('search-status');
+ function show(){
+  const q=search.value.trim().toLocaleLowerCase('id-ID');list.replaceChildren();
+  if(!q){searchStatus.textContent='Ketik untuk mencari di '+topics.length+' topik.';return;}
+  const found=topics.filter(t=>(t.title+' '+t.slug+' '+t.prerequisite+' '+t.description).toLocaleLowerCase('id-ID').includes(q));
+  found.forEach(t=>list.append(topicCard(t)));searchStatus.textContent=found.length+' topik ditemukan.';
+ }
+ search.addEventListener('input',show);
+ // The home page search form lands here with ?cari=...
+ const asked=new URLSearchParams(location.search).get('cari');
+ if(asked){search.value=asked.slice(0,100);requestAnimationFrame(()=>search.scrollIntoView({block:'center'}));}
+ show();
+}
 const panel=document.querySelector('main[data-topic]');if(!panel)return;
 const topic=topics.find(t=>t.slug===panel.dataset.topic);if(!topic)return;
+put('kupasai-last',JSON.stringify({slug:topic.slug,lab:panel.dataset.space==='laboratorium'}));
 const checks=document.getElementById('concept-checks'),status=document.getElementById('quiz-status'),answers=new Map();
-if(checks)topic.questions.forEach(([question,correct,explanation],i)=>{const field=document.createElement('fieldset'),legend=document.createElement('legend');legend.textContent=(i+1)+'. '+question;field.appendChild(legend);const feedback=document.createElement('p');feedback.className='quiz-feedback';feedback.setAttribute('aria-live','polite');[true,false].forEach(value=>{const label=document.createElement('label'),radio=document.createElement('input');radio.type='radio';radio.name='concept-'+i;radio.value=String(value);radio.addEventListener('change',()=>{const ok=value===correct;answers.set(i,ok);feedback.textContent=(ok?'Benar. ':'Belum tepat. ')+explanation;const done=answers.size===topic.questions.length&&[...answers.values()].every(Boolean);if(done){status.textContent=put(prefix+topic.slug,'complete')?'Latihan selesai. Progres tersimpan di peramban ini.':'Latihan selesai. Penyimpanan peramban tidak tersedia.';}else status.textContent='Latihan berjalan: '+[...answers.values()].filter(Boolean).length+'/'+topic.questions.length+' benar.';});label.append(radio,document.createTextNode(value?'Benar':'Salah'));field.appendChild(label);});field.appendChild(feedback);checks.appendChild(field);});
+// Two true/false statements, then two multiple-choice questions; all must be right to complete the topic.
+const quiz=checks?[...topic.questions.map(([question,correct,explanation])=>({question,explanation,options:[['Benar',correct===true],['Salah',correct===false]],values:['true','false']})),...(topic.choices||[]).map(([question,options,correct,explanation])=>({question,explanation,options:options.map((text,index)=>[text,index===correct]),values:options.map((_,index)=>String(index))}))]:[];
+quiz.forEach((item,i)=>{
+ const field=document.createElement('fieldset'),feedback=element('p','quiz-feedback');feedback.setAttribute('aria-live','polite');
+ field.appendChild(element('legend','',(i+1)+'. '+item.question));
+ item.options.forEach(([text,ok],index)=>{
+  const label=document.createElement('label'),radio=document.createElement('input');radio.type='radio';radio.name='concept-'+i;radio.value=item.values[index];
+  radio.addEventListener('change',()=>{
+   answers.set(i,ok);feedback.textContent=(ok?'Benar. ':'Belum tepat. ')+item.explanation;
+   const right=[...answers.values()].filter(Boolean).length;
+   if(right===quiz.length)status.textContent=put(prefix+topic.slug,'complete')?'Latihan selesai. Progres tersimpan di peramban ini.':'Latihan selesai. Penyimpanan peramban tidak tersedia.';
+   else status.textContent='Latihan berjalan: '+right+'/'+quiz.length+' benar.';
+  });
+  label.append(radio,document.createTextNode(text));field.appendChild(label);
+ });
+ if(item.options.length>2)field.classList.add('choice');
+ field.appendChild(feedback);checks.appendChild(field);
+});
 if(status&&get(prefix+topic.slug)==='complete')status.textContent='Anda pernah menyelesaikan latihan ini. Silakan ulangi untuk menguji pemahaman.';
 const msg=document.getElementById('backup-status')||document.getElementById('learning-status');
 const noteKey=notePrefix+'/kupasai/'+topic.slug+'/';

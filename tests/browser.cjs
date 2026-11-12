@@ -56,7 +56,9 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   assert.equal(await page.locator('#concept-checks fieldset').count(),0);
   await page.goto(base+'ml-lanjut/regularization/');await page.locator('[data-tab="dropout"]').click();await page.locator('#dropout-regenerate').click();
   const mask=await page.locator('#dropout-mask-demo circle').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('stroke-dasharray')));await toggleTheme();assert.deepEqual(await page.locator('#dropout-mask-demo circle').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('stroke-dasharray'))),mask);
-  await page.goto(base+'ml/evaluasi-model/laboratorium/?tab=uji');await page.locator('input[name="concept-0"][value="false"]').check();await page.locator('input[name="concept-1"][value="true"]').check();assert((await page.locator('#quiz-status').innerText()).includes('selesai'));
+  await page.goto(base+'ml/evaluasi-model/laboratorium/?tab=uji');await page.locator('input[name="concept-0"][value="false"]').check();await page.locator('input[name="concept-1"][value="true"]').check();
+  for(const [index,choice] of (await page.evaluate(()=>window.KupasCatalog.find(t=>t.slug==='ml/evaluasi-model').choices)).entries())await page.locator('input[name="concept-'+(index+2)+'"][value="'+choice[2]+'"]').check();
+  assert((await page.locator('#quiz-status').innerText()).includes('selesai'));
   await page.goto(base+'nlp/rag-berbukti/');await page.locator('#lab-evidence').uncheck();assert((await page.locator('#lab-result').innerText()).includes('tidak dapat menjawab'));
   // Empty and object-key strings must be finite, never a perfect empty BLEU score.
   await page.goto(base+'nlp/summarization/');
@@ -126,6 +128,23 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   await page.goto(base+'ml-lanjut/object-detection/');await page.locator('[data-tab="nms"]').click();
   assert((await page.locator('#nms-canvas').boundingBox()).width>=500);await page.locator('[data-tab="iou"]').click();
   assert((await page.locator('#iou-canvas').boundingBox()).width>=450);await page.setViewportSize({width:390,height:844});
+  // Home: search hands over to the learning tracks, topic counts are shown, and the resume card follows progress.
+  current='home discovery';await page.goto(base);assert.equal(await page.locator('.course-count').count(),4);
+  assert((await page.locator('.course-count[data-course="nlp"]').innerText()).startsWith('13'));
+  assert(await page.locator('#home-continue').isVisible());assert((await page.locator('#home-continue').innerText()).includes('topik selesai'));
+  await page.locator('#home-search').fill('attention');await page.locator('.home-search button').click();await page.waitForURL(/trek-belajar\/\?cari=attention/);
+  assert.equal(await page.locator('#topic-search').inputValue(),'attention');assert((await page.locator('#topic-results .topic-entry').count())>0);
+  // Course lists show one sentence, the rest on demand, and mark finished topics.
+  current='course list';await page.goto(base+'ml/');
+  assert.equal(await page.locator('.topic-more[open]').count(),0);await page.locator('.topic-more summary').first().click();assert.equal(await page.locator('.topic-more[open]').count(),1);
+  assert((await page.locator('.progress-summary[data-progress="ml"]').innerText()).includes('1 dari 10'));
+  assert.equal(await page.locator('.topic-entry[data-slug="ml/evaluasi-model"] .topic-complete').count(),1);
+  // The chosen track is remembered without the address.
+  current='track memory';await page.goto(base+'trek-belajar/');assert(await page.locator('input[value="mahasiswa"]').isChecked());assert.equal(await page.locator('#track-course').inputValue(),'nlp');
+  assert(await page.locator('#track-progress').isVisible());
+  // Guides typeset formulas and navbar labels are Indonesian.
+  current='formula';await page.goto(base+'nlp/rnn/laboratorium/?tab=panduan');assert((await page.locator('.math sub').count())>=4);
+  await page.setViewportSize({width:1280,height:900});await page.goto(base+'nlp/rnn/');assert.equal((await page.locator('.navbar-meta').innerText()).trim(),'INF20161 · Minggu 2');await page.setViewportSize({width:390,height:844});
   // The navbar stays on one row on phones; the course code moves into the page header.
   current='navbar mobile';await page.goto(base+'kecerdasan-komputasional/pemodelan-pencarian/');
   assert((await page.evaluate(()=>document.querySelector('.navbar').getBoundingClientRect().height))<=64);
@@ -150,7 +169,11 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   await page.waitForFunction(()=>document.getElementById('learning-status').textContent.includes('siap dibuka offline'));
   await context.setOffline(true);await page.reload();assert(await page.locator('#lab-result').isVisible());
   await page.locator('#lab-threshold').fill('0.9');assert((await page.locator('#lab-result').innerText()).includes('0.9'));
-  await page.locator('#theme-toggle').click();assert(await page.locator('#lab-result').isVisible());await context.setOffline(false);
+  await page.locator('#theme-toggle').click();assert(await page.locator('#lab-result').isVisible());
+  await page.goto(base+'ml/evaluasi-model/');assert(await page.locator('#lab-figure').isVisible());await page.goto(base+'ml/');assert((await page.locator('.topic-entry').count())===10);
+  await page.goto(base);assert(await page.locator('.course-grid').isVisible());
+  const unsaved=await page.goto(base+'nlp/ner/');assert.equal(unsaved.status(),503);assert((await page.locator('h1').innerText()).includes('belum disimpan'));
+  errors.splice(0,errors.length,...errors.filter(e=>!(e.startsWith('offline persistence:')&&e.includes('503'))));await context.setOffline(false);
   current='expected-404';const missing=await page.goto(base+'halaman-yang-tidak-ada/');assert.equal(missing.status(),404);
   assert((await page.locator('h1').innerText()).includes('tidak ditemukan'));
   errors.splice(0,errors.length,...errors.filter(e=>!e.startsWith('expected-404:')));

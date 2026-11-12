@@ -5,6 +5,14 @@ import re
 from lessons import LESSONS, STEPS
 ROOT=Path(__file__).resolve().parents[1]
 SOURCE='https://github.com/FeliksMakarios/kupasai/tree/main/'
+def rich(text):
+    """Escape text, then typeset $formulas$ (x_t, h_(t−1), e^(−z)) and `code`."""
+    def formula(m):
+        body=re.sub(r'([_^])(\([^()]*\)|[^\s()=+×,.$]+)',lambda g:('<sub>' if g[1]=='_' else '<sup>')+g[2].strip('()')+('</sub>' if g[1]=='_' else '</sup>'),m[1])
+        return '<span class="math">'+body+'</span>'
+    text=re.sub(r'\$([^$]+)\$',formula,escape(text))
+    return re.sub(r'`([^`]+)`',r'<code>\1</code>',text)
+
 def learning_aid(topic):
     prereq,minutes,origin,note,predict,transfer,reference = LESSONS[topic]
     explore,compute=STEPS[topic]
@@ -14,8 +22,8 @@ def learning_aid(topic):
 <p><strong>Prasyarat:</strong> {escape(prereq)}. <strong>Estimasi seluruh topik:</strong> sekitar {minutes} menit.</p>
 <details><summary>Asal data dan batas contoh</summary><p>{escape(origin)}</p><p>{escape(note)}</p></details>
 <ol><li><strong>Prediksi sebelum mencoba:</strong> {escape(predict)}</li>
-<li><strong>Eksplorasi:</strong> {escape(explore)}</li>
-<li><strong>Perhitungan:</strong> {escape(compute)}</li>
+<li><strong>Eksplorasi:</strong> {rich(explore)}</li>
+<li><strong>Perhitungan:</strong> {rich(compute)}</li>
 <li><strong>Refleksi dan transfer:</strong> {escape(transfer)}</li></ol>
 <label for="reflection">Catatan belajar Anda</label><textarea id="reflection" rows="3" placeholder="Prediksi, hasil pengamatan, dan penjelasan Anda" aria-describedby="reflection-status"></textarea>
 <p class="reflection-status" id="reflection-status">Catatan tersimpan otomatis di peramban ini saja.</p>

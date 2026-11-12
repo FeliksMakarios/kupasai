@@ -22,6 +22,29 @@
         true,
         "Nol dapat bermakna pengukuran nyata; pilih imputasi sesuai arti kolom."
       ]
+    ],
+    "choices": [
+      [
+        "Operasi mana yang memilih baris berdasarkan posisi bilangan bulat, bukan label indeks?",
+        [
+          ".iloc",
+          ".loc",
+          "isnull()",
+          "dropna()"
+        ],
+        0,
+        ".iloc memakai posisi 0, 1, 2, dan seterusnya; .loc memakai label indeks atau nama kolom."
+      ],
+      [
+        "Sebuah tabel berisi 10 baris dan 3 di antaranya punya minimal satu nilai kosong. Berapa baris tersisa setelah dropna() bawaan?",
+        [
+          "7",
+          "10",
+          "3"
+        ],
+        0,
+        "dropna() bawaan membuang setiap baris yang memiliki nilai kosong, sehingga tersisa 10 − 3 = 7 baris."
+      ]
     ]
   },
   {
@@ -46,6 +69,28 @@
         "Residual sama dengan aktual dikurangi prediksi.",
         true,
         "Tanda residual menunjukkan arah galat; kuadratnya menghilangkan tanda."
+      ]
+    ],
+    "choices": [
+      [
+        "Nilai aktual 12 dan prediksi 15. Berapa residualnya (aktual − prediksi)?",
+        [
+          "3",
+          "27",
+          "−3"
+        ],
+        2,
+        "Residual = 12 − 15 = −3; tanda negatif berarti model memprediksi terlalu tinggi."
+      ],
+      [
+        "Menambah fitur pada regresi linear kuadrat terkecil akan…",
+        [
+          "tidak menurunkan R² pada data latih, tetapi R² pada data uji bisa turun",
+          "selalu menaikkan R² pada data uji",
+          "selalu menurunkan R² pada data latih"
+        ],
+        0,
+        "Pada data latih, model yang lebih besar tidak mungkin lebih buruk; pada data uji, fitur tambahan dapat menyesuaikan noise."
       ]
     ]
   },
@@ -72,6 +117,28 @@
         true,
         "Himpunan prediksi positif bertambah atau tetap, sehingga TP tidak berkurang."
       ]
+    ],
+    "choices": [
+      [
+        "Berapa nilai sigmoid σ(0)?",
+        [
+          "0.5",
+          "0",
+          "1"
+        ],
+        0,
+        "σ(0) = 1/(1 + e⁰) = 0.5; di titik ini model sama yakinnya pada kedua kelas."
+      ],
+      [
+        "Dengan ambang 0.5, batas keputusan regresi logistik adalah himpunan titik dengan…",
+        [
+          "probabilitas 0",
+          "z = w·x + b = 0",
+          "z = 1"
+        ],
+        1,
+        "σ(z) = 0.5 tepat ketika z = 0, sehingga batasnya berupa garis atau bidang linear."
+      ]
     ]
   },
   {
@@ -96,6 +163,28 @@
         "Pohon yang lebih dalam dapat overfit.",
         true,
         "Pohon dapat mempelajari noise; bandingkan metrik train dan validasi."
+      ]
+    ],
+    "choices": [
+      [
+        "Sebuah simpul berisi 4 sampel kelas A dan 4 sampel kelas B. Berapa entropinya (log basis 2)?",
+        [
+          "0",
+          "0.5",
+          "1"
+        ],
+        2,
+        "Dua kelas seimbang memberi entropi maksimum: −2 × (0.5 × log₂ 0.5) = 1 bit."
+      ],
+      [
+        "Information gain sebuah pemisah dihitung sebagai…",
+        [
+          "entropi anak terbesar dikurangi entropi anak terkecil",
+          "entropi induk dikurangi rata-rata tertimbang entropi anak",
+          "jumlah entropi semua anak"
+        ],
+        1,
+        "Bobotnya adalah proporsi sampel yang masuk ke tiap anak."
       ]
     ]
   },
@@ -122,6 +211,28 @@
         true,
         "Rata-rata probabilitas dapat berbeda dari mayoritas label keras tiap pohon."
       ]
+    ],
+    "choices": [
+      [
+        "Sampel bootstrap untuk satu pohon diambil dengan cara…",
+        [
+          "memakai semua baris tepat satu kali",
+          "mengambil n baris secara acak dengan pengembalian",
+          "membagi data menjadi bagian yang tidak tumpang tindih"
+        ],
+        1,
+        "Karena dengan pengembalian, sebagian baris muncul berulang dan sebagian tidak terpilih (out-of-bag)."
+      ],
+      [
+        "Mengapa kandidat fitur diacak pada tiap pemisahan?",
+        [
+          "Agar setiap pohon pasti lebih akurat daripada pohon tunggal",
+          "Agar pelatihan memakai lebih sedikit baris",
+          "Agar pohon-pohon kurang berkorelasi sehingga gabungannya lebih stabil"
+        ],
+        2,
+        "Pohon yang berbeda membuat kesalahan yang berbeda; agregasi mengurangi varians."
+      ]
     ]
   },
   {
@@ -146,6 +257,28 @@
         "GaussianNB dan MultinomialNB memakai model likelihood yang sama.",
         false,
         "Gaussian memakai distribusi kontinu Gaussian; Multinomial memodelkan hitungan nonnegatif."
+      ]
+    ],
+    "choices": [
+      [
+        "Tanpa smoothing, likelihood satu fitur bernilai 0 untuk suatu kelas. Apa akibatnya?",
+        [
+          "Fitur itu diabaikan",
+          "Prior kelas itu naik",
+          "Skor kelas itu menjadi 0, berapa pun nilai fitur lain"
+        ],
+        2,
+        "Skor adalah hasil kali; satu faktor nol menihilkan semuanya. Laplace smoothing mencegahnya."
+      ],
+      [
+        "Posterior tiap kelas diperoleh dengan…",
+        [
+          "menjumlahkan prior dan likelihood",
+          "mengambil likelihood terbesar saja",
+          "membagi prior × likelihood kelas itu dengan jumlahnya atas semua kelas"
+        ],
+        2,
+        "Normalisasi membuat posterior semua kelas berjumlah satu."
       ]
     ]
   },
@@ -172,6 +305,28 @@
         false,
         "Pilih threshold pada validation; penggunaan test untuk memilih parameter membocorkan evaluasi."
       ]
+    ],
+    "choices": [
+      [
+        "Pelanggan churn yang terlewat sangat mahal. Metrik kelas churn mana yang paling perlu dijaga?",
+        [
+          "Specificity",
+          "Recall",
+          "Precision"
+        ],
+        1,
+        "Recall = TP/(TP + FN); pelanggan churn yang terlewat (false negative) menurunkannya."
+      ],
+      [
+        "Dari 40 pelanggan yang diprediksi churn, 30 benar-benar churn. Berapa precision?",
+        [
+          "0.75",
+          "0.25",
+          "0.30"
+        ],
+        0,
+        "Precision = TP/(TP + FP) = 30/40 = 0.75."
+      ]
     ]
   },
   {
@@ -196,6 +351,28 @@
         "Mengubah skala fitur dapat mengubah hasil K-means.",
         true,
         "Jarak Euclidean lebih dipengaruhi fitur berskala besar."
+      ]
+    ],
+    "choices": [
+      [
+        "Langkah mana yang diulang K-Means sampai konvergen?",
+        [
+          "Menghapus titik terjauh dari centroid",
+          "Menetapkan tiap titik ke centroid terdekat, lalu memindahkan centroid ke rata-rata anggotanya",
+          "Menggabungkan dua cluster terdekat"
+        ],
+        1,
+        "Dua langkah itu tidak pernah menaikkan SSE, sehingga proses berhenti di sebuah optimum lokal."
+      ],
+      [
+        "Pada metode siku (elbow), K dipilih di titik ketika…",
+        [
+          "SSE bernilai nol",
+          "SSE mulai naik",
+          "penurunan SSE mulai melandai"
+        ],
+        2,
+        "SSE selalu turun saat K bertambah; siku menandai tambahan cluster yang manfaatnya kecil. Ini petunjuk, bukan aturan pasti."
       ]
     ]
   },
@@ -222,6 +399,28 @@
         true,
         "Lift membandingkan confidence terhadap support konsekuen."
       ]
+    ],
+    "choices": [
+      [
+        "Dari 100 transaksi, 20 memuat kopi dan 10 memuat kopi serta roti. Berapa confidence aturan kopi → roti?",
+        [
+          "0.20",
+          "0.50",
+          "0.10"
+        ],
+        1,
+        "Confidence = support(kopi dan roti)/support(kopi) = 0.10/0.20 = 0.5."
+      ],
+      [
+        "Lift aturan A → B sebesar 2 berarti…",
+        [
+          "A menyebabkan B",
+          "aturan muncul pada 2% transaksi",
+          "B muncul bersama A dua kali lebih sering daripada jika keduanya independen"
+        ],
+        2,
+        "Lift mengukur asosiasi relatif terhadap independensi, bukan sebab-akibat."
+      ]
     ]
   },
   {
@@ -246,6 +445,28 @@
         "Model selalu negatif dapat berakurasi tinggi pada data tidak seimbang.",
         true,
         "Periksa recall kelas minoritas dan biaya kesalahan."
+      ]
+    ],
+    "choices": [
+      [
+        "Ambang klasifikasi sebaiknya dipilih memakai data…",
+        [
+          "validasi",
+          "uji",
+          "gabungan latih dan uji"
+        ],
+        0,
+        "Data uji hanya dipakai sekali untuk evaluasi akhir agar tidak bocor ke pemilihan model."
+      ],
+      [
+        "Dari 10 kasus dengan 2 positif, model selalu memprediksi negatif. Berapa recall kelas positif?",
+        [
+          "0.2",
+          "0",
+          "0.8"
+        ],
+        1,
+        "Tidak ada positif yang terdeteksi: recall = 0/2 = 0, walaupun accuracy 0.8."
       ]
     ]
   },
@@ -272,6 +493,28 @@
         false,
         "Komposisi transformasi affine tetap transformasi affine."
       ]
+    ],
+    "choices": [
+      [
+        "Input x = [1, 2] dan bobot w = [0.5, −1], tanpa bias. Berapa keluarannya?",
+        [
+          "−1.5",
+          "2.5",
+          "1.5"
+        ],
+        0,
+        "Dot product: 1 × 0.5 + 2 × (−1) = −1.5."
+      ],
+      [
+        "Layer dengan 3 input dan 2 output memakai konvensi W berbentuk output × input. Bentuk W adalah…",
+        [
+          "3 × 3",
+          "2 × 3",
+          "3 × 2"
+        ],
+        1,
+        "Setiap baris W berisi bobot satu neuron output terhadap ketiga input."
+      ]
     ]
   },
   {
@@ -296,6 +539,28 @@
         "Untuk loss ½(wx−y)², gradien terhadap w adalah (wx−y)x.",
         true,
         "Aturan rantai mengalikan residual dengan turunan prediksi terhadap bobot."
+      ]
+    ],
+    "choices": [
+      [
+        "Bobot 0.5, gradien 2, dan learning rate 0.1. Berapa bobot baru?",
+        [
+          "0.48",
+          "0.3",
+          "0.7"
+        ],
+        1,
+        "Bobot baru = 0.5 − 0.1 × 2 = 0.3."
+      ],
+      [
+        "Jika nilai input diperbesar sementara learning rate tetap, pembaruan bobot cenderung…",
+        [
+          "lebih besar dan bisa divergen",
+          "lebih kecil",
+          "tidak berubah"
+        ],
+        0,
+        "Gradien bobot = delta × input, sehingga input besar memperbesar langkah."
       ]
     ]
   },
@@ -322,6 +587,28 @@
         false,
         "Orientasi bobot harus konsisten dengan forward pass."
       ]
+    ],
+    "choices": [
+      [
+        "Sebuah input bernilai 0 pada satu contoh. Apa yang terjadi pada bobot yang terhubung ke input itu?",
+        [
+          "Berubah paling besar",
+          "Menjadi nol",
+          "Tidak berubah, karena gradiennya delta × 0"
+        ],
+        2,
+        "Gradien tiap bobot adalah input dikali delta; input nol memberi gradien nol."
+      ],
+      [
+        "Jaringan satu lapis dengan 3 input dan 2 output memiliki berapa bobot (tanpa bias)?",
+        [
+          "5",
+          "9",
+          "6"
+        ],
+        2,
+        "Setiap output terhubung ke setiap input: 3 × 2 = 6."
+      ]
     ]
   },
   {
@@ -346,6 +633,28 @@
         "Loss online per contoh dan loss seluruh dataset pada bobot akhir bisa berbeda.",
         true,
         "Dalam online training bobot berubah antar contoh."
+      ]
+    ],
+    "choices": [
+      [
+        "Pola lampu [1, 0, 1] dengan bobot [0.5, 0.2, −0.3] menghasilkan prediksi…",
+        [
+          "0.8",
+          "0.2",
+          "0.4"
+        ],
+        1,
+        "Prediksi = 1 × 0.5 + 0 × 0.2 + 1 × (−0.3) = 0.2."
+      ],
+      [
+        "Jika hanya dilatih pada pola [1, 0, 1], bobot lampu tengah…",
+        [
+          "naik paling cepat",
+          "menjadi negatif",
+          "tidak berubah, karena inputnya selalu 0"
+        ],
+        2,
+        "Pembaruan bobot sebanding dengan inputnya; lampu yang mati tidak memberi sinyal belajar."
       ]
     ]
   },
@@ -372,6 +681,28 @@
         false,
         "Sigmoid jenuh mendekati 0 atau 1, turunannya mendekati nol."
       ]
+    ],
+    "choices": [
+      [
+        "Berapa turunan ReLU pada x = 3?",
+        [
+          "0",
+          "3",
+          "1"
+        ],
+        2,
+        "ReLU(x) = x untuk x > 0, sehingga kemiringannya 1."
+      ],
+      [
+        "Menumpuk banyak lapisan linear tanpa fungsi aktivasi menghasilkan model yang…",
+        [
+          "makin non-linear di tiap lapisan",
+          "tetap linear",
+          "dapat memisahkan data berbentuk cincin"
+        ],
+        1,
+        "Komposisi transformasi linear adalah transformasi linear; non-linearitas datang dari aktivasi."
+      ]
     ]
   },
   {
@@ -396,6 +727,28 @@
         "Turunan ReLU di nol selalu terdefinisi secara klasik.",
         false,
         "ReLU tidak terdiferensiasi di nol; implementasi memilih konvensi subgradien."
+      ]
+    ],
+    "choices": [
+      [
+        "Sebuah neuron ReLU menerima jumlah tertimbang negatif. Gradien yang mengalir ke bobot masuknya adalah…",
+        [
+          "negatif besar",
+          "nol",
+          "sama dengan delta output"
+        ],
+        1,
+        "Turunan ReLU nol untuk masukan negatif, sehingga rantai gradien terputus di neuron itu."
+      ],
+      [
+        "Untuk objektif L = ½(ŷ − t)², turunan L terhadap ŷ adalah…",
+        [
+          "2(ŷ − t)",
+          "ŷ − t",
+          "(ŷ − t)²"
+        ],
+        1,
+        "Faktor ½ menghapus angka 2 dari turunan kuadrat."
       ]
     ]
   },
@@ -422,6 +775,28 @@
         true,
         "Regularisasi tidak otomatis unggul; laporkan variasi antar seed."
       ]
+    ],
+    "choices": [
+      [
+        "Loss latih terus turun sementara loss validasi mulai naik. Ini tanda…",
+        [
+          "overfitting",
+          "underfitting",
+          "learning rate terlalu kecil"
+        ],
+        0,
+        "Model mulai menyesuaikan noise data latih yang tidak berlaku pada data baru."
+      ],
+      [
+        "Saat evaluasi, dropout standar…",
+        [
+          "dimatikan sehingga semua neuron aktif",
+          "tetap mematikan separuh neuron",
+          "mematikan semua neuron"
+        ],
+        0,
+        "Dengan inverted dropout, aktivasi sudah diskalakan saat pelatihan sehingga evaluasi memakai semua neuron."
+      ]
     ]
   },
   {
@@ -446,6 +821,28 @@
         "Operasi Conv2d di banyak library membalik kernel seperti konvolusi matematis.",
         false,
         "Umumnya digunakan cross-correlation tanpa membalik kernel."
+      ]
+    ],
+    "choices": [
+      [
+        "Input 6×6, kernel 3×3, stride 1, tanpa padding. Berapa ukuran keluarannya?",
+        [
+          "6×6",
+          "3×3",
+          "4×4"
+        ],
+        2,
+        "(6 − 3)/1 + 1 = 4 pada tiap sisi."
+      ],
+      [
+        "Max pooling 2×2 pada blok berisi 1, 5, 3, dan 2 menghasilkan…",
+        [
+          "11",
+          "2.75",
+          "5"
+        ],
+        2,
+        "Max pooling mengambil nilai terbesar di dalam blok."
       ]
     ]
   },
@@ -472,6 +869,28 @@
         false,
         "Kecocokan kelas dan aturan matching satu-ke-satu juga diperlukan."
       ]
+    ],
+    "choices": [
+      [
+        "Dua kotak memiliki luas irisan 20 dan luas gabungan 80. Berapa IoU?",
+        [
+          "0.25",
+          "0.20",
+          "4"
+        ],
+        0,
+        "IoU = irisan/gabungan = 20/80 = 0.25."
+      ],
+      [
+        "Non-Max Suppression menghapus kotak yang…",
+        [
+          "tidak tumpang tindih dengan kotak mana pun",
+          "IoU-nya terhadap kotak berskor lebih tinggi melebihi ambang",
+          "skornya paling tinggi"
+        ],
+        1,
+        "Kotak berskor tertinggi dipertahankan; duplikat yang banyak tumpang tindih dengannya dibuang, biasanya per kelas."
+      ]
     ]
   },
   {
@@ -496,6 +915,28 @@
         "Batas α<2/k berlaku universal untuk semua jaringan.",
         false,
         "Batas itu diturunkan khusus untuk kuadratik diagonal dalam demo."
+      ]
+    ],
+    "choices": [
+      [
+        "Momentum memperbarui bobot dengan memakai…",
+        [
+          "gradien langkah ini saja",
+          "nilai loss saja",
+          "akumulasi gradien dari langkah-langkah sebelumnya"
+        ],
+        2,
+        "Akumulasi itu meredam osilasi dan mempercepat gerak pada arah yang konsisten."
+      ],
+      [
+        "Pada fungsi kuadratik demo dengan k = 20, gradient descent konvergen jika learning rate…",
+        [
+          "tepat 1",
+          "kurang dari 0.1",
+          "lebih dari 0.1"
+        ],
+        1,
+        "Syaratnya 0 < α < 2/k = 0.1; batas ini khusus untuk fungsi kuadratik tersebut."
       ]
     ]
   },
@@ -522,6 +963,28 @@
         true,
         "Unit embedding mengikuti tokenizer dan vocabulary model."
       ]
+    ],
+    "choices": [
+      [
+        "Cosine similarity dua vektor yang searah adalah…",
+        [
+          "0",
+          "bergantung pada panjang vektor",
+          "1"
+        ],
+        2,
+        "Kosinus sudut 0° adalah 1; panjang vektor tidak memengaruhinya."
+      ],
+      [
+        "Analogi raja − pria + wanita ≈ ratu dihitung dengan…",
+        [
+          "mengalikan semua vektor",
+          "mengurutkan kata menurut abjad",
+          "menjumlah dan mengurangkan vektor, lalu mencari vektor kata terdekat"
+        ],
+        2,
+        "Hasil aritmetika jarang tepat sama dengan satu kata, sehingga dicari tetangga terdekatnya."
+      ]
     ]
   },
   {
@@ -546,6 +1009,28 @@
         "LSTM menjamin semua gradien selalu stabil.",
         false,
         "Gate dan lintasan membantu, tetapi tidak menjamin stabilitas dalam semua keadaan."
+      ]
+    ],
+    "choices": [
+      [
+        "Hidden state RNN pada langkah t dihitung dari…",
+        [
+          "input saat ini saja",
+          "semua input sekaligus secara paralel",
+          "input saat ini dan hidden state sebelumnya"
+        ],
+        2,
+        "Hidden state sebelumnya membawa ringkasan kata-kata yang sudah dibaca."
+      ],
+      [
+        "Jika faktor turunan per langkah sekitar 0.5, setelah 10 langkah gradien kira-kira dikalikan…",
+        [
+          "5",
+          "0.5",
+          "0.001"
+        ],
+        2,
+        "0.5 pangkat 10 ≈ 0.001; inilah gejala vanishing gradient."
       ]
     ]
   },
@@ -572,6 +1057,28 @@
         false,
         "Framework seperti PyTorch mengakumulasi gradien leaf kecuali dikosongkan."
       ]
+    ],
+    "choices": [
+      [
+        "Jika y = a × b dengan a = 2 dan b = 3, berapa turunan y terhadap a?",
+        [
+          "3",
+          "2",
+          "6"
+        ],
+        0,
+        "Turunan hasil kali terhadap a adalah faktor lainnya, yaitu b = 3."
+      ],
+      [
+        "Faktor 1.1 yang dikalikan 50 kali menghasilkan nilai sekitar…",
+        [
+          "1.1",
+          "117",
+          "55"
+        ],
+        1,
+        "1.1 pangkat 50 ≈ 117; faktor sedikit di atas 1 pun dapat membuat gradien meledak."
+      ]
     ]
   },
   {
@@ -596,6 +1103,28 @@
         "Weighted sum value dengan bobot softmax dapat berada di luar convex hull value.",
         false,
         "Bobot nonnegatif berjumlah satu membentuk kombinasi konveks."
+      ]
+    ],
+    "choices": [
+      [
+        "Forget gate yang bernilai mendekati 0 berarti cell state sebelumnya…",
+        [
+          "dipertahankan sepenuhnya",
+          "digandakan",
+          "hampir seluruhnya dilupakan"
+        ],
+        2,
+        "Cell state lama dikalikan nilai forget gate sebelum ditambah kandidat baru."
+      ],
+      [
+        "Bobot attention diperoleh dari skor dengan…",
+        [
+          "pembagian dengan skor terbesar",
+          "softmax, sehingga nonnegatif dan berjumlah 1",
+          "pembulatan ke 0 atau 1"
+        ],
+        1,
+        "Softmax mengubah skor menjadi distribusi atas posisi sumber."
       ]
     ]
   },
@@ -622,6 +1151,28 @@
         false,
         "Tanpa posisi, self-attention bersifat permutation equivariant."
       ]
+    ],
+    "choices": [
+      [
+        "Dalam scaled dot-product attention, skor query dan key dibagi dengan…",
+        [
+          "dimensi key",
+          "jumlah token",
+          "akar kuadrat dimensi key"
+        ],
+        2,
+        "Pembagian ini menahan skor agar softmax tidak terlalu cepat jenuh pada dimensi besar."
+      ],
+      [
+        "Setiap baris matriks attention sesudah softmax berjumlah…",
+        [
+          "0",
+          "sebanyak jumlah token",
+          "1"
+        ],
+        2,
+        "Tiap baris adalah distribusi perhatian satu token terhadap semua token."
+      ]
     ]
   },
   {
@@ -646,6 +1197,28 @@
         "Memilih token probabilitas tertinggi adalah satu-satunya cara decoding.",
         false,
         "Itu greedy decoding; sampling dan beam search adalah pilihan lain."
+      ]
+    ],
+    "choices": [
+      [
+        "Arsitektur mana yang hanya memakai tumpukan decoder?",
+        [
+          "GPT",
+          "BERT",
+          "T5"
+        ],
+        0,
+        "BERT hanya encoder, GPT hanya decoder, dan T5 memakai encoder serta decoder."
+      ],
+      [
+        "Sambungan residual pada blok Add & Norm menjumlahkan…",
+        [
+          "semua bobot attention",
+          "masukan sublapisan dengan keluarannya, lalu menormalkannya",
+          "keluaran encoder dan decoder"
+        ],
+        1,
+        "Jalur pintas ini memudahkan gradien mengalir melalui banyak lapisan."
       ]
     ]
   },
@@ -672,6 +1245,28 @@
         true,
         "Kosakata, token khusus, normalisasi, dan ID token harus konsisten."
       ]
+    ],
+    "choices": [
+      [
+        "Dari confusion matrix: TP = 40, FP = 10, FN = 20. Berapa precision?",
+        [
+          "0.50",
+          "0.80",
+          "0.67"
+        ],
+        1,
+        "Precision = TP/(TP + FP) = 40/50 = 0.80; nilai 0.67 adalah recall."
+      ],
+      [
+        "Token khusus yang representasinya biasa dipakai BERT untuk klasifikasi kalimat adalah…",
+        [
+          "[PAD]",
+          "[CLS]",
+          "[SEP]"
+        ],
+        1,
+        "[CLS] diletakkan di awal masukan dan representasi akhirnya diteruskan ke lapisan klasifikasi."
+      ]
     ]
   },
   {
@@ -696,6 +1291,28 @@
         "I-PER di awal diterima sama oleh parser permisif dan strict IOB2.",
         false,
         "Parser permisif dapat membuka entitas; strict IOB2 memerlukan B- yang sah."
+      ]
+    ],
+    "choices": [
+      [
+        "Dalam skema IOB2, token pertama sebuah entitas orang diberi tag…",
+        [
+          "B-PER",
+          "I-PER",
+          "O"
+        ],
+        0,
+        "B menandai awal entitas, I kelanjutannya, dan O token di luar entitas."
+      ],
+      [
+        "Entitas acuan adalah \"Joko Widodo\", tetapi model hanya menandai \"Joko\". Pada evaluasi tingkat entitas, prediksi itu dihitung…",
+        [
+          "salah, karena rentangnya tidak sama persis",
+          "benar separuh",
+          "benar, karena tipenya cocok"
+        ],
+        0,
+        "Entitas dihitung benar hanya bila tipe dan seluruh rentangnya cocok."
       ]
     ]
   },
@@ -722,6 +1339,28 @@
         true,
         "Metrik leksikal tidak sepenuhnya menangkap kesetaraan makna."
       ]
+    ],
+    "choices": [
+      [
+        "BLEU terutama mengukur…",
+        [
+          "presisi n-gram kandidat terhadap acuan",
+          "recall n-gram acuan",
+          "kebenaran fakta"
+        ],
+        0,
+        "BLEU menghitung proporsi n-gram kandidat yang muncul di acuan, dengan penalti untuk kandidat yang terlalu pendek."
+      ],
+      [
+        "Peringkasan ekstraktif menyusun ringkasan dengan…",
+        [
+          "memilih kalimat dari dokumen sumber",
+          "menulis kalimat baru",
+          "menerjemahkan dokumen"
+        ],
+        0,
+        "Peringkasan abstraktif yang menulis kalimat baru."
+      ]
     ]
   },
   {
@@ -746,6 +1385,28 @@
         "RAG tetap memerlukan evaluasi dukungan bukti.",
         true,
         "Retrieval atau generasi dapat salah meskipun konteks disediakan."
+      ]
+    ],
+    "choices": [
+      [
+        "Model tanya jawab ekstraktif memprediksi jawaban sebagai…",
+        [
+          "teks bebas yang ditulis dari nol",
+          "satu label kelas",
+          "posisi awal dan akhir rentang di dalam konteks"
+        ],
+        2,
+        "Jawaban adalah potongan konteks di antara token awal dan token akhir."
+      ],
+      [
+        "Sliding window dipakai ketika…",
+        [
+          "jawaban selalu berada di awal konteks",
+          "konteks lebih panjang daripada batas token model",
+          "pertanyaan terlalu pendek"
+        ],
+        1,
+        "Konteks dipotong menjadi jendela yang saling tumpang tindih agar jawaban tidak terbelah."
       ]
     ]
   },
@@ -772,6 +1433,28 @@
         true,
         "Tidak enak dan enak memiliki makna berbeda."
       ]
+    ],
+    "choices": [
+      [
+        "Pada WordPiece, awalan ## pada sebuah token menandakan…",
+        [
+          "token itu melanjutkan kata sebelumnya",
+          "token tidak dikenal",
+          "awal kalimat"
+        ],
+        0,
+        "Contohnya makanan dipecah menjadi makan dan ##an."
+      ],
+      [
+        "Kata yang tidak dapat dipecah dengan kosakata yang ada akan menjadi…",
+        [
+          "[UNK]",
+          "[CLS]",
+          "dihapus dari kalimat"
+        ],
+        0,
+        "[UNK] menandai token tak dikenal, sehingga informasi kata itu hilang."
+      ]
     ]
   },
   {
@@ -796,6 +1479,28 @@
         "Abstensi dapat tepat jika sumber tidak memuat jawaban.",
         true,
         "Sistem sebaiknya menyatakan keterbatasan bukti, bukan mengarang."
+      ]
+    ],
+    "choices": [
+      [
+        "Urutan tahap pipeline RAG yang benar adalah…",
+        [
+          "mengambil dokumen yang relevan, lalu menyusun jawaban dari dokumen itu",
+          "menyusun jawaban, lalu mencari dokumen pendukung",
+          "melatih ulang model untuk setiap pertanyaan"
+        ],
+        0,
+        "Jawaban disusun dari bukti yang diambil, sehingga mutu pengambilan membatasi mutu jawaban."
+      ],
+      [
+        "Recall@k untuk sebuah pertanyaan bernilai 1 jika…",
+        [
+          "semua k dokumen relevan",
+          "dokumen acuan termasuk dalam k dokumen teratas",
+          "jawaban akhirnya benar"
+        ],
+        1,
+        "Recall@k menilai tahap pengambilan, bukan kebenaran jawaban."
       ]
     ]
   },
@@ -822,6 +1527,28 @@
         false,
         "Evaluasi dukungan sumber dan penilaian manusia tetap dibutuhkan."
       ]
+    ],
+    "choices": [
+      [
+        "ROUGE-L didasarkan pada…",
+        [
+          "jumlah kata kandidat",
+          "kesamaan embedding",
+          "subsekuens bersama terpanjang (LCS)"
+        ],
+        2,
+        "LCS memperhitungkan urutan kata tanpa menuntut kata-katanya berdampingan."
+      ],
+      [
+        "Parafrasa yang setia pada sumber dapat memperoleh ROUGE rendah karena…",
+        [
+          "parafrasa selalu salah fakta",
+          "ROUGE hanya menghitung angka",
+          "metriknya membandingkan kata, bukan makna"
+        ],
+        2,
+        "Sinonim dan perubahan urutan kata mengurangi kecocokan leksikal walaupun maknanya sama."
+      ]
     ]
   },
   {
@@ -846,6 +1573,28 @@
         "Heuristik admissible tidak pernah melebihkan biaya sisa optimal.",
         true,
         "Untuk graph search, konsistensi atau reopening yang tepat juga penting."
+      ]
+    ],
+    "choices": [
+      [
+        "Struktur data mana yang dipakai BFS untuk menyimpan simpul yang menunggu diperiksa?",
+        [
+          "Antrean (masuk pertama, keluar pertama)",
+          "Tumpukan (masuk terakhir, keluar pertama)",
+          "Antrean prioritas menurut heuristik"
+        ],
+        0,
+        "Antrean membuat BFS memeriksa simpul lapis demi lapis; tumpukan menghasilkan DFS."
+      ],
+      [
+        "Dibanding minimax murni, alpha-beta pruning…",
+        [
+          "menghasilkan nilai akar yang sama dengan memeriksa lebih sedikit daun",
+          "dapat mengubah nilai akar",
+          "selalu memeriksa semua daun"
+        ],
+        0,
+        "Cabang yang dipangkas terbukti tidak dapat memengaruhi keputusan di akar."
       ]
     ]
   },
@@ -872,6 +1621,28 @@
         true,
         "Aturan ditelusuri mundur menuju premis atau fakta pendukung."
       ]
+    ],
+    "choices": [
+      [
+        "Pada graf AND-OR, biaya simpul AND dihitung dengan…",
+        [
+          "memilih cabang termahal",
+          "menjumlahkan biaya semua cabang yang harus diselesaikan",
+          "memilih cabang termurah"
+        ],
+        1,
+        "Simpul AND menuntut semua submasalah selesai; simpul OR cukup memilih yang termurah."
+      ],
+      [
+        "Pada kriptaritmatika SEND + MORE = MONEY, huruf M harus bernilai…",
+        [
+          "0",
+          "9",
+          "1"
+        ],
+        2,
+        "Jumlah dua bilangan empat digit kurang dari 20.000, sehingga digit puluhan ribunya hanya bisa 1."
+      ]
     ]
   },
   {
@@ -896,6 +1667,28 @@
         "Normalisasi Dempster tersedia ketika konflik total K=1.",
         false,
         "Penyebut 1−K nol; kombinasi tidak terdefinisi."
+      ]
+    ],
+    "choices": [
+      [
+        "Menurut teorema Bayes, posterior P(H|E) sebanding dengan…",
+        [
+          "P(E|H) × P(H)",
+          "P(E|H) + P(H)",
+          "P(H) saja"
+        ],
+        0,
+        "Likelihood dikali prior, lalu dinormalkan dengan P(E)."
+      ],
+      [
+        "Dalam teori Dempster-Shafer, massa pada himpunan {A, B} berarti…",
+        [
+          "A dan B benar bersamaan",
+          "keyakinan bahwa jawabannya A atau B, tanpa membaginya ke masing-masing",
+          "peluang A dan peluang B masing-masing setengahnya"
+        ],
+        1,
+        "Massa pada himpunan bukan probabilitas tiap anggotanya."
       ]
     ]
   },
@@ -922,6 +1715,28 @@
         true,
         "Pembaruan kompetitif tanpa label tidak boleh dilabeli LVQ terawasi."
       ]
+    ],
+    "choices": [
+      [
+        "Perceptron dengan w = 0.3, α = 0.2, target 1, keluaran 0, dan input 1. Menurut w + α(target − keluaran) × input, bobot barunya…",
+        [
+          "0.1",
+          "0.3",
+          "0.5"
+        ],
+        2,
+        "0.3 + 0.2 × (1 − 0) × 1 = 0.5."
+      ],
+      [
+        "Fungsi mana yang tidak dapat dipelajari oleh satu perceptron?",
+        [
+          "OR",
+          "XOR",
+          "AND"
+        ],
+        1,
+        "XOR tidak terpisahkan secara linear; diperlukan lapisan tersembunyi."
+      ]
     ]
   },
   {
@@ -947,6 +1762,28 @@
         true,
         "Ini maksimum historis, berbeda dari terbaik pada populasi saat ini."
       ]
+    ],
+    "choices": [
+      [
+        "Pada seleksi roulette wheel, peluang sebuah kromosom terpilih sebanding dengan…",
+        [
+          "panjang kromosomnya",
+          "fitness relatifnya",
+          "urutannya dalam populasi"
+        ],
+        1,
+        "Fitness relatif adalah fitness kromosom dibagi jumlah fitness populasi."
+      ],
+      [
+        "Mutasi pada kromosom biner dilakukan dengan…",
+        [
+          "menghapus kromosom terburuk",
+          "membalik nilai satu atau beberapa bit",
+          "menukar potongan dua induk"
+        ],
+        1,
+        "Menukar potongan dua induk adalah crossover; mutasi menjaga keragaman."
+      ]
     ]
   },
   {
@@ -971,6 +1808,28 @@
         "Pada ACO, feromon sama dan η=1/L dengan β=2 memberi bobot lebih besar pada jalur pendek.",
         true,
         "Peluang ternormalisasi sebanding η² ketika feromon sama."
+      ]
+    ],
+    "choices": [
+      [
+        "Pada Ant Colony Optimization, penguapan feromon berguna untuk…",
+        [
+          "menghentikan semut",
+          "mengurangi pengaruh jalur lama agar pencarian tidak cepat terjebak",
+          "menambah feromon di semua jalur"
+        ],
+        1,
+        "Tanpa penguapan, jalur yang kebetulan dipilih di awal akan terus diperkuat."
+      ],
+      [
+        "Pada aturan fuzzy dengan operator AND (MIN), derajat 0.7 dan 0.4 menghasilkan…",
+        [
+          "0.7",
+          "0.28",
+          "0.4"
+        ],
+        2,
+        "Operator MIN mengambil derajat keanggotaan terkecil."
       ]
     ]
   }
