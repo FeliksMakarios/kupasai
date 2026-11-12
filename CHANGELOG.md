@@ -1,3 +1,15 @@
+## 2026-11-12 — Pengalaman belajar dan keseragaman
+
+- Seragamkan bahasa: label minggu di navbar diambil dari katalog dan ditulis "Minggu", deskripsi mata kuliah di beranda berbahasa Indonesia.
+- Tampilkan progres: "x dari y topik selesai" di beranda, daftar topik, dan Trek Belajar; tanda selesai pada setiap topik. Pilihan profil Trek Belajar diingat di peramban.
+- Beranda: kotak pencarian yang membuka Trek Belajar, jumlah topik per mata kuliah, dan kartu Lanjutkan belajar ke topik terakhir yang dibuka.
+- Daftar topik menampilkan satu kalimat; sisa deskripsi dibuka lewat Selengkapnya.
+- Uji Pemahaman menjadi empat soal: dua benar atau salah dan dua pilihan ganda (78 soal baru di `scripts/quizzes.py`, posisi jawaban diacak secara tetap).
+- Tombol dan isian memakai huruf situs; kontrol bawaan mengikuti tema.
+- Rumus pada panduan ditulis dengan indeks dan pangkat (`$h_t$`, `e^(−z)`).
+- Mode offline juga menyimpan halaman pasangan, daftar topik, Trek Belajar, dan beranda; halaman yang belum disimpan menampilkan penjelasan.
+- Target sentuh: tautan kembali, kotak centang, pilihan kuis, dan tautan urutan minimal 24 px.
+
 ## 2026-11-12 — Konsistensi tata letak
 
 - Perbaiki tab Non-Max Suppression dan IoU pada Deteksi Objek: diagram kembali berukuran penuh dan kontrolnya punya baris sendiri.

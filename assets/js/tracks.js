@@ -17,9 +17,14 @@ function init(){
   const minutes=selected.reduce((n,t)=>n+t.minutes,0),hours=Math.floor(minutes/60),remaining=minutes%60;
   document.getElementById('track-summary').textContent=selected.length+' topik · Estimasi total '+(hours?hours+' jam ':'')+(remaining?remaining+' menit':'')+'. Durasi mencakup visualisasi dan laboratorium; sesuaikan dengan kecepatan belajar Anda.';
   list.replaceChildren(...selected.map((t,i)=>window.KupasTopicCard(t,i)));plan.hidden=false;
-  if(write){const url=new URL(location.href);url.searchParams.set('profil',role);if(role==='mahasiswa')url.searchParams.set('kuliah',course.value);else url.searchParams.delete('kuliah');history.replaceState(null,'',url);}
+  window.KupasProgress(document.getElementById('track-progress'),selected);
+  if(write){const url=new URL(location.href);url.searchParams.set('profil',role);if(role==='mahasiswa')url.searchParams.set('kuliah',course.value);else url.searchParams.delete('kuliah');history.replaceState(null,'',url);
+   try{localStorage.setItem('kupasai-track',JSON.stringify({profil:role,kuliah:course.value}));}catch(_){}}
  }
- const params=new URLSearchParams(location.search),profile=params.get('profil');
+ // The address wins; otherwise restore the last choice made in this browser.
+ const params=new URLSearchParams(location.search);
+ if(!params.has('profil')){try{const saved=JSON.parse(localStorage.getItem('kupasai-track'));if(saved){params.set('profil',saved.profil);if(saved.kuliah)params.set('kuliah',saved.kuliah);}}catch(_){}}
+ const profile=params.get('profil');
  if(['mahasiswa','pemula','praktisi'].includes(profile))picker.querySelector('input[value="'+profile+'"]').checked=true;
  if([...course.options].some(o=>o.value===params.get('kuliah')))course.value=params.get('kuliah');
  picker.addEventListener('change',()=>show(true));course.addEventListener('change',()=>show(true));show(false);

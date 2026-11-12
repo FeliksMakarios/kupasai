@@ -73,9 +73,16 @@
   <h1>Kupas<span class="brand-accent">AI</span></h1>
   <p class="hero-subtitle">Visualisasi interaktif untuk mata kuliah bidang Artificial Intelligence dan Data Science</p>
   <p class="hero-tagline">Setiap konsep dijelaskan dan divisualisasikan dalam Bahasa Indonesia</p>
+  <form class="home-search" role="search" action="/kupasai/trek-belajar/" method="get">
+    <label for="home-search" class="visually-hidden">Cari topik</label>
+    <input id="home-search" name="cari" type="search" maxlength="100" placeholder="Cari topik, misalnya attention" autocomplete="off">
+    <button type="submit">Cari</button>
+  </form>
 </section>
 
 <div class="content-wrapper">
+
+  <section class="home-continue" id="home-continue" aria-label="Lanjutkan belajar" hidden></section>
 
   <h2 id="courses" class="section-title">Mata Kuliah</h2>
 
@@ -88,13 +95,14 @@
         <div class="course-card-body">
           <div class="course-card-header">
             <h3>Pemrosesan Bahasa Alami (Natural Language Processing)</h3>
-            <span class="course-code">INF20161 &middot; 3 SKS</span>
+            <span class="course-meta"><span class="course-code">INF20161 &middot; 3 SKS</span> <span class="course-count" data-course="nlp">13 topik</span></span>
           </div>
           <p>
-            Word embeddings, recurrent neural networks, LSTM, Transformer,
-            text classification, named entity recognition, summarization,
-            question answering.
+            Representasi kata sebagai vektor, jaringan saraf berulang (RNN
+            dan LSTM), Transformer, klasifikasi teks, pengenalan entitas
+            bernama, peringkasan, dan tanya jawab.
           </p>
+          <p class="progress-summary compact" data-progress="nlp" hidden></p>
           <span class="course-card-link">Lihat visualisasi &rarr;</span>
         </div>
       </div>
@@ -107,13 +115,14 @@
         <div class="course-card-body">
           <div class="course-card-header">
             <h3>Pengantar Pemelajaran Mesin (Introduction to Machine Learning)</h3>
-            <span class="course-code">INF24042 &middot; 2 SKS</span>
+            <span class="course-meta"><span class="course-code">INF24042 &middot; 2 SKS</span> <span class="course-count" data-course="ml">10 topik</span></span>
           </div>
           <p>
-            Pandas, linear &amp; logistic regression, decision tree, random
-            forest, na&iuml;ve Bayes, churn prediction, clustering, market
-            basket analysis.
+            Pengolahan data dengan Pandas, regresi linear dan logistik,
+            pohon keputusan, random forest, Naive Bayes, prediksi churn,
+            pengelompokan (clustering), dan analisis keranjang belanja.
           </p>
+          <p class="progress-summary compact" data-progress="ml" hidden></p>
           <span class="course-card-link">Lihat visualisasi &rarr;</span>
         </div>
       </div>
@@ -126,13 +135,14 @@
         <div class="course-card-body">
           <div class="course-card-header">
             <h3>Pemelajaran Mesin Lanjut (Advanced Machine Learning)</h3>
-            <span class="course-code">INF24141 &middot; 3 SKS</span>
+            <span class="course-meta"><span class="course-code">INF24141 &middot; 3 SKS</span> <span class="course-count" data-course="ml-lanjut">10 topik</span></span>
           </div>
           <p>
-            Forward propagation, gradient descent, backpropagation manual,
-            regularisasi, convolutional neural network, dan algoritma
-            deteksi objek (YOLO).
+            Propagasi maju, penurunan gradien, propagasi balik secara
+            manual, regularisasi, jaringan saraf konvolusi, dan deteksi
+            objek (YOLO).
           </p>
+          <p class="progress-summary compact" data-progress="ml-lanjut" hidden></p>
           <span class="course-card-link">Lihat visualisasi &rarr;</span>
         </div>
       </div>
@@ -145,13 +155,14 @@
         <div class="course-card-body">
           <div class="course-card-header">
             <h3>Kecerdasan Komputasional (Computational Intelligence)</h3>
-            <span class="course-code">INF20052 &middot; 4 SKS</span>
+            <span class="course-meta"><span class="course-code">INF20052 &middot; 4 SKS</span> <span class="course-count" data-course="kecerdasan-komputasional">6 topik</span></span>
           </div>
           <p>
             Algoritma pencarian, penalaran ketidakpastian, jaringan saraf
             tiruan, algoritma genetika, kecerdasan kawanan, dan sistem
             fuzzy.
           </p>
+          <p class="progress-summary compact" data-progress="kecerdasan-komputasional" hidden></p>
           <span class="course-card-link">Lihat visualisasi &rarr;</span>
         </div>
       </div>

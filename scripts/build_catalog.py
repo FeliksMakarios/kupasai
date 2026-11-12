@@ -4,10 +4,10 @@ from html import escape, unescape
 import json, re
 from lessons import LESSONS
 from new_lessons import NEW
-from quizzes import CHECKS
+from quizzes import CHECKS, CHOICES
 from topic_descriptions import DESCRIPTIONS
 from build_lessons import learning_aid
-from site_parts import footer, ensure_footer
+from site_parts import footer, ensure_footer, COURSE_LABELS
 ROOT=Path(__file__).resolve().parents[1]
 COURSES={'ml':'Pengantar Pemelajaran Mesin','ml-lanjut':'Pemelajaran Mesin Lanjut','nlp':'Pemrosesan Bahasa Alami','kecerdasan-komputasional':'Kecerdasan Komputasional'}
 weeks=json.loads((ROOT/'scripts/course_weeks.json').read_text())
@@ -17,7 +17,12 @@ for slug,d in LESSONS.items():
     title=unescape(re.sub('<[^>]+>','',re.search(r'<h1[^>]*>([\s\S]*?)</h1>',page)[1])).strip()
     items.append(dict(slug=slug,title=title,prerequisite=d[0],minutes=d[1],provenance=d[2],limits=d[3],source=d[6],week=weeks.get(slug),description=DESCRIPTIONS[slug]))
 items.sort(key=lambda d:(list(COURSES).index(d['slug'].split('/')[0]),list(LESSONS).index(d['slug'])))
-for order,d in enumerate(items):d.update(order=order,reviewed='2026-09-26',questions=CHECKS[d['slug'].split('/')[-1]])
+def rotate(question,options,explanation):
+    shift=sum(map(ord,question))%len(options)
+    return [question,options[shift:]+options[:shift],(len(options)-shift)%len(options),explanation]
+for order,d in enumerate(items):
+    key=d['slug'].split('/')[-1]
+    d.update(order=order,reviewed='2026-09-26',questions=CHECKS[key],choices=[rotate(*c) for c in CHOICES[key]])
 (ROOT/'assets/lessons.json').write_text(json.dumps(items,ensure_ascii=False,indent=2)+'\n')
 (ROOT/'assets/js/catalog-data.js').write_text('window.KupasCatalog='+json.dumps(items,ensure_ascii=False)+';\n')
 
@@ -31,7 +36,9 @@ def actions(d):
 def card(d,number=None):
     week=escape(d['week'] or 'Pengayaan · di luar minggu RPS')
     number=f'<span class="topic-number" aria-hidden="true">{number:02d}</span>' if number else ''
-    return f'<li class="topic-entry" data-slug="{d["slug"]}">{number}<article><h2>{escape(d["title"])}</h2><p class="topic-meta">{week} <span aria-hidden="true">·</span> Estimasi {d["minutes"]} menit</p><p class="topic-description">{escape(d["description"])}</p>{actions(d)}</article></li>'
+    lead,_,rest=d['description'].partition('. ')
+    more=f'<details class="topic-more"><summary>Selengkapnya<span class="visually-hidden"> tentang {escape(d["title"])}</span></summary><p class="topic-description">{escape(rest)}</p></details>' if rest else ''
+    return f'<li class="topic-entry" data-slug="{d["slug"]}">{number}<article><h2>{escape(d["title"])}</h2><p class="topic-meta">{week} <span aria-hidden="true">·</span> Estimasi {d["minutes"]} menit</p><p class="topic-description">{escape(lead)}.</p>{more}{actions(d)}</article></li>'
 
 def utilities():
     return '<div class="learning-actions"><button id="share-controls" type="button">Salin tautan eksperimen</button><button id="reset-controls" type="button">Reset kontrol</button></div><p id="learning-status" role="status"></p>'
@@ -60,13 +67,15 @@ def shell(title,description,content,head_extra='',body_extra='',rel=''):
 for d in items:
     slug=d['slug'];p=ROOT/slug/'index.html';s=p.read_text()
     for block in ['learning-aid','catalog','lesson-links']:s=strip_block(s,block)
+    code=COURSE_LABELS[slug.split('/')[0]].split()[-1]
+    s=re.sub(r'<span class="navbar-meta">[^<]*</span>',f'<span class="navbar-meta">{code} &middot; {escape(d["week"])}</span>' if d['week'] else '<span class="navbar-meta">Materi pengayaan</span>',s,count=1)
     s=re.sub(r'(<main\b[^>]*?)(?: data-topic="[^"]*")?(>)',lambda m: re.sub(r' data-topic="[^"]*"','',m[1])+f' data-topic="{slug}"'+m[2],s,count=1)
     links=f'''<!-- lesson-links:start --><section class="lesson-next" aria-label="Poursuivre l'apprentissage"><h2>Lanjutkan eksplorasi</h2><p>Hitung hasilnya, tulis refleksi, lalu uji pemahaman Anda.</p><a class="topic-button" href="/kupasai/{slug}/laboratorium/">Ke Laboratorium Pendamping →</a>{utilities()}</section><!-- lesson-links:end -->'''.replace("Poursuivre l'apprentissage",'Lanjutkan belajar')
     s=s.replace('</main>',links+'\n</main>');p.write_text(s)
     siblings=[x for x in items if x['slug'].split('/')[0]==slug.split('/')[0]];i=siblings.index(d)
     sequence=' '.join(f'<a href="/kupasai/{siblings[ix]["slug"]}/laboratorium/">{before}{escape(siblings[ix]["title"])}{after}</a>' for before,after,ix in [('← Sebelumnya: ','',i-1),('Berikutnya: ',' →',i+1)] if 0<=ix<len(siblings))
     guide=learning_aid(slug)
-    quiz='<section class="learning-aid topic-tools"><h2>Uji Pemahaman</h2><p>Dua latihan dengan penjelasan. Progres dihitung setelah semua jawaban benar; membuka halaman saja tidak menandai selesai.</p><div id="concept-checks"></div><p id="quiz-status" role="status"></p></section>'
+    quiz='<section class="learning-aid topic-tools"><h2>Uji Pemahaman</h2><p>Empat latihan dengan penjelasan: dua pernyataan benar atau salah dan dua pilihan ganda. Topik ditandai selesai setelah semua jawaban benar; membuka halaman saja tidak menandai selesai.</p><div id="concept-checks"></div><p id="quiz-status" role="status"></p></section>'
     head_extra='';body_extra='<script src="/kupasai/assets/js/tabs.js"></script>'
     # Companion calculations use the same source data, without loading the visualization renderer.
     for filename in ['data.js','companion.js']:
@@ -90,18 +99,23 @@ for d in items:
 
 for course in COURSES:
     p=ROOT/course/'index.html';s=strip_block(p.read_text(),'extras')
-    content='<!-- topic-list:start --><section class="topic-list-wrap" aria-label="Daftar topik"><p class="list-intro">Pilih Visualisasi untuk mengamati konsep, atau Laboratorium Pendamping untuk berlatih. Durasi merupakan estimasi untuk kedua bagian.</p><ol class="topic-list">'+''.join(card(d,i+1) for i,d in enumerate([x for x in items if x['slug'].startswith(course+'/')]))+'</ol></section><!-- topic-list:end -->'
+    content='<!-- topic-list:start --><section class="topic-list-wrap" aria-label="Daftar topik"><p class="list-intro">Pilih Visualisasi untuk mengamati konsep, atau Laboratorium Pendamping untuk berlatih. Durasi merupakan estimasi untuk kedua bagian.</p><p class="progress-summary" data-progress="'+course+'" hidden></p><ol class="topic-list">'+''.join(card(d,i+1) for i,d in enumerate([x for x in items if x['slug'].startswith(course+'/')]))+'</ol></section><!-- topic-list:end -->'
     if '<!-- topic-list:start -->' in s:s=re.sub(r'<!-- topic-list:start -->[\s\S]*?<!-- topic-list:end -->',lambda _:content,s)
     else:s=re.sub(r'<div class="topic-table-wrap">[\s\S]*?</table>\s*</div>',lambda _:content,s,count=1)
     p.write_text(s)
 
-home=strip_block(home,'discovery');(ROOT/'index.html').write_text(home)
+home=strip_block(home,'discovery')
+for course in COURSES:
+    count=sum(d['slug'].startswith(course+'/') for d in items)
+    home,found=re.subn(r'(<span class="course-count" data-course="'+course+r'">)[^<]*(</span>)',lambda m:m[1]+str(count)+' topik'+m[2],home)
+    assert found==1,'course-count slot missing for '+course
+(ROOT/'index.html').write_text(home)
 roles=[('mahasiswa','Mahasiswa','Ikuti urutan RPS mata kuliah Anda.'),('pemula','Pemula','Bangun pemahaman dari data hingga model.'),('praktisi','Praktisi','Perkuat evaluasi model dan penerapan NLP.')]
 role_html=''.join(f'<label class="audience-option"><input type="radio" name="audience" value="{key}"><span><strong>{title}</strong><span>{desc}</span></span></label>' for key,title,desc in roles)
 content=f'''<main id="main-content" tabindex="-1"><div class="track-layout"><header class="track-header"><p class="eyebrow">Belajar dengan arah yang jelas</p><h1>Trek Belajar</h1><p>Pilih profil Anda untuk melihat urutan topik dan perkiraan waktu belajar. Anda bebas berpindah trek kapan saja.</p></header>
 <fieldset class="audience-picker"><legend>Anda belajar sebagai siapa?</legend><div class="audience-options">{role_html}</div></fieldset>
 <div id="course-picker" hidden><label for="track-course">Pilih mata kuliah</label><select id="track-course">{''.join(f'<option value="{k}">{v}</option>' for k,v in COURSES.items())}</select></div>
-<section id="track-plan" hidden aria-labelledby="track-title"><h2 id="track-title"></h2><p id="track-description"></p><p id="track-summary" role="status"></p><ol id="track-topics" class="topic-list"></ol></section>
+<section id="track-plan" hidden aria-labelledby="track-title"><h2 id="track-title"></h2><p id="track-description"></p><p id="track-summary" role="status"></p><p class="progress-summary" id="track-progress" hidden></p><ol id="track-topics" class="topic-list"></ol></section>
 <noscript><p>Pilih mata kuliah berikut untuk membaca urutan topik tanpa JavaScript.</p><ul>{''.join(f'<li><a href="/kupasai/{k}/">{v}</a></li>' for k,v in COURSES.items())}</ul></noscript>
 <section class="topic-search-section"><h2>Cari topik lain</h2><label for="topic-search">Cari judul atau prasyarat</label><input id="topic-search" type="search" placeholder="Contoh: attention, gradien, evaluasi"><p id="search-status" role="status"></p><ul id="topic-results" class="topic-list"></ul></section>
 </div></main>'''
