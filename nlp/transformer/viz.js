@@ -97,7 +97,8 @@
       var step = D.encoder_detail.steps[currentStep - 1];
       svg.selectAll('*').remove();
       var W = 700, H = 350;
-      svg.attr('viewBox','0 0 700 350');
+      // Crop to the drawn pipeline (x 216-510, y 30-264); a wider box would shrink every label.
+      svg.attr('viewBox','200 16 330 262').style('max-width','376px').style('margin','0 auto');
       var g = svg.append('g');
       svg.append('defs').append('marker').attr('id',svg.attr('id')+'-arrow').attr('viewBox','0 0 10 10').attr('refX',9).attr('refY',5).attr('markerWidth',4).attr('markerHeight',4).attr('orient','auto').append('path').attr('d','M0,0 L10,5 L0,10 Z').attr('fill',C.text_muted);
 
@@ -247,7 +248,8 @@
       var step = D.decoder_detail.steps[currentStep - 1];
       svg.selectAll('*').remove();
       var W = 700, H = 350;
-      svg.attr('viewBox','0 0 700 350');
+      // Crop to the encoder box plus the decoder pipeline (x 110-510, y 20-333 at the last step).
+      svg.attr('viewBox','100 10 420 332').style('max-width','546px').style('margin','0 auto');
       var g = svg.append('g');
       svg.append('defs').append('marker').attr('id',svg.attr('id')+'-arrow').attr('viewBox','0 0 10 10').attr('refX',9).attr('refY',5).attr('markerWidth',4).attr('markerHeight',4).attr('orient','auto').append('path').attr('d','M0,0 L10,5 L0,10 Z').attr('fill',C.text_muted);
 
@@ -270,7 +272,7 @@
 
       // Encoder side label (for cross-attention step)
       g.append('text')
-        .attr('x', 60).attr('y', 190)
+        .attr('x', 145).attr('y', 192)
         .attr('text-anchor', 'middle')
         .attr('font-size', '10px')
         .attr('font-weight', '700')
@@ -279,7 +281,7 @@
         .text('Encoder');
 
       g.append('rect')
-        .attr('x', 30).attr('y', 170).attr('width', 60).attr('height', 35)
+        .attr('x', 110).attr('y', 170).attr('width', 70).attr('height', 35)
         .attr('rx', 4)
         .attr('fill', C.enc_color)
         .attr('fill-opacity', currentStep === 3 ? 0.15 : 0.05)
@@ -290,17 +292,17 @@
       // Arrow from encoder to cross-attention (step 3)
       if (currentStep === 3) {
         g.append('line')
-          .attr('x1', 90).attr('y1', 187)
+          .attr('x1', 180).attr('y1', 187)
           .attr('x2', cx - boxW / 2).attr('y2', 187)
           .attr('stroke', C.cross_color)
           .attr('stroke-width', 2)
           .attr('stroke-dasharray', '5 3');
 
         g.append('text')
-          .attr('x', (90 + cx - boxW / 2) / 2)
+          .attr('x', (180 + cx - boxW / 2) / 2)
           .attr('y', 180)
           .attr('text-anchor', 'middle')
-          .attr('font-size', '9px')
+          .attr('font-size', '10px')
           .attr('fill', C.cross_color)
           .attr('font-weight', '600')
           .text('K, V');

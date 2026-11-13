@@ -123,6 +123,17 @@ function pages(p){return fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.nam
   current='evaluasi-model figure follows the threshold';await page.goto(base+'ml/evaluasi-model/');
   const wrongBefore=await page.locator('#lab-figure .fig-wrong').count();await page.locator('#lab-threshold').fill('0.9');
   assert.equal(wrongBefore,3);assert.equal(await page.locator('#lab-figure .fig-wrong').count(),2);
+  // Transformer encoder and decoder diagrams keep labels at a readable size on desktop.
+  await page.setViewportSize({width:1280,height:900});current='transformer diagrams';await page.goto(base+'nlp/transformer/');
+  for(const [tab,id,next] of [['encoder','encoder-plot','enc-next'],['decoder','decoder-plot','dec-next']]){
+   await page.locator('[data-tab="'+tab+'"]').click();
+   for(let step=0;step<5;step++){
+    const fit=await page.evaluate(id=>{const svg=document.getElementById(id),vb=svg.viewBox.baseVal,k=svg.getBoundingClientRect().width/vb.width,b=svg.getBBox();
+     return {smallest:Math.min(...[...svg.querySelectorAll('text')].filter(t=>t.textContent.trim()).map(t=>parseFloat(getComputedStyle(t).fontSize)*k)),inside:b.x>=vb.x&&b.y>=vb.y&&b.x+b.width<=vb.x+vb.width&&b.y+b.height<=vb.y+vb.height};},id);
+    assert(fit.smallest>=10,`${id} step ${step+1}: labels ${fit.smallest}px`);assert(fit.inside,`${id} step ${step+1}: drawing outside its frame`);
+    if(await page.locator('#'+next).isDisabled())break;await page.locator('#'+next).click();
+   }
+  }
   // The NMS diagram keeps its full size beside its controls on desktop.
   await page.setViewportSize({width:1280,height:900});current='object-detection nms';
   await page.goto(base+'ml-lanjut/object-detection/');await page.locator('[data-tab="nms"]').click();
