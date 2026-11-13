@@ -1,3 +1,7 @@
+## 2026-11-13 — Diagram Transformer
+
+- Bingkai diagram Encoder dan Decoder dipangkas ke isi gambar, dan kotak Encoder pada diagram Decoder didekatkan ke Cross-Attention. Label naik dari sekitar 7 px menjadi 11 sampai 12,5 px di desktop.
+
 ## 2026-11-12 — Pengalaman belajar dan keseragaman
 
 - Seragamkan bahasa: label minggu di navbar diambil dari katalog dan ditulis "Minggu", deskripsi mata kuliah di beranda berbahasa Indonesia.
