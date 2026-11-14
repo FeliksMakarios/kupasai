@@ -12,12 +12,14 @@
 
   var D = GATED_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e', text_primary: '#e6edf3', axis: '#30363d',
-    accent: '#58a6ff', success: '#3fb950', dot: '#8b949e',
-  } : {
-    text_muted: '#656d76', text_primary: '#1f2328', axis: '#d0d7de',
-    accent: '#0969da', success: '#1a7f37', dot: '#8b949e',
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    axis: P.axis,
+    accent: P.data,
+    success: P.accentText,
+    dot: P.muted,
   };
 
   function sigmoid(x) { return 1 / (1 + Math.exp(-x)); }

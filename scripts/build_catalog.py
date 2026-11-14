@@ -55,7 +55,7 @@ def shell(title,description,content,head_extra='',body_extra='',rel=''):
 <link rel="stylesheet" href="/kupasai/assets/css/main.css"><link rel="stylesheet" href="/kupasai/assets/css/learning.css"><link rel="stylesheet" href="/kupasai/assets/css/catalog.css">
 <link rel="icon" type="image/svg+xml" href="/kupasai/assets/img/favicon.svg">
 {bootstrap}
-<script src="/kupasai/assets/js/state.js"></script><script src="/kupasai/assets/js/learning.js" defer></script>
+<script src="/kupasai/assets/js/state.js"></script><script src="/kupasai/assets/js/palette.js"></script><script src="/kupasai/assets/js/learning.js" defer></script>
 {head_extra}
 <script src="/kupasai/assets/js/experiments.js" defer></script><script src="/kupasai/assets/js/catalog-data.js" defer></script><script src="/kupasai/assets/js/catalog.js" defer></script><script src="/kupasai/assets/js/offline.js" defer></script>
 </head><body>{nav}
@@ -125,6 +125,7 @@ for p in list(ROOT.glob('**/index.html'))+[ROOT/'404.html']:
     if 'node_modules' in p.parts:continue
     s=p.read_text()
     if '/kupasai/trek-belajar/' not in s.split('</nav>')[0]:s=s.replace('<ul class="navbar-links">','<ul class="navbar-links">\n    <li><a href="/kupasai/trek-belajar/">Trek Belajar</a></li>')
+    if p.parent.name=='trek-belajar' and 'href="/kupasai/trek-belajar/" class="active"' not in s:s=s.replace('<a href="/kupasai/trek-belajar/">','<a href="/kupasai/trek-belajar/" class="active">',1)
     if p.name=='index.html':s=ensure_footer(s,p.parent.relative_to(ROOT).as_posix())
     if 'catalog.css' not in s:s=s.replace('</head>','<link rel="stylesheet" href="/kupasai/assets/css/catalog.css">\n</head>')
     p.write_text(s)

@@ -7,12 +7,15 @@
 
   var D = KK5_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e', text_primary: '#e6edf3', axis: '#30363d',
-    accent: '#58a6ff', danger: '#f85149', success: '#3fb950', grid: '#21262d',
-  } : {
-    text_muted: '#656d76', text_primary: '#1f2328', axis: '#d0d7de',
-    accent: '#0969da', danger: '#cf222e', success: '#1a7f37', grid: '#eaeef2',
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    axis: P.axis,
+    accent: P.data,
+    danger: P.accentText,
+    success: P.data2,
+    grid: P.grid,
   };
 
   // ============================================================
@@ -72,9 +75,9 @@
     var pie = d3.pie().value(function (d) { return d.fitrel; }).sort(null);
     var arcs = pie(D.seleksi.tabel);
     var arcGen = d3.arc().innerRadius(0).outerRadius(r);
-    var color = d3.scaleSequential(d3.interpolateBlues).domain([0, D.seleksi.tabel.length]);
+    var color = d3.scaleSequential(KupasPalette.sequential(P)).domain([0, D.seleksi.tabel.length]);
     g.selectAll('path').data(arcs).enter().append('path')
-      .attr('d', arcGen).attr('fill', function (d, i) { return color(i); }).attr('stroke', IS_DARK ? '#0d1117' : '#fff').attr('stroke-width', 1);
+      .attr('d', arcGen).attr('fill', function (d, i) { return color(i); }).attr('stroke', P.page).attr('stroke-width', 1);
   })();
   document.getElementById('seleksi-hilang-text').innerHTML =
     'Pada seleksi ini, <strong>' + D.seleksi.hilang.length + ' kromosom</strong> (nomor ' + D.seleksi.hilang.join(', ') + ') tidak terpilih sama sekali dan hilang dari generasi berikutnya, digantikan salinan kromosom berfitness lebih tinggi.';
@@ -127,7 +130,7 @@
     var x = d3.scaleBand().domain(cols.map(function (c) { return c.join('|'); })).range([0, iw]).padding(0.08);
     var y = d3.scaleBand().domain(rows).range([0, ih]).padding(0.08);
     var maxVal = Math.max.apply(null, D.eksperimen.map(function (d) { return d.rata_generasi; }));
-    var color = d3.scaleSequential(d3.interpolateOrRd).domain([0, maxVal]);
+    var color = d3.scaleSequential(KupasPalette.sequentialAccent(P)).domain([0, maxVal]);
     var g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     g.append('g').call(d3.axisLeft(y).tickFormat(function (d) { return 'n=' + d; })).selectAll('text').attr('fill', C.text_muted).style('font-size', '10px');
     g.selectAll('.domain, .tick line').attr('stroke', C.axis);
@@ -140,12 +143,10 @@
     });
     D.eksperimen.forEach(function (d) {
       var key = d.pc + '|' + d.pm;
-      var bg = d3.color(color(d.rata_generasi));
-      var lum = 0.299 * bg.r + 0.587 * bg.g + 0.114 * bg.b;
       g.append('rect').attr('x', x(key)).attr('y', y(d.n_pop)).attr('width', x.bandwidth()).attr('height', y.bandwidth()).attr('rx', 4)
         .attr('fill', color(d.rata_generasi)).attr('stroke', C.axis);
       g.append('text').attr('x', x(key) + x.bandwidth() / 2).attr('y', y(d.n_pop) + y.bandwidth() / 2 + 4).attr('text-anchor', 'middle')
-        .style('font-size', '11px').style('font-weight', 700).attr('fill', lum < 150 ? '#fff' : '#1f2328').text(d.rata_generasi);
+        .style('font-size', '11px').style('font-weight', 700).attr('fill', KupasPalette.textOn(color(d.rata_generasi))).text(d.rata_generasi);
     });
   })();
 

@@ -9,16 +9,19 @@
   var D = NL_DATA;
   var DN = NL_DONUT_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e', text_primary: '#e6edf3', axis: '#30363d',
-    accent: '#58a6ff', danger: '#f85149', success: '#3fb950', grid: '#21262d',
-    c0: 'rgba(88,166,255,0.85)', c1: 'rgba(248,81,73,0.85)',
-    bg0: 'rgba(88,166,255,0.18)', bg1: 'rgba(248,81,73,0.18)',
-  } : {
-    text_muted: '#656d76', text_primary: '#1f2328', axis: '#d0d7de',
-    accent: '#0969da', danger: '#cf222e', success: '#1a7f37', grid: '#eaeef2',
-    c0: 'rgba(9,105,218,0.85)', c1: 'rgba(207,34,46,0.85)',
-    bg0: 'rgba(9,105,218,0.15)', bg1: 'rgba(207,34,46,0.15)',
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    axis: P.axis,
+    accent: P.data,
+    danger: P.accentText,
+    success: P.data2,
+    grid: P.grid,
+    c0: KupasPalette.alpha(P.data, 0.85),
+    c1: KupasPalette.alpha(P.accentText, 0.85),
+    bg0: KupasPalette.alpha(P.data, 0.15),
+    bg1: KupasPalette.alpha(P.accentText, 0.15),
   };
 
 
@@ -130,9 +133,9 @@
     g.selectAll('.domain, .tick line').attr('stroke', C.axis);
 
     var fns = [
-      { fn: relu, color: D.activations.relu.color },
-      { fn: sigmoid, color: D.activations.sigmoid.color },
-      { fn: tanhFn, color: D.activations.tanh.color }
+      { fn: relu, color: P[D.activations.relu.color] },
+      { fn: sigmoid, color: P[D.activations.sigmoid.color] },
+      { fn: tanhFn, color: P[D.activations.tanh.color] }
     ];
     fns.forEach(function (item) {
       var data = d3.range(-5, 5.01, 0.1).map(function (xv) { return { x: xv, y: item.fn(xv) }; });

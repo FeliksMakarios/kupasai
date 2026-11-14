@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="600" height="160" viewBox="0 0 600 160">
   <defs>
     <linearGradient id="bg-mll" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#fff8c5"/>
-      <stop offset="100%" stop-color="#ffffff"/>
+      <stop offset="0%" stop-color="#d6e2f2"/>
+      <stop offset="100%" stop-color="#f5f7fa"/>
     </linearGradient>
   </defs>
   <rect width="600" height="160" fill="url(#bg-mll)"/>
   <!-- Content stays within x 150..450 so narrow cards crop only background. -->
-  <g stroke="#9a6700" stroke-width="1" opacity="0.3">
+  <g stroke="#b07f00" stroke-width="1" opacity="0.3">
     <line x1="170" y1="45" x2="270" y2="30"/><line x1="170" y1="45" x2="270" y2="65"/><line x1="170" y1="45" x2="270" y2="100"/><line x1="170" y1="45" x2="270" y2="135"/>
     <line x1="170" y1="80" x2="270" y2="30"/><line x1="170" y1="80" x2="270" y2="65"/><line x1="170" y1="80" x2="270" y2="100"/><line x1="170" y1="80" x2="270" y2="135"/>
     <line x1="170" y1="115" x2="270" y2="30"/><line x1="170" y1="115" x2="270" y2="65"/><line x1="170" y1="115" x2="270" y2="100"/><line x1="170" y1="115" x2="270" y2="135"/>
@@ -18,14 +18,14 @@
     <line x1="360" y1="55" x2="430" y2="80"/><line x1="360" y1="105" x2="430" y2="80"/>
   </g>
   <!-- Backward pass: gradient flows right to left -->
-  <path d="M 430 145 L 180 145" fill="none" stroke="#bf3989" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.6"/>
-  <path d="M 186 140 L 178 145 L 186 150" fill="none" stroke="#bf3989" stroke-width="1.5" opacity="0.6"/>
-  <g fill="#d4a72c" opacity="0.85">
+  <path d="M 430 145 L 180 145" fill="none" stroke="#163a6b" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.6"/>
+  <path d="M 186 140 L 178 145 L 186 150" fill="none" stroke="#163a6b" stroke-width="1.5" opacity="0.6"/>
+  <g fill="#f2b705" opacity="0.85">
     <circle cx="170" cy="45" r="7"/><circle cx="170" cy="80" r="7"/><circle cx="170" cy="115" r="7"/>
   </g>
-  <g fill="#9a6700" opacity="0.8">
+  <g fill="#b07f00" opacity="0.8">
     <circle cx="270" cy="30" r="7"/><circle cx="270" cy="65" r="7"/><circle cx="270" cy="100" r="7"/><circle cx="270" cy="135" r="7"/>
     <circle cx="360" cy="55" r="7"/><circle cx="360" cy="105" r="7"/>
   </g>
-  <circle cx="430" cy="80" r="8" fill="#bf3989" opacity="0.8"/>
+  <circle cx="430" cy="80" r="8" fill="#163a6b" opacity="0.8"/>
 </svg>

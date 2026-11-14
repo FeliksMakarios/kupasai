@@ -13,17 +13,17 @@ var NL_DATA = {
     "relu": {
       "name": "ReLU",
       "formula": "f(x) = max(0, x)",
-      "color": "#0969da"
+      "color": "data"
     },
     "sigmoid": {
       "name": "Sigmoid",
       "formula": "f(x) = 1 / (1 + e^(&minus;x))",
-      "color": "#8250df"
+      "color": "accentText"
     },
     "tanh": {
       "name": "Tanh",
       "formula": "f(x) = tanh(x)",
-      "color": "#1a7f37"
+      "color": "data2"
     }
   }
 };

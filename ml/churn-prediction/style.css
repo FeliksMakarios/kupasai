@@ -8,13 +8,13 @@
 .back-link:hover { color: var(--accent); }
 .page-header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
 .page-subtitle { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
-.learning-objectives { background: var(--accent-light); border: 1px solid #54aeff; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+.learning-objectives { background: var(--accent-light); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text-secondary); }
 .learning-objectives strong { color: var(--accent); }
 
 .tab-nav { max-width: 900px; margin: 0 auto; padding: 1rem 2rem 0; display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border); }
 .tab-btn { background: none; border: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; padding: 0.6rem 1.2rem; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; font-family: var(--font-sans); }
 .tab-btn:hover { color: var(--text-secondary); }
-.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent-line); }
 .tab-content { display: none; max-width: 1100px; margin: 0 auto; padding: 1.5rem 2rem; }
 .tab-content.active { display: block; }
 
@@ -29,17 +29,17 @@
 
 .split-bar { display: flex; height: 28px; border-radius: 6px; overflow: hidden; margin-bottom: 0.5rem; }
 .split-bar .seg-active { background: var(--success); }
-.split-bar .seg-churn { background: var(--danger); }
+.split-bar .seg-churn { background: var(--accent-fill); }
 .split-legend { display: flex; gap: 1.5rem; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1.5rem; }
 .split-legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 0.35rem; }
 .split-legend .dot.active { background: var(--success); }
-.split-legend .dot.churn { background: var(--danger); }
+.split-legend .dot.churn { background: var(--accent-fill); }
 
 /* ==================== METRIC CARDS ==================== */
 
 .model-row { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
 .model-card { flex: 1; border: 2px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; background: var(--bg-secondary); }
-.model-card.winner { border-color: var(--accent); background: var(--accent-light); }
+.model-card.winner { border-color: var(--accent-line); background: var(--accent-light); }
 .model-card .mc-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem; }
 .model-card .mc-line { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-secondary); font-family: var(--font-mono); margin-bottom: 0.25rem; }
 .model-card .mc-line strong { color: var(--text-primary); }
@@ -51,7 +51,7 @@ h2.section-title { font-size: 0.95rem; margin: 0 0 0.75rem; }
 .fi-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
 .fi-label { width: 90px; font-size: 0.78rem; color: var(--text-secondary); text-align: right; flex-shrink: 0; font-family: var(--font-mono); }
 .fi-track { flex: 1; height: 14px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
-.fi-fill { height: 100%; background: var(--accent); }
+.fi-fill { height: 100%; background: var(--viz-data); }
 .fi-val { width: 3.5rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
 
 /* ==================== CUSTOMER PICKER ==================== */

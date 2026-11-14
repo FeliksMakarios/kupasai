@@ -13,38 +13,23 @@
 
   var DATA = ATTENTION_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var COLORS = IS_DARK ? {
-    text_muted: '#8b949e',
-    text_primary: '#e6edf3',
-    text_secondary: '#9198a1',
-    axis: '#30363d',
-    grid: '#21262d',
-    accent: '#58a6ff',
-    pos: '#3fb950',
-    neg: '#f85149',
-    orange: '#d29922',
-    purple: '#a371f7',
-    q_color: '#58a6ff',
-    k_color: '#d29922',
-    v_color: '#3fb950',
-    out_color: '#a371f7',
-    viz_bg: '#161b22',
-  } : {
-    text_muted: '#656d76',
-    text_primary: '#1f2328',
-    text_secondary: '#4b5563',
-    axis: '#d0d7de',
-    grid: '#eaeef2',
-    accent: '#0969da',
-    pos: '#1a7f37',
-    neg: '#cf222e',
-    orange: '#9a6700',
-    purple: '#8250df',
-    q_color: '#0969da',
-    k_color: '#9a6700',
-    v_color: '#1a7f37',
-    out_color: '#8250df',
-    viz_bg: '#f6f8fa',
+  var P = KupasPalette();
+  var COLORS = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    text_secondary: P.muted,
+    axis: P.axis,
+    grid: P.grid,
+    accent: P.data,
+    pos: P.data,
+    neg: P.accentText,
+    orange: P.accentText,
+    purple: P.data2,
+    q_color: P.data,
+    k_color: P.accentText,
+    v_color: P.data2,
+    out_color: P.muted,
+    viz_bg: P.card,
   };
 
   // ============================================================
@@ -121,7 +106,7 @@
 
             // Value text in cell (if large enough)
             if (cellSize >= 40) {
-              var textColor = val > 0.5 ? 'white' : COLORS.text_muted;
+              var textColor = KupasPalette.textOn(colorScale(val));
               g.append('text')
                 .attr('x', cx + cellSize / 2 - 1)
                 .attr('y', cy + cellSize / 2 + 4)
@@ -353,7 +338,7 @@
         g.append('text')
           .attr('x', x).attr('y', y + 4)
           .attr('text-anchor', 'middle').attr('font-size', '9px')
-          .attr('fill', 'white').attr('opacity', opacity).attr('font-weight', '600')
+          .attr('fill', KupasPalette.textOn(color)).attr('opacity', opacity).attr('font-weight', '600')
           .text(prefix + subscript(i + 1));
 
         // Word label
@@ -441,7 +426,7 @@
               .attr('x', matStartX + j * cellSize + cellSize / 2 - 1)
               .attr('y', matStartY + i * cellSize + cellSize / 2 + 3)
               .attr('text-anchor', 'middle').attr('font-size', '9px')
-              .attr('fill', val > 0.5 ? 'white' : COLORS.text_muted)
+              .attr('fill', KupasPalette.textOn(colorScale(val)))
               .attr('font-weight', val > 0.3 ? '700' : '400')
               .text(val.toFixed(2));
           }
@@ -471,7 +456,7 @@
         g.append('text')
           .attr('x', x).attr('y', y + 4)
           .attr('text-anchor', 'middle').attr('font-size', '9px')
-          .attr('fill', 'white').attr('font-weight', '600')
+          .attr('fill', KupasPalette.textOn(COLORS.out_color)).attr('font-weight', '600')
           .text('z' + subscript(i + 1));
 
         g.append('text')
@@ -592,7 +577,7 @@
 
             if (cellSize >= 40) {
               var maxVal = d3.max(weights.map(function (row) { return d3.max(row); })) || 1;
-              var textColor = val > maxVal * 0.5 ? 'white' : COLORS.text_muted;
+              var textColor = KupasPalette.textOn(colorScale(val));
               g.append('text')
                 .attr('x', cx + cellSize / 2 - 1)
                 .attr('y', cy + cellSize / 2 + 4)

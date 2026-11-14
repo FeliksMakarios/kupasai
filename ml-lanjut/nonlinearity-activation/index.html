@@ -45,7 +45,7 @@
 <script src="/kupasai/assets/js/catalog-data.js" defer></script>
 <script src="/kupasai/assets/js/catalog.js" defer></script>
 <link rel="stylesheet" href="/kupasai/assets/css/catalog.css">
-<script src="/kupasai/assets/js/state.js"></script>
+<script src="/kupasai/assets/js/state.js"></script><script src="/kupasai/assets/js/palette.js"></script>
 <script src="/kupasai/assets/js/offline.js" defer></script>
 </head>
 <body>
@@ -105,7 +105,7 @@
     <div class="viz-main">
       <p class="section-note">
         Data &ldquo;donat&rdquo;: dua cincin konsentris (kelas biru di
-        dalam, kelas merah di luar). Model dilatih untuk memisahkan
+        dalam, kelas kunyit di luar). Model dilatih untuk memisahkan
         keduanya.
       </p>
       <div class="boundary-pair">
@@ -173,9 +173,9 @@
   <div class="viz-layout">
     <div class="viz-main">
       <div class="activation-legend">
-        <span class="legend-item"><span class="legend-swatch" style="background:#0969da"></span>ReLU: max(0, x)</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#8250df"></span>Sigmoid: 1/(1+e<sup>&minus;x</sup>)</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#1a7f37"></span>Tanh: tanh(x)</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:var(--viz-data)"></span>ReLU: max(0, x)</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:var(--viz-accent-text)"></span>Sigmoid: 1/(1+e<sup>&minus;x</sup>)</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:var(--viz-data-2)"></span>Tanh: tanh(x)</span>
       </div>
       <svg id="activation-plot" viewBox="0 0 640 320"></svg>
     </div>

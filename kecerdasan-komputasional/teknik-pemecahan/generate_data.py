@@ -408,7 +408,7 @@ data = {
         "adjacency": AUSTRALIA,
         "warna": w,
         "kMin": k_min,
-        "namaWarna": ["Merah", "Hijau", "Biru"],
+        "namaWarna": ["Biru", "Kunyit", "Abu-abu"],
     },
     "kripto": {
         "solusi": sol_b,

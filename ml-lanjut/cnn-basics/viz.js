@@ -8,12 +8,15 @@
 
   var D = CNN_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e', text_primary: '#e6edf3', axis: '#30363d',
-    accent: '#58a6ff', danger: '#f85149', success: '#3fb950', node_bg: '#161b22',
-  } : {
-    text_muted: '#656d76', text_primary: '#1f2328', axis: '#d0d7de',
-    accent: '#0969da', danger: '#cf222e', success: '#1a7f37', node_bg: '#ffffff',
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    axis: P.axis,
+    accent: P.data,
+    danger: P.accentText,
+    success: P.data2,
+    node_bg: P.raised,
   };
 
 
@@ -35,7 +38,7 @@
       color = d3.scaleLinear().domain([0, 10]).range(['#111', '#fff']);
     } else {
       var maxAbs = d3.max(flat, Math.abs) || 1;
-      color = d3.scaleLinear().domain([-maxAbs, 0, maxAbs]).range([C.danger, IS_DARK ? '#21262d' : '#f6f8fa', C.success]);
+      color = d3.scaleLinear().domain([-maxAbs, 0, maxAbs]).range([C.danger, P.raised, C.success]);
     }
     matrix.forEach(function (row, ri) {
       row.forEach(function (v, ci) {
@@ -43,12 +46,12 @@
         var highlighted = opts.highlight && opts.highlight(ri, ci);
         svg.append('rect').attr('x', x).attr('y', y).attr('width', cell - 2).attr('height', cell - 2)
           .attr('fill', color(v))
-          .attr('stroke', highlighted ? (IS_DARK ? '#fff' : '#000') : 'none')
+          .attr('stroke', highlighted ? P.accentLine : 'none')
           .attr('stroke-width', highlighted ? 2.5 : 0);
         if (opts.showValue) {
           svg.append('text').attr('class', 'grid-cell-value').attr('x', x + (cell - 2) / 2).attr('y', y + (cell - 2) / 2 + 4)
             .attr('text-anchor', 'middle')
-            .attr('fill', opts.grayscale ? (v > 5 ? '#000' : '#fff') : (Math.abs(v) > (d3.max(flat, Math.abs) * 0.55) ? '#fff' : C.text_primary))
+            .attr('fill', opts.grayscale ? (v > 5 ? '#000' : '#fff') : (Math.abs(v) > (d3.max(flat, Math.abs) * 0.55) ? KupasPalette.textOn(color(v)) : C.text_primary))
             .text(v);
         }
       });

@@ -7,16 +7,19 @@
 
   var D = KK2_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e', text_primary: '#e6edf3', axis: '#30363d',
-    accent: '#58a6ff', danger: '#f85149', success: '#3fb950', grid: '#21262d',
-    node_fill: '#161b22',
-  } : {
-    text_muted: '#656d76', text_primary: '#1f2328', axis: '#d0d7de',
-    accent: '#0969da', danger: '#cf222e', success: '#1a7f37', grid: '#eaeef2',
-    node_fill: '#ffffff',
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    axis: P.axis,
+    accent: P.data,
+    danger: P.accentText,
+    success: P.data2,
+    grid: P.grid,
+    node_fill: P.raised,
   };
-  var WARNA_HEX = IS_DARK ? ['#f85149', '#3fb950', '#58a6ff'] : ['#cf222e', '#1a7f37', '#0969da'];
+  // Tiga warna pewarnaan peta: biru, kunyit, abu-abu (urutan sama dengan D.namaWarna).
+  var WARNA_HEX = IS_DARK ? [P.data, P.accent, '#6b7686'] : [P.data, P.accentLine, '#8a97ab'];
 
   // ============================================================
   // TAB 1: AND-OR TREE

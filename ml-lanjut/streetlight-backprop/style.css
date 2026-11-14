@@ -8,13 +8,13 @@
 .back-link:hover { color: var(--accent); }
 .page-header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
 .page-subtitle { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
-.learning-objectives { background: var(--accent-light); border: 1px solid #54aeff; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+.learning-objectives { background: var(--accent-light); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text-secondary); }
 .learning-objectives strong { color: var(--accent); }
 
 .tab-nav { max-width: 1000px; margin: 0 auto; padding: 1rem 2rem 0; display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
 .tab-btn { background: none; border: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; padding: 0.6rem 1.2rem; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; font-family: var(--font-sans); }
 .tab-btn:hover { color: var(--text-secondary); }
-.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent-line); }
 .tab-content { display: none; max-width: 1150px; margin: 0 auto; padding: 1.5rem 2rem; }
 .tab-content.active { display: block; }
 
@@ -33,8 +33,8 @@
   border-radius: 6px; font-size: 0.82rem; font-weight: 500;
   font-family: var(--font-sans); cursor: pointer; transition: all 0.15s;
 }
-.mode-btn:hover { border-color: var(--accent); color: var(--text-primary); }
-.mode-btn.active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.mode-btn:hover { border-color: var(--accent-line); color: var(--text-primary); }
+.mode-btn.active { background: var(--accent-fill); color: var(--on-accent); border-color: var(--accent-line); }
 
 /* ==================== ITERATION TABLE ==================== */
 .iter-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 0.5rem; }
@@ -62,7 +62,7 @@
 .dataset-table thead th { background: var(--bg-secondary); font-family: var(--font-sans); font-weight: 600; font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
 .dataset-table td.on { background: var(--accent-light); color: var(--accent); font-weight: 700; }
 .dataset-table td.decision-walk { background: var(--success-light); color: var(--success); font-weight: 700; }
-.dataset-table td.decision-stop { background: rgba(207,34,46,0.1); color: var(--danger); font-weight: 700; }
+.dataset-table td.decision-stop { background: var(--danger-light); color: var(--danger); font-weight: 700; }
 .dataset-caption { font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 1.25rem; }
 
 @media (max-width: 860px) {

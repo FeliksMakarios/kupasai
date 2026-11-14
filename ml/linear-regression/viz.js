@@ -12,26 +12,17 @@
 
   var D = LR_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e',
-    text_primary: '#e6edf3',
-    axis: '#30363d',
-    grid: '#21262d',
-    accent: '#58a6ff',
-    pos: '#3fb950',
-    neg: '#f85149',
-    dot: '#8b949e',
-    viz_bg: '#161b22',
-  } : {
-    text_muted: '#656d76',
-    text_primary: '#1f2328',
-    axis: '#d0d7de',
-    grid: '#eaeef2',
-    accent: '#0969da',
-    pos: '#1a7f37',
-    neg: '#cf222e',
-    dot: '#8b949e',
-    viz_bg: '#f6f8fa',
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    axis: P.axis,
+    grid: P.grid,
+    accent: P.data,
+    pos: P.data2,
+    neg: P.accentText,
+    dot: P.muted,
+    viz_bg: P.card,
   };
 
   // ============================================================
@@ -155,7 +146,7 @@
 
   // Text colour with the higher contrast against the tinted cell over the page background.
   function readableOn(hex, alpha) {
-    var page = IS_DARK ? [13, 17, 23] : [255, 255, 255];
+    var page = IS_DARK ? [12, 20, 32] : [245, 247, 250];
     var rgb = [1, 3, 5].map(function (i, k) { return parseInt(hex.slice(i, i + 2), 16) * alpha + page[k] * (1 - alpha); });
     function lum(c) { c = c.map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
     var L = lum(rgb);
