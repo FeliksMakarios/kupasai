@@ -41,7 +41,7 @@
 
 .learning-objectives {
   background: var(--accent-light);
-  border: 1px solid #54aeff;
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 0.75rem 1rem;
   font-size: 0.85rem;
@@ -82,7 +82,7 @@
 
 .tab-btn.active {
   color: var(--accent);
-  border-bottom-color: var(--accent);
+  border-bottom-color: var(--accent-line);
 }
 
 .tab-content {
@@ -173,7 +173,7 @@
 
 .rnn-controls select:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--accent-line);
   box-shadow: 0 0 0 3px var(--accent-light);
 }
 
@@ -186,9 +186,9 @@
 }
 
 .step-btn {
-  background: var(--accent);
+  background: var(--accent-fill);
   color: var(--on-accent);
-  border: none;
+  border: 1px solid var(--accent-line);
   border-radius: 6px;
   padding: 0.5rem 1.25rem;
   font-size: 0.85rem;
@@ -199,7 +199,7 @@
 }
 
 .step-btn:hover {
-  background: var(--accent-hover);
+  background: var(--accent-fill-hover);
 }
 
 .step-btn:disabled {
@@ -296,9 +296,9 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--accent-fill);
   cursor: pointer;
-  border: 2px solid white;
+  border: 2px solid var(--accent-line);
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
@@ -306,9 +306,9 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--accent-fill);
   cursor: pointer;
-  border: 2px solid white;
+  border: 2px solid var(--accent-line);
 }
 
 /* ==================== TAB 3: REPRESENTATION ==================== */
@@ -334,14 +334,14 @@
 }
 
 .rep-btn:hover {
-  border-color: var(--accent);
+  border-color: var(--accent-line);
   color: var(--text-primary);
 }
 
 .rep-btn.active {
-  background: var(--accent);
+  background: var(--accent-fill);
   color: var(--on-accent);
-  border-color: var(--accent);
+  border-color: var(--accent-line);
 }
 
 /* ==================== RESPONSIVE ==================== */

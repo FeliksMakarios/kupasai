@@ -12,20 +12,16 @@
 
   var D = CLUSTER_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e',
-    text_primary: '#e6edf3',
-    axis: '#30363d',
-    accent: '#58a6ff',
-  } : {
-    text_muted: '#656d76',
-    text_primary: '#1f2328',
-    axis: '#d0d7de',
-    accent: '#0969da',
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    axis: P.axis,
+    accent: P.data,
   };
-  var CLUSTER_COLORS = IS_DARK
-    ? ['#58a6ff', '#f85149', '#3fb950', '#d29922', '#bc8cff']
-    : ['#0969da', '#cf222e', '#1a7f37', '#9a6700', '#8250df'];
+  // Lima cluster dari tiga warna dasar beserta gradasinya; nomor cluster
+  // juga tertulis di tabel sehingga warna bukan satu-satunya pembeda.
+  var CLUSTER_COLORS = KupasPalette.categorical(P).slice(0, 5);
 
   var currentK = 3;
 

@@ -79,9 +79,9 @@
       html += '<div style="display:inline-flex;flex-direction:column;align-items:center;width:52px;margin:0 1px 0.75rem">' +
         '<div style="font-size:0.68rem;color:var(--text-muted);margin-bottom:2px;height:2.2em;display:flex;align-items:flex-end;text-align:center;line-height:1.1">' + tok + '</div>' +
         '<div style="width:16px;height:44px;background:var(--bg-tertiary);border-radius:3px;display:flex;align-items:flex-end;overflow:hidden">' +
-        '<div style="width:100%;height:' + sPct + '%;background:' + (isMaxS ? 'var(--warning)' : 'var(--accent)') + '"></div></div>' +
+        '<div style="width:100%;height:' + sPct + '%;background:' + (isMaxS ? 'var(--accent-fill)' : 'var(--viz-data)') + '"></div></div>' +
         '<div style="width:16px;height:44px;background:var(--bg-tertiary);border-radius:3px;display:flex;align-items:flex-end;overflow:hidden;margin-top:2px">' +
-        '<div style="width:100%;height:' + ePct + '%;background:' + (isMaxE ? 'var(--warning)' : 'var(--success)') + '"></div></div>' +
+        '<div style="width:100%;height:' + ePct + '%;background:' + (isMaxE ? 'var(--accent-fill)' : 'var(--viz-data-2)') + '"></div></div>' +
         '</div>';
     });
     document.getElementById('qa-logit-bars').innerHTML = html;

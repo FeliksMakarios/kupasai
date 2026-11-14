@@ -8,14 +8,17 @@
 
   var D = OD_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e', text_primary: '#e6edf3', axis: '#30363d',
-    accent: '#58a6ff', danger: '#f85149', success: '#3fb950', warn: '#d29922', bg2: '#161b22',
-    palette: ['#f85149', '#58a6ff', '#3fb950', '#d29922', '#a371f7']
-  } : {
-    text_muted: '#656d76', text_primary: '#1f2328', axis: '#d0d7de',
-    accent: '#0969da', danger: '#cf222e', success: '#1a7f37', warn: '#9a6700', bg2: '#f6f8fa',
-    palette: ['#cf222e', '#0969da', '#1a7f37', '#9a6700', '#8250df']
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    axis: P.axis,
+    accent: P.data,
+    danger: P.accentText,
+    success: P.data2,
+    warn: P.accentLine,
+    bg2: P.card,
+    palette: KupasPalette.categorical(P).slice(0, 5),
   };
 
 
@@ -24,7 +27,7 @@
   // bertabrakan dengan label lain yang sudah ditempatkan pada rentang x
   // yang sama -- perlu karena beberapa kotak deteksi saling berhimpitan.
   function placeLabel(svg, x, yDesired, text, color, placed) {
-    var width = text.length * 7.4 + 8;
+    var width = text.length * 7.4 + 21;
     var height = 15;
     var y = yDesired;
     var collide = true;
@@ -35,7 +38,9 @@
       if (collide) y -= height;
     }
     placed.push({ x: x, y: y, width: width, height: height });
-    svg.append('text').attr('x', x).attr('y', y).attr('fill', color).style('font-size', '11px').style('font-weight', 700)
+    // Penanda kotak berwarna; teksnya sendiri memakai warna teks agar selalu terbaca.
+    svg.append('rect').attr('x', x).attr('y', y - 9).attr('width', 9).attr('height', 9).attr('rx', 2).attr('fill', color);
+    svg.append('text').attr('x', x + 13).attr('y', y).attr('fill', C.text_primary).style('font-size', '11px').style('font-weight', 700)
       .style('paint-order', 'stroke').style('stroke', C.bg2).style('stroke-width', '4px')
       .text(text);
   }

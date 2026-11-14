@@ -8,12 +8,16 @@
 
   var D = GGD_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e', text_primary: '#e6edf3', axis: '#30363d',
-    accent: '#58a6ff', danger: '#f85149', success: '#3fb950', node_bg: '#161b22', grid: '#21262d',
-  } : {
-    text_muted: '#656d76', text_primary: '#1f2328', axis: '#d0d7de',
-    accent: '#0969da', danger: '#cf222e', success: '#1a7f37', node_bg: '#ffffff', grid: '#eaeef2',
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    axis: P.axis,
+    accent: P.data,
+    danger: P.accentText,
+    success: P.data2,
+    node_bg: P.raised,
+    grid: P.grid,
   };
 
   // ============================================================
@@ -150,7 +154,7 @@
     var flat = [];
     matrix.forEach(function (row) { row.forEach(function (v) { flat.push(v); }); });
     var maxAbs = d3.max(flat, Math.abs) || 1;
-    var color = d3.scaleLinear().domain([-maxAbs, 0, maxAbs]).range([C.danger, IS_DARK ? '#21262d' : '#f6f8fa', C.success]);
+    var color = d3.scaleLinear().domain([-maxAbs, 0, maxAbs]).range([C.danger, P.raised, C.success]);
 
     colLabels.forEach(function (lab, ci) {
       svg.append('text').attr('class', 'matrix-cell-label').attr('x', padLeft + ci * cell + cell / 2).attr('y', padTop - 10)
@@ -166,7 +170,7 @@
         svg.append('rect').attr('x', gx).attr('y', gy).attr('width', cell - 4).attr('height', cell - 4)
           .attr('rx', 4).attr('fill', color(v)).attr('stroke', C.axis);
         svg.append('text').attr('class', 'matrix-cell-value').attr('x', gx + (cell - 4) / 2).attr('y', gy + (cell - 4) / 2 + 4)
-          .attr('text-anchor', 'middle').attr('fill', Math.abs(v) > maxAbs * 0.55 ? '#fff' : C.text_primary)
+          .attr('text-anchor', 'middle').attr('fill', Math.abs(v) > maxAbs * 0.55 ? KupasPalette.textOn(color(v)) : C.text_primary)
           .text(v.toFixed(3));
       });
     });

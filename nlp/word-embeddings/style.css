@@ -43,7 +43,7 @@
 
 .learning-objectives {
   background: var(--accent-light);
-  border: 1px solid #54aeff;
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 0.75rem 1rem;
   font-size: 0.85rem;
@@ -84,7 +84,7 @@
 
 .tab-btn.active {
   color: var(--accent);
-  border-bottom-color: var(--accent);
+  border-bottom-color: var(--accent-line);
 }
 
 /* ==================== TAB CONTENT ==================== */
@@ -168,10 +168,9 @@
   color: var(--text-secondary);
 }
 
-.legend-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+.legend-symbol {
+  flex: none;
+  vertical-align: -1px;
 }
 
 .help-list {
@@ -219,7 +218,7 @@
 /* SVG dot styles */
 .dot {
   cursor: pointer;
-  transition: r 0.15s;
+  transition: transform 0.15s;
 }
 
 .dot-label {
@@ -237,12 +236,12 @@
 /* Tooltip */
 .tooltip {
   position: absolute;
-  background: #1f2328;
+  background: var(--heading);
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 0.5rem 0.75rem;
   font-size: 0.8rem;
-  color: #ffffff;
+  color: var(--bg-primary);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.15s;
@@ -263,7 +262,7 @@
 
 .tooltip .tt-cat {
   font-size: 0.75rem;
-  color: #8b949e;
+  color: var(--bg-tertiary);
 }
 
 /* ==================== ANALOGY EXPLORER ==================== */
@@ -327,7 +326,7 @@
 .analogy-slot select:focus,
 .sim-slot select:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--accent-line);
   box-shadow: 0 0 0 3px var(--accent-light);
 }
 
@@ -352,7 +351,7 @@
   min-height: 1.5rem;
   padding: 0.25rem 0.75rem;
   background: var(--success-light);
-  border: 1px solid #4ac26b;
+  border: 1px solid var(--success);
   border-radius: 6px;
   min-width: 120px;
   text-align: center;
@@ -391,7 +390,7 @@
 }
 
 .preset-btn:hover {
-  border-color: var(--accent);
+  border-color: var(--accent-line);
   color: var(--text-primary);
   background: var(--accent-light);
 }

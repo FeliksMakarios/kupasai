@@ -12,22 +12,15 @@
 
   var D = LOGREG_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e',
-    text_primary: '#e6edf3',
-    axis: '#30363d',
-    accent: '#58a6ff',
-    c0: '#d29922',
-    c1: '#58a6ff',
-    viz_bg: '#161b22',
-  } : {
-    text_muted: '#656d76',
-    text_primary: '#1f2328',
-    axis: '#d0d7de',
-    accent: '#0969da',
-    c0: '#9a6700',
-    c1: '#0969da',
-    viz_bg: '#ffffff',
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    axis: P.axis,
+    accent: P.data,
+    c0: P.accentText,
+    c1: P.data,
+    viz_bg: P.raised,
   };
 
   // ============================================================

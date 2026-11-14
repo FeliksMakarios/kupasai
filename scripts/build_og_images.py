@@ -17,15 +17,16 @@ CARDS = {
     'og-komp': ('Kecerdasan Komputasional', 'Computational Intelligence', 'thumbnail-komp.svg'),
 }
 TEMPLATE = '''<!DOCTYPE html><html><head><meta charset="utf-8"><style>
-body{{margin:0;width:1200px;height:630px;font-family:-apple-system,"Segoe UI",Roboto,sans-serif;background:#ffffff;color:#1f2328;display:flex;flex-direction:column}}
-.art{{height:320px;background:#f6f8fa;border-bottom:1px solid #d0d7de;display:flex;align-items:center;justify-content:center;overflow:hidden}}
+body{{margin:0;width:1200px;height:630px;font-family:-apple-system,"Segoe UI",Roboto,sans-serif;background:#f5f7fa;color:#1b2533;display:flex;flex-direction:column}}
+.art{{height:320px;background:#e6edf7;border-bottom:4px solid #f2b705;display:flex;align-items:center;justify-content:center;overflow:hidden}}
 .art img{{width:1200px;height:320px;object-fit:cover}}
-.art.home{{background:linear-gradient(135deg,#ddf4ff,#ffffff 60%,#dafbe1)}}
+.art.home{{background:linear-gradient(135deg,#d6e2f2,#f5f7fa 60%,#e6edf7);color:#163a6b}}
+.art.home .accent{{color:#b07f00}}
 .art.home span{{font-size:120px;font-weight:800;letter-spacing:-3px}}
-.text{{padding:36px 64px;display:flex;flex-direction:column;gap:14px}}
-.brand{{font-size:30px;font-weight:700}} .accent{{color:#0969da}}
+.text{{flex:1;padding:36px 64px;display:flex;flex-direction:column;gap:14px;background:#1f4e8c;color:#ffffff}}
+.brand{{font-size:30px;font-weight:700}} .accent{{color:#f2b705}}
 h1{{margin:0;font-size:56px;line-height:1.1;letter-spacing:-1px}}
-p{{margin:0;font-size:28px;color:#59636e}}
+p{{margin:0;font-size:28px;color:#d6e2f2}}
 </style></head><body>
 <div class="art{home}">{art}</div>
 <div class="text"><div class="brand">Kupas<span class="accent">AI</span></div><h1>{title}</h1><p>{sub}</p></div>

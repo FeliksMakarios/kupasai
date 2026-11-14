@@ -13,30 +13,19 @@
 
   var D = TRANSFORMER_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e',
-    text_primary: '#e6edf3',
-    text_secondary: '#9198a1',
-    border: '#30363d',
-    bg: '#161b22',
-    accent: '#58a6ff',
-    enc_color: '#58a6ff',
-    dec_color: '#d29922',
-    ffn_color: '#3fb950',
-    res_color: '#a371f7',
-    cross_color: '#fb8f44',
-  } : {
-    text_muted: '#656d76',
-    text_primary: '#1f2328',
-    text_secondary: '#4b5563',
-    border: '#d0d7de',
-    bg: '#f6f8fa',
-    accent: '#0969da',
-    enc_color: '#0969da',
-    dec_color: '#9a6700',
-    ffn_color: '#1a7f37',
-    res_color: '#8250df',
-    cross_color: '#fb8f44',
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    text_secondary: P.muted,
+    border: P.border,
+    bg: P.card,
+    accent: P.data,
+    enc_color: P.data,
+    dec_color: P.accentText,
+    ffn_color: P.data2,
+    res_color: P.muted,
+    cross_color: P.accentText,
   };
 
   // ============================================================
@@ -58,7 +47,7 @@
       var labels=[decoder?'Embedding target digeser + posisi':'Embedding masukan + posisi'].concat(layers.map(function(l){return l.label;}));
       labels.forEach(function(label,i){
         var y=45+i*58;
-        svg.append('rect').attr('x',x).attr('y',y).attr('width',200).attr('height',38).attr('rx',5).attr('fill',C.bg).attr('stroke',i?layers[i-1].color:C.enc_color).attr('aria-label',name + ': ' + label).on('click',function(){svg.selectAll('[data-selected]').attr('data-selected',null);d3.select(this).attr('data-selected','true');hintEl.textContent=i?layers[i-1].detail:label;});
+        svg.append('rect').attr('x',x).attr('y',y).attr('width',200).attr('height',38).attr('rx',5).attr('fill',C.bg).attr('stroke',i?(P[layers[i-1].color]||layers[i-1].color):C.enc_color).attr('aria-label',name + ': ' + label).on('click',function(){svg.selectAll('[data-selected]').attr('data-selected',null);d3.select(this).attr('data-selected','true');hintEl.textContent=i?layers[i-1].detail:label;});
         svg.append('text').attr('x',x+100).attr('y',y+23).attr('text-anchor','middle').attr('font-size',10).attr('fill',C.text_primary).style('pointer-events','none').text(label);
         if(i)arrow([[x+100,y-20],[x+100,y]]);
         if(label==='Add & Norm')arrow([[x+200,y-78],[x+220,y-78],[x+220,y+19],[x+200,y+19]],C.res_color);
@@ -130,7 +119,7 @@
 
         var opacity = isActive ? 1.0 : (isPast ? 0.5 : 0.25);
         var strokeW = isActive ? 3 : 1.5;
-        var strokeColor = isActive ? C.text_primary : comp.color;
+        var strokeColor = isActive ? C.text_primary : (P[comp.color] || comp.color);
 
         g.append('rect')
           .attr('x', cx - boxW / 2)
@@ -138,7 +127,7 @@
           .attr('width', boxW)
           .attr('height', comp.h)
           .attr('rx', 6)
-          .attr('fill', comp.color)
+          .attr('fill', P[comp.color] || comp.color)
           .attr('fill-opacity', isActive ? 0.2 : 0.08)
           .attr('stroke', strokeColor)
           .attr('stroke-width', strokeW)
@@ -150,7 +139,7 @@
           .attr('text-anchor', 'middle')
           .attr('font-size', '11px')
           .attr('font-weight', isActive ? '700' : '500')
-          .attr('fill', comp.color)
+          .attr('fill', P[comp.color] || comp.color)
           .attr('opacity', opacity)
           .text(comp.label);
 
@@ -319,7 +308,7 @@
 
         var opacity = isActive ? 1.0 : (isPast ? 0.5 : 0.25);
         var strokeW = isActive ? 3 : 1.5;
-        var strokeColor = isActive ? C.text_primary : comp.color;
+        var strokeColor = isActive ? C.text_primary : (P[comp.color] || comp.color);
 
         g.append('rect')
           .attr('x', cx - boxW / 2)
@@ -327,7 +316,7 @@
           .attr('width', boxW)
           .attr('height', comp.h)
           .attr('rx', 6)
-          .attr('fill', comp.color)
+          .attr('fill', P[comp.color] || comp.color)
           .attr('fill-opacity', isActive ? 0.2 : 0.08)
           .attr('stroke', strokeColor)
           .attr('stroke-width', strokeW)
@@ -339,7 +328,7 @@
           .attr('text-anchor', 'middle')
           .attr('font-size', '11px')
           .attr('font-weight', isActive ? '700' : '500')
-          .attr('fill', comp.color)
+          .attr('fill', P[comp.color] || comp.color)
           .attr('opacity', opacity)
           .text(comp.label);
 

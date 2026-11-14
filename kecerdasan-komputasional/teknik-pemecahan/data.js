@@ -193,9 +193,9 @@ var KK2_DATA = {
     },
     "kMin": 3,
     "namaWarna": [
-      "Merah",
-      "Hijau",
-      "Biru"
+      "Biru",
+      "Kunyit",
+      "Abu-abu"
     ]
   },
   "kripto": {

@@ -1,3 +1,14 @@
+## 2026-11-14 · Palet tiga warna
+
+- Ganti skema warna dengan pola 60-30-10: warna utama `#f5f7fa` untuk latar, warna kedua biru `#1f4e8c` untuk bilah navigasi, judul, kartu, dan label, serta aksen kunyit `#f2b705` untuk tombol utama, penanda menu aktif, dan sorotan. Mode gelap memakai pasangan `#0c1420`, `#16273f`, dan `#f5c431`.
+- Teks, garis tepi, teks redup, dan efek hover diambil dari gradasi ketiga warna itu. Merah hanya dipakai untuk pesan galat dan peringatan.
+- Tautan di mode terang memakai biru warna kedua karena kunyit tidak cukup kontras untuk teks; di mode gelap tautan memakai kunyit. Tombol kunyit diberi tepi kunyit tua di mode terang.
+- Status selesai, label, tag NER, cip laboratorium, dan batang grafik tidak lagi memakai hijau, ungu, atau oranye. Token kategori `--cat-*` yang tidak terpakai dihapus.
+- Semua visualisasi D3 membaca warna dari `assets/js/palette.js`, yang mengambil token `--viz-*` di `main.css`. Kategori dibedakan dengan gradasi biru, kunyit, dan abu kebiruan; Word Embeddings juga memakai bentuk penanda untuk delapan kategorinya. Teks di atas sel berwarna memilih putih atau gelap berdasarkan kontras.
+- Penjelasan yang menyebut nama warna diperbarui (misalnya "garis kunyit = bobot negatif"), dan pewarnaan peta di Teknik Pemecahan memakai Biru, Kunyit, dan Abu-abu.
+- Gambar mini mata kuliah, favicon, ikon aplikasi, gambar pratinjau berbagi, dan `theme_color` manifest mengikuti palet baru.
+- Perbaiki label kalimat RNN yang tampil hitam di mode gelap karena merujuk warna yang tidak ada.
+
 ## 2026-11-13 — Diagram Transformer
 
 - Bingkai diagram Encoder dan Decoder dipangkas ke isi gambar, dan kotak Encoder pada diagram Decoder didekatkan ke Cross-Attention. Label naik dari sekitar 7 px menjadi 11 sampai 12,5 px di desktop.

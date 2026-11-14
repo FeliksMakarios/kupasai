@@ -12,16 +12,12 @@
 
   var D = DT_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e',
-    text_primary: '#e6edf3',
-    accent: '#58a6ff',
-    border: '#30363d',
-  } : {
-    text_muted: '#656d76',
-    text_primary: '#1f2328',
-    accent: '#0969da',
-    border: '#d0d7de',
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    accent: P.data,
+    border: P.border,
   };
 
   // ============================================================

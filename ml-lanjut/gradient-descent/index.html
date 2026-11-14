@@ -45,7 +45,7 @@
 <script src="/kupasai/assets/js/catalog-data.js" defer></script>
 <script src="/kupasai/assets/js/catalog.js" defer></script>
 <link rel="stylesheet" href="/kupasai/assets/css/catalog.css">
-<script src="/kupasai/assets/js/state.js"></script>
+<script src="/kupasai/assets/js/state.js"></script><script src="/kupasai/assets/js/palette.js"></script>
 <script src="/kupasai/assets/js/offline.js" defer></script>
 </head>
 <body>
@@ -103,8 +103,8 @@
   <div class="viz-layout">
     <div class="viz-main">
       <div class="legend-row">
-        <span class="legend-item"><span class="legend-swatch" style="background:#cf222e"></span>Hot &amp; Cold (&alpha;=0.01)</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#0969da"></span>Gradient Descent</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:var(--viz-accent-text)"></span>Hot &amp; Cold (&alpha;=0.01)</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:var(--viz-data)"></span>Gradient Descent</span>
       </div>
       <svg id="gd-compare-plot" viewBox="0 0 640 320"></svg>
     </div>

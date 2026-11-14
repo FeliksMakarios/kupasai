@@ -7,14 +7,16 @@
 
   var D = KK4_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e', text_primary: '#e6edf3', axis: '#30363d',
-    accent: '#58a6ff', danger: '#f85149', success: '#3fb950', grid: '#21262d',
-    node_fill: '#161b22',
-  } : {
-    text_muted: '#656d76', text_primary: '#1f2328', axis: '#d0d7de',
-    accent: '#0969da', danger: '#cf222e', success: '#1a7f37', grid: '#eaeef2',
-    node_fill: '#ffffff',
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    axis: P.axis,
+    accent: P.data,
+    danger: P.accentText,
+    success: P.data2,
+    grid: P.grid,
+    node_fill: P.raised,
   };
 
   function lineChart(svgSel, series, opts) {
@@ -66,15 +68,13 @@
     container.appendChild(block);
     var svg = d3.select(svgEl);
     var flat = M.flat();
-    var color = d3.scaleSequential(d3.interpolateBlues).domain([Math.min.apply(null, flat), Math.max.apply(null, flat)]);
+    var color = d3.scaleSequential(KupasPalette.sequential(P)).domain([Math.min.apply(null, flat), Math.max.apply(null, flat)]);
     M.forEach(function (row, r) {
       row.forEach(function (v, c) {
-        var bg = d3.color(color(v));
-        var luminance = 0.299 * bg.r + 0.587 * bg.g + 0.114 * bg.b;
         svg.append('rect').attr('x', c * cell + 5).attr('y', r * cell + 5).attr('width', cell - 3).attr('height', cell - 3).attr('rx', 3)
           .attr('fill', color(v)).attr('stroke', C.axis);
         svg.append('text').attr('x', c * cell + cell / 2 + 5).attr('y', r * cell + cell / 2 + 5 + 4).attr('text-anchor', 'middle')
-          .attr('class', 'matrix-cell-value').attr('fill', luminance < 140 ? '#ffffff' : '#1f2328')
+          .attr('class', 'matrix-cell-value').attr('fill', KupasPalette.textOn(color(v)))
           .text(v.toFixed(2));
       });
     });

@@ -7,16 +7,18 @@
 
   var D = KK6_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e', text_primary: '#e6edf3', axis: '#30363d',
-    accent: '#58a6ff', danger: '#f85149', success: '#3fb950', grid: '#21262d',
-    node_fill: '#161b22',
-  } : {
-    text_muted: '#656d76', text_primary: '#1f2328', axis: '#d0d7de',
-    accent: '#0969da', danger: '#cf222e', success: '#1a7f37', grid: '#eaeef2',
-    node_fill: '#ffffff',
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    axis: P.axis,
+    accent: P.data,
+    danger: P.accentText,
+    success: P.data2,
+    grid: P.grid,
+    node_fill: P.raised,
   };
-  var PALETTE = [C.accent, C.success, C.danger, '#d29922', '#8957e5', '#39c5cf'];
+  var PALETTE = KupasPalette.categorical(P);
 
   function lineChart(svgSel, series, opts) {
     opts = opts || {};
@@ -56,7 +58,7 @@
       g.append('line').attr('x1', p1[0]).attr('y1', p1[1]).attr('x2', p2[0]).attr('y2', p2[1])
         .attr('stroke', C.accent).attr('stroke-width', 1 + tau * 5).attr('opacity', 0.6);
       var mx = (p1[0] + p2[0]) / 2, my = (p1[1] + p2[1]) / 2;
-      g.append('rect').attr('x', mx - 20).attr('y', my - 10).attr('width', 40).attr('height', 16).attr('fill', IS_DARK ? '#0d1117' : '#fff').attr('opacity', 0.85);
+      g.append('rect').attr('x', mx - 20).attr('y', my - 10).attr('width', 40).attr('height', 16).attr('fill', P.page).attr('opacity', 0.85);
       g.append('text').attr('class', 'edge-label').attr('x', mx).attr('y', my + 2).attr('text-anchor', 'middle').style('font-size', '10px').text(tau.toFixed(3));
     });
     Object.keys(pos).forEach(function (n) {
@@ -117,7 +119,7 @@
       g.append('path').datum(D.fuzzyUmur.kurva[nama]).attr('fill', 'none').attr('stroke', PALETTE[i]).attr('stroke-width', 2).attr('d', line);
     });
     var legendBg = svg.append('rect').attr('x', W - 336).attr('y', 2).attr('width', 316).attr('height', 36)
-      .attr('fill', IS_DARK ? '#0d1117' : '#ffffff').attr('opacity', 0.88).attr('rx', 4);
+      .attr('fill', P.page).attr('opacity', 0.88).attr('rx', 4);
     var legend = svg.append('g').attr('transform', 'translate(' + (W - 328) + ',16)');
     names.forEach(function (nama, i) {
       var lx = (i % 3) * 105, ly = Math.floor(i / 3) * 16;

@@ -45,7 +45,7 @@
 <script src="/kupasai/assets/js/catalog-data.js" defer></script>
 <script src="/kupasai/assets/js/catalog.js" defer></script>
 <link rel="stylesheet" href="/kupasai/assets/css/catalog.css">
-<script src="/kupasai/assets/js/state.js"></script>
+<script src="/kupasai/assets/js/state.js"></script><script src="/kupasai/assets/js/palette.js"></script>
 <script src="/kupasai/assets/js/offline.js" defer></script>
 </head>
 <body>
@@ -103,8 +103,8 @@
         <div class="stat-chip">Confusion Matrix (TN/FP/FN/TP)<strong id="lr-cm">-</strong></div>
       </div>
       <div class="legend-row">
-        <span><span class="legend-dot" style="background:#9a6700"></span>Setosa</span>
-        <span><span class="legend-dot" style="background:#0969da"></span>Versicolor</span>
+        <span><span class="legend-dot" style="background:var(--viz-accent-text)"></span>Setosa</span>
+        <span><span class="legend-dot" style="background:var(--viz-data)"></span>Versicolor</span>
         <span>Lingkaran bergaris tebal = data test set</span>
       </div>
       <p>Garis putus-putus mengikuti ambang keputusan. Isi titik = kelas aktual; garis tepi = kelas prediksi; titik data uji lebih besar. Latar menunjukkan probabilitas yang tetap saat ambang berubah.</p>
@@ -119,7 +119,7 @@
       <p>
         Warna latar adalah <strong>probabilitas</strong> hasil
         <code>model.predict_proba()</code> sungguhan di setiap titik grid
-        &mdash; oranye berarti model yakin setosa, biru berarti yakin
+        &mdash; kunyit berarti model yakin setosa, biru berarti yakin
         versicolor. Batas di tengah (warna netral) adalah
         <strong>decision boundary</strong>.
       </p>

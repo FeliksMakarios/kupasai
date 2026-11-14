@@ -13,30 +13,19 @@
 
   var D = CLASSIFICATION_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e',
-    text_primary: '#e6edf3',
-    text_secondary: '#9198a1',
-    border: '#30363d',
-    grid: '#21262d',
-    accent: '#58a6ff',
-    pos: '#3fb950',
-    neg: '#f85149',
-    orange: '#d29922',
-    purple: '#a371f7',
-    bg_box: '#161b22',
-  } : {
-    text_muted: '#656d76',
-    text_primary: '#1f2328',
-    text_secondary: '#4b5563',
-    border: '#d0d7de',
-    grid: '#eaeef2',
-    accent: '#0969da',
-    pos: '#1a7f37',
-    neg: '#cf222e',
-    orange: '#9a6700',
-    purple: '#8250df',
-    bg_box: '#f6f8fa',
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    text_secondary: P.muted,
+    border: P.border,
+    grid: P.grid,
+    accent: P.data,
+    pos: P.data,
+    neg: P.accentText,
+    orange: P.muted,
+    purple: P.data2,
+    bg_box: P.card,
   };
 
   // ============================================================

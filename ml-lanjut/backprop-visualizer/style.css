@@ -8,7 +8,7 @@
 .back-link:hover { color: var(--accent); }
 .page-header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
 .page-subtitle { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
-.learning-objectives { background: var(--accent-light); border: 1px solid #54aeff; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+.learning-objectives { background: var(--accent-light); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--text-secondary); }
 .learning-objectives strong { color: var(--accent); }
 
 .viz-layout { max-width: 1150px; margin: 0 auto; padding: 1.5rem 2rem; display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start; }
@@ -22,11 +22,11 @@
 /* ==================== STEP CONTROLS ==================== */
 .step-controls { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1rem; }
 .step-btn {
-  background: var(--accent); color: var(--on-accent); border: none; border-radius: 6px;
+  background: var(--accent-fill); color: var(--on-accent); border: 1px solid var(--accent-line); border-radius: 6px;
   padding: 0.5rem 1.25rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;
   font-family: var(--font-sans); transition: background 0.15s;
 }
-.step-btn:hover { background: var(--accent-hover); }
+.step-btn:hover { background: var(--accent-fill-hover); }
 .step-btn:disabled { background: var(--bg-tertiary); color: var(--text-muted); cursor: not-allowed; }
 #bp-step-indicator { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); min-width: 220px; text-align: center; }
 
@@ -39,8 +39,8 @@
 
 .phase-progress { display: flex; gap: 0.3rem; margin-bottom: 1rem; }
 .phase-dot { flex: 1; height: 4px; border-radius: 2px; background: var(--bg-tertiary); }
-.phase-dot.done { background: var(--accent); }
-.phase-dot.current { background: var(--danger); }
+.phase-dot.done { background: var(--viz-data); }
+.phase-dot.current { background: var(--accent-fill); }
 
 .trace-log {
   margin-top: 1rem; padding: 0.85rem 1rem; background: var(--bg-secondary);
@@ -61,7 +61,7 @@
 /* ==================== MSE COMPARISON ==================== */
 .mse-compare-row { display: flex; gap: 1.5rem; margin-top: 1rem; }
 .mse-box { flex: 1; text-align: center; padding: 0.75rem; border-radius: 8px; }
-.mse-box.before { background: rgba(207,34,46,0.1); }
+.mse-box.before { background: var(--danger-light); }
 .mse-box.after { background: var(--success-light); }
 .mse-box .label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; }
 .mse-box .val { font-family: var(--font-mono); font-size: 1.3rem; font-weight: 700; margin-top: 0.25rem; }

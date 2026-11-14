@@ -13,36 +13,23 @@
 
   var DATA = RNN_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var COLORS = IS_DARK ? {
-    input: '#58a6ff',
-    hidden: '#3fb950',
-    output_pos: '#3fb950',
-    output_neg: '#f85149',
-    rnn_grad: '#58a6ff',
-    lstm_grad: '#3fb950',
-    bg_dot: '#30363d',
-    axis: '#30363d',
-    grid: '#21262d',
-    text_muted: '#8b949e',
-    text_primary: '#e6edf3',
-    accent: '#58a6ff',
-    orange: '#d29922',
-    viz_bg: '#161b22',
-  } : {
-    input: '#0969da',
-    hidden: '#1a7f37',
-    output_pos: '#1a7f37',
-    output_neg: '#cf222e',
-    rnn_grad: '#0969da',
-    lstm_grad: '#1a7f37',
-    bg_dot: '#d0d7de',
-    axis: '#d0d7de',
-    grid: '#eaeef2',
-    text_muted: '#656d76',
-    text_primary: '#1f2328',
-    accent: '#0969da',
-    orange: '#9a6700',
-    viz_bg: '#f6f8fa',
+  var P = KupasPalette();
+  var COLORS = {
+    input: P.data,
+    hidden: P.data2,
+    output_pos: P.data2,
+    output_neg: P.accentText,
+    rnn_grad: P.data,
+    lstm_grad: P.data2,
+    bg_dot: P.border,
+    axis: P.axis,
+    grid: P.grid,
+    text_muted: P.muted,
+    text_primary: P.text,
+    text_secondary: P.muted,
+    accent: P.data,
+    orange: P.accentText,
+    viz_bg: P.card,
   };
 
   // ============================================================
@@ -128,7 +115,7 @@
           .attr('stroke', COLORS.viz_bg).attr('stroke-width', 1.5);
         g.append('text').attr('x', x).attr('y', inputY + 4)
           .attr('text-anchor', 'middle').attr('font-size', '10px')
-          .attr('fill', 'white').attr('opacity', opacity)
+          .attr('fill', KupasPalette.textOn(inputColor)).attr('opacity', opacity)
           .attr('font-weight', '600').text('x' + subscript(t + 1));
         g.append('text').attr('x', x).attr('y', inputY + 38)
           .attr('text-anchor', 'middle').attr('font-size', '12px')
@@ -146,7 +133,7 @@
           .attr('stroke-width', isCurrent ? 3 : 1.5);
         g.append('text').attr('x', x).attr('y', hiddenY + 4)
           .attr('text-anchor', 'middle').attr('font-size', '10px')
-          .attr('fill', 'white').attr('opacity', opacity)
+          .attr('fill', KupasPalette.textOn(hiddenColor)).attr('opacity', opacity)
           .attr('font-weight', '600').text('h' + subscript(t + 1));
 
         // Arrow: input -> hidden
@@ -172,7 +159,7 @@
             .attr('stroke', COLORS.viz_bg).attr('stroke-width', 1.5);
           g.append('text').attr('x', x).attr('y', outputY + 4)
             .attr('text-anchor', 'middle').attr('font-size', '10px')
-            .attr('fill', 'white').attr('font-weight', '700')
+            .attr('fill', KupasPalette.textOn(outColor)).attr('font-weight', '700')
             .text(pred);
 
           // Arrow: hidden -> output

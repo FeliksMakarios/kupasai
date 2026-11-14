@@ -19,34 +19,41 @@
   var WORDS = DATA.words;
 
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var UI = IS_DARK ? {
-    grid: '#21262d',
-    axis: '#30363d',
-    text_muted: '#8b949e',
-    viz_bg: '#161b22',
-    pos: '#3fb950',
-    warn: '#d29922',
-    neg: '#f85149',
-  } : {
-    grid: '#eaeef2',
-    axis: '#d0d7de',
-    text_muted: '#656d76',
-    viz_bg: '#ffffff',
-    pos: '#1a7f37',
-    warn: '#9a6700',
-    neg: '#cf222e',
+  var P = KupasPalette();
+  var UI = {
+    grid: P.grid,
+    axis: P.axis,
+    text_muted: P.muted,
+    viz_bg: P.raised,
+    pos: P.data,
+    warn: P.data2,
+    neg: P.accentText,
   };
 
-  var CATEGORY_COLORS = {
-    kerajaan: '#ffd700',
-    keluarga: '#2ee5c8',
-    gender: '#c77dff',
-    profesi: '#ff9f43',
-    emosi: '#f85149',
-    institusi: '#4cd964',
-    aksi: '#58a6ff',
-    lainnya: '#8b949e',
+  // Delapan kategori dibedakan dengan pasangan warna (dari tiga warna dasar)
+  // dan bentuk penanda, sehingga tetap terbaca tanpa warna tambahan.
+  var CATEGORY_STYLE = {
+    kerajaan: [P.accentLine, d3.symbolStar],
+    keluarga: [P.data, d3.symbolSquare],
+    gender: [P.data2, d3.symbolDiamond],
+    profesi: [P.accentLine, d3.symbolTriangle],
+    emosi: [P.data, d3.symbolWye],
+    institusi: [P.data2, d3.symbolCross],
+    aksi: [P.accentLine, d3.symbolDiamond],
+    lainnya: [P.muted, d3.symbolCircle],
   };
+  var CATEGORY_COLORS = {};
+  Object.keys(CATEGORY_STYLE).forEach(function (k) { CATEGORY_COLORS[k] = CATEGORY_STYLE[k][0]; });
+
+  function categorySymbol(cat, size) {
+    var st = CATEGORY_STYLE[cat] || CATEGORY_STYLE.lainnya;
+    return d3.symbol().type(st[1]).size(size)();
+  }
+
+  function categoryIcon(cat) {
+    return '<svg class="legend-symbol" width="12" height="12" viewBox="-6 -6 12 12" aria-hidden="true">' +
+      '<path d="' + categorySymbol(cat, 60) + '" fill="' + (CATEGORY_COLORS[cat] || CATEGORY_COLORS.lainnya) + '"/></svg>';
+  }
 
   var CATEGORY_LABELS = {
     kerajaan: 'Kerajaan',
@@ -220,15 +227,15 @@
       .attr('class', 'dot-group')
       .attr('transform', function (d) { return 'translate(' + x(d.x) + ',' + y(d.y) + ')'; });
 
-    dots.append('circle')
+    dots.append('path')
       .attr('class', 'dot')
-      .attr('r', 6)
+      .attr('d', function (d) { return categorySymbol(d.category, 110); })
       .attr('fill', function (d) { return CATEGORY_COLORS[d.category] || CATEGORY_COLORS.lainnya; })
       .attr('opacity', 0.85)
       .attr('stroke', UI.viz_bg)
       .attr('stroke-width', 1.5)
       .on('mouseover', function (event, d) {
-        d3.select(this).attr('r', 9).attr('opacity', 1);
+        d3.select(this).attr('transform', 'scale(1.45)').attr('opacity', 1);
         var html = '<div class="tt-word">' + d.word + '</div>';
         html += '<div class="tt-cat">Kategori: ' + (CATEGORY_LABELS[d.category] || d.category) + '</div>';
         showTooltip(html, event.pageX, event.pageY);
@@ -238,14 +245,14 @@
         tooltip.style.top = (event.pageY - 10) + 'px';
       })
       .on('mouseout', function () {
-        d3.select(this).attr('r', 6).attr('opacity', 0.85);
+        d3.select(this).attr('transform', null).attr('opacity', 0.85);
         hideTooltip();
       })
       .on('click', function (event, d) {
         var html = '<div class="tt-word" style="font-size:1rem">' + d.word + '</div>';
         html += '<div class="tt-cat">Kategori: ' + (CATEGORY_LABELS[d.category] || d.category) + '</div>';
-        html += '<div style="margin-top:6px;font-size:0.75rem;color:#8b949e">Vektor (' + d.vector.length + ' dimensi):</div>';
-        html += '<div style="font-family:monospace;font-size:0.72rem;color:#58a6ff;margin-top:2px">';
+        html += '<div style="margin-top:6px;font-size:0.75rem;opacity:0.85">Vektor (' + d.vector.length + ' dimensi):</div>';
+        html += '<div style="font-family:monospace;font-size:0.72rem;margin-top:2px">';
         html += '[' + d.vector.join(', ') + ']';
         html += '</div>';
         showTooltip(html, event.pageX, event.pageY);
@@ -263,7 +270,7 @@
     cats.forEach(function (cat) {
       var item = document.createElement('div');
       item.className = 'legend-item';
-      item.innerHTML = '<span class="legend-dot" style="background:' + CATEGORY_COLORS[cat] + '"></span>' +
+      item.innerHTML = categoryIcon(cat) + ' ' +
         (CATEGORY_LABELS[cat] || cat);
       legendEl.appendChild(item);
     });
@@ -274,7 +281,7 @@
       var chip = document.createElement('label');
       chip.className = 'filter-chip';
       chip.innerHTML = '<input type="checkbox" checked data-cat="' + cat + '">' +
-        '<span style="color:' + CATEGORY_COLORS[cat] + '">\u25CF</span> ' +
+        categoryIcon(cat) + ' ' +
         (CATEGORY_LABELS[cat] || cat);
       chip.querySelector('input').addEventListener('change', function () {
         activeCats[cat] = this.checked;
@@ -402,10 +409,10 @@
       keyLabels[resultData.word] = 'Hasil';
 
       var colors = {
-        A: '#58a6ff',
-        B: '#f85149',
-        C: '#c77dff',
-        Hasil: '#3fb950',
+        A: P.data,
+        B: P.data2,
+        C: P.text,
+        Hasil: P.accentText,
       };
 
       // Draw parallelogram: A -> B -> result -> C -> A
@@ -420,8 +427,8 @@
       g.append('polygon')
         .data([paraPoints])
         .attr('points', function (d) { return d.map(function (p) { return p.x + ',' + p.y; }).join(' '); })
-        .attr('fill', 'rgba(88, 166, 255, 0.05)')
-        .attr('stroke', 'rgba(88, 166, 255, 0.3)')
+        .attr('fill', KupasPalette.alpha(P.data, 0.06))
+        .attr('stroke', KupasPalette.alpha(P.data, 0.35))
         .attr('stroke-width', 1)
         .attr('stroke-dasharray', '4 4');
 
@@ -548,8 +555,8 @@
       // Vector A dan B -- diberi sisi (side) berlawanan supaya jika kedua
       // vektor kebetulan nyaris searah (proyeksi 2D-nya berhimpit), label
       // keduanya tetap terpisah, tidak saling menimpa garis/panah.
-      drawVector(g, cx, cy, aData.x * maxLen, aData.y * maxLen, '#58a6ff', selectA.value, -1, UI.viz_bg);
-      drawVector(g, cx, cy, bData.x * maxLen, bData.y * maxLen, '#c77dff', selectB.value, 1, UI.viz_bg);
+      drawVector(g, cx, cy, aData.x * maxLen, aData.y * maxLen, P.data, selectA.value, -1, UI.viz_bg);
+      drawVector(g, cx, cy, bData.x * maxLen, bData.y * maxLen, P.accentText, selectB.value, 1, UI.viz_bg);
 
       // Angle label -- didorong sedikit lebih jauh dari pusat + diberi latar
       // (halo) putih/gelap supaya tetap terbaca walau berada di atas garis.

@@ -8,12 +8,15 @@
 
   var D = FORWARD_PROP_DATA;
   var IS_DARK = document.documentElement.getAttribute('data-theme') === 'dark';
-  var C = IS_DARK ? {
-    text_muted: '#8b949e', text_primary: '#e6edf3', axis: '#30363d',
-    accent: '#58a6ff', danger: '#f85149', success: '#3fb950', node_bg: '#161b22',
-  } : {
-    text_muted: '#656d76', text_primary: '#1f2328', axis: '#d0d7de',
-    accent: '#0969da', danger: '#cf222e', success: '#1a7f37', node_bg: '#ffffff',
+  var P = KupasPalette();
+  var C = {
+    text_muted: P.muted,
+    text_primary: P.text,
+    axis: P.axis,
+    accent: P.data,
+    danger: P.accentText,
+    success: P.data2,
+    node_bg: P.raised,
   };
 
   // ============================================================
